@@ -6,6 +6,10 @@
       url = "github:DeterminateSystems/determinate";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,9 +27,10 @@
   outputs =
     inputs@{
       nixpkgs,
+      determinate,
+      disko,
       darwin,
       home-manager,
-      determinate,
       ...
     }:
     let
@@ -51,8 +56,8 @@
               { me.host = host; }
               ./modules/me.nix
               ./hosts/common.nix
+              disko.nixosModules.default
               ./hosts/${directory}/${host}
-              ./hosts/${directory}/${host}/hardware-configuration.nix
             ];
           }
         );

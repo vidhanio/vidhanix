@@ -4,6 +4,11 @@
   ...
 }:
 {
+  imports = [
+    ./hardware-configuration.nix
+    ./disk-configuration.nix
+  ];
+
   boot = {
     loader = {
       systemd-boot.enable = true;
