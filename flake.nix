@@ -10,6 +10,7 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    impermanence.url = "github:nix-community/impermanence";
     darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,6 +29,7 @@
     inputs@{
       nixpkgs,
       determinate,
+      impermanence,
       disko,
       darwin,
       home-manager,
@@ -57,6 +59,7 @@
               ./modules/me.nix
               ./hosts/common.nix
               disko.nixosModules.default
+              impermanence.nixosModules.default
               ./hosts/${directory}/${host}
             ];
           }
