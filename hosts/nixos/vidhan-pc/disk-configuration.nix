@@ -28,7 +28,7 @@
                 extraArgs = [ "-f" ];
 
                 subvolumes = {
-                  "/rootfs" = {
+                  "/root" = {
                     mountpoint = "/";
                   };
                   "/home" = {
