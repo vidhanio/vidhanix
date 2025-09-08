@@ -38,7 +38,6 @@
                     ];
                     mountpoint = "/home";
                   };
-                  "/home/${config.me.username}" = { };
                   "/nix" = {
                     mountOptions = [
                       "compress=zstd"
