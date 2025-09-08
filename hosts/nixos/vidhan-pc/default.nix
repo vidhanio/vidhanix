@@ -61,6 +61,7 @@
   users = {
     users.${config.me.username} = {
       isNormalUser = true;
+      hashedPassword = "$y$j9T$LCdHSdiGd3E0QIKpfQJXC1$/XXchmDGIM2kQganFqhqwS7BHrOE8JwnxCQ3PW2GHO7";
       description = config.me.fullname;
       extraGroups = [
         "networkmanager"
