@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, ... }:
 {
   disko.devices = {
     disk = {
@@ -115,13 +115,6 @@
     files = [
       "/etc/machine-id"
     ];
-    users.${config.me.username} = {
-      directories = [
-        "Downloads"
-        "Documents"
-        { directory = ".ssh"; mode = "0700"; }
-      ];
-    };
   };
 
   fileSystems."/persist".neededForBoot = true;

@@ -1,7 +1,6 @@
 {
   osConfig,
   pkgs,
-  lib,
   ...
 }:
 {
@@ -31,7 +30,6 @@
 
   xdg.autostart = {
     enable = true;
-    readOnly = true;
     entries = with pkgs; [
       "${vesktop}/share/applications/vesktop.desktop"
       "${firefox-devedition}/share/applications/firefox-devedition.desktop"
@@ -41,26 +39,10 @@
     ];
   };
 
-  programs =
-    let
-      enableTrue = {
-        enable = true;
-      };
-      enablePrograms = programs: lib.genAttrs programs (lib.const enableTrue);
-    in
-    enablePrograms [
-      "home-manager"
+  programs = {
+    home-manager.enable = true;
 
-      "direnv"
-      "firefox"
-      "fish"
-      "gh"
-      "git"
-      "kitty"
-      "neovim"
-      "uv"
-      "vesktop"
-      "vscode"
-    ];
-
+    neovim.enable = true;
+    uv.enable = true;
+  };
 }

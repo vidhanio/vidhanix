@@ -1,6 +1,7 @@
 { osConfig, ... }:
 {
   programs.git = {
+    enable = true;
     userName = osConfig.me.fullname;
     userEmail = "me@vidhan.io";
     signing = {

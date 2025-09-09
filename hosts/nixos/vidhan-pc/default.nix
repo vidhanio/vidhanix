@@ -1,8 +1,12 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }:
+let
+  inherit (inputs) plasma-manager;
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -41,7 +45,10 @@
       };
     };
 
-    displayManager.sddm.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
     desktopManager.plasma6.enable = true;
 
     printing.enable = true;
@@ -59,17 +66,20 @@
   security.rtkit.enable = true;
 
   users = {
+    mutableUsers = false;
     users.${config.me.username} = {
       isNormalUser = true;
-      hashedPassword = "$y$j9T$LCdHSdiGd3E0QIKpfQJXC1$/XXchmDGIM2kQganFqhqwS7BHrOE8JwnxCQ3PW2GHO7";
       description = config.me.fullname;
+      shell = pkgs.fish;
+      hashedPassword = "$y$j9T$LCdHSdiGd3E0QIKpfQJXC1$/XXchmDGIM2kQganFqhqwS7BHrOE8JwnxCQ3PW2GHO7";
       extraGroups = [
         "networkmanager"
         "wheel"
       ];
     };
-    defaultUserShell = pkgs.fish;
   };
+
+  home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
 
   programs = {
     nix-ld.enable = true;
