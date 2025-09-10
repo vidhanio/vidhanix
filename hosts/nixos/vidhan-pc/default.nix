@@ -81,6 +81,7 @@ in
     users.${config.me.username} = {
       isNormalUser = true;
       description = config.me.fullname;
+      createHome = true;
       shell = pkgs.fish;
       hashedPassword = "$y$j9T$LCdHSdiGd3E0QIKpfQJXC1$/XXchmDGIM2kQganFqhqwS7BHrOE8JwnxCQ3PW2GHO7";
       extraGroups = [
