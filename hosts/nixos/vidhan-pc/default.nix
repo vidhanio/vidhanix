@@ -1,19 +1,16 @@
 {
-  config,
   pkgs,
   inputs,
   ...
 }:
 let
-  inherit (inputs) plasma-manager;
+  username = "vidhanio";
 in
 {
   imports = [
     ./hardware-configuration.nix
     ./disk-configuration.nix
   ];
-
-  nixpkgs.hostPlatform = "x86_64-linux";
 
   boot = {
     loader = {
@@ -30,10 +27,8 @@ in
       enableGraphical = true;
     };
   };
-  networking = {
-    hostName = config.me.host;
-    networkmanager.enable = true;
-  };
+
+  networking.networkmanager.enable = true;
 
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_CA.UTF-8";
@@ -76,22 +71,22 @@ in
   };
   security.rtkit.enable = true;
 
+  home-manager.sharedModules = with inputs; [ plasma-manager.homeModules.plasma-manager ];
+
   users = {
     mutableUsers = false;
-    users.${config.me.username} = {
-      isNormalUser = true;
-      description = config.me.fullname;
-      createHome = true;
-      shell = pkgs.fish;
+    users.${username} = {
+      description = "Vidhan Bhatt";
       hashedPassword = "$y$j9T$LCdHSdiGd3E0QIKpfQJXC1$/XXchmDGIM2kQganFqhqwS7BHrOE8JwnxCQ3PW2GHO7";
+
+      isNormalUser = true;
+      shell = with pkgs; fish;
       extraGroups = [
         "networkmanager"
         "wheel"
       ];
     };
   };
-
-  home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
 
   programs = {
     nix-ld.enable = true;
@@ -100,7 +95,7 @@ in
     _1password.enable = true;
     _1password-gui = {
       enable = true;
-      polkitPolicyOwners = [ config.me.username ];
+      polkitPolicyOwners = [ username ];
     };
   };
 

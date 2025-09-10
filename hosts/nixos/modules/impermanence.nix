@@ -1,33 +1,42 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  inputs,
+  ...
+}:
 let
-  inherit (lib) mkOption mkEnableOption types;
   cfg = config.impermanence;
 in
 {
-  options = {
-    impermanence = {
-      enable = mkEnableOption "impermanence";
-      path = mkOption {
-        type = with types; str;
-        description = "The path where persisted data will be stored.";
-      };
-      disk = mkOption {
-        type = with types; str;
-        description = "The disk in which the root filesystem is stored.";
-      };
-      rootSubvolume = mkOption {
-        type = with types; str;
-        default = "root";
-        description = "The name of the root subvolume.";
-      };
-      settings = mkOption {
-        type = with types; attrs;
-        default = { };
-        description = "Settings to pass to impermanence.";
+  imports = with inputs; [ impermanence.nixosModules.default ];
+
+  options =
+    let
+      inherit (lib) mkOption mkEnableOption types;
+    in
+    {
+      impermanence = {
+        enable = mkEnableOption "impermanence";
+        path = mkOption {
+          type = with types; str;
+          description = "The path where persisted data will be stored.";
+        };
+        disk = mkOption {
+          type = with types; str;
+          description = "The disk in which the root filesystem is stored.";
+        };
+        rootSubvolume = mkOption {
+          type = with types; str;
+          default = "root";
+          description = "The name of the root subvolume.";
+        };
+        settings = mkOption {
+          type = with types; attrs;
+          default = { };
+          description = "Settings to pass to impermanence.";
+        };
       };
     };
-
-  };
 
   config = {
     boot.initrd.postResumeCommands = lib.mkIf cfg.enable (
@@ -60,6 +69,8 @@ in
     environment.persistence.${cfg.path} = cfg.settings // {
       hideMounts = true;
     };
+
+    programs.fuse.userAllowOther = true;
 
     fileSystems.${cfg.path}.neededForBoot = true;
   };

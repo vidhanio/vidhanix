@@ -1,12 +1,9 @@
 { inputs, lib, ... }:
 let
-  inherit (inputs) disko impermanence;
+  inherit (inputs) disko;
 in
 {
-  imports = [
-    disko.nixosModules.default
-    impermanence.nixosModules.default
-  ];
+  imports = [ ../modules/impermanence.nix ] ++ [ disko.nixosModules.default ];
 
   disko.devices = {
     disk = {
@@ -63,19 +60,18 @@ in
   };
 
   specialisation = {
-    wipe-root.configuration = {
+    wipe.configuration = {
       impermanence.enable = true;
     };
   };
 
   impermanence = {
-    enable = lib.mkDefault false;
+    enable = lib.mkDefault true;
     path = "/persist";
     disk = "/dev/disk/by-partlabel/disk-main-root";
     rootSubvolume = "root";
     settings = {
       directories = [
-        "/home"
         "/var/log"
         "/var/lib/bluetooth"
         "/var/lib/nixos"

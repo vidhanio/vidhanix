@@ -46,47 +46,42 @@
       ...
     }:
     let
-      inherit (nixpkgs) lib;
-
       mkConfigurations =
-        {
-          directory,
-          mkSystem,
-          determinate,
-          home-manager,
-        }:
+        { kind, lib }:
         let
-          hosts = builtins.attrNames (builtins.readDir ./hosts/${directory});
-          modules = map (module: ./modules/${module}) (builtins.attrNames (builtins.readDir ./modules));
+          lib-utils =
+            _: _: with builtins; {
+              readDirToList = path: map (name: path + "/${name}") (attrNames (readDir path));
+              readCurrentDir =
+                path:
+                map (name: path + "/${name}") (filter (name: name != "default.nix") (attrNames (readDir path)));
+            };
         in
+        hosts:
         lib.genAttrs hosts (
           host:
-          mkSystem {
-            specialArgs = { inherit inputs; };
-            modules = modules ++ [
-              determinate
-              home-manager
-              { me.host = host; }
+          (lib.extend lib-utils)."${kind}System" {
+            modules = [
+              { networking.hostName = host; }
               ./hosts/common.nix
-              agenix.nixosModules.default
-              ./hosts/${directory}/${host}
+              ./hosts/${kind}/common.nix
+              ./hosts/${kind}/${host}
             ];
+            specialArgs = { inherit inputs; };
           }
         );
-    in
-    {
-      nixosConfigurations = mkConfigurations {
-        directory = "nixos";
-        mkSystem = nixpkgs.lib.nixosSystem;
-        determinate = determinate.nixosModules.default;
-        home-manager = home-manager.nixosModules.default;
+
+      mkNixosConfigurations = mkConfigurations {
+        kind = "nixos";
+        lib = nixpkgs.lib;
       };
 
-      darwinConfigurations = mkConfigurations {
-        directory = "darwin";
-        mkSystem = darwin.lib.darwinSystem;
-        determinate = determinate.darwinModules.default;
-        home-manager = home-manager.darwinModules.default;
+      mkDarwinConfigurations = mkConfigurations {
+        kind = "darwin";
+        lib = darwin.lib;
       };
+    in
+    {
+      nixosConfigurations = mkNixosConfigurations [ "vidhan-pc" ];
     };
 }

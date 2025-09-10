@@ -1,17 +1,20 @@
 {
   config,
   pkgs,
+  lib,
   inputs,
   ...
 }:
-let
-  inherit (inputs) rust-overlay vidhanix-fonts;
-in
 {
   home-manager = {
-    users.${config.me.username} = import ../users/${config.me.username};
-    useUserPackages = true;
+    users =
+      with builtins;
+      mapAttrs (name: _: ../users/${name}) (
+        lib.filterAttrs (_: user: user.isNormalUser) config.users.users
+      );
+    sharedModules = [ ../users/common.nix ];
     useGlobalPkgs = true;
+    extraSpecialArgs = { inherit inputs; };
   };
 
   fonts.packages = with pkgs; [
@@ -22,10 +25,13 @@ in
 
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [
-      rust-overlay.overlays.default
-      vidhanix-fonts.overlays.default
-    ]
-    ++ map (name: import ../overlays/${name}) (builtins.attrNames (builtins.readDir ../overlays));
+    overlays =
+      with inputs;
+      [
+        agenix.overlays.default
+        rust-overlay.overlays.default
+        vidhanix-fonts.overlays.default
+      ]
+      ++ map import (lib.readDirToList ../overlays);
   };
 }
