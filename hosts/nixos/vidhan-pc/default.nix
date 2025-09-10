@@ -13,6 +13,8 @@ in
     ./disk-configuration.nix
   ];
 
+  nixpkgs.hostPlatform = "x86_64-linux";
+
   boot = {
     loader = {
       systemd-boot.enable = true;
@@ -61,6 +63,15 @@ in
         support32Bit = true;
       };
       pulse.enable = true;
+    };
+    openssh = {
+      enable = true;
+      hostKeys = [
+        {
+          path = "/etc/ssh/ssh_host_ed25519_key";
+          type = "ed25519";
+        }
+      ];
     };
   };
   security.rtkit.enable = true;

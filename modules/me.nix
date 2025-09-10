@@ -1,23 +1,26 @@
 { lib, ... }:
+let
+  inherit (lib) mkOption types;
+in
 {
   options.me = {
-    fullname = lib.mkOption {
-      type = with lib.types; str;
+    fullname = mkOption {
+      type = with types; str;
       default = "Vidhan Bhatt";
       description = "Your full name.";
     };
-    username = lib.mkOption {
-      type = with lib.types; str;
+    username = mkOption {
+      type = with types; str;
       default = "vidhanio";
       description = "Your username.";
     };
-    email = lib.mkOption {
-      type = with lib.types; str;
+    email = mkOption {
+      type = with types; str;
       default = "me@vidhan.io";
       description = "Your email address.";
     };
-    host = lib.mkOption {
-      type = with lib.types; str;
+    host = mkOption {
+      type = with types; str;
       description = "The hostname of this machine.";
     };
   };

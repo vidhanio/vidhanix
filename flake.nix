@@ -24,6 +24,10 @@
       url = "github:nix-community/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -36,10 +40,9 @@
     inputs@{
       nixpkgs,
       determinate,
-      impermanence,
-      disko,
       darwin,
       home-manager,
+      agenix,
       ...
     }:
     let
@@ -54,19 +57,18 @@
         }:
         let
           hosts = builtins.attrNames (builtins.readDir ./hosts/${directory});
+          modules = map (module: ./modules/${module}) (builtins.attrNames (builtins.readDir ./modules));
         in
         lib.genAttrs hosts (
           host:
           mkSystem {
             specialArgs = { inherit inputs; };
-            modules = [
+            modules = modules ++ [
               determinate
               home-manager
               { me.host = host; }
-              ./modules/me.nix
               ./hosts/common.nix
-              disko.nixosModules.default
-              impermanence.nixosModules.default
+              agenix.nixosModules.default
               ./hosts/${directory}/${host}
             ];
           }
