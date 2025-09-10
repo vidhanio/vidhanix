@@ -3,12 +3,19 @@
   pkgs,
   ...
 }:
+let
+  inherit (pkgs) stdenv;
+in
 {
   imports = map (name: ./modules/${name}) (builtins.attrNames (builtins.readDir ./modules));
 
   home = {
     username = osConfig.me.username;
-    homeDirectory = "/home/${osConfig.me.username}";
+    homeDirectory =
+      let
+        parent = if stdenv.isDarwin then "Users" else "home";
+      in
+      "/${parent}/${osConfig.me.username}";
     shell.enableFishIntegration = true;
     packages = with pkgs; [
       bat

@@ -1,5 +1,13 @@
-{ lib, ... }:
+{ inputs, lib, ... }:
+let
+  inherit (inputs) disko impermanence;
+in
 {
+  imports = [
+    disko.nixosModules.default
+    impermanence.nixosModules.default
+  ];
+
   disko.devices = {
     disk = {
       main = {
@@ -31,13 +39,6 @@
                   "/root" = {
                     mountpoint = "/";
                   };
-                  "/home" = {
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                    mountpoint = "/home";
-                  };
                   "/nix" = {
                     mountOptions = [
                       "compress=zstd"
@@ -52,24 +53,6 @@
                     ];
                     mountpoint = "/persist";
                   };
-                  "/swap" = {
-                    mountpoint = "/.swapvol";
-                    swap = {
-                      swapfile.size = "20M";
-                      swapfile2.size = "20M";
-                      swapfile2.path = "rel-path";
-                    };
-                  };
-                };
-
-                mountpoint = "/partition-root";
-                swap = {
-                  swapfile = {
-                    size = "20M";
-                  };
-                  swapfile1 = {
-                    size = "20M";
-                  };
                 };
               };
             };
@@ -79,43 +62,28 @@
     };
   };
 
-  boot.initrd.postResumeCommands = lib.mkAfter ''
-    mkdir /btrfs_tmp
-    mount /dev/disk/by-partlabel/disk-main-root /btrfs_tmp
-    if [[ -e /btrfs_tmp/root ]]; then
-        mkdir -p /btrfs_tmp/old_roots
-        timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
-        mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
-    fi
-
-    delete_subvolume_recursively() {
-        IFS=$'\n'
-        for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-            delete_subvolume_recursively "/btrfs_tmp/$i"
-        done
-        btrfs subvolume delete "$1"
-    }
-
-    for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
-        delete_subvolume_recursively "$i"
-    done
-
-    btrfs subvolume create /btrfs_tmp/root
-    umount /btrfs_tmp
-  '';
-
-  environment.persistence."/persist" = {
-    hideMounts = true;
-    directories = [
-      "/var/log"
-      "/var/lib/bluetooth"
-      "/var/lib/nixos"
-      "/etc/NetworkManager/system-connections"
-    ];
-    files = [
-      "/etc/machine-id"
-    ];
+  specialisation = {
+    wipe-root.configuration = {
+      impermanence.enable = true;
+    };
   };
 
-  fileSystems."/persist".neededForBoot = true;
+  impermanence = {
+    enable = lib.mkDefault false;
+    path = "/persist";
+    disk = "/dev/disk/by-partlabel/disk-main-root";
+    rootSubvolume = "root";
+    settings = {
+      directories = [
+        "/home"
+        "/var/log"
+        "/var/lib/bluetooth"
+        "/var/lib/nixos"
+        "/etc/NetworkManager/system-connections"
+      ];
+      files = [
+        "/etc/machine-id"
+      ];
+    };
+  };
 }
