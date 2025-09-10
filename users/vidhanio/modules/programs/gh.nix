@@ -1,4 +1,4 @@
-{ osConfig, ... }:
+{ config, ... }:
 {
   programs.gh = {
     enable = true;
@@ -8,8 +8,8 @@
     hosts = {
       "github.com" = {
         git_protocol = "ssh";
-        users.${osConfig.me.username} = { };
-        user = osConfig.me.username;
+        users.${config.home.username} = { };
+        user = config.home.username;
       };
     };
   };

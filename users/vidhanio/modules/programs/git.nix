@@ -1,8 +1,8 @@
-{ osConfig, ... }:
+{ osConfig, config, ... }:
 {
   programs.git = {
     enable = true;
-    userName = osConfig.me.fullname;
+    userName = osConfig.users.users.${config.home.username}.description;
     userEmail = "me@vidhan.io";
     signing = {
       format = "ssh";

@@ -1,23 +1,21 @@
 {
-  osConfig,
+  lib,
+  inputs,
   pkgs,
   ...
 }:
-let
-  inherit (pkgs) stdenv;
-in
 {
-  imports = map (name: ./modules/${name}) (builtins.attrNames (builtins.readDir ./modules));
+  imports =
+    (lib.readDirToList ./modules)
+    ++ [ ../modules/impermanence.nix ]
+    ++ (with inputs; [
+      agenix.homeManagerModules.default
+    ]);
 
   home = {
-    username = osConfig.me.username;
-    homeDirectory =
-      let
-        parent = if stdenv.isDarwin then "Users" else "home";
-      in
-      "/${parent}/${osConfig.me.username}";
     shell.enableFishIntegration = true;
     packages = with pkgs; [
+      agenix
       bat
       deskflow
       eza
@@ -31,8 +29,35 @@ in
       wl-clipboard
       rust-bin.stable.latest.default
     ];
-    file.".hushlogin".text = "";
+
+    file = {
+      ".hushlogin".text = "";
+    };
+
     stateVersion = "25.05";
+  };
+
+  impermanence = {
+    directories = [
+      "Documents"
+      "Downloads"
+      "Projects"
+
+      ".ssh"
+      ".mozilla"
+      ".vscode-insiders"
+
+      ".config/1Password"
+      ".config/Code - Insiders"
+      ".config/vesktop"
+    ];
+  };
+
+  age.secrets = {
+    wakatime = {
+      file = ../../secrets/wakatime.age;
+      path = ".wakatime.cfg";
+    };
   };
 
   xdg.autostart = {
@@ -46,10 +71,4 @@ in
     ];
   };
 
-  programs = {
-    home-manager.enable = true;
-
-    neovim.enable = true;
-    uv.enable = true;
-  };
 }

@@ -9,11 +9,13 @@ let
     };
   };
 
-  userKeys = user: map (users: users.${user}) (builtins.attrValues keys);
+  userKeys =
+    user:
+    map (users: users.${user}) (builtins.filter (users: users ? ${user}) (builtins.attrValues keys));
 
   users = userKeys "vidhanio";
   hosts = userKeys "root";
 in
 {
-
+  "wakatime.age".publicKeys = users ++ hosts;
 }
