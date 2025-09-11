@@ -34,7 +34,6 @@
       ".hushlogin".text = "";
     };
 
-    stateVersion = "25.05";
   };
 
   impermanence = {
@@ -70,5 +69,6 @@
       "${spotify}/share/applications/spotify.desktop"
     ];
   };
-
+  
+  home.stateVersion = "25.05";
 }

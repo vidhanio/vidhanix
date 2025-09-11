@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs";
     darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -47,8 +47,9 @@
     }:
     let
       mkConfigurations =
-        { kind, lib }:
+        { kind, mkSystem }:
         let
+          
           lib-utils =
             _: _: with builtins; {
               readDirToList = path: map (name: path + "/${name}") (attrNames (readDir path));
@@ -56,32 +57,32 @@
                 path:
                 map (name: path + "/${name}") (filter (name: name != "default.nix") (attrNames (readDir path)));
             };
+            lib = nixpkgs.lib.extend lib-utils;
         in
         hosts:
         lib.genAttrs hosts (
           host:
-          (lib.extend lib-utils)."${kind}System" {
+          mkSystem {
             modules = [
               { networking.hostName = host; }
               ./hosts/common.nix
               ./hosts/${kind}/common.nix
               ./hosts/${kind}/${host}
             ];
+            inherit lib;
             specialArgs = { inherit inputs; };
           }
         );
-
-      mkNixosConfigurations = mkConfigurations {
-        kind = "nixos";
-        lib = nixpkgs.lib;
-      };
-
-      mkDarwinConfigurations = mkConfigurations {
-        kind = "darwin";
-        lib = darwin.lib;
-      };
     in
     {
-      nixosConfigurations = mkNixosConfigurations [ "vidhan-pc" ];
+      nixosConfigurations = mkConfigurations {
+        kind = "nixos";
+        mkSystem = nixpkgs.lib.nixosSystem;
+      } [ "vidhan-pc" ];
+
+      darwinConfigurations = mkConfigurations {
+        kind = "darwin";
+        mkSystem = darwin.lib.darwinSystem;
+      } [ "vidhan-macbook" ];
     };
 }
