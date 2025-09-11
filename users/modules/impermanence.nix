@@ -24,7 +24,7 @@ in
       };
     };
 
-  config = {
+  config = lib.mkIf (osConfig ? impermanence) {
     home.persistence."${osCfg.path}${config.home.homeDirectory}" = cfg // {
       allowOther = true;
     };

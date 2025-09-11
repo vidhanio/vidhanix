@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ osConfig, pkgs, ... }:
 {
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-devedition;
-    nativeMessagingHosts = with pkgs; [ kdePackages.plasma-browser-integration ];
+    nativeMessagingHosts = with pkgs; lib.optional (osConfig.desktopManager.plasma6.enable or false) kdePackages.plasma-browser-integration;
     policies = {
       SearchEngines = {
         Add = [

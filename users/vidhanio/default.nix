@@ -1,5 +1,6 @@
 {
   lib,
+  osConfig,
   inputs,
   pkgs,
   ...
@@ -14,10 +15,9 @@
 
   home = {
     shell.enableFishIntegration = true;
-    packages = with pkgs; [
+    packages = with pkgs; ([
       agenix
       bat
-      deskflow
       eza
       nil
       nixfmt
@@ -25,10 +25,8 @@
       pfetch
       ripgrep
       spotify
-      vacuumtube
-      wl-clipboard
       rust-bin.stable.latest.default
-    ];
+    ] ++ lib.optionals (osConfig.networking.hostName == "vidhan-pc") [deskflow vacuumtube wl-clipboard]);
 
     file = {
       ".hushlogin".text = "";
@@ -64,10 +62,9 @@
     entries = with pkgs; [
       "${vesktop}/share/applications/vesktop.desktop"
       "${firefox-devedition}/share/applications/firefox-devedition.desktop"
-      "${solaar}/share/applications/solaar.desktop"
       "${_1password-gui}/share/applications/1password.desktop"
       "${spotify}/share/applications/spotify.desktop"
-    ];
+    ] ++ lib.optional (osConfig.networking.hostName == "vidhan-pc") "${solaar}/share/applications/solaar.desktop";
   };
   
   home.stateVersion = "25.05";
