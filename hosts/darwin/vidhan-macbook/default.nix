@@ -1,12 +1,21 @@
-{ pkgs, ... }: let username = "vidhanio"; in {
+{ pkgs, ... }:
+let
+  username = "vidhanio";
+in
+{
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  users.users.${username} = {
-    description = "Vidhan Bhatt";
+  users = {
+    users.${username} = {
+      description = "Vidhan Bhatt";
 
-    home = "/Users/${username}";
-    createHome = true;
-    shell = with pkgs; fish;
+      home = "/Users/${username}";
+      createHome = true;
+      shell = with pkgs; fish;
+      uid = 501;
+    };
+
+    knownUsers = [ username ];
   };
 
   programs = {

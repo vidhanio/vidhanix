@@ -5,7 +5,7 @@ let
       root = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPyMCXJxi0Ra1il/NUXl0Qf+zEv0sA53jXdvfqHpIKfB root@vidhan-pc";
     };
     vidhan-macbook = {
-      vidhanio = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF/j/5jl9dCjEzecnWShJcku5pi0ZH2p5h6qPiRDpRkV vidhanio@vidhan-macbook";
+      vidhanio = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKpEHUbyfwBLGJqsrZLO8xDpldmg655DPYLGNOJUJfHM vidhanio@vidhan-macbook";
     };
   };
 
@@ -17,5 +17,5 @@ let
   hosts = userKeys "root";
 in
 {
-  "wakatime.age".publicKeys = users ++ hosts;
+  "wakatime.age".publicKeys = users;
 }

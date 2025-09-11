@@ -10,7 +10,9 @@
     users =
       with builtins;
       mapAttrs (name: _: ../users/${name}) (
-        lib.filterAttrs (_: user: (user.isNormalUser or true) && !(lib.hasPrefix "_" user.name)) config.users.users
+        lib.filterAttrs (
+          _: user: (user.isNormalUser or true) && !(lib.hasPrefix "_" user.name)
+        ) config.users.users
       );
     sharedModules = [ ../users/common.nix ];
     useGlobalPkgs = true;
