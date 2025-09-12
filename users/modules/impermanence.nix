@@ -17,16 +17,25 @@ in
       inherit (lib) mkOption types;
     in
     {
-      impermanence = mkOption {
-        type = with types; attrs;
-        default = { };
-        description = "Settings to pass to home-manager impermanence.";
+      impermanence = {
+        directories = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          description = "Directories in your home directory that you want to link to persistent storage.";
+        };
+
+        files = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          description = "Files in your home directory that you want to link to persistent storage.";
+        };
       };
     };
 
   config = lib.mkIf (osConfig ? impermanence) {
-    home.persistence."${osCfg.path}${config.home.homeDirectory}" = cfg // {
+    home.persistence."${osCfg.path}${config.home.homeDirectory}" = {
       allowOther = true;
+      inherit (cfg) directories files;
     };
   };
 }

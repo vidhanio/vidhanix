@@ -5,7 +5,7 @@
   ...
 }:
 {
-  imports = lib.readCurrentDir ./.;
+  imports = lib.importSubmodules ./.;
 
   home.packages =
     with pkgs;
@@ -17,9 +17,8 @@
         moonlight-qt
         pfetch
         ripgrep
-        spotify
       ]
-      ++ lib.optionals (osConfig.networking.hostName == "vidhan-pc") [
+      ++ lib.optionals (osConfig.nixpkgs.hostPlatform.isLinux) [
         deskflow
         vacuumtube
         wl-clipboard
@@ -31,6 +30,7 @@
 
     neovim.enable = true;
     uv.enable = true;
-    vesktop.enable = true;
   };
+
+  xdg.autostart.enable = osConfig.nixpkgs.hostPlatform.isLinux;
 }

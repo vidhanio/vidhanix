@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   ...
 }:
 let
@@ -73,8 +72,6 @@ in
   };
   security.rtkit.enable = true;
 
-  home-manager.sharedModules = with inputs; [ plasma-manager.homeModules.plasma-manager ];
-
   users = {
     mutableUsers = false;
     users.${username} = {
@@ -82,7 +79,7 @@ in
       hashedPassword = "$y$j9T$LCdHSdiGd3E0QIKpfQJXC1$/XXchmDGIM2kQganFqhqwS7BHrOE8JwnxCQ3PW2GHO7";
 
       isNormalUser = true;
-      shell = with pkgs; fish;
+      shell = pkgs.fish;
       extraGroups = [
         "networkmanager"
         "wheel"
@@ -101,7 +98,21 @@ in
     };
   };
 
-  environment.localBinInPath = true;
+  impermanence = {
+    directories = [
+      "/var/log"
+      "/var/lib/bluetooth"
+      "/var/lib/nixos"
+      "/etc/NetworkManager/system-connections"
+    ];
+    files = [
+      "/etc/machine-id"
+    ];
+  };
+
+  security.sudo.extraConfig = ''
+    Defaults lecture = never
+  '';
 
   system.stateVersion = "25.05";
 }
