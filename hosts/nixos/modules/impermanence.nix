@@ -18,22 +18,27 @@ in
       impermanence = {
         enable = mkEnableOption "impermanence";
         path = mkOption {
-          type = with types; str;
+          type = types.str;
           description = "The path where persisted data will be stored.";
         };
         disk = mkOption {
-          type = with types; str;
+          type = types.str;
           description = "The disk in which the root filesystem is stored.";
         };
         rootSubvolume = mkOption {
-          type = with types; str;
+          type = types.str;
           default = "root";
           description = "The name of the root subvolume.";
         };
-        settings = mkOption {
-          type = with types; attrs;
-          default = { };
-          description = "Settings to pass to impermanence.";
+        directories = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          description = "Directories that you want to link to persistent storage.";
+        };
+        files = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          description = "Files that you want to link to persistent storage.";
         };
       };
     };
@@ -66,8 +71,9 @@ in
       ''
     );
 
-    environment.persistence.${cfg.path} = cfg.settings // {
+    environment.persistence.${cfg.path} = {
       hideMounts = true;
+      inherit (cfg) directories files;
     };
 
     programs.fuse.userAllowOther = true;

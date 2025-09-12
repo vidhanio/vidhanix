@@ -1,9 +1,6 @@
 { inputs, lib, ... }:
-let
-  inherit (inputs) disko;
-in
 {
-  imports = [ ../modules/impermanence.nix ] ++ [ disko.nixosModules.default ];
+  imports = with inputs; [ disko.nixosModules.default ] ++ [ ../modules/impermanence.nix ];
 
   disko.devices = {
     disk = {
@@ -70,16 +67,5 @@ in
     path = "/persist";
     disk = "/dev/disk/by-partlabel/disk-main-root";
     rootSubvolume = "root";
-    settings = {
-      directories = [
-        "/var/log"
-        "/var/lib/bluetooth"
-        "/var/lib/nixos"
-        "/etc/NetworkManager/system-connections"
-      ];
-      files = [
-        "/etc/machine-id"
-      ];
-    };
   };
 }

@@ -1,4 +1,5 @@
 {
+  lib,
   stdenv,
   autoPatchelfHook,
   copyDesktopItems,
@@ -29,6 +30,8 @@ stdenv.mkDerivation rec {
   };
 
   iconSrc = ./icon.svg;
+
+  strictDeps = true;
 
   nativeBuildInputs = [
     autoPatchelfHook
@@ -86,4 +89,13 @@ stdenv.mkDerivation rec {
 
     runHook postInstall
   '';
+
+  meta = {
+    homepage = "https://github.com/shy1132/VacuumTube";
+    description = "YouTube Leanback on the desktop, with enhancements";
+    mainProgram = pname;
+    maintainers = [ "vidhanio" ];
+    license = lib.licenses.mit;
+    platforms = [ "x86_64-linux" ];
+  };
 }

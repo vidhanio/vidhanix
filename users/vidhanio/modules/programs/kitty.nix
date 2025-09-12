@@ -5,7 +5,7 @@
     enableGitIntegration = true;
     font = {
       name = "Berkeley Mono Variable";
-      package = pkgs.berkeley-mono-variable;
+      package = with pkgs; berkeley-mono-variable;
     };
     keybindings = {
       "ctrl+c" = "copy_or_interrupt";

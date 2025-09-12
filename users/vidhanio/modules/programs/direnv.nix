@@ -1,4 +1,6 @@
 {
+  impermanence.directories = [ ".local/share/direnv/allow" ];
+
   programs.direnv = {
     enable = true;
     silent = true;

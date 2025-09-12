@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -50,7 +50,7 @@
       lib = nixpkgs.lib.extend (
         _: _: with builtins; {
           readDirToList = path: map (name: path + "/${name}") (attrNames (readDir path));
-          readCurrentDir =
+          importSubmodules =
             path:
             map (name: path + "/${name}") (filter (name: name != "default.nix") (attrNames (readDir path)));
         }
@@ -64,6 +64,9 @@
       darwinSystems = with builtins; filter (system: match ".*-darwin$" system != null) systems;
 
       forEachSystem = lib.genAttrs;
+      forEachSystemPkgs =
+        systems: pkgsConfig: f:
+        forEachSystem systems (system: f system (import nixpkgs ({ inherit system; } // pkgsConfig)));
 
       mkConfigurations =
         kind: mkSystem: hosts:
@@ -81,16 +84,18 @@
           }
         );
 
-      devShells = forEachSystem systems (
-        system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in
-        {
+    in
+    {
+      nixosConfigurations = mkConfigurations "nixos" nixpkgs.lib.nixosSystem [ "vidhan-pc" ];
+      darwinConfigurations = mkConfigurations "darwin" darwin.lib.darwinSystem [ "vidhan-macbook" ];
+
+      devShells = forEachSystemPkgs systems { } (
+        system: pkgs: {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
               git
-              nixfmt-rfc-style
+              nixfmt
+              nixfmt-tree
               nil
             ];
           };
@@ -99,16 +104,12 @@
 
       packages =
         let
-          linuxPackages = forEachSystem linuxSystems (
-            system:
-            let
-              pkgs = import nixpkgs { inherit system; };
-            in
-            {
+          linuxPackages = forEachSystemPkgs linuxSystems { } (
+            system: pkgs: {
               default = pkgs.writeShellApplication {
                 name = "nixos-rebuild";
 
-                runtimeInputs = [ pkgs.nixos-rebuild ];
+                runtimeInputs = with pkgs; [ nixos-rebuild ];
 
                 text = ''
                   nixos-rebuild "''${@:-switch}" --sudo --flake ${self}
@@ -116,19 +117,12 @@
               };
             }
           );
-          darwinPackages = forEachSystem darwinSystems (
-            system:
-            let
-              pkgs = import nixpkgs {
-                inherit system;
-                overlays = [ darwin.overlays.default ];
-              };
-            in
-            {
+          darwinPackages = forEachSystemPkgs darwinSystems { overlays = [ darwin.overlays.default ]; } (
+            system: pkgs: {
               default = pkgs.writeShellApplication {
                 name = "darwin-rebuild";
 
-                runtimeInputs = [ pkgs.darwin-rebuild ];
+                runtimeInputs = with pkgs; [ darwin-rebuild ];
 
                 text = ''
                   sudo darwin-rebuild "''${@:-switch}" --flake ${self}
@@ -138,11 +132,5 @@
           );
         in
         linuxPackages // darwinPackages;
-    in
-    {
-      nixosConfigurations = mkConfigurations "nixos" nixpkgs.lib.nixosSystem [ "vidhan-pc" ];
-      darwinConfigurations = mkConfigurations "darwin" darwin.lib.darwinSystem [ "vidhan-macbook" ];
-
-      inherit devShells packages;
     };
 }

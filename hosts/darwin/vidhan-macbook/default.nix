@@ -11,7 +11,7 @@ in
 
       home = "/Users/${username}";
       createHome = true;
-      shell = with pkgs; fish;
+      shell = pkgs.fish;
       uid = 501;
     };
 
