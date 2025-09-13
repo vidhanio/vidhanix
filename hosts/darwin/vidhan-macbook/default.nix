@@ -18,9 +18,5 @@ in
     knownUsers = [ username ];
   };
 
-  programs = {
-    fish.enable = true;
-  };
-
   system.stateVersion = 6;
 }

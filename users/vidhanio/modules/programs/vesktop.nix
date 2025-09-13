@@ -7,5 +7,4 @@
   impermanence.directories = [
     ".config/vesktop"
   ];
-
 }

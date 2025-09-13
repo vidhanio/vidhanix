@@ -26,6 +26,7 @@
       "Projects"
 
       ".ssh"
+      ".cache/nix"
     ];
   };
 

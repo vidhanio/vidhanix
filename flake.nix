@@ -58,18 +58,36 @@
 
       systems = [
         "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
         "aarch64-darwin"
       ];
-      linuxSystems = with builtins; filter (system: match ".*-linux$" system != null) systems;
-      darwinSystems = with builtins; filter (system: match ".*-darwin$" system != null) systems;
 
-      forEachSystem = lib.genAttrs;
-      forEachSystemPkgs =
-        systems: pkgsConfig: f:
-        forEachSystem systems (system: f system (import nixpkgs ({ inherit system; } // pkgsConfig)));
+      isLinux = system: (lib.systems.elaborate system).isLinux;
+      isDarwin = system: (lib.systems.elaborate system).isDarwin;
+
+      linuxSystems = builtins.filter isLinux systems;
+      darwinSystems = builtins.filter isDarwin systems;
+
+      forEachSystem =
+        systems: f:
+        lib.genAttrs systems (
+          system:
+          f {
+            inherit system;
+            pkgs = (
+              import nixpkgs {
+                inherit system;
+
+                overlays = lib.optional (isDarwin system) (darwin.overlays.default);
+              }
+            );
+          }
+        );
 
       mkConfigurations =
-        kind: mkSystem: hosts:
+        { kind, mkSystem }:
+        hosts:
         lib.genAttrs hosts (
           host:
           mkSystem {
@@ -84,53 +102,76 @@
           }
         );
 
+      mkScriptApp =
+        pkgs:
+        {
+          name,
+          runtimeInputs,
+          text,
+        }:
+        {
+          type = "app";
+          program = lib.getExe (
+            pkgs.writeShellApplication {
+              inherit name runtimeInputs text;
+            }
+          );
+        };
     in
     {
-      nixosConfigurations = mkConfigurations "nixos" nixpkgs.lib.nixosSystem [ "vidhan-pc" ];
-      darwinConfigurations = mkConfigurations "darwin" darwin.lib.darwinSystem [ "vidhan-macbook" ];
+      nixosConfigurations = mkConfigurations {
+        kind = "nixos";
+        mkSystem = nixpkgs.lib.nixosSystem;
+      } [ "vidhan-pc" ];
 
-      devShells = forEachSystemPkgs systems { } (
-        system: pkgs: {
+      darwinConfigurations = mkConfigurations {
+        kind = "darwin";
+        mkSystem = darwin.lib.darwinSystem;
+      } [ "vidhan-macbook" ];
+
+      devShells = forEachSystem systems (
+        { pkgs, ... }:
+        {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
+              direnv
               git
               nixfmt
-              nixfmt-tree
               nil
             ];
           };
         }
       );
 
-      packages =
+      apps =
         let
-          linuxPackages = forEachSystemPkgs linuxSystems { } (
-            system: pkgs: {
-              default = pkgs.writeShellApplication {
-                name = "nixos-rebuild";
-
-                runtimeInputs = with pkgs; [ nixos-rebuild ];
-
+          linuxPackages = forEachSystem linuxSystems (
+            { pkgs, ... }:
+            {
+              default = mkScriptApp pkgs {
+                name = "rebuild";
+                runtimeInputs = with pkgs; [ nixos-rebuild-ng ];
                 text = ''
-                  nixos-rebuild "''${@:-switch}" --sudo --flake ${self}
+                  nixos-rebuild --sudo --flake ${self} "''${@:-switch}"
                 '';
               };
             }
           );
-          darwinPackages = forEachSystemPkgs darwinSystems { overlays = [ darwin.overlays.default ]; } (
-            system: pkgs: {
-              default = pkgs.writeShellApplication {
-                name = "darwin-rebuild";
-
+          darwinPackages = forEachSystem darwinSystems (
+            { pkgs, ... }:
+            {
+              default = mkScriptApp pkgs {
+                name = "rebuild";
                 runtimeInputs = with pkgs; [ darwin-rebuild ];
-
                 text = ''
-                  sudo darwin-rebuild "''${@:-switch}" --flake ${self}
+                  sudo darwin-rebuild --flake ${self} "''${@:-switch}"
                 '';
               };
             }
           );
         in
         linuxPackages // darwinPackages;
+
+      formatter = forEachSystem systems ({ pkgs, ... }: pkgs.nixfmt-tree);
     };
 }
