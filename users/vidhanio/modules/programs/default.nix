@@ -30,6 +30,7 @@
 
     neovim.enable = true;
     uv.enable = true;
+    zoxide.enable = true;
   };
 
   xdg.autostart.enable = osConfig.nixpkgs.hostPlatform.isLinux;

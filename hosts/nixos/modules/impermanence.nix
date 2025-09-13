@@ -46,28 +46,21 @@ in
   config = {
     boot.initrd.postResumeCommands = lib.mkIf cfg.enable (
       lib.mkAfter ''
-        mkdir /btrfs_tmp
-        mount '${cfg.disk}' /btrfs_tmp
-        if [[ -e '/btrfs_tmp/${cfg.rootSubvolume}' ]]; then
-            mkdir -p /btrfs_tmp/old_roots
-            timestamp=$(date --date="@$(stat -c %Y '/btrfs_tmp/${cfg.rootSubvolume}')" "+%Y-%m-%-d_%H:%M:%S")
-            mv '/btrfs_tmp/${cfg.rootSubvolume}' "/btrfs_tmp/old_roots/$timestamp"
-        fi
+        mkdir -p /mnt
+        mount -o user_subvol_rm_allowed '${cfg.disk}' /mnt
 
-        delete_subvolume_recursively() {
-            IFS=$'\n'
-            for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-                delete_subvolume_recursively "/btrfs_tmp/$i"
-            done
-            btrfs subvolume delete "$1"
-        }
+        mkdir -p /mnt/snapshots
+        timestamp=$(date --date="@$(stat -c %Y /mnt/root/)" -Iseconds)
+        btrfs subvolume snapshot -r '/mnt/${cfg.rootSubvolume}' /mnt/snapshots/$timestamp
 
-        for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
-            delete_subvolume_recursively "$i"
+        btrfs subvolume delete -R '/mnt/${cfg.rootSubvolume}'
+        btrfs subvolume create '/mnt/${cfg.rootSubvolume}'
+
+        for snapshot in $(find /mnt/snapshots -maxdepth 1 -mtime +7); do
+          btrfs subvolume delete -R $snapshot
         done
 
-        btrfs subvolume create '/btrfs_tmp/${cfg.rootSubvolume}'
-        umount /btrfs_tmp
+        umount /mnt
       ''
     );
 

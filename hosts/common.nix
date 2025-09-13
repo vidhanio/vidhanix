@@ -19,11 +19,19 @@
     extraSpecialArgs = { inherit inputs; };
   };
 
-  fonts.packages = with pkgs; [
-    berkeley-mono-variable
-    pragmata-pro-variable
-    jetbrains-mono
-  ];
+  programs = {
+    fish.enable = true;
+  };
+
+  environment = {
+    systemPackages = with pkgs; [
+      neovim
+    ];
+
+    variables = {
+      EDITOR = "nvim";
+    };
+  };
 
   nixpkgs = {
     config.allowUnfree = true;

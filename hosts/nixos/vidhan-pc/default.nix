@@ -60,15 +60,6 @@ in
       };
       pulse.enable = true;
     };
-    openssh = {
-      enable = true;
-      hostKeys = [
-        {
-          path = "/etc/ssh/ssh_host_ed25519_key";
-          type = "ed25519";
-        }
-      ];
-    };
   };
   security.rtkit.enable = true;
 
@@ -89,8 +80,6 @@ in
 
   programs = {
     nix-ld.enable = true;
-    fish.enable = true;
-    neovim.enable = true;
     _1password.enable = true;
     _1password-gui = {
       enable = true;
