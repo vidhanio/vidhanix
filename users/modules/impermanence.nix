@@ -33,8 +33,7 @@ in
     };
 
   config = lib.mkIf (osConfig ? impermanence) {
-    home.persistence."${osCfg.path}${config.home.homeDirectory}" = {
-      allowOther = true;
+    home.persistence."${osCfg.path}" = {
       inherit (cfg) directories files;
     };
   };
