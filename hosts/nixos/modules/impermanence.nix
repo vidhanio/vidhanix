@@ -39,27 +39,6 @@ in
     };
 
   config = {
-    boot.initrd.postResumeCommands = lib.mkIf cfg.wipe.enable (
-      lib.mkAfter ''
-        mkdir -p /mnt
-        mount -o user_subvol_rm_allowed '${cfg.disk}' /mnt
-
-        mkdir -p /mnt/snapshots
-
-        timestamp=$(date --date="@$(stat -c %Y /mnt/root)" -Iseconds)
-        btrfs subvolume snapshot -r /mnt/root /mnt/snapshots/$timestamp
-
-        btrfs subvolume delete -R /mnt/root
-        btrfs subvolume create /mnt/root
-
-        for snapshot in $(find /mnt/snapshots -mindepth 1 -maxdepth 1 -mtime +7); do
-          btrfs subvolume delete -R "$snapshot"
-        done
-
-        umount /mnt
-      ''
-    );
-
     environment.persistence.${cfg.path} = {
       hideMounts = true;
       inherit (cfg) directories files;
