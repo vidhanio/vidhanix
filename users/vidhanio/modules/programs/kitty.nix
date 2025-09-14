@@ -2,7 +2,7 @@
   programs.kitty = {
     enable = true;
     enableGitIntegration = true;
-    font = "Berkeley Mono Variable";
+    font.name = "Berkeley Mono Variable";
     keybindings = {
       "ctrl+c" = "copy_or_interrupt";
       "ctrl+v" = "paste_from_clipboard";

@@ -18,7 +18,7 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence.url = "github:nix-community/impermanence";
+    impermanence.url = "github:nix-community/impermanence/home-manager-v2";
 
     plasma-manager = {
       url = "github:nix-community/plasma-manager";

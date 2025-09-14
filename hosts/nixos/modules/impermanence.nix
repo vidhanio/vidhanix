@@ -44,8 +44,6 @@ in
       inherit (cfg) directories files;
     };
 
-    programs.fuse.userAllowOther = true;
-
     fileSystems.${cfg.path}.neededForBoot = true;
   };
 }
