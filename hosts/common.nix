@@ -47,7 +47,7 @@
       [
         agenix.overlays.default
         rust-overlay.overlays.default
-        vidhanix-fonts.overlays.default
+        # vidhanix-fonts.overlays.default
       ]
       ++ map import (lib.readDirToList ../overlays);
   };

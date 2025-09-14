@@ -33,7 +33,7 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    vidhanix-fonts.url = "git+ssh://git@github.com/vidhanio/vidhanix-fonts";
+    # vidhanix-fonts.url = "git+ssh://git@github.com/vidhanio/vidhanix-fonts";
   };
 
   outputs =

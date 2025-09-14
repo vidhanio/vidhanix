@@ -403,8 +403,7 @@
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs_2",
         "plasma-manager": "plasma-manager",
-        "rust-overlay": "rust-overlay",
-        "vidhanix-fonts": "vidhanix-fonts"
+        "rust-overlay": "rust-overlay"
       }
     },
     "rust-overlay": {
@@ -440,21 +439,6 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
-      }
-    },
-    "vidhanix-fonts": {
-      "locked": {
-        "lastModified": 1757385338,
-        "narHash": "sha256-ztTIw3heUQJGWBMLBZV43u2MBLIcCojYvR6yf2my2lg=",
-        "ref": "refs/heads/main",
-        "rev": "b0c7f69bb4f1d89f76273a7336470b3704834102",
-        "revCount": 4,
-        "type": "git",
-        "url": "ssh://git@github.com/vidhanio/vidhanix-fonts"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/vidhanio/vidhanix-fonts"
       }
     }
   },

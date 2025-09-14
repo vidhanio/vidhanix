@@ -3,6 +3,15 @@
   imports = with inputs; [ disko.nixosModules.default ] ++ [ ../modules/impermanence.nix ];
 
   disko.devices = {
+    nodev."/" = {
+      fsType = "tmpfs";
+      mountOptions = [
+        "size=8G"
+        "defaults"
+        "mode=755"
+      ];
+    };
+
     disk = {
       main = {
         type = "disk";
@@ -49,14 +58,6 @@
           };
         };
       };
-    };
-    nodev."/" = {
-      fsType = "tmpfs";
-      mountOptions = [
-        "size=2G"
-        "defaults"
-        "mode=755"
-      ];
     };
   };
 

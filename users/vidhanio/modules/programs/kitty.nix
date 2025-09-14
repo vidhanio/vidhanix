@@ -1,12 +1,8 @@
-{ pkgs, ... }:
 {
   programs.kitty = {
     enable = true;
     enableGitIntegration = true;
-    font = {
-      name = "Berkeley Mono Variable";
-      package = with pkgs; berkeley-mono-variable;
-    };
+    font = "Berkeley Mono Variable";
     keybindings = {
       "ctrl+c" = "copy_or_interrupt";
       "ctrl+v" = "paste_from_clipboard";
