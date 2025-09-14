@@ -135,9 +135,14 @@
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
               direnv
+
               git
+
               nixfmt
               nil
+
+              shfmt
+              shellcheck
             ];
           };
         }

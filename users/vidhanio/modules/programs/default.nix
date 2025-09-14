@@ -11,7 +11,6 @@
     with pkgs;
     (
       [
-        agenix
         bat
         eza
         moonlight-qt

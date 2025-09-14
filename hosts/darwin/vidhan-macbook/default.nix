@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 let
   username = "vidhanio";
 in
@@ -11,7 +10,6 @@ in
 
       home = "/Users/${username}";
       createHome = true;
-      shell = pkgs.fish;
       uid = 501;
     };
 

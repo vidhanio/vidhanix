@@ -16,7 +16,7 @@ in
     in
     {
       impermanence = {
-        enable = mkEnableOption "impermanence";
+        wipe.enable = mkEnableOption "data wipe on boot";
         path = mkOption {
           type = types.str;
           description = "The path where persisted data will be stored.";
@@ -24,11 +24,6 @@ in
         disk = mkOption {
           type = types.str;
           description = "The disk in which the root filesystem is stored.";
-        };
-        rootSubvolume = mkOption {
-          type = types.str;
-          default = "root";
-          description = "The name of the root subvolume.";
         };
         directories = mkOption {
           type = types.listOf types.str;
@@ -44,20 +39,21 @@ in
     };
 
   config = {
-    boot.initrd.postResumeCommands = lib.mkIf cfg.enable (
+    boot.initrd.postResumeCommands = lib.mkIf cfg.wipe.enable (
       lib.mkAfter ''
         mkdir -p /mnt
         mount -o user_subvol_rm_allowed '${cfg.disk}' /mnt
 
         mkdir -p /mnt/snapshots
-        timestamp=$(date --date="@$(stat -c %Y /mnt/root/)" -Iseconds)
-        btrfs subvolume snapshot -r '/mnt/${cfg.rootSubvolume}' /mnt/snapshots/$timestamp
 
-        btrfs subvolume delete -R '/mnt/${cfg.rootSubvolume}'
-        btrfs subvolume create '/mnt/${cfg.rootSubvolume}'
+        timestamp=$(date --date="@$(stat -c %Y /mnt/root)" -Iseconds)
+        btrfs subvolume snapshot -r /mnt/root /mnt/snapshots/$timestamp
 
-        for snapshot in $(find /mnt/snapshots -maxdepth 1 -mtime +7); do
-          btrfs subvolume delete -R $snapshot
+        btrfs subvolume delete -R /mnt/root
+        btrfs subvolume create /mnt/root
+
+        for snapshot in $(find /mnt/snapshots -mindepth 1 -maxdepth 1 -mtime +7); do
+          btrfs subvolume delete -R "$snapshot"
         done
 
         umount /mnt
