@@ -70,12 +70,13 @@ in
       hashedPassword = "$y$j9T$LCdHSdiGd3E0QIKpfQJXC1$/XXchmDGIM2kQganFqhqwS7BHrOE8JwnxCQ3PW2GHO7";
 
       isNormalUser = true;
-      shell = pkgs.fish;
       extraGroups = [
         "networkmanager"
         "wheel"
       ];
     };
+
+    defaultUserShell = pkgs.fish;
   };
 
   programs = {

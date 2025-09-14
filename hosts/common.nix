@@ -16,8 +16,11 @@
       );
     sharedModules = [ ../users/common.nix ];
     useGlobalPkgs = true;
+    backupFileExtension = "bak";
     extraSpecialArgs = { inherit inputs; };
   };
+
+  users.defaultUserShell = pkgs.fish;
 
   programs = {
     fish.enable = true;
@@ -30,6 +33,10 @@
 
     variables = {
       EDITOR = "nvim";
+    };
+
+    shellAliases = {
+      vi = "nvim";
     };
   };
 

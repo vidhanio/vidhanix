@@ -10,9 +10,7 @@
     '';
     shellAliases = {
       cat = "bat";
-      ls = "eza --color=auto --group-directories-first";
-      ll = "ls -l";
-      vi = "nvim";
+      ls = "eza -a --group-directories-first";
       code = "code-insiders";
     };
     functions = {
@@ -20,4 +18,6 @@
       fish_prompt = "printf '%s%s%s > ' (set_color $fish_color_cwd) (prompt_pwd) (set_color normal)";
     };
   };
+
+  impermanence.files = [ ".local/share/fish/fish_history" ];
 }

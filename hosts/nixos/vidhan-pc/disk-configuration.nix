@@ -12,7 +12,6 @@
           partitions = {
             ESP = {
               priority = 1;
-              name = "ESP";
               start = "1M";
               end = "128M";
               type = "EF00";
@@ -58,14 +57,13 @@
 
   specialisation = {
     wipe.configuration = {
-      impermanence.enable = true;
+      impermanence.wipe.enable = true;
     };
   };
 
   impermanence = {
-    enable = lib.mkDefault true;
+    wipe.enable = lib.mkDefault true;
     path = "/persist";
     disk = "/dev/disk/by-partlabel/disk-main-root";
-    rootSubvolume = "root";
   };
 }
