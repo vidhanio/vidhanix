@@ -1,21 +1,19 @@
 {
   lib,
   inputs,
+  pkgs,
   ...
 }:
 {
-  imports =
-    with inputs;
-    [ agenix.homeManagerModules.default ]
-    ++ [
-      ../modules/impermanence.nix
-      ../modules/link-darwin-applications.nix
-    ]
-    ++ lib.readDirToList ./modules;
+  imports = with inputs; [ agenix.homeManagerModules.default ] ++ lib.readSubmodules ./.;
 
   home = {
     file = {
       ".hushlogin".text = "";
+      ".face.icon".source = pkgs.fetchurl {
+        url = "https://github.com/vidhanio.png";
+        sha256 = "sha256-ihQAIrfg5L1k1AUWo6Ga7ZuGI00Rha4KaTOowUeCp/E=";
+      };
     };
   };
 
@@ -25,8 +23,8 @@
       "Downloads"
       "Projects"
 
-      ".ssh"
       ".cache/nix"
+      ".local/share/Trash"
     ];
   };
 

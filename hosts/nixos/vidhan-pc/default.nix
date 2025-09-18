@@ -1,25 +1,14 @@
 {
-  pkgs,
+  lib,
   ...
 }:
 let
   username = "vidhanio";
 in
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./disk-configuration.nix
-  ];
+  imports = lib.readSubmodules ./.;
 
   nixpkgs.hostPlatform = "x86_64-linux";
-
-  boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-    kernelPackages = pkgs.linuxPackages_latest;
-  };
 
   hardware = {
     bluetooth.enable = true;
@@ -34,33 +23,8 @@ in
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_CA.UTF-8";
 
-  services = {
-    xserver = {
-      enable = true;
-      xkb = {
-        layout = "us";
-        variant = "";
-      };
-    };
+  services.printing.enable = true;
 
-    displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
-    };
-    desktopManager.plasma6.enable = true;
-
-    printing.enable = true;
-
-    pulseaudio.enable = false;
-    pipewire = {
-      enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-      pulse.enable = true;
-    };
-  };
   security.rtkit.enable = true;
 
   users = {
@@ -75,17 +39,6 @@ in
         "wheel"
       ];
     };
-
-    defaultUserShell = pkgs.fish;
-  };
-
-  programs = {
-    nix-ld.enable = true;
-    _1password.enable = true;
-    _1password-gui = {
-      enable = true;
-      polkitPolicyOwners = [ username ];
-    };
   };
 
   impermanence = {
@@ -99,10 +52,6 @@ in
       "/etc/machine-id"
     ];
   };
-
-  security.sudo.extraConfig = ''
-    Defaults lecture = never
-  '';
 
   system.stateVersion = "25.05";
 }

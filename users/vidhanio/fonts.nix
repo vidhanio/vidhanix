@@ -1,8 +1,8 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    # berkeley-mono-variable
-    # pragmata-pro-variable
+    berkeley-mono-variable
+    pragmata-pro-variable
     jetbrains-mono
   ];
 

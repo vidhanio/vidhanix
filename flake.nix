@@ -33,7 +33,7 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # vidhanix-fonts.url = "git+ssh://git@github.com/vidhanio/vidhanix-fonts";
+    vidhanix-fonts.url = "git+ssh://git@github.com/vidhanio/vidhanix-fonts";
   };
 
   outputs =
@@ -48,11 +48,15 @@
     }:
     let
       lib = nixpkgs.lib.extend (
-        _: _: with builtins; {
-          readDirToList = path: map (name: path + "/${name}") (attrNames (readDir path));
-          importSubmodules =
-            path:
-            map (name: path + "/${name}") (filter (name: name != "default.nix") (attrNames (readDir path)));
+        _: _:
+        with builtins;
+        let
+          readDirContents' =
+            cond: path: map (name: path + "/${name}") (filter cond (attrNames (readDir path)));
+        in
+        {
+          readDirContents = readDirContents' (lib.const true);
+          readSubmodules = readDirContents' (name: name != "default.nix");
         }
       );
 
@@ -63,11 +67,7 @@
         "aarch64-darwin"
       ];
 
-      isLinux = system: (lib.systems.elaborate system).isLinux;
       isDarwin = system: (lib.systems.elaborate system).isDarwin;
-
-      linuxSystems = builtins.filter isLinux systems;
-      darwinSystems = builtins.filter isDarwin systems;
 
       forEachSystem =
         systems: f:
@@ -102,21 +102,6 @@
           }
         );
 
-      mkScriptApp =
-        pkgs:
-        {
-          name,
-          runtimeInputs,
-          text,
-        }:
-        {
-          type = "app";
-          program = lib.getExe (
-            pkgs.writeShellApplication {
-              inherit name runtimeInputs text;
-            }
-          );
-        };
     in
     {
       nixosConfigurations = mkConfigurations {
@@ -130,7 +115,19 @@
       } [ "vidhan-macbook" ];
 
       devShells = forEachSystem systems (
-        { pkgs, ... }:
+        { system, pkgs }:
+        let
+          rebuild =
+            let
+              cmd = if (isDarwin system) then "sudo darwin-rebuild" else "nixos-rebuild --sudo";
+            in
+            pkgs.writeShellApplication {
+              name = "rebuild";
+              text = ''
+                ${cmd} --flake . "''${@:-switch}"
+              '';
+            };
+        in
         {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
@@ -143,39 +140,12 @@
 
               shfmt
               shellcheck
+
+              rebuild
             ];
           };
         }
       );
-
-      apps =
-        let
-          linuxPackages = forEachSystem linuxSystems (
-            { pkgs, ... }:
-            {
-              default = mkScriptApp pkgs {
-                name = "rebuild";
-                runtimeInputs = with pkgs; [ nixos-rebuild-ng ];
-                text = ''
-                  nixos-rebuild --sudo --flake ${self} "''${@:-switch}"
-                '';
-              };
-            }
-          );
-          darwinPackages = forEachSystem darwinSystems (
-            { pkgs, ... }:
-            {
-              default = mkScriptApp pkgs {
-                name = "rebuild";
-                runtimeInputs = with pkgs; [ darwin-rebuild ];
-                text = ''
-                  sudo darwin-rebuild --flake ${self} "''${@:-switch}"
-                '';
-              };
-            }
-          );
-        in
-        linuxPackages // darwinPackages;
 
       formatter = forEachSystem systems ({ pkgs, ... }: pkgs.nixfmt-tree);
     };
