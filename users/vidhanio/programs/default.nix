@@ -5,7 +5,7 @@
   ...
 }:
 {
-  imports = lib.importSubmodules ./.;
+  imports = lib.readSubmodules ./.;
 
   home.packages =
     with pkgs;
@@ -16,6 +16,7 @@
         moonlight-qt
         pfetch
         ripgrep
+        sunshine
       ]
       ++ lib.optionals (osConfig.nixpkgs.hostPlatform.isLinux) [
         deskflow
@@ -29,7 +30,6 @@
 
     neovim.enable = true;
     uv.enable = true;
-    zoxide.enable = true;
   };
 
   xdg.autostart.enable = osConfig.nixpkgs.hostPlatform.isLinux;

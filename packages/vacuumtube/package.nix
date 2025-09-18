@@ -20,12 +20,12 @@
   xorg,
   ...
 }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "vacuumtube";
   version = "1.3.14";
 
   src = fetchTarball {
-    url = "https://github.com/shy1132/VacuumTube/releases/download/v${version}/VacuumTube-x64.tar.gz";
+    url = "https://github.com/shy1132/VacuumTube/releases/download/v${finalAttrs.version}/VacuumTube-x64.tar.gz";
     sha256 = "sha256:0yrl472a1hq27zccv12rxjrml5zi4idhcm3a8s2gbp4x33cq3ixp";
   };
 
@@ -93,9 +93,9 @@ stdenv.mkDerivation rec {
   meta = {
     homepage = "https://github.com/shy1132/VacuumTube";
     description = "YouTube Leanback on the desktop, with enhancements";
-    mainProgram = pname;
+    mainProgram = "vacuumtube";
     maintainers = [ "vidhanio" ];
     license = lib.licenses.mit;
     platforms = [ "x86_64-linux" ];
   };
-}
+})

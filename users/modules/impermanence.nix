@@ -12,23 +12,20 @@ in
 {
   imports = with inputs; [ impermanence.homeManagerModules.default ];
 
-  options =
+  options.impermanence =
     let
       inherit (lib) mkOption types;
     in
     {
-      impermanence = {
-        directories = mkOption {
-          type = types.listOf types.str;
-          default = [ ];
-          description = "Directories in your home directory that you want to link to persistent storage.";
-        };
-
-        files = mkOption {
-          type = types.listOf types.str;
-          default = [ ];
-          description = "Files in your home directory that you want to link to persistent storage.";
-        };
+      directories = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "Directories that you want to persist.";
+      };
+      files = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "Files that you want to persist.";
       };
     };
 

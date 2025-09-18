@@ -10,31 +10,24 @@ in
 {
   imports = with inputs; [ impermanence.nixosModules.default ];
 
-  options =
+  options.impermanence =
     let
-      inherit (lib) mkOption mkEnableOption types;
+      inherit (lib) mkOption types;
     in
     {
-      impermanence = {
-        wipe.enable = mkEnableOption "data wipe on boot";
-        path = mkOption {
-          type = types.str;
-          description = "The path where persisted data will be stored.";
-        };
-        disk = mkOption {
-          type = types.str;
-          description = "The disk in which the root filesystem is stored.";
-        };
-        directories = mkOption {
-          type = types.listOf types.str;
-          default = [ ];
-          description = "Directories that you want to link to persistent storage.";
-        };
-        files = mkOption {
-          type = types.listOf types.str;
-          default = [ ];
-          description = "Files that you want to link to persistent storage.";
-        };
+      path = mkOption {
+        type = types.str;
+        description = "The path where persisted data will be stored.";
+      };
+      directories = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "Directories that you want to persist.";
+      };
+      files = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "Files that you want to persist.";
       };
     };
 
@@ -45,5 +38,9 @@ in
     };
 
     fileSystems.${cfg.path}.neededForBoot = true;
+
+    security.sudo.extraConfig = ''
+      Defaults lecture = never
+    '';
   };
 }

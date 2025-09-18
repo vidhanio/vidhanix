@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, ... }:
 {
   imports = with inputs; [ disko.nixosModules.default ] ++ [ ../modules/impermanence.nix ];
 
@@ -61,15 +61,5 @@
     };
   };
 
-  specialisation = {
-    wipe.configuration = {
-      impermanence.wipe.enable = true;
-    };
-  };
-
-  impermanence = {
-    wipe.enable = lib.mkDefault true;
-    path = "/persist";
-    disk = "/dev/disk/by-partlabel/disk-main-root";
-  };
+  impermanence.path = "/persist";
 }

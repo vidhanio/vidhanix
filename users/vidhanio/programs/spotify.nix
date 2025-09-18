@@ -4,7 +4,5 @@
 
   xdg.autostart.entries = with pkgs; [ "${spotify}/share/applications/spotify.desktop" ];
 
-  impermanence.directories = [
-    ".config/spotify"
-  ];
+  impermanence.directories = [ ".config/spotify" ];
 }
