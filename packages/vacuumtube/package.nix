@@ -22,11 +22,11 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "vacuumtube";
-  version = "1.3.14";
+  version = "1.3.15";
 
   src = fetchTarball {
     url = "https://github.com/shy1132/VacuumTube/releases/download/v${finalAttrs.version}/VacuumTube-x64.tar.gz";
-    sha256 = "sha256:0yrl472a1hq27zccv12rxjrml5zi4idhcm3a8s2gbp4x33cq3ixp";
+    sha256 = "sha256:0ycb1ylvsairvv96qz7a8pchawyxbn5mra5dx6cmz7dqi3k0dk79";
   };
 
   iconSrc = ./icon.svg;

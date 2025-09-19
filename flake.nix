@@ -20,10 +20,6 @@
     };
     impermanence.url = "github:nix-community/impermanence/home-manager-v2";
 
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -48,15 +44,18 @@
     }:
     let
       lib = nixpkgs.lib.extend (
-        _: _:
+        final: prev:
         with builtins;
         let
           readDirContents' =
             cond: path: map (name: path + "/${name}") (filter cond (attrNames (readDir path)));
         in
         {
-          readDirContents = readDirContents' (lib.const true);
+          readDirContents = readDirContents' (prev.const true);
           readSubmodules = readDirContents' (name: name != "default.nix");
+
+          getDesktop' = pkg: name: "${pkg}/share/applications/${name}.desktop";
+          getDesktop = pkg: final.getDesktop' pkg (prev.getName pkg);
         }
       );
 
