@@ -1,12 +1,11 @@
-{ config, pkgs, ... }:
+{ lib, pkgs, ... }:
+let
+  package = pkgs.firefox-devedition;
+in
 {
-
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-devedition;
-    nativeMessagingHosts =
-      with pkgs;
-      lib.optional (config.programs.plasma.enable) kdePackages.plasma-browser-integration;
+    inherit package;
     policies = {
       SearchEngines = {
         Add = [
@@ -22,9 +21,7 @@
     };
   };
 
-  xdg.autostart.entries = with pkgs; [
-    "${firefox-devedition}/share/applications/firefox-devedition.desktop"
-  ];
+  xdg.autostart.entries = map lib.getDesktop [ package ];
 
   impermanence.directories = [ ".mozilla" ];
 }

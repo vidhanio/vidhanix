@@ -31,6 +31,7 @@ in
 
   config = lib.mkIf (osConfig ? impermanence) {
     home.persistence."${osCfg.path}" = {
+      hideMounts = osConfig.environment.persistence."${osCfg.path}".hideMounts;
       inherit (cfg) directories files;
     };
   };

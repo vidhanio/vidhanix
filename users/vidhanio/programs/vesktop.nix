@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs.vesktop.enable = true;
 
-  xdg.autostart.entries = with pkgs; [ "${vesktop}/share/applications/vesktop.desktop" ];
+  xdg.autostart.entries = with pkgs; map lib.getDesktop [ vesktop ];
 
   impermanence.directories = [
     ".config/vesktop"
