@@ -1,8 +1,5 @@
 final: prev:
-let
-  inherit (prev) lib;
-in
-lib.packagesFromDirectoryRecursive {
+prev.lib.packagesFromDirectoryRecursive {
   inherit (prev) callPackage;
   directory = ../packages;
 }

@@ -1,13 +1,20 @@
-{ pkgs, ... }:
 {
+  lib,
+  osConfig,
+  pkgs,
+  ...
+}:
+lib.mkIf osConfig.services.desktopManager.gnome.enable or false {
   programs.gnome-shell = {
     enable = true;
     extensions =
       with pkgs.gnomeExtensions;
       map (package: { inherit package; }) [
         appindicator
-        dash-to-dock
+        blur-my-shell
+        dash-to-panel
         pip-on-top
+        rounded-window-corners-reborn
       ];
   };
 
@@ -22,16 +29,16 @@
       switch-windows = [ "<Alt>Tab" ];
       switch-windows-backward = [ "<Shift><Alt>Tab" ];
     };
+
     "org/gnome/shell" = {
       favorite-apps = [
         "org.gnome.Nautilus.desktop"
         "com.mitchellh.ghostty.desktop"
-        "firefox-devedition.desktop"
+        "firefox.desktop"
         "code-insiders.desktop"
         "vesktop.desktop"
         "cider-2.desktop"
       ];
-      welcome-dialog-last-shown-version = "48.4";
     };
 
     "org/gtk/gtk4/settings/file-chooser" = {
@@ -46,7 +53,6 @@
       show-directory-item-counts = "always";
       show-image-thumbnails = "always";
     };
-
   };
 
   impermanence.directories = [ ".local/share/keyrings/" ];
