@@ -1,11 +1,10 @@
 {
   lib,
-  inputs,
   pkgs,
   ...
 }:
 {
-  imports = with inputs; [ agenix.homeManagerModules.default ] ++ lib.readSubmodules ./.;
+  imports = lib.readSubmodules ./.;
 
   home = {
     file = {
@@ -17,13 +16,17 @@
     };
   };
 
+  age.secrets.wakatime = {
+    file = ../../secrets/wakatime.age;
+    path = ".wakatime.cfg";
+  };
+
   impermanence = {
     directories = [
       "Downloads"
       "Projects"
 
       ".cache/nix"
-      ".local/share/Trash"
     ];
   };
 

@@ -13,6 +13,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     disko = {
       url = "github:nix-community/disko";
@@ -30,102 +34,136 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vidhanix-fonts.url = "git+ssh://git@github.com/vidhanio/vidhanix-fonts";
+
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ghostty-shader-playground = {
+      url = "github:KroneCorylus/ghostty-shader-playground";
+      flake = false;
+    };
   };
 
   outputs =
     inputs@{
       self,
-      nixpkgs,
-      determinate,
-      darwin,
-      home-manager,
       agenix,
+      darwin,
+      determinate,
+      disko,
+      firefox-addons,
+      home-manager,
+      impermanence,
+      nixpkgs,
+      stylix,
+      vidhanix-fonts,
       ...
     }:
     let
-      lib = nixpkgs.lib.extend (
+      lib-overlay =
         final: prev:
-        with builtins;
         let
           readDirContents' =
+            with builtins;
             cond: path: map (name: path + "/${name}") (filter cond (attrNames (readDir path)));
         in
         {
-          readDirContents = readDirContents' (prev.const true);
+          readDirContents = readDirContents' (_: true);
           readSubmodules = readDirContents' (name: name != "default.nix");
 
           getDesktop' = pkg: name: "${pkg}/share/applications/${name}.desktop";
           getDesktop = pkg: final.getDesktop' pkg (prev.getName pkg);
-        }
-      );
+        };
 
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
+      lib = nixpkgs.lib.extend lib-overlay;
 
-      isDarwin = system: (lib.systems.elaborate system).isDarwin;
+      nixpkgsConfig = {
+        config.allowUnfree = true;
+        overlays = [
+          vidhanix-fonts.overlays.default
+          firefox-addons.overlays.default
+          (final: prev: {
+            lib = prev.lib.extend lib-overlay;
+          })
+        ]
+        ++ map import (lib.readDirContents ./overlays);
+      };
 
-      forEachSystem =
-        systems: f:
-        lib.genAttrs systems (
+      forAllSystems =
+        f:
+        lib.genAttrs lib.systems.flakeExposed (
           system:
           f {
             inherit system;
-            pkgs = (
-              import nixpkgs {
-                inherit system;
-
-                overlays = lib.optional (isDarwin system) (darwin.overlays.default);
-              }
-            );
+            pkgs = import nixpkgs (nixpkgsConfig // { system = system; });
           }
         );
 
       mkConfigurations =
-        { kind, mkSystem }:
+        {
+          mkSystem,
+          modules,
+        }:
         hosts:
         lib.genAttrs hosts (
           host:
           mkSystem {
-            modules = [
-              { networking.hostName = host; }
-              ./hosts/common.nix
-              ./hosts/${kind}/common.nix
-              ./hosts/${kind}/${host}
-            ];
-            inherit lib;
+            modules =
+              modules
+              ++ (lib.readDirContents ./modules)
+              ++ [
+                {
+                  networking.hostName = host;
+                  nixpkgs = nixpkgsConfig;
+                }
+                ./hosts/shared.nix
+                ./hosts/${host}
+              ];
             specialArgs = { inherit inputs; };
+            inherit lib;
           }
         );
 
+      isDarwin = system: builtins.elem system lib.platforms.darwin;
     in
     {
+      inherit lib;
+
       nixosConfigurations = mkConfigurations {
-        kind = "nixos";
         mkSystem = nixpkgs.lib.nixosSystem;
+        modules = [
+          determinate.nixosModules.default
+          home-manager.nixosModules.default
+          stylix.nixosModules.stylix
+          impermanence.nixosModules.default
+          disko.nixosModules.default
+        ];
       } [ "vidhan-pc" ];
 
       darwinConfigurations = mkConfigurations {
-        kind = "darwin";
         mkSystem = darwin.lib.darwinSystem;
+        modules = [
+          determinate.darwinModules.default
+          home-manager.darwinModules.default
+          stylix.darwinModules.stylix
+        ];
       } [ "vidhan-macbook" ];
 
-      devShells = forEachSystem systems (
+      devShells = forAllSystems (
         { system, pkgs }:
         let
-          rebuild =
-            let
-              cmd = if (isDarwin system) then "sudo darwin-rebuild" else "nixos-rebuild --sudo";
-            in
-            pkgs.writeShellApplication {
-              name = "rebuild";
-              text = ''
+          rebuild = pkgs.writeShellApplication {
+            name = "rebuild";
+            text =
+              let
+                cmd = if (isDarwin system) then "sudo darwin-rebuild" else "nixos-rebuild --sudo";
+              in
+              ''
+                git add .
                 ${cmd} --flake . "''${@:-switch}"
               '';
-            };
+          };
         in
         {
           default = pkgs.mkShell {
@@ -134,7 +172,7 @@
 
               git
 
-              nixfmt
+              nixfmt-rfc-style
               nil
 
               shfmt
@@ -146,6 +184,8 @@
         }
       );
 
-      formatter = forEachSystem systems ({ pkgs, ... }: pkgs.nixfmt-tree);
+      formatter = forAllSystems (
+        { pkgs, ... }: pkgs.nixfmt-tree.override { nixfmtPackage = pkgs.nixfmt-rfc-style; }
+      );
     };
 }
