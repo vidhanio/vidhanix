@@ -162,9 +162,8 @@
               ''
                 git add .
                 ${cmd} --flake . "''${@:-switch}"
-                # commit only if there are changes
                 if ! git diff --cached --quiet; then
-                  git commit -m "rebuild system"
+                  git commit -m "chore: rebuild system"
                 fi
               '';
           };
