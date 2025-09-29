@@ -2,6 +2,10 @@
 let
   cfg = config.programs.zoxide;
 in
-lib.mkIf cfg.enable {
-  impermanence.directories = [ ".local/share/zoxide" ];
+{
+  programs.zoxide.options = [
+    "--cmd"
+    "cd"
+  ];
+  impermanence.directories = lib.mkIf cfg.enable [ ".local/share/zoxide" ];
 }
