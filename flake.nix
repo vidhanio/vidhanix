@@ -136,6 +136,7 @@
           determinate.nixosModules.default
           home-manager.nixosModules.default
           stylix.nixosModules.stylix
+          agenix.nixosModules.default
           impermanence.nixosModules.default
           disko.nixosModules.default
         ];
@@ -147,6 +148,7 @@
           determinate.darwinModules.default
           home-manager.darwinModules.default
           stylix.darwinModules.stylix
+          agenix.nixosModules.default
         ];
       } [ "vidhan-macbook" ];
 
