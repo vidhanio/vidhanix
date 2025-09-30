@@ -1,21 +1,8 @@
 {
   osConfig,
-  lib,
-  pkgs,
   ...
 }:
 {
-  home.packages =
-    with pkgs;
-    [
-      moonlight-qt
-      pfetch
-      vacuumtube
-    ]
-    ++ lib.optionals (osConfig.nixpkgs.hostPlatform.isLinux) [
-      wl-clipboard
-    ];
-
   programs = {
     _1password.enable = true;
     bat.enable = true;

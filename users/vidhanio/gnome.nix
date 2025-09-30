@@ -4,9 +4,12 @@
   pkgs,
   ...
 }:
-lib.mkIf osConfig.services.desktopManager.gnome.enable or false {
+let
+  osCfg = osConfig.services.desktopManager.gnome;
+in
+lib.mkIf (osConfig ? services.desktopManager.gnome) {
   programs.gnome-shell = {
-    enable = true;
+    enable = osCfg.enable;
     extensions =
       with pkgs.gnomeExtensions;
       map (package: { inherit package; }) [
@@ -18,7 +21,7 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable or false {
       ];
   };
 
-  dconf.settings = {
+  dconf.settings = lib.mkIf osCfg.enable {
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
     };
@@ -41,6 +44,10 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable or false {
       ];
     };
 
+    "org/gnome/desktop/peripherals/mouse" = {
+      accel-profile = "flat";
+    };
+
     "org/gtk/gtk4/settings/file-chooser" = {
       show-hidden = true;
     };
@@ -55,5 +62,5 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable or false {
     };
   };
 
-  impermanence.directories = [ ".local/share/keyrings/" ];
+  impermanence.directories = [ ".local/share/keyrings" ];
 }
