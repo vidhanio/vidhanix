@@ -2,6 +2,7 @@
   lib,
   osConfig,
   config,
+  pkgs,
   ...
 }:
 let
@@ -21,7 +22,7 @@ in
       fish_vi_key_bindings
     '';
     functions = {
-      fish_greeting = "pfetch";
+      fish_greeting = "${lib.getExe pkgs.pfetch}";
       fish_prompt = "printf '%s%s%s > ' (set_color $fish_color_cwd) (prompt_pwd) (set_color normal)";
     };
   };

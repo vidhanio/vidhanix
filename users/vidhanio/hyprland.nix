@@ -4,12 +4,20 @@
   config,
   ...
 }:
-lib.mkIf osConfig.programs.hyprland.enable or false {
+let
+  osCfg = osConfig.programs.hyprland;
+in
+lib.mkIf (osConfig ? programs.hyprland) {
   xdg.configFile."uwsm/env".source =
-    "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+    lib.mkIf osCfg.withUWSM "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
 
   wayland.windowManager.hyprland = {
-    enable = true;
+    enable = osCfg.enable;
+    package = null;
+    portalPackage = null;
+
+    systemd.enable = lib.mkIf osCfg.withUWSM false;
+
     settings = {
       monitor = ", preferred, auto, auto";
 
