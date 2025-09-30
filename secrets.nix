@@ -15,5 +15,5 @@ let
   users = userKeys "vidhanio";
 in
 {
-  "wakatime.age".publicKeys = users;
+  "users/vidhanio/wakatime.age".publicKeys = users;
 }
