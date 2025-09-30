@@ -13,32 +13,36 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence/home-manager-v2";
 
-    agenix = {
-      url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vidhanix-fonts.url = "git+ssh://git@github.com/vidhanio/vidhanix-fonts";
-
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    determinate-nix = {
+      url = "github:DeterminateSystems/nix-src";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     ghostty-shader-playground = {
       url = "github:KroneCorylus/ghostty-shader-playground";
       flake = false;
@@ -51,6 +55,7 @@
       agenix,
       darwin,
       determinate,
+      determinate-nix,
       disko,
       firefox-addons,
       home-manager,
@@ -81,8 +86,10 @@
       nixpkgsConfig = {
         config.allowUnfree = true;
         overlays = [
+          determinate-nix.overlays.default
           vidhanix-fonts.overlays.default
           firefox-addons.overlays.default
+          agenix.overlays.default
           (final: prev: {
             lib = prev.lib.extend lib-overlay;
           })
@@ -180,8 +187,7 @@
               nixfmt-rfc-style
               nil
 
-              shfmt
-              shellcheck
+              pkgs.agenix
 
               rebuild
             ];
