@@ -12,6 +12,4 @@ lib.mkIf cfg.enable {
   };
 
   xdg.autostart.entries = map lib.getDesktop [ cfg.finalPackage.vesktop ];
-
-  impermanence.directories = [ ".config/vesktop" ];
 }
