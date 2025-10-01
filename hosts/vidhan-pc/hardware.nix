@@ -21,5 +21,8 @@
     };
   };
 
-  services.libinput.mouse.accelProfile = "flat";
+  services.libinput = {
+    enable = true;
+    mouse.accelProfile = "flat";
+  };
 }
