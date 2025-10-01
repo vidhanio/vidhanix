@@ -53,10 +53,6 @@ in
       show-directory-item-counts = "always";
       show-image-thumbnails = "always";
     };
-
-    "org/gnome/desktop/peripherals/mouse" = {
-      accel-profile = "flat";
-    };
   };
 
   impermanence.directories =
