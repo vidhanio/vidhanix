@@ -28,6 +28,10 @@
     };
     impermanence.url = "github:nix-community/impermanence/home-manager-v2";
 
+    determinate-nix = {
+      url = "github:DeterminateSystems/nix-src";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,10 +41,8 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    determinate-nix = {
-      url = "github:DeterminateSystems/nix-src";
-      inputs.nixpkgs.follows = "nixpkgs";
+    nixcord = {
+      url = "github:kaylorben/nixcord";
     };
 
     ghostty-shader-playground = {
