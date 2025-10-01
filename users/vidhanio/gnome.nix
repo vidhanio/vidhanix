@@ -22,10 +22,6 @@ lib.mkIf (osConfig ? services.desktopManager.gnome) {
   };
 
   dconf.settings = lib.mkIf osCfg.enable {
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
-    };
-
     "org/gnome/desktop/wm/keybindings" = {
       switch-applications = [ ];
       switch-applications-backward = [ ];
