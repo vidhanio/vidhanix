@@ -4,7 +4,7 @@
     ".ssh/id_ed25519"
   ];
 
-  home.activation.genSshPubkey =
+  home.activation.sshPubkey =
     let
       ssh-keygen = lib.getExe' pkgs.openssh "ssh-keygen";
     in
