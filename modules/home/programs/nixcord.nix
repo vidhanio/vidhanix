@@ -9,7 +9,6 @@ in
 lib.mkIf cfg.enable {
   programs.nixcord = {
     vesktop.enable = true;
-    dorion.enable = true;
   };
 
   xdg.autostart.entries = map lib.getDesktop [ cfg.finalPackage.vesktop ];
