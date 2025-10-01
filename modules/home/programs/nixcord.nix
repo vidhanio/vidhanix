@@ -8,6 +8,7 @@ let
 in
 lib.mkIf cfg.enable {
   programs.nixcord = {
+    discord.enable = false;
     vesktop.enable = true;
   };
 

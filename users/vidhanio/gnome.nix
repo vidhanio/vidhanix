@@ -6,10 +6,11 @@
 }:
 let
   osCfg = osConfig.services.desktopManager.gnome;
+  mkIfExists = lib.mkIf (osConfig ? services.desktopManager.gnome);
 in
-lib.mkIf (osConfig ? services.desktopManager.gnome) {
+{
   programs.gnome-shell = {
-    enable = osCfg.enable;
+    enable = mkIfExists osCfg.enable;
     extensions =
       with pkgs.gnomeExtensions;
       map (package: { inherit package; }) [
@@ -21,7 +22,7 @@ lib.mkIf (osConfig ? services.desktopManager.gnome) {
       ];
   };
 
-  dconf.settings = lib.mkIf osCfg.enable {
+  dconf.settings = mkIfExists {
     "org/gnome/desktop/wm/keybindings" = {
       switch-applications = [ ];
       switch-applications-backward = [ ];
@@ -40,10 +41,6 @@ lib.mkIf (osConfig ? services.desktopManager.gnome) {
       ];
     };
 
-    "org/gnome/desktop/peripherals/mouse" = {
-      accel-profile = "flat";
-    };
-
     "org/gtk/gtk4/settings/file-chooser" = {
       show-hidden = true;
     };
@@ -58,5 +55,7 @@ lib.mkIf (osConfig ? services.desktopManager.gnome) {
     };
   };
 
-  impermanence.directories = [ ".local/share/keyrings" ];
+  impermanence.directories =
+    lib.mkIf (builtins.elem pkgs.gnome-keyring osConfig.environment.systemPackages)
+      [ ".local/share/keyrings" ];
 }
