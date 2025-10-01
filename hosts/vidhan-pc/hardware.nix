@@ -20,9 +20,4 @@
       enableGraphical = true;
     };
   };
-
-  services.libinput = {
-    enable = true;
-    mouse.accelProfile = "flat";
-  };
 }

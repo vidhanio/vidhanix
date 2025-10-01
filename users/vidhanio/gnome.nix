@@ -5,12 +5,12 @@
   ...
 }:
 let
-  exists = osConfig ? services.desktopManager.gnome;
   osCfg = osConfig.services.desktopManager.gnome;
+  osDconfCfg = osConfig.programs.dconf;
 in
 {
   programs.gnome-shell = {
-    enable = lib.mkIf exists osCfg.enable;
+    enable = lib.mkIf (osConfig ? services.desktopManager.gnome) osCfg.enable;
     extensions =
       with pkgs.gnomeExtensions;
       map (package: { inherit package; }) [
@@ -22,7 +22,7 @@ in
       ];
   };
 
-  dconf.settings = lib.mkIf (exists && osCfg.enable) {
+  dconf.settings = lib.mkIf (osConfig ? programs.dconf && osDconfCfg.enable) {
     "org/gnome/desktop/wm/keybindings" = {
       switch-applications = [ ];
       switch-applications-backward = [ ];
@@ -52,6 +52,10 @@ in
       search-filter-time-type = "last_modified";
       show-directory-item-counts = "always";
       show-image-thumbnails = "always";
+    };
+
+    "org/gnome/desktop/peripherals/mouse" = {
+      accel-profile = "flat";
     };
   };
 
