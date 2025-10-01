@@ -5,6 +5,7 @@
     [
       impermanence.homeManagerModules.default
       agenix.homeManagerModules.default
+      nixcord.homeModules.default
       ../../users/shared.nix
     ]
     ++ lib.readSubmodules ./.;
