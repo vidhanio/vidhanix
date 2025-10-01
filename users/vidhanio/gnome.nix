@@ -5,12 +5,12 @@
   ...
 }:
 let
+  exists = osConfig ? services.desktopManager.gnome;
   osCfg = osConfig.services.desktopManager.gnome;
-  mkIfExists = lib.mkIf (osConfig ? services.desktopManager.gnome);
 in
 {
   programs.gnome-shell = {
-    enable = mkIfExists osCfg.enable;
+    enable = lib.mkIf exists osCfg.enable;
     extensions =
       with pkgs.gnomeExtensions;
       map (package: { inherit package; }) [
@@ -22,7 +22,7 @@ in
       ];
   };
 
-  dconf.settings = mkIfExists {
+  dconf.settings = lib.mkIf (exists && osCfg.enable) {
     "org/gnome/desktop/wm/keybindings" = {
       switch-applications = [ ];
       switch-applications-backward = [ ];

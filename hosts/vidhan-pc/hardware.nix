@@ -20,4 +20,6 @@
       enableGraphical = true;
     };
   };
+
+  services.libinput.mouse.accelProfile = "flat";
 }
