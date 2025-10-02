@@ -46,6 +46,7 @@
     neovim.enable = true;
     nixcord.enable = true;
     ripgrep.enable = true;
+    vacuumtube.enable = true;
     vscode.enable = true;
     zoxide.enable = true;
   };
@@ -55,8 +56,6 @@
   };
 
   home.packages = with pkgs; [
-    vacuumtube-bin
-
     # fonts
     berkeley-mono-variable
     pragmata-pro-variable
