@@ -18,18 +18,22 @@
   nss,
   pango,
   xorg,
+  fetchurl,
   ...
 }:
 stdenv.mkDerivation (finalAttrs: {
-  pname = "vacuumtube";
-  version = "1.3.15";
+  pname = "vacuumtube-bin";
+  version = "1.3.16";
 
   src = fetchTarball {
     url = "https://github.com/shy1132/VacuumTube/releases/download/v${finalAttrs.version}/VacuumTube-x64.tar.gz";
     sha256 = "sha256:0ycb1ylvsairvv96qz7a8pchawyxbn5mra5dx6cmz7dqi3k0dk79";
   };
 
-  iconSrc = ./icon.svg;
+  icon = fetchurl {
+    url = "https://raw.githubusercontent.com/shy1132/VacuumTube/refs/heads/main/assets/icon.svg";
+    sha256 = "";
+  };
 
   strictDeps = true;
 
@@ -83,7 +87,7 @@ stdenv.mkDerivation (finalAttrs: {
     chmod +x $out/opt/$pname/$pname
     ln -s $out/opt/$pname/$pname $out/bin/
 
-    cp $iconSrc $out/opt/$pname/icon.svg
+    cp $icon $out/opt/$pname/icon.svg
     mkdir -p $out/share/icons/hicolor/scalable/apps
     ln -s $out/opt/$pname/icon.svg $out/share/icons/hicolor/scalable/apps/vacuumtube.svg
 
