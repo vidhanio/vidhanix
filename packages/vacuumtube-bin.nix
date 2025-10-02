@@ -27,12 +27,12 @@ stdenv.mkDerivation (finalAttrs: {
 
   src = fetchTarball {
     url = "https://github.com/shy1132/VacuumTube/releases/download/v${finalAttrs.version}/VacuumTube-x64.tar.gz";
-    sha256 = "sha256:0ycb1ylvsairvv96qz7a8pchawyxbn5mra5dx6cmz7dqi3k0dk79";
+    sha256 = "sha256:02g3zmwc3i2ha3wqjpfjyzs0xxxdw1b0hj0q1wb9qd43mpcv8xq7";
   };
 
   icon = fetchurl {
     url = "https://raw.githubusercontent.com/shy1132/VacuumTube/refs/heads/main/assets/icon.svg";
-    sha256 = "";
+    sha256 = "sha256-3XrxLr43jYBNwLpS6sOJDfm3wtiOYWCR+E+VgFDZT3I=";
   };
 
   strictDeps = true;
@@ -80,16 +80,16 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/{opt/$pname,bin}
+    mkdir -p $out/{opt/vacuumtube,bin}
 
-    mv * $out/opt/$pname
+    mv * $out/opt/vacuumtube
 
-    chmod +x $out/opt/$pname/$pname
-    ln -s $out/opt/$pname/$pname $out/bin/
+    chmod +x $out/opt/vacuumtube/vacuumtube
+    ln -s $out/opt/vacuumtube/vacuumtube $out/bin/
 
-    cp $icon $out/opt/$pname/icon.svg
+    cp $icon $out/opt/vacuumtube/icon.svg
     mkdir -p $out/share/icons/hicolor/scalable/apps
-    ln -s $out/opt/$pname/icon.svg $out/share/icons/hicolor/scalable/apps/vacuumtube.svg
+    ln -s $out/opt/vacuumtube/icon.svg $out/share/icons/hicolor/scalable/apps/vacuumtube.svg
 
     runHook postInstall
   '';

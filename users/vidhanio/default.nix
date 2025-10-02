@@ -55,9 +55,11 @@
   };
 
   home.packages = with pkgs; [
+    vacuumtube-bin
+
+    # fonts
     berkeley-mono-variable
     pragmata-pro-variable
-    jetbrains-mono
   ];
 
   fonts.fontconfig.enable = true;
