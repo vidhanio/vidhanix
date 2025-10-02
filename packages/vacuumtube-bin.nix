@@ -64,16 +64,22 @@ stdenv.mkDerivation (finalAttrs: {
 
   desktopItems = [
     (makeDesktopItem {
-      name = "vacuumtube";
-      icon = "vacuumtube";
-      exec = "vacuumtube";
+      name = "VacuumTube";
       desktopName = "VacuumTube";
-      genericName = "Video Player";
+      exec = "vacuumtube %u";
+      terminal = false;
+      type = "Application";
+      icon = "vacuumtube";
+      startupWMClass = "VacuumTube";
+      genericName = "Youtube Leanback";
       categories = [
         "AudioVideo"
-        "Audio"
-        "Video"
       ];
+      keywords = [
+        "YouTube"
+        "YT"
+      ];
+      comment = "YouTube TV interface on the desktop";
     })
   ];
 
