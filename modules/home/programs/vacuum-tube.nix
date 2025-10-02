@@ -14,7 +14,7 @@ in
     config = lib.mkOption {
       type = jsonFormat.type;
       default = {
-        fullscreen = true;
+        fullscreen = false;
         adblock = true;
         dearrow = false;
         dislikes = true;
