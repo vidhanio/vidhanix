@@ -26,7 +26,7 @@ in
       let
         wakatime-cli = lib.getExe pkgs.wakatime;
       in
-      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      lib.hm.dag.entryAfter [ "reloadSystemd" "writeBoundary" ] ''
         run ${wakatime-cli} --config-write api_key="$(cat ${config.age.secrets.wakatime.path})"
       '';
   };
