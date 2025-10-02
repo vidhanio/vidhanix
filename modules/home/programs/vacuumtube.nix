@@ -13,7 +13,18 @@ in
     enable = lib.mkEnableOption "VacuumTube";
     config = lib.mkOption {
       type = jsonFormat.type;
-      default = { };
+      default = {
+        fullscreen = true;
+        adblock = true;
+        dearrow = false;
+        dislikes = true;
+        hide_shorts = false;
+        h264ify = false;
+        hardware_decoding = true;
+        low_memory_mode = false;
+        keep_on_top = false;
+        userstyles = false;
+      };
       description = "VaccumTube config written to {file}`$XDG_CONFIG_HOME/VacuumTube/config.json`.";
     };
   };
