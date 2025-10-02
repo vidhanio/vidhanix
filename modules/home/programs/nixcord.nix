@@ -18,6 +18,7 @@ lib.mkMerge [
           arRPC = true;
           hardwareAcceleration = true;
           hardwareVideoAcceleration = true;
+          customTitleBar = true;
         };
         state = {
           firstLaunch = false;
