@@ -5,11 +5,11 @@
   ...
 }:
 let
-  cfg = config.programs.vacuumtube;
+  cfg = config.programs.vacuum-tube;
   jsonFormat = pkgs.formats.json { };
 in
 {
-  options.programs.vacuumtube = {
+  options.programs.vacuum-tube = {
     enable = lib.mkEnableOption "VacuumTube";
     config = lib.mkOption {
       type = jsonFormat.type;
@@ -30,7 +30,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ pkgs.vacuumtube-bin ];
+    home.packages = [ pkgs.vacuum-tube ];
 
     xdg.configFile."VacuumTube/config.json" = lib.mkIf (cfg.config != { }) {
       source = jsonFormat.generate "vacuumtube-config" cfg.config;
