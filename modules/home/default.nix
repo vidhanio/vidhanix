@@ -13,7 +13,6 @@
       lib.genAttrs' (builtins.filter isNormalUser (builtins.attrValues config.users.users)) (
         user: lib.nameValuePair user.name ../../users/${user.name}
       );
-    useGlobalPkgs = true;
     sharedModules =
       with inputs;
       [
@@ -23,7 +22,7 @@
         ../../users/shared.nix
       ]
       ++ lib.readSubmodules ./.;
-    backupFileExtension = "bak";
+    useGlobalPkgs = true;
     extraSpecialArgs = { inherit inputs; };
   };
 }
