@@ -27,8 +27,7 @@ in
         wakatime-cli = lib.getExe pkgs.wakatime;
       in
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        export XDG_RUNTIME_DIR=''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
-        run ${wakatime-cli} --config-write api_key="$(cat ${config.age.secrets.wakatime.path})"
+        run ${wakatime-cli} --config-write api_key_vault_cmd="cat ${config.age.secrets.wakatime.path}"
       '';
   };
 }
