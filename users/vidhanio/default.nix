@@ -46,7 +46,7 @@
     neovim.enable = true;
     nixcord.enable = true;
     ripgrep.enable = true;
-    vacuumtube.enable = true;
+    vacuum-tube.enable = true;
     vscode.enable = true;
     zoxide.enable = true;
   };
