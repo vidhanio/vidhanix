@@ -182,10 +182,6 @@
         {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
-              direnv
-
-              git
-
               nixfmt-rfc-style
               nil
 
