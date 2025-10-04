@@ -14,6 +14,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    systems.url = "github:nix-systems/default";
+
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,7 +38,11 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    vidhanix-fonts.url = "git+ssh://git@github.com/vidhanio/vidhanix-fonts";
+    vidhanix-fonts = {
+      url = "git+ssh://git@github.com/vidhanio/vidhanix-fonts";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
+    };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -64,6 +70,7 @@
       impermanence,
       nixpkgs,
       stylix,
+      systems,
       vidhanix-fonts,
       ...
     }:
@@ -101,7 +108,7 @@
 
       forAllSystems =
         f:
-        lib.genAttrs lib.systems.flakeExposed (
+        lib.genAttrs (import systems) (
           system:
           f {
             inherit system;
