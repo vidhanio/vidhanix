@@ -151,7 +151,7 @@
         modules = [
           determinate.nixosModules.default
           home-manager.nixosModules.default
-          stylix.nixosModules.stylix
+          stylix.nixosModules.default
           agenix.nixosModules.default
           impermanence.nixosModules.default
           disko.nixosModules.default
@@ -163,7 +163,7 @@
         modules = [
           determinate.darwinModules.default
           home-manager.darwinModules.default
-          stylix.darwinModules.stylix
+          stylix.darwinModules.default
           agenix.nixosModules.default
         ];
       } [ "vidhan-macbook" ];
