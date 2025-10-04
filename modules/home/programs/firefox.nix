@@ -104,7 +104,7 @@ lib.mkIf cfg.enable {
 
   xdg.autostart.entries = map lib.getDesktop [ cfg.package ];
 
-  impermanence.directories = [ ".mozilla/firefox/default/" ];
+  impermanence.directories = [ ".mozilla/firefox/default" ];
 
   stylix.targets.firefox = {
     colorTheme.enable = true;

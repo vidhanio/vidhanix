@@ -248,11 +248,11 @@
       },
       "locked": {
         "dir": "pkgs/firefox-addons",
-        "lastModified": 1759464207,
-        "narHash": "sha256-wy15H4AbfQpTWes4aoFaIxkvK6e9p0lyvypOsTMt5f0=",
+        "lastModified": 1759550619,
+        "narHash": "sha256-E5u2A4sEvlyL2L6vam93fXhT1z3vke+7nRHEVqm+j8w=",
         "owner": "rycee",
         "repo": "nur-expressions",
-        "rev": "df243385cb4a2263b4888687961ec1f2b5f641f3",
+        "rev": "77baff367f8f79fc3227a956b8f7b173d9b3e08b",
         "type": "gitlab"
       },
       "original": {
@@ -531,11 +531,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1759536080,
-        "narHash": "sha256-0aXlKPxm2M+F5oywX2TTbY0e6h+tQ+6OYyx7UZn3A4A=",
+        "lastModified": 1759573136,
+        "narHash": "sha256-ILSPD0Dm8p0w0fCVzOx98ZH8yFDrR75GmwmH3fS2VnE=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "edafd6da1936426708f1be0b1a4288007f16639a",
+        "rev": "5f06ceafc6c9b773a776b9195c3f47bbe1defa43",
         "type": "github"
       },
       "original": {
@@ -613,11 +613,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1759540522,
-        "narHash": "sha256-OMyTFDx188dyJqGQwf7Vsr9fcs3+5sQuRi8GFcJxZW8=",
+        "lastModified": 1759566052,
+        "narHash": "sha256-Yx/feacPuXfKVldhXvVgmGLN7/u0PYpdPcDOykSbo68=",
         "owner": "kaylorben",
         "repo": "nixcord",
-        "rev": "b01dfd469084686f8a85d336cdf3855515c5aa83",
+        "rev": "0a5f5936fa40650e3869c705ddbff6e1a72c89db",
         "type": "github"
       },
       "original": {
@@ -852,11 +852,11 @@
         "tinted-zed": "tinted-zed"
       },
       "locked": {
-        "lastModified": 1759404594,
-        "narHash": "sha256-k9hd15rLqG7x3OCUPrcQtpleDlOyQjy16ZEseruypNQ=",
+        "lastModified": 1759595578,
+        "narHash": "sha256-cYPdsYgZFyvpMbRg9Nbtt3JtcdjE80gXfe/65T1ELco=",
         "owner": "nix-community",
         "repo": "stylix",
-        "rev": "3f70c5855572004f9c630ed4a92aa186755361be",
+        "rev": "503d989626aa41174b3a51f18528547da1afe572",
         "type": "github"
       },
       "original": {
@@ -1001,11 +1001,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1759545717,
-        "narHash": "sha256-bhaMjX9yXkiypHI+lFuJeE3Ii+ZiEg0hiG3DoVG7r30=",
+        "lastModified": 1759545961,
+        "narHash": "sha256-Dr8ejFgpWFq3fg5WEq9gPgwBCZtz8dYK2aS2i2umVZg=",
         "ref": "refs/heads/main",
-        "rev": "a59effdda8ffaafc59f7ad4eafa463e3f96d009e",
-        "revCount": 5,
+        "rev": "0804f7a3c5cd4f8d0ebf7832d03e03c0faa90bd9",
+        "revCount": 6,
         "type": "git",
         "url": "ssh://git@github.com/vidhanio/vidhanix-fonts"
       },
