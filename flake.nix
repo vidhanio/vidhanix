@@ -188,7 +188,5 @@
       formatter = forAllSystems (
         { pkgs, ... }: pkgs.nixfmt-tree.override { nixfmtPackage = pkgs.nixfmt-rfc-style; }
       );
-
-      packages = forAllSystems ({ pkgs, ... }: pkgs);
     };
 }
