@@ -45,6 +45,8 @@ lib.mkIf (osConfig ? programs.hyprland) {
         ", XF86AudioNext, exec, playerctl next"
       ];
 
+      input.accel-profile = "flat";
+
       decoration = {
         rounding = 10;
       };
