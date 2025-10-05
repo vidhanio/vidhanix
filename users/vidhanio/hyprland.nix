@@ -34,7 +34,7 @@ lib.mkIf (osConfig ? programs.hyprland) {
         "$mainMod, mouse:273, resizewindow"
       ];
 
-      accel_profile = "flat";
+      input.accel_profile = "flat";
 
       decoration = {
         rounding = 10;
