@@ -44,7 +44,10 @@
       userEmail = "me@vidhan.io";
     };
     neovim.enable = true;
-    nixcord.enable = true;
+    nixcord = {
+      enable = true;
+      vesktop.enable = true;
+    };
     ripgrep.enable = true;
     vacuum-tube.enable = true;
     vscode.enable = true;
