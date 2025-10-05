@@ -58,7 +58,7 @@
   };
 
   outputs =
-    inputs@{
+    {
       self,
       agenix,
       darwin,
@@ -73,7 +73,7 @@
       systems,
       vidhanix-fonts,
       ...
-    }:
+    }@inputs:
     let
       lib = nixpkgs.lib.extend (final: prev: import ./lib prev);
 
@@ -91,7 +91,7 @@
         ++ map import (lib.readDirContents ./overlays);
       };
 
-      forAllSystems =
+      forEachSystem =
         f:
         lib.genAttrs (import systems) (
           system:
@@ -153,7 +153,7 @@
         ];
       } [ "vidhan-macbook" ];
 
-      devShells = forAllSystems (
+      devShells = forEachSystem (
         { system, pkgs }:
         let
           rebuild = pkgs.writeShellApplication {
@@ -173,7 +173,7 @@
         in
         {
           default = pkgs.mkShell {
-            buildInputs = with pkgs; [
+            packages = with pkgs; [
               nixfmt-rfc-style
               nil
 
@@ -185,7 +185,7 @@
         }
       );
 
-      formatter = forAllSystems (
+      formatter = forEachSystem (
         { pkgs, ... }: pkgs.nixfmt-tree.override { nixfmtPackage = pkgs.nixfmt-rfc-style; }
       );
     };
