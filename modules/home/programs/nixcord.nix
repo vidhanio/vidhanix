@@ -9,27 +9,15 @@ in
 lib.mkMerge [
   {
     programs.nixcord = {
-      discord.enable = false;
-      vesktop = {
-        enable = true;
-        settings = {
-          discordBranch = "canary";
-          minimizeToTray = true;
-          arRPC = true;
-          hardwareAcceleration = true;
-          hardwareVideoAcceleration = true;
-          customTitleBar = true;
-        };
-        state = {
-          firstLaunch = false;
-          maximized = true;
-        };
+      discord.settings = {
+        enableHardwareAcceleration = true;
+        isMaximized = true;
       };
     };
   }
   (lib.mkIf cfg.enable {
-    xdg.autostart.entries = map lib.getDesktop [ cfg.finalPackage.vesktop ];
+    xdg.autostart.entries = map lib.getDesktop [ cfg.finalPackage.discord ];
 
-    impermanence.directories = [ ".config/vesktop/sessionData" ];
+    # impermanence.directories = map [ ".config/discord/sessionData" ];
   })
 ]
