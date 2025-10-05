@@ -75,22 +75,7 @@
       ...
     }:
     let
-      lib-overlay =
-        final: prev:
-        let
-          readDirContents' =
-            with builtins;
-            cond: path: map (name: path + "/${name}") (filter cond (attrNames (readDir path)));
-        in
-        {
-          readDirContents = readDirContents' (_: true);
-          readSubmodules = readDirContents' (name: name != "default.nix");
-
-          getDesktop' = pkg: name: "${pkg}/share/applications/${name}.desktop";
-          getDesktop = pkg: final.getDesktop' pkg (prev.getName pkg);
-        };
-
-      lib = nixpkgs.lib.extend lib-overlay;
+      lib = nixpkgs.lib.extend (final: prev: import ./lib prev);
 
       nixpkgsConfig = {
         config.allowUnfree = true;
@@ -100,7 +85,7 @@
           firefox-addons.overlays.default
           agenix.overlays.default
           (final: prev: {
-            lib = prev.lib.extend lib-overlay;
+            lib = prev.lib.extend (final: prev: import ./lib prev);
           })
         ]
         ++ map import (lib.readDirContents ./overlays);
@@ -144,7 +129,7 @@
       isDarwin = system: builtins.elem system lib.platforms.darwin;
     in
     {
-      inherit lib;
+      lib = import ./lib nixpkgs.lib;
 
       nixosConfigurations = mkConfigurations {
         mkSystem = nixpkgs.lib.nixosSystem;
@@ -164,7 +149,7 @@
           determinate.darwinModules.default
           home-manager.darwinModules.default
           stylix.darwinModules.default
-          agenix.nixosModules.default
+          agenix.darwinModules.default
         ];
       } [ "vidhan-macbook" ];
 
