@@ -808,6 +808,7 @@
         "rust-overlay": "rust-overlay",
         "stylix": "stylix",
         "systems": "systems_3",
+        "vesktop": "vesktop",
         "vidhanix-fonts": "vidhanix-fonts"
       }
     },
@@ -988,6 +989,22 @@
       "original": {
         "owner": "tinted-theming",
         "repo": "base16-zed",
+        "type": "github"
+      }
+    },
+    "vesktop": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1759790265,
+        "narHash": "sha256-8EVx4q7jNOpWAf1djOqHrG2GlQf7bq7vYUjWaihUfDw=",
+        "owner": "Vencord",
+        "repo": "Vesktop",
+        "rev": "8cc34e217c70700c5d24451fa89cbe53e92b7f0a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Vencord",
+        "repo": "Vesktop",
         "type": "github"
       }
     },

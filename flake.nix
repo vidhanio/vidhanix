@@ -51,6 +51,10 @@
       url = "github:kaylorben/nixcord";
     };
 
+    vesktop = {
+      url = "github:Vencord/Vesktop";
+      flake = false;
+    };
     ghostty-shader-playground = {
       url = "github:KroneCorylus/ghostty-shader-playground";
       flake = false;
