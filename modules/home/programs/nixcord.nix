@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -16,12 +17,7 @@ lib.mkMerge [
           finalAttrs: previousAttrs: {
             version = "latest";
 
-            src = pkgs.fetchFromGitHub {
-              owner = "Vencord";
-              repo = "Vesktop";
-              rev = "refs/heads/main";
-              hash = "sha256-D9ZoSIg0+W77FWTDMP0K0ylUTDnAPgX56U6+7IWpfJo=";
-            };
+            src = inputs.vesktop;
 
             pnpmDeps = pkgs.pnpm_10.fetchDeps {
               inherit (finalAttrs)
@@ -31,7 +27,7 @@ lib.mkMerge [
                 patches
                 ;
               fetcherVersion = 2;
-              hash = "sha256-MKvdpCUsUp0d/SFGyXp93Hj7D1ShE/nsrOa6yxT6EzY=";
+              hash = "sha256-Vn+Imarp1OTPfe/PoMgFHU5eWnye5Oa+qoGZaTxOUmU=";
             };
           }
         );
