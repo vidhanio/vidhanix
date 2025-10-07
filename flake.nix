@@ -81,7 +81,7 @@
     let
       lib = nixpkgs.lib.extend (final: prev: import ./lib prev);
 
-      nixpkgsConfig = {
+      nixpkgsCfg = {
         config.allowUnfree = true;
         overlays = [
           determinate-nix.overlays.default
@@ -101,7 +101,7 @@
           system:
           f {
             inherit system;
-            pkgs = import nixpkgs (nixpkgsConfig // { system = system; });
+            pkgs = import nixpkgs (nixpkgsCfg // { system = system; });
           }
         );
 
@@ -120,7 +120,7 @@
               ++ [
                 {
                   networking.hostName = host;
-                  nixpkgs = nixpkgsConfig;
+                  nixpkgs = nixpkgsCfg;
                 }
                 ./hosts/shared.nix
                 ./hosts/${host}
