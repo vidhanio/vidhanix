@@ -49,6 +49,6 @@ lib.mkMerge [
   (lib.mkIf (cfg.enable && cfg.vesktop.enable) {
     xdg.autostart.entries = map lib.getDesktop [ cfg.finalPackage.vesktop ];
 
-    impermanence.directories = [ ".config/vesktop/sessionData" ];
+    impermanence.directories = [ ".config/vesktop/sessionData/Local Storage" ];
   })
 ]
