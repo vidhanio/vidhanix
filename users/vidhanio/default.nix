@@ -46,6 +46,7 @@
     neovim.enable = true;
     nixcord = {
       enable = true;
+      discord.enable = true;
       vesktop.enable = true;
     };
     ripgrep.enable = true;
@@ -71,5 +72,5 @@
 
   xdg.autostart.enable = lib.mkIf osConfig.nixpkgs.hostPlatform.isLinux true;
 
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 }

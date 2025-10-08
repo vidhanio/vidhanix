@@ -11,7 +11,10 @@ in
 lib.mkMerge [
   {
     programs.nixcord = {
-      discord.enable = lib.mkDefault false;
+      discord = {
+        enable = lib.mkDefault false;
+        branch = "canary";
+      };
       vesktop = {
         package = pkgs.vesktop.overrideAttrs (
           finalAttrs: previousAttrs: {
