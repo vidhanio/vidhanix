@@ -25,7 +25,10 @@ in
       init.defaultBranch = "main";
       submodule.recurse = true;
       push.autoSetupRemote = true;
+      pull.rebase = true;
       user.signingkey = "~/.ssh/id_ed25519.pub";
+
+      url."git@github.com:".insteadOf = "https://github.com/";
     };
     lfs.enable = true;
   };
