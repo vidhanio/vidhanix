@@ -23,10 +23,12 @@ in
     };
     extraConfig = {
       init.defaultBranch = "main";
-      submodule.recurse = true;
+      user.signingkey = "~/.ssh/id_ed25519.pub";
+
       push.autoSetupRemote = true;
       pull.rebase = true;
-      user.signingkey = "~/.ssh/id_ed25519.pub";
+      merge.ff = "only";
+      submodule.recurse = true;
 
       url."git@github.com:".insteadOf = "https://github.com/";
     };
