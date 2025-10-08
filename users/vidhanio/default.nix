@@ -46,9 +46,7 @@
     neovim.enable = true;
     nixcord = {
       enable = true;
-      discord.enable = true;
       vesktop.enable = true;
-      dorion.enable = true;
     };
     ripgrep.enable = true;
     vacuum-tube.enable = true;
