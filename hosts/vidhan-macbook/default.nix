@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 let
   username = "vidhanio";
 in
@@ -6,14 +7,20 @@ in
 
   users = {
     users.${username} = {
+      uid = 501;
+
       description = "Vidhan Bhatt";
 
       home = "/Users/${username}";
       createHome = true;
-      uid = 501;
+      shell = pkgs.fish;
     };
 
     knownUsers = [ username ];
+  };
+
+  programs = {
+    fish.enable = true;
   };
 
   system.stateVersion = 6;

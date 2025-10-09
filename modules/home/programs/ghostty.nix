@@ -1,9 +1,13 @@
 {
   inputs,
+  lib,
+  osConfig,
+  pkgs,
   ...
 }:
 {
   programs.ghostty = {
+    package = lib.mkIf (osConfig.nixpkgs.hostPlatform.isDarwin) pkgs.ghostty-bin;
     settings =
       let
         padding = 10;

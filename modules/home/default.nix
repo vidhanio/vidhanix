@@ -15,13 +15,13 @@
       );
     sharedModules =
       with inputs;
-      [
+      lib.readSubmodules ./.
+      ++ [
         impermanence.homeManagerModules.default
         agenix.homeManagerModules.default
         nixcord.homeModules.default
         ../../users/shared.nix
-      ]
-      ++ lib.readSubmodules ./.;
+      ];
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit inputs; };
   };

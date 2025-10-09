@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  osConfig,
   ...
 }:
 let
@@ -10,7 +11,7 @@ in
 {
   options.programs.cider-2.enable = lib.mkEnableOption "Cider";
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (osConfig.nixpkgs.hostPlatform.isLinux && cfg.enable) {
     home.packages = [ pkgs.cider-2 ];
 
     impermanence.directories = [ ".config/sh.cider.genten" ];

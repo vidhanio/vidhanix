@@ -1,14 +1,14 @@
 {
   lib,
   pkgs,
-  osConfig,
   config,
+  osClass,
   ...
 }:
 {
   targets.darwin.linkApps.enable = false;
 
-  home.activation.linkApps = lib.mkIf osConfig.nixpkgs.hostPlatform.isDarwin (
+  home.activation.linkApps = lib.mkIf (osClass == "darwin") (
     lib.hm.dag.entryAfter [ "installPackages" ] (
       let
         applications = pkgs.buildEnv {

@@ -76,6 +76,7 @@
       stylix,
       systems,
       vidhanix-fonts,
+      nixcord,
       ...
     }@inputs:
     let
@@ -107,55 +108,87 @@
 
       mkConfigurations =
         {
+          class,
           mkSystem,
-          modules,
+          extras ? [ ],
         }:
         hosts:
+        let
+          moduleInputs = [
+            determinate
+            home-manager
+            stylix
+            agenix
+            impermanence
+            disko
+          ];
+
+          modules = map (input: input."${class}Modules".default) (
+            builtins.filter (input: input ? "${class}Modules") moduleInputs
+          );
+
+          homeModules = [
+            # impermanence.homeManagerModules.default <- added conditionally in modules/shared/impermanence.nix
+            agenix.homeManagerModules.default
+            nixcord.homeModules.default
+          ];
+        in
         lib.genAttrs hosts (
           host:
           mkSystem {
-            modules =
-              modules
-              ++ (lib.readDirContents ./modules)
-              ++ [
-                {
-                  networking.hostName = host;
-                  nixpkgs = nixpkgsCfg;
-                }
-                ./hosts/shared.nix
-                ./hosts/${host}
-              ];
             specialArgs = { inherit inputs; };
             inherit lib;
+
+            modules = [
+              ./hosts/${host}
+            ]
+            ++ modules
+            ++ lib.readDirContents ./modules/shared
+            ++ lib.readDirContents ./modules/${class}
+            ++ [
+              { nixpkgs = nixpkgsCfg; }
+              { networking.hostName = host; }
+              (
+                { config, ... }:
+                {
+                  home-manager = {
+                    users =
+                      let
+                        isNormalUser = user: (user.isNormalUser or true) && !(lib.hasPrefix "_" user.name);
+                      in
+                      lib.genAttrs' (builtins.filter isNormalUser (builtins.attrValues config.users.users)) (
+                        user: lib.nameValuePair user.name ./users/${user.name}
+                      );
+                    sharedModules = homeModules ++ lib.readSubmodules ./modules/home;
+                    useGlobalPkgs = true;
+                    extraSpecialArgs = { inherit inputs; };
+                  };
+                }
+              )
+            ];
           }
         );
+
+      mkNixosConfigurations = mkConfigurations {
+        class = "nixos";
+        mkSystem = nixpkgs.lib.nixosSystem;
+        extras = [
+          impermanence
+          disko
+        ];
+      };
+      mkDarwinConfigurations = mkConfigurations {
+        class = "darwin";
+        mkSystem = darwin.lib.darwinSystem;
+      };
 
       isDarwin = system: builtins.elem system lib.platforms.darwin;
     in
     {
       lib = import ./lib nixpkgs.lib;
 
-      nixosConfigurations = mkConfigurations {
-        mkSystem = nixpkgs.lib.nixosSystem;
-        modules = [
-          determinate.nixosModules.default
-          home-manager.nixosModules.default
-          stylix.nixosModules.default
-          agenix.nixosModules.default
-          impermanence.nixosModules.default
-          disko.nixosModules.default
-        ];
-      } [ "vidhan-pc" ];
-
-      darwinConfigurations = mkConfigurations {
-        mkSystem = darwin.lib.darwinSystem;
-        modules = [
-          determinate.darwinModules.default
-          home-manager.darwinModules.default
-          stylix.darwinModules.default
-          agenix.darwinModules.default
-        ];
-      } [ "vidhan-macbook" ];
+      nixosConfigurations = mkNixosConfigurations [ "vidhan-pc" ];
+      darwinConfigurations = mkDarwinConfigurations [ "vidhan-macbook" ];
 
       devShells = forEachSystem (
         { system, pkgs }:
