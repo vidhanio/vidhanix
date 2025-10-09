@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   ...
 }:
 {
@@ -27,7 +28,12 @@
         "networkmanager"
         "wheel"
       ];
+      shell = pkgs.fish;
     };
+  };
+
+  programs = {
+    fish.enable = true;
   };
 
   impermanence = {

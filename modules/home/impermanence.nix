@@ -26,7 +26,7 @@ in
       };
     };
 
-  config = lib.mkIf osCfg.enable {
+  config = lib.optionalAttrs osCfg.enable {
     home.persistence."${osCfg.path}" = {
       hideMounts = osConfig.environment.persistence."${osCfg.path}".hideMounts;
       inherit (cfg) directories files;

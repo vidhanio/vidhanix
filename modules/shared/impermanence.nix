@@ -1,6 +1,8 @@
 {
+  _class,
   config,
   lib,
+  inputs,
   ...
 }:
 let
@@ -29,16 +31,20 @@ in
       };
     };
 
-  config = lib.mkIf cfg.enable {
-    environment.persistence.${cfg.path} = {
-      hideMounts = true;
-      inherit (cfg) directories files;
-    };
+  config = lib.mkIf cfg.enable (
+    lib.optionalAttrs (_class == "nixos") {
+      environment.persistence.${cfg.path} = {
+        hideMounts = true;
+        inherit (cfg) directories files;
+      };
 
-    fileSystems.${cfg.path}.neededForBoot = true;
+      fileSystems.${cfg.path}.neededForBoot = true;
 
-    security.sudo.extraConfig = ''
-      Defaults lecture = never
-    '';
-  };
+      security.sudo.extraConfig = ''
+        Defaults lecture = never
+      '';
+
+      home-manager.sharedModules = with inputs; [ impermanence.homeManagerModules.default ];
+    }
+  );
 }

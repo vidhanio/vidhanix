@@ -33,7 +33,6 @@
     direnv.enable = true;
     eza.enable = true;
     firefox.enable = true;
-    fish.enable = true;
     gh = {
       enable = true;
       username = "vidhanio";
