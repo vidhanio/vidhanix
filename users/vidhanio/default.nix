@@ -1,6 +1,7 @@
 {
   pkgs,
   osConfig,
+  config,
   lib,
   ...
 }:
@@ -51,6 +52,10 @@
     vacuum-tube.enable = true;
     vscode.enable = true;
     zoxide.enable = true;
+    nh = {
+      enable = true;
+      flake = "${config.home.homeDirectory}/Projects/vidhanix";
+    };
   };
 
   services = {
