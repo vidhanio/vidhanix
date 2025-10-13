@@ -1,4 +1,4 @@
-{ _class, lib, ... }:
-lib.optionalAttrs (_class == "darwin") {
+{
+  # determinate nix
   nix.enable = false;
 }

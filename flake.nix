@@ -64,19 +64,8 @@
   outputs =
     {
       self,
-      agenix,
-      darwin,
-      determinate,
-      determinate-nix,
-      disko,
-      firefox-addons,
-      home-manager,
-      impermanence,
       nixpkgs,
-      stylix,
-      systems,
-      vidhanix-fonts,
-      nixcord,
+      darwin,
       ...
     }@inputs:
     let
@@ -84,21 +73,20 @@
 
       nixpkgsCfg = {
         config.allowUnfree = true;
-        overlays = [
-          determinate-nix.overlays.default
-          vidhanix-fonts.overlays.default
-          firefox-addons.overlays.default
-          agenix.overlays.default
-          (final: prev: {
-            lib = prev.lib.extend (final: prev: import ./lib prev);
-          })
-        ]
-        ++ map import (lib.readDirContents ./overlays);
+        overlays =
+          with inputs;
+          [
+            determinate-nix.overlays.default
+            vidhanix-fonts.overlays.default
+            firefox-addons.overlays.default
+            agenix.overlays.default
+          ]
+          ++ builtins.attrValues self.overlays;
       };
 
       forEachSystem =
         f:
-        lib.genAttrs (import systems) (
+        lib.genAttrs (import inputs.systems) (
           system:
           f {
             inherit system;
@@ -114,7 +102,7 @@
         }:
         hosts:
         let
-          moduleInputs = [
+          moduleInputs = with inputs; [
             determinate
             home-manager
             stylix
@@ -123,11 +111,11 @@
             disko
           ];
 
-          modules = map (input: input."${class}Modules".default) (
+          osModules = map (input: input."${class}Modules".default) (
             builtins.filter (input: input ? "${class}Modules") moduleInputs
           );
 
-          homeModules = [
+          homeModules = with inputs; [
             # impermanence.homeManagerModules.default <- added conditionally in modules/shared/impermanence.nix
             agenix.homeManagerModules.default
             nixcord.homeModules.default
@@ -141,24 +129,27 @@
 
             modules = [
               ./hosts/${host}
+              { networking.hostName = host; }
             ]
-            ++ modules
+            ++ osModules
             ++ lib.readDirContents ./modules/shared
             ++ lib.readDirContents ./modules/${class}
             ++ [
               { nixpkgs = nixpkgsCfg; }
-              { networking.hostName = host; }
               (
                 { config, ... }:
                 {
                   home-manager = {
                     users =
                       let
-                        isNormalUser = user: (user.isNormalUser or true) && !(lib.hasPrefix "_" user.name);
+                        normalUsers =
+                          let
+                            users = builtins.attrValues config.users.users;
+                            isNormalUser = user: (user.isNormalUser or true) && !(lib.hasPrefix "_" user.name);
+                          in
+                          builtins.filter isNormalUser users;
                       in
-                      lib.genAttrs' (builtins.filter isNormalUser (builtins.attrValues config.users.users)) (
-                        user: lib.nameValuePair user.name ./users/${user.name}
-                      );
+                      lib.genAttrs' normalUsers (user: lib.nameValuePair user.name ./users/${user.name});
                     sharedModules = homeModules ++ lib.readSubmodules ./modules/home;
                     useGlobalPkgs = true;
                     extraSpecialArgs = { inherit inputs; };
@@ -172,7 +163,7 @@
       mkNixosConfigurations = mkConfigurations {
         class = "nixos";
         mkSystem = nixpkgs.lib.nixosSystem;
-        extras = [
+        extras = with inputs; [
           impermanence
           disko
         ];
@@ -181,8 +172,6 @@
         class = "darwin";
         mkSystem = darwin.lib.darwinSystem;
       };
-
-      isDarwin = system: builtins.elem system lib.platforms.darwin;
     in
     {
       lib = import ./lib nixpkgs.lib;
@@ -190,22 +179,49 @@
       nixosConfigurations = mkNixosConfigurations [ "vidhan-pc" ];
       darwinConfigurations = mkDarwinConfigurations [ "vidhan-macbook" ];
 
+      overlays = lib.importDirAttrs ./overlays;
+
+      packages = forEachSystem (
+        { pkgs, ... }:
+        pkgs.lib.packagesFromDirectoryRecursive {
+          inherit (pkgs) callPackage;
+          directory = ./packages;
+        }
+      );
+
       devShells = forEachSystem (
         { system, pkgs }:
         let
           rebuild = pkgs.writeShellApplication {
             name = "rebuild";
-            text =
-              let
-                cmd = if (isDarwin system) then "sudo darwin-rebuild" else "nixos-rebuild --sudo";
-              in
-              ''
-                git add .
-                ${cmd} --flake . "''${@:-switch}"
-                if ! git diff --cached --quiet; then
-                  git commit -m "chore: rebuild system"
-                fi
-              '';
+
+            runtimeInputs = with pkgs; [
+              git
+              nix
+              nh
+              jq
+            ];
+
+            text = ''
+              # add all changes to git
+              git add .
+
+              # run command
+              # we will use `nix eval --json .#nixosConfigurations/darwinConfigurations --apply builtins.attrNames` | jq to find whether this uname -n is a darwin or nixos system
+              is_class() {
+                local class=$1
+                nix eval --json .#"$class"Configurations --apply builtins.attrNames | jq --arg hostname "$(uname -n)" -e 'any(. == $hostname)'
+              }
+
+              if is_class darwin; then
+                nh darwin "''${@:-switch}"
+              elif is_class nixos; then
+                nh os "''${@:-switch}"
+              else
+                echo "unknown host: $(uname -n)"
+                exit 1
+              fi
+            '';
           };
         in
         {
@@ -214,7 +230,12 @@
               nixfmt-rfc-style
               nil
 
+              shellcheck
+              shfmt
+
               pkgs.agenix
+
+              nix-update
 
               rebuild
             ];
