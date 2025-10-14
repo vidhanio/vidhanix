@@ -50,6 +50,7 @@ jobs:
     strategy:
       matrix:
         include: ${{ fromJson(needs.flake-info.outputs.runner-matrix) }}
+      fail-fast: false
     steps:
       - uses: actions/checkout@v5
       - uses: DeterminateSystems/determinate-nix-action@main

@@ -11,16 +11,26 @@ let
     "x86_64-linux" = {
       os = "linux-x64";
       ext = "tar.gz";
-      hash = "sha256-GBB3xngPo7yXApHcSesMlY8hx75TSIQWJ3cbO9QiO6I=";
+      hash = "sha256-i1MFtqfWiAsvxgyc/MZlOdo/Py6PQlJmjHGeYnhygso=";
+    };
+    "aarch64-linux" = {
+      os = "linux-arm64";
+      ext = "tar.gz";
+      hash = "jdoiwjoidjoijwoi";
+    };
+    "x86_64-darwin" = {
+      os = "darwin";
+      ext = "zip";
+      hash = "sha256-1v6m7mYHk0rYp+1e4bX6k1m3nU5r3n5f1g8gXh3p2m4=";
     };
     "aarch64-darwin" = {
       os = "darwin-arm64";
       ext = "zip";
-      hash = "sha256-r1yxM4zCEIOzqu3J7arfMKVC6stja/sv4w2NmM9GJ7M=";
+      hash = "sha256-IDqupYgoslZb7Po8nimOTwojTJ0TO5efgfTqtTQ+dUI=";
     };
   };
 
-  version = "bf56edffb59c43fa0de636c3aa1d548770b168b8";
+  version = "03c265b1adee71ac88f833e065f7bb956b60550a";
 
   inherit (systems.${system} or throwSystem) os ext hash;
 in
