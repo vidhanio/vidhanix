@@ -807,7 +807,6 @@
         "nixpkgs": "nixpkgs_4",
         "rust-overlay": "rust-overlay",
         "stylix": "stylix",
-        "systems": "systems_3",
         "vesktop": "vesktop",
         "vidhanix-fonts": "vidhanix-fonts"
       }
@@ -1013,9 +1012,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "systems": [
-          "systems"
-        ]
+        "systems": "systems_3"
       },
       "locked": {
         "lastModified": 1759545961,

@@ -14,8 +14,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    systems.url = "github:nix-systems/default";
-
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,7 +39,6 @@
     vidhanix-fonts = {
       url = "git+ssh://git@github.com/vidhanio/vidhanix-fonts";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.systems.follows = "systems";
     };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
@@ -71,6 +68,12 @@
     let
       lib = nixpkgs.lib.extend (final: prev: import ./lib prev);
 
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
+
       nixpkgsCfg = {
         config.allowUnfree = true;
         overlays =
@@ -86,7 +89,7 @@
 
       forEachSystem =
         f:
-        lib.genAttrs (import inputs.systems) (
+        lib.genAttrs systems (
           system:
           f {
             inherit system;
