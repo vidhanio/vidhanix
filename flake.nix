@@ -187,6 +187,25 @@
           inherit (pkgs) callPackage;
           directory = ./packages;
         }
+        // {
+          vidhanix-github-matrix = pkgs.writeText "matrix.json" (
+            let
+              mkMatrixElements =
+                let
+                  mkMatrixElement = name: host: {
+                    inherit name;
+                    inherit (host) class;
+                    inherit (host.config.nixpkgs.hostPlatform) system;
+                  };
+                in
+                hosts: builtins.attrValues (builtins.mapAttrs mkMatrixElement hosts);
+            in
+            builtins.toJSON {
+              include =
+                (mkMatrixElements self.nixosConfigurations) ++ (mkMatrixElements self.darwinConfigurations);
+            }
+          );
+        }
       );
 
       devShells = forEachSystem (
