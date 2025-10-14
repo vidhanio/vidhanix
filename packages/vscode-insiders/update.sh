@@ -29,7 +29,6 @@ for system in $systems; do
 	case $system in
 	x86_64-linux) os="linux-x64" ;;
 	aarch64-linux) os="linux-arm64" ;;
-	x86_64-darwin) os="darwin" ;;
 	aarch64-darwin) os="darwin-arm64" ;;
 	esac
 

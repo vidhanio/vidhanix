@@ -18,11 +18,6 @@ let
       ext = "tar.gz";
       hash = "sha256-ELlIgnMuE/HANs3FSqFIXpGTHQwmvmjGhYmM2J69adI=";
     };
-    "x86_64-darwin" = {
-      os = "darwin";
-      ext = "zip";
-      hash = "sha256-oQQExWEsvJ9W4RSm+ifxJp+jHLZxQ0n4JcMUkUoK/dk=";
-    };
     "aarch64-darwin" = {
       os = "darwin-arm64";
       ext = "zip";
