@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  flake-info:
+    name: Get Flake Info
+    runs-on: ubuntu-latest
+    outputs:
+      host-matrix: ${{ steps.generate-info.outputs.host-matrix }}
+      runners: ${{ steps.generate-info.outputs.runners }}
+      runner-matrix: ${{ steps.generate-info.outputs.runner-matrix }}
+      title-classes: ${{ steps.generate-info.outputs.title-classes }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: DeterminateSystems/determinate-nix-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - id: generate-info
+        run: |
+          echo "host-matrix=$(cat $(nix build .#vidhanix-github-matrix --print-out-paths))" >> $GITHUB_OUTPUT
+          runners='{
+            "x86_64-linux": "ubuntu-latest",
+            "aarch64-linux": "ubuntu-24.04-arm",
+            "x86_64-darwin": "macos-15-intel",
+            "aarch64-darwin": "macos-26"
+          }'
+          echo "runners=$runners" >> $GITHUB_OUTPUT
+          echo "runner-matrix=$(echo $runners | jq -c 'to_entries | map({system: .key, runner: .value})')" >> $GITHUB_OUTPUT
+          echo 'title-classes={ "nixos": "NixOS", "darwin": "Darwin" }' >> $GITHUB_OUTPUT
+
+  check-flake-inputs:
+    name: Check Flake Inputs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: DeterminateSystems/determinate-nix-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Check Flake Inputs
+        uses: DeterminateSystems/flake-checker-action@main
+        with:
+          fail-mode: true
+
+  check-flake-outputs:
+    name: Check Flake Outputs (${{ matrix.system }})
+    needs: flake-info
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.flake-info.outputs.runner-matrix) }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: DeterminateSystems/determinate-nix-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Check Flake
+        run: nix flake check --print-build-logs --keep-going
+
+  build-systems:
+    name: "Build ${{ fromJson(needs.flake-info.outputs.title-classes)[matrix.class] }} System: ${{ matrix.name }}"
+    needs: flake-info
+    runs-on: ${{ fromJson(needs.flake-info.outputs.runners)[matrix.system] }}
+    strategy:
+      matrix: ${{ fromJson(needs.flake-info.outputs.host-matrix) }}
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v5
+      - uses: DeterminateSystems/determinate-nix-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Build System
+        run: nix build .#${{ matrix.class }}Configurations.${{ matrix.name }}.config.system.build.toplevel --print-build-logs
