@@ -49,7 +49,7 @@
       vesktop.enable = true;
     };
     ripgrep.enable = true;
-    vacuum-tube.enable = true;
+    vacuum-tube.enable = lib.mkIf osConfig.nixpkgs.hostPlatform.isLinux true;
     vscode.enable = true;
     zoxide.enable = true;
     nh = {
