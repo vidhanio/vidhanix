@@ -22,14 +22,7 @@ lib.mkMerge [
 
             src = inputs.vesktop;
 
-            pnpmDeps = pkgs.pnpm_10.fetchDeps {
-              inherit (finalAttrs)
-                pname
-                version
-                src
-                patches
-                ;
-              fetcherVersion = 2;
+            pnpmDeps = previousAttrs.pnpmDeps.override {
               hash = "sha256-Vn+Imarp1OTPfe/PoMgFHU5eWnye5Oa+qoGZaTxOUmU=";
             };
           }
