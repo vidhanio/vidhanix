@@ -7,32 +7,32 @@ let
   inherit (stdenv.hostPlatform) system;
   throwSystem = throw "Unsupported system: ${system}";
 
-  systems = {
+  platforms = {
     "x86_64-linux" = {
       os = "linux-x64";
       ext = "tar.gz";
-      hash = "sha256-i1MFtqfWiAsvxgyc/MZlOdo/Py6PQlJmjHGeYnhygso=";
+      hash = "sha256-oDqnjeDapBykcCNepOenGsoch6z0zi75cxe3ugPZGos=";
     };
     "aarch64-linux" = {
       os = "linux-arm64";
       ext = "tar.gz";
-      hash = "jdoiwjoidjoijwoi";
+      hash = "sha256-ELlIgnMuE/HANs3FSqFIXpGTHQwmvmjGhYmM2J69adI=";
     };
     "x86_64-darwin" = {
       os = "darwin";
       ext = "zip";
-      hash = "sha256-1v6m7mYHk0rYp+1e4bX6k1m3nU5r3n5f1g8gXh3p2m4=";
+      hash = "sha256-oQQExWEsvJ9W4RSm+ifxJp+jHLZxQ0n4JcMUkUoK/dk=";
     };
     "aarch64-darwin" = {
       os = "darwin-arm64";
       ext = "zip";
-      hash = "sha256-IDqupYgoslZb7Po8nimOTwojTJ0TO5efgfTqtTQ+dUI=";
+      hash = "sha256-z+l55N3f9ypNWYm1zUfRCgohQEiZfNVpeeJyJNIno0E=";
     };
   };
 
-  version = "03c265b1adee71ac88f833e065f7bb956b60550a";
+  version = "359fa23b39bb37e5157e99c2bc5fc81088dd8431";
 
-  inherit (systems.${system} or throwSystem) os ext hash;
+  inherit (platforms.${system} or throwSystem) os ext hash;
 in
 (vscode.override { isInsiders = true; }).overrideAttrs {
   inherit version;
@@ -45,8 +45,5 @@ in
 
   passthru.updateScript = ./update.sh;
 
-  meta.platforms = [
-    "x86_64-linux"
-    "aarch64-darwin"
-  ];
+  meta.platforms = builtins.attrNames platforms;
 }

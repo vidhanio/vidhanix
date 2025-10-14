@@ -1,4 +1,5 @@
-#! /usr/bin/env -S nix shell nixpkgs#bash nixpkgs#jq nixpkgs#nix nixpkgs#gnused --command bash
+#! /usr/bin/env nix
+#! nix shell nixpkgs#bash nixpkgs#jq nixpkgs#nix nixpkgs#gnused --command bash
 # shellcheck shell=bash
 
 set -euo pipefail
@@ -28,7 +29,7 @@ for system in $systems; do
 	case $system in
 	x86_64-linux) os="linux-x64" ;;
 	aarch64-linux) os="linux-arm64" ;;
-	x86_64-darwin) os="darwin-x64" ;;
+	x86_64-darwin) os="darwin" ;;
 	aarch64-darwin) os="darwin-arm64" ;;
 	esac
 
@@ -43,7 +44,7 @@ for system in $systems; do
 
 	old_hash=$(nix eval --raw .#packages."$system".vscode-insiders.src.outputHash)
 	raw_hash=$(echo "$hashes_json" | jq -r --arg os "$os" '.[$os].hash')
-	hash=$(nix --extra-experimental-features nix-command hash convert --hash-algo sha256 "$raw_hash")
+	hash=$(nix hash convert --hash-algo sha256 "$raw_hash")
 
 	contents=${contents//"$old_hash"/"$hash"}
 done
