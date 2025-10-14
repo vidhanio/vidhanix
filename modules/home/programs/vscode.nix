@@ -10,11 +10,7 @@ let
 in
 lib.mkMerge [
   {
-    programs.vscode.package =
-      if osConfig.nixpkgs.hostPlatform.system == "x86_64-linux" then
-        pkgs.vscode-insiders
-      else
-        pkgs.vscode;
+    programs.vscode.package = pkgs.vscode-insiders;
   }
   (lib.mkIf cfg.enable {
     impermanence.directories = [

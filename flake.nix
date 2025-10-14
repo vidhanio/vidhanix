@@ -19,7 +19,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     agenix = {
-      url = "github:ryantm/agenix";
+      url = "github:vidhanio/agenix/pkgs-getconf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
@@ -232,7 +232,7 @@
               # we will use `nix eval --json .#nixosConfigurations/darwinConfigurations --apply builtins.attrNames` | jq to find whether this uname -n is a darwin or nixos system
               is_class() {
                 local class=$1
-                nix eval --json .#"$class"Configurations --apply builtins.attrNames | jq --arg hostname "$(uname -n)" -e 'any(. == $hostname)'
+                nix eval --json .#"$class"Configurations --apply builtins.attrNames | jq --arg hostname "$(uname -n)" -e 'any(. == $hostname)' >/dev/null
               }
 
               if is_class darwin; then
