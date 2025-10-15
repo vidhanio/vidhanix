@@ -33,13 +33,4 @@ in
 
   getDesktop' = pkg: name: "${pkg}/share/applications/${name}.desktop";
   getDesktop = pkg: final.getDesktop' pkg (prev.getName pkg);
-
-  maintainers = prev.maintainers // {
-    vidhanio = {
-      name = "Vidhan Bhatt";
-      email = "me@vidhan.io";
-      github = "vidhanio";
-      githubId = 41439633;
-    };
-  };
 }

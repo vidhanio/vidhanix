@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   fetchFromGitHub,
-  unstableGitUpdater,
+  nix-update-script,
 }:
 stdenvNoCC.mkDerivation {
   pname = "ghostty-shader-playground";
@@ -24,13 +24,17 @@ stdenvNoCC.mkDerivation {
     runHook postInstall
   '';
 
-  passthru.updateScript = unstableGitUpdater { };
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--flake"
+      "--version=branch"
+    ];
+  };
 
   meta = {
     description = "Krone Corylus' Ghostty shaders";
     homepage = "https://github.com/KroneCorylus/ghostty-shader-playground";
     license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ vidhanio ];
     platforms = lib.platforms.all;
   };
 }

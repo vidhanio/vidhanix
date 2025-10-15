@@ -1,5 +1,4 @@
 {
-  lib,
   stdenv,
   vscode,
   fetchurl,
@@ -41,7 +40,6 @@ in
     passthru.updateScript = ./update.sh;
 
     meta = previousAttrs.meta // {
-      maintainers = with lib.maintainers; [ vidhanio ];
       platforms = builtins.attrNames platforms;
     };
   }

@@ -22,7 +22,6 @@ stdenvNoCC.mkDerivation {
     description = "Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering";
     homepage = "https://fsd.it/shop/fonts/pragmatapro-variable/";
     license = lib.licenses.unfree;
-    maintainers = with lib.maintainers; [ vidhanio ];
     platforms = lib.platforms.all;
   };
 }
