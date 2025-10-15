@@ -18,17 +18,13 @@
     };
 
     pnpmDeps = previousAttrs.pnpmDeps.override {
-      hash = "sha256-Vn+Imasp1OTPfe/PoMgFHU5eWnye5Oa+qoGZaTxOUmU=";
+      hash = "sha256-Vn+Imarp1OTPfe/PoMgFHU5eWnye5Oa+qoGZaTxOUmU=";
     };
 
     passthru.updateScript = nix-update-script {
       extraArgs = [
+        "--flake"
         "--version=branch"
-        "--override-filename=packages/vesktop-git/package.nix"
       ];
-    };
-
-    meta = previousAttrs.meta // {
-      maintainers = with args.lib.maintainers; [ vidhanio ];
     };
   })

@@ -47,8 +47,6 @@
     nixcord = {
       url = "github:kaylorben/nixcord";
     };
-
-    flake-compat.url = "github:edolstra/flake-compat";
   };
 
   outputs =
@@ -254,7 +252,7 @@
 
               pkgs.agenix
 
-              nix-update
+              update-package
 
               rebuild
             ];
