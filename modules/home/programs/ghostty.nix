@@ -1,5 +1,4 @@
 {
-  inputs,
   lib,
   osConfig,
   pkgs,
@@ -13,7 +12,7 @@
         padding = 10;
       in
       {
-        custom-shader = [ "${inputs.ghostty-shader-playground}/shaders/cursor_smear.glsl" ];
+        custom-shader = [ "${pkgs.ghostty-shader-playground}/share/shaders/cursor_smear.glsl" ];
         window-padding-x = padding;
         window-padding-y = padding;
       };

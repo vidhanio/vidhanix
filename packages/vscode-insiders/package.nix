@@ -1,44 +1,48 @@
 {
+  lib,
   stdenv,
   vscode,
   fetchurl,
 }:
 let
   inherit (stdenv.hostPlatform) system;
-  throwSystem = throw "Unsupported system: ${system}";
 
   platforms = {
     "x86_64-linux" = {
       os = "linux-x64";
       ext = "tar.gz";
-      hash = "sha256-oDqnjeDapBykcCNepOenGsoch6z0zi75cxe3ugPZGos=";
+      hash = "sha256-WkxSrnHFPfX7tfLfUCD08Xc5To9GON83FqMrsfkEOkE=";
     };
     "aarch64-linux" = {
       os = "linux-arm64";
       ext = "tar.gz";
-      hash = "sha256-ELlIgnMuE/HANs3FSqFIXpGTHQwmvmjGhYmM2J69adI=";
+      hash = "sha256-EFR8gu6kZbYeTBTu10ZKjLPjxRpB9m301gIxxiG3N2E=";
     };
     "aarch64-darwin" = {
       os = "darwin-arm64";
       ext = "zip";
-      hash = "sha256-z+l55N3f9ypNWYm1zUfRCgohQEiZfNVpeeJyJNIno0E=";
+      hash = "sha256-PIB2Po5tC446fvYJzJRKvwFE+AGQB2WotF8dyM9RPsI=";
     };
   };
 
-  version = "359fa23b39bb37e5157e99c2bc5fc81088dd8431";
-
-  inherit (platforms.${system} or throwSystem) os ext hash;
+  inherit (platforms.${system} or (throw "Unsupported system: ${system}")) os ext hash;
 in
-(vscode.override { isInsiders = true; }).overrideAttrs {
-  inherit version;
+(vscode.override { isInsiders = true; }).overrideAttrs (
+  finalAttrs: previousAttrs: {
+    version = "latest";
+    commit = "f030344cf19e76e6b47d2d8ab003780a7fdb8171";
 
-  src = fetchurl {
-    name = "vscode-insiders-${version}-${os}.${ext}";
-    url = "https://update.code.visualstudio.com/commit:${version}/${os}/insider";
-    inherit hash;
-  };
+    src = fetchurl {
+      name = "vscode-insiders-${finalAttrs.commit}-${os}.${ext}";
+      url = "https://update.code.visualstudio.com/commit:${finalAttrs.commit}/${os}/insider";
+      inherit hash;
+    };
 
-  passthru.updateScript = ./update.sh;
+    passthru.updateScript = ./update.sh;
 
-  meta.platforms = builtins.attrNames platforms;
-}
+    meta = previousAttrs.meta // {
+      maintainers = with lib.maintainers; [ vidhanio ];
+      platforms = builtins.attrNames platforms;
+    };
+  }
+)
