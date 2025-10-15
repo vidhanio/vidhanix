@@ -48,14 +48,7 @@
       url = "github:kaylorben/nixcord";
     };
 
-    vesktop = {
-      url = "github:Vencord/Vesktop";
-      flake = false;
-    };
-    ghostty-shader-playground = {
-      url = "github:KroneCorylus/ghostty-shader-playground";
-      flake = false;
-    };
+    flake-compat.url = "github:edolstra/flake-compat";
   };
 
   outputs =
@@ -66,7 +59,7 @@
       ...
     }@inputs:
     let
-      lib = nixpkgs.lib.extend (final: prev: import ./lib prev);
+      lib = nixpkgs.lib.extend (import ./lib);
 
       systems = [
         "x86_64-linux"
@@ -177,8 +170,6 @@
       };
     in
     {
-      lib = import ./lib nixpkgs.lib;
-
       nixosConfigurations = mkNixosConfigurations [ "vidhan-pc" ];
       darwinConfigurations = mkDarwinConfigurations [ "vidhan-macbook" ];
 
@@ -222,6 +213,7 @@
               nix
               nh
               jq
+              direnv
             ];
 
             text = ''
@@ -243,12 +235,17 @@
                 echo "unknown host: $(uname -n)"
                 exit 1
               fi
+
+              direnv reload
             '';
           };
         in
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
+              git
+              direnv
+
               nixfmt-rfc-style
               nil
 

@@ -24,6 +24,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
       - id: generate-info
+        name: Generate Flake Info
         run: |
           echo "host-matrix=$(cat $(nix build .#vidhanix-github-matrix --print-out-paths))" >> $GITHUB_OUTPUT
           runners='{"x86_64-linux":"ubuntu-latest","aarch64-linux":"ubuntu-24.04-arm","aarch64-darwin":"macos-26"}'
@@ -77,3 +78,13 @@ jobs:
           ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
       - name: Build System
         run: nix build .#${{ matrix.class }}Configurations.${{ matrix.name }}.config.system.build.toplevel --print-build-logs
+
+  check-formatting:
+    name: Check Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: DeterminateSystems/determinate-nix-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Check Formatting
+        run: nix fmt -- --ci

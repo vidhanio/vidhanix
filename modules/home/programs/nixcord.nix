@@ -16,17 +16,7 @@ lib.mkMerge [
         branch = "canary";
       };
       vesktop = {
-        package = pkgs.vesktop.overrideAttrs (
-          finalAttrs: previousAttrs: {
-            version = "latest";
-
-            src = inputs.vesktop;
-
-            pnpmDeps = previousAttrs.pnpmDeps.override {
-              hash = "sha256-Vn+Imarp1OTPfe/PoMgFHU5eWnye5Oa+qoGZaTxOUmU=";
-            };
-          }
-        );
+        package = pkgs.vesktop-git;
         settings = {
           discordBranch = "canary";
           minimizeToTray = true;

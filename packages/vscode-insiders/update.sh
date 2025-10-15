@@ -7,23 +7,9 @@ set -euo pipefail
 file="packages/vscode-insiders/package.nix"
 contents=$(<"$file")
 
-hashes_json=$(
-	curl -s 'https://code.visualstudio.com/sha?build=insider' |
-		jq '
-			.products |
-				map({
-					(.platform.os): {
-						hash: .sha256hash,
-						version: .version,
-					},
-				}) |
-				add
-		'
-)
-
 systems=$(nix eval --json .#vscode-insiders.meta.platforms | jq -r '.[]')
 
-version=""
+commit=""
 
 for system in $systems; do
 	case $system in
@@ -32,22 +18,24 @@ for system in $systems; do
 	aarch64-darwin) os="darwin-arm64" ;;
 	esac
 
-	os_version=$(echo "$hashes_json" | jq -r --arg os "$os" '.[$os].version')
+	json=$(curl -s "https://update.code.visualstudio.com/api/update/$os/insider/latest")
 
-	if [ -z "$version" ]; then
-		version=$os_version
-	elif [ "$version" != "$os_version" ]; then
-		echo "version mismatch for $os: $os_version != $version"
+	os_commit=$(echo "$json" | jq -r '.version')
+
+	if [ -z "$commit" ]; then
+		commit=$os_commit
+	elif [ "$commit" != "$os_commit" ]; then
+		echo "commit mismatch for $os: $os_commit != $commit"
 		exit 1
 	fi
 
 	old_hash=$(nix eval --raw .#packages."$system".vscode-insiders.src.outputHash)
-	raw_hash=$(echo "$hashes_json" | jq -r --arg os "$os" '.[$os].hash')
+	raw_hash=$(echo "$json" | jq -r '.sha256hash')
 	hash=$(nix hash convert --hash-algo sha256 "$raw_hash")
 
 	contents=${contents//"$old_hash"/"$hash"}
 done
 
-old_version=$(nix eval --raw .#vscode-insiders.version)
-contents=${contents//"$old_version"/"$version"}
+old_commit=$(nix eval --raw .#vscode-insiders.commit)
+contents=${contents//"$old_commit"/"$commit"}
 echo "$contents" >"$file"
