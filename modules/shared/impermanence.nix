@@ -17,6 +17,7 @@ in
       enable = mkEnableOption "impermanence";
       path = mkOption {
         type = types.str;
+        default = "/persist";
         description = "The path where persisted data will be stored.";
       };
       directories = mkOption {

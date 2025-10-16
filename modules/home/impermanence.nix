@@ -27,7 +27,7 @@ in
       };
     };
 
-  config = lib.optionalAttrs (options ? environment.persistence) {
+  config = {
     home.persistence."${osCfg.path}" = {
       inherit (osCfg) enable;
       inherit (osConfig.environment.persistence."${osCfg.path}") hideMounts allowTrash;

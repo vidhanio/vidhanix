@@ -59,8 +59,5 @@
     };
   };
 
-  impermanence = {
-    enable = true;
-    path = "/persist";
-  };
+  impermanence.enable = true;
 }
