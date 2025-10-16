@@ -35,13 +35,11 @@
         run mkdir -p "$targetFolder"
 
         rsyncFlags=(
-          --archive
           --checksum
-          --chmod=-w
-          --chown=$USER:staff
           --copy-unsafe-links
+          --archive
           --delete
-          --exclude=$'Icon\r'
+          --chmod=-w
           --no-group
           --no-owner
         )
