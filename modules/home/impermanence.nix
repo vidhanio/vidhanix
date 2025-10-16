@@ -2,7 +2,6 @@
   osConfig,
   config,
   lib,
-  options,
   ...
 }:
 let
