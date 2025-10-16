@@ -2,6 +2,7 @@
   osConfig,
   config,
   lib,
+  options,
   ...
 }:
 let
@@ -26,9 +27,10 @@ in
       };
     };
 
-  config = lib.optionalAttrs osCfg.enable {
+  config = lib.optionalAttrs (options ? environment.persistence) {
     home.persistence."${osCfg.path}" = {
-      hideMounts = osConfig.environment.persistence."${osCfg.path}".hideMounts;
+      inherit (osCfg) enable;
+      inherit (osConfig.environment.persistence."${osCfg.path}") hideMounts allowTrash;
       inherit (cfg) directories files;
     };
   };

@@ -19,6 +19,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     agenix = {
+      # https://github.com/ryantm/agenix/pull/350
       url = "github:vidhanio/agenix/pkgs-getconf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -26,7 +27,11 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence.url = "github:nix-community/impermanence/home-manager-v2";
+    impermanence = {
+      # https://github.com/nix-community/impermanence/pull/272
+      # https://github.com/nix-community/impermanence/pull/243
+      url = "github:vidhanio/impermanence/hmv2-trash";
+    };
 
     determinate-nix = {
       url = "github:DeterminateSystems/nix-src";
@@ -34,10 +39,6 @@
     };
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    vidhanix-fonts = {
-      url = "git+ssh://git@github.com/vidhanio/vidhanix-fonts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     firefox-addons = {
@@ -71,7 +72,6 @@
           with inputs;
           [
             determinate-nix.overlays.default
-            vidhanix-fonts.overlays.default
             firefox-addons.overlays.default
             agenix.overlays.default
           ]
@@ -110,7 +110,7 @@
           );
 
           homeModules = with inputs; [
-            # impermanence.homeManagerModules.default <- added conditionally in modules/shared/impermanence.nix
+            impermanence.homeManagerModules.default
             agenix.homeManagerModules.default
             nixcord.homeModules.default
           ];
