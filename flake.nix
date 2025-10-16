@@ -39,16 +39,9 @@
       url = "github:DeterminateSystems/nix-src";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixcord = {
-      url = "github:kaylorben/nixcord";
     };
   };
 
@@ -114,7 +107,6 @@
           homeModules = with inputs; [
             impermanence.homeManagerModules.default
             agenix.homeManagerModules.default
-            nixcord.homeModules.default
           ];
         in
         lib.genAttrs hosts (
