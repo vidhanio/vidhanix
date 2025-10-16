@@ -44,12 +44,9 @@
       userEmail = "me@vidhan.io";
     };
     neovim.enable = true;
-    nixcord = {
-      enable = true;
-      vesktop.enable = true;
-    };
     ripgrep.enable = true;
     vacuum-tube.enable = lib.mkIf osConfig.nixpkgs.hostPlatform.isLinux true;
+    vesktop.enable = true;
     vscode.enable = true;
     zoxide.enable = true;
     nh = {
