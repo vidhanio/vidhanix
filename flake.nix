@@ -112,7 +112,6 @@
         lib.genAttrs hosts (
           host:
           mkSystem {
-            specialArgs = { inherit inputs; };
             inherit lib;
 
             modules = [
@@ -120,27 +119,27 @@
               { networking.hostName = host; }
             ]
             ++ osModules
-            ++ lib.readDirContents ./modules/shared
-            ++ lib.readDirContents ./modules/${class}
+            ++ lib.readDirContents ./modules
             ++ [
-              { nixpkgs = nixpkgsCfg; }
               (
-                { config, ... }:
+                { lib, config, ... }:
                 {
+                  nixpkgs = nixpkgsCfg;
+                  nix.registry =
+                    let
+                      flakes = lib.filterAttrs (_: input: input ? _type && input._type == "flake") inputs;
+                    in
+                    builtins.mapAttrs (_: flake: { inherit flake; }) flakes;
+
                   home-manager = {
                     users =
                       let
-                        normalUsers =
-                          let
-                            users = builtins.attrValues config.users.users;
-                            isNormalUser = user: (user.isNormalUser or true) && !(lib.hasPrefix "_" user.name);
-                          in
-                          builtins.filter isNormalUser users;
+                        allUsers = builtins.attrValues config.users.users;
+                        isNormalUser = user: (user.isNormalUser or true) && !(lib.hasPrefix "_" user.name);
+                        users = builtins.filter isNormalUser allUsers;
                       in
-                      lib.genAttrs' normalUsers (user: lib.nameValuePair user.name ./users/${user.name});
-                    sharedModules = homeModules ++ lib.readSubmodules ./modules/home;
-                    useGlobalPkgs = true;
-                    extraSpecialArgs = { inherit inputs; };
+                      lib.genAttrs' users (user: lib.nameValuePair user.name ./users/${user.name});
+                    sharedModules = homeModules;
                   };
                 }
               )
