@@ -1,5 +1,7 @@
 {
   inputs = {
+    self.submodules = true;
+
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     darwin = {
       url = "github:nix-darwin/nix-darwin";
