@@ -557,16 +557,16 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1758373069,
-        "narHash": "sha256-Xs31egErULAbSYdAPdoj/YCNH4+3B9l7D/V4ApewEw8=",
-        "owner": "nix-community",
+        "lastModified": 1760647070,
+        "narHash": "sha256-PuYoc5drhSrK9Gexi1GAGwdsNi/aMeTb/FiYfW3q6OI=",
+        "owner": "vidhanio",
         "repo": "impermanence",
-        "rev": "5274a00212a0437f9f1c1375d4437fc25aa57280",
+        "rev": "fb2a8d17af6755dfd15c096bc11f793652e1f8ac",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
-        "ref": "home-manager-v2",
+        "owner": "vidhanio",
+        "ref": "hmv2-trash",
         "repo": "impermanence",
         "type": "github"
       }
@@ -791,8 +791,7 @@
         "nixcord": "nixcord",
         "nixpkgs": "nixpkgs_4",
         "rust-overlay": "rust-overlay",
-        "stylix": "stylix",
-        "vidhanix-fonts": "vidhanix-fonts"
+        "stylix": "stylix"
       }
     },
     "rust-overlay": {
@@ -865,21 +864,6 @@
       }
     },
     "systems_2": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_3": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -973,27 +957,6 @@
         "owner": "tinted-theming",
         "repo": "base16-zed",
         "type": "github"
-      }
-    },
-    "vidhanix-fonts": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "systems": "systems_3"
-      },
-      "locked": {
-        "lastModified": 1759545961,
-        "narHash": "sha256-Dr8ejFgpWFq3fg5WEq9gPgwBCZtz8dYK2aS2i2umVZg=",
-        "ref": "refs/heads/main",
-        "rev": "0804f7a3c5cd4f8d0ebf7832d03e03c0faa90bd9",
-        "revCount": 6,
-        "type": "git",
-        "url": "ssh://git@github.com/vidhanio/vidhanix-fonts"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/vidhanio/vidhanix-fonts"
       }
     }
   },

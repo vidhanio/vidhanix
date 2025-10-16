@@ -4,16 +4,13 @@ stdenvNoCC.mkDerivation {
   pname = "pragmata-pro-variable";
   version = "0.9";
 
-  src = fetchGit {
-    url = "git@github.com:vidhanio/vidhanix-fonts";
-    rev = "0804f7a3c5cd4f8d0ebf7832d03e03c0faa90bd9";
-  };
+  src = ../../fonts/pragmata-pro-variable;
 
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/share/fonts/truetype/
-    cp fonts/pragmata-pro-variable/*.ttf $out/share/fonts/truetype/
+    cp *.ttf $out/share/fonts/truetype/
 
     runHook postInstall
   '';
