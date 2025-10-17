@@ -18,11 +18,11 @@ jobs:
       title-classes: ${{ steps.generate-info.outputs.title-classes }}
     steps:
       - uses: actions/checkout@v5
-        with:
-          submodules: recursive
-          ssh-key: ${{ secrets.FONTS_SSH_KEY }}
       - uses: DeterminateSystems/determinate-nix-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
       - id: generate-info
         name: Generate Flake Info
         run: |
@@ -54,11 +54,11 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v5
-        with:
-          submodules: recursive
-          ssh-key: ${{ secrets.FONTS_SSH_KEY }}
       - uses: DeterminateSystems/determinate-nix-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
       - name: Check Flake
         run: nix flake check --print-build-logs --keep-going
 
@@ -71,11 +71,11 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v5
-        with:
-          submodules: recursive
-          ssh-key: ${{ secrets.FONTS_SSH_KEY }}
       - uses: DeterminateSystems/determinate-nix-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
       - name: Build System
         run: nix build .#${{ matrix.class }}Configurations.${{ matrix.name }}.config.system.build.toplevel --print-build-logs
 
@@ -84,10 +84,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-        with:
-          submodules: recursive
-          ssh-key: ${{ secrets.FONTS_SSH_KEY }}
       - uses: DeterminateSystems/determinate-nix-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
       - name: Check Formatting
         run: nix fmt -- --ci
