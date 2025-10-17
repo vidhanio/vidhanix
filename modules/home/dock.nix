@@ -67,7 +67,7 @@ in
 
       packages = map ({ package, name }: package) (lib.filter lib.isAttrs cfg);
 
-      toAppFiles =
+      toAppFile =
         { package, name }:
         if isDarwin then
           (
@@ -81,7 +81,7 @@ in
         else
           name;
 
-      appFiles = map (item: if lib.isAttrs item then toAppFiles item else item) cfg;
+      appFiles = map (item: if lib.isAttrs item then toAppFile item else item) cfg;
     in
     lib.mkIf (cfg != [ ]) (
       lib.mkMerge [
