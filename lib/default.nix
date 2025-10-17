@@ -19,17 +19,14 @@ in
   importDirAttrs =
     path:
     let
+      dir = builtins.readDir path;
       isNixFile = name: type: type == "regular" && prev.hasSuffix ".nix" name;
+      nixFiles = prev.filterAttrs isNixFile dir;
     in
-    prev.pipe (builtins.readDir path) [
-      (prev.filterAttrs isNixFile)
-      (prev.mapAttrs' (
-        name: _: {
-          name = prev.removeSuffix ".nix" name;
-          value = import (path + "/${name}");
-        }
-      ))
-    ];
+    prev.mapAttrs' (name: _: {
+      name = prev.removeSuffix ".nix" name;
+      value = import (path + "/${name}");
+    }) nixFiles;
 
   getDesktop' = pkg: name: "${pkg}/share/applications/${name}.desktop";
   getDesktop = pkg: final.getDesktop' pkg (prev.getName pkg);

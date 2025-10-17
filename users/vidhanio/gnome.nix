@@ -60,6 +60,6 @@ in
   };
 
   impermanence.directories =
-    lib.mkIf (builtins.elem pkgs.gnome-keyring osConfig.environment.systemPackages)
+    lib.mkIf (lib.elem pkgs.gnome-keyring osConfig.environment.systemPackages)
       [ ".local/share/keyrings" ];
 }
