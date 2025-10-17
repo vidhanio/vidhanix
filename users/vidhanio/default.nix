@@ -73,16 +73,20 @@ in
 
   dock =
     with config.programs;
-    map (program: program.package or program) (
-      lib.optional (!isDarwin) pkgs.nautilus
-      ++ [
-        ghostty
-        firefox
-        vscode
-        vesktop
-        (if isDarwin then "/System/Applications/Music.app" else cider-2)
-      ]
-    );
+    lib.optional (!isDarwin) {
+      package = pkgs.nautilus;
+      name = "org.gnome.Nautilus.desktop";
+    }
+    ++ [
+      ghostty.package
+      firefox.package
+      {
+        inherit (vscode) package;
+        name = lib.mkIf (!isDarwin) "code-insiders.desktop";
+      }
+      vesktop.package
+      (if isDarwin then "/System/Applications/Music.app" else cider-2.package)
+    ];
 
   fonts.fontconfig.enable = true;
 
