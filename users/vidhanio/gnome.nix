@@ -6,7 +6,6 @@
 }:
 let
   osCfg = osConfig.services.desktopManager.gnome;
-  osDconfCfg = osConfig.programs.dconf;
 in
 {
   programs.gnome-shell = {
@@ -22,23 +21,12 @@ in
       ];
   };
 
-  dconf.settings = lib.mkIf (osConfig ? programs.dconf && osDconfCfg.enable) {
+  dconf.settings = {
     "org/gnome/desktop/wm/keybindings" = {
       switch-applications = [ ];
       switch-applications-backward = [ ];
       switch-windows = [ "<Alt>Tab" ];
       switch-windows-backward = [ "<Shift><Alt>Tab" ];
-    };
-
-    "org/gnome/shell" = {
-      favorite-apps = [
-        "org.gnome.Nautilus.desktop"
-        "com.mitchellh.ghostty.desktop"
-        "firefox.desktop"
-        "code-insiders.desktop"
-        "vesktop.desktop"
-        "cider-2.desktop"
-      ];
     };
 
     "org/gtk/gtk4/settings/file-chooser" = {

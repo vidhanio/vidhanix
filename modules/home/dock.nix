@@ -2,6 +2,7 @@
   lib,
   config,
   osConfig,
+  pkgs,
   ...
 }:
 let
@@ -50,10 +51,11 @@ in
     let
       isHomePackage = pkg: lib.elem pkg config.home.packages;
       isSystemPackage = pkg: lib.elem pkg osConfig.environment.systemPackages;
+      isInstalledPackage = pkg: isHomePackage pkg || isSystemPackage pkg;
 
       packages = map ({ package, name }: package) (lib.filter lib.isAttrs cfg);
 
-      toPath =
+      toAppFiles =
         { package, name }:
         if isDarwin then
           (
@@ -65,15 +67,15 @@ in
               throw "unreachable (checked in assertions)"
           )
         else
-          "${package}/share/applications/${name}";
+          name;
 
-      paths = map (item: if lib.isAttrs item then toPath item else item) cfg;
+      appFiles = map (item: if lib.isAttrs item then toAppFiles item else item) cfg;
     in
     lib.mkIf (cfg != [ ]) (
       lib.mkMerge [
         {
           assertions = map (pkg: {
-            assertion = isHomePackage pkg || isSystemPackage pkg;
+            assertion = isInstalledPackage pkg;
             message = "dock item '${lib.getName pkg}' is not in home.packages or environment.systemPackages";
           }) packages;
         }
@@ -83,11 +85,11 @@ in
               _CFURLString = path;
               _CFURLStringType = 0;
             };
-          }) paths;
+          }) appFiles;
 
           home.activation = {
             checkDockApps = lib.hm.dag.entryBetween [ "linkApps" ] [ "setDarwinDefaults" ] ''
-              for app in ${lib.escapeShellArgs paths}; do
+              for app in ${lib.escapeShellArgs appFiles}; do
                 if [[ ! -e "$app" ]]; then
                   printf >&2 '\e[1;31merror: dock item "%s" does not exist, aborting activation\e[0m\n' "$app"
                   exit 1
@@ -99,6 +101,9 @@ in
               /usr/bin/killall Dock || true
             '';
           };
+        })
+        (lib.mkIf (isInstalledPackage pkgs.gnome-shell) {
+          dconf.settings."org/gnome/shell".favorite-apps = appFiles;
         })
       ]
     );
