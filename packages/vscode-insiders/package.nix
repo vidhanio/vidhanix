@@ -1,5 +1,6 @@
 {
   stdenv,
+  lib,
   vscode,
   fetchurl,
 }:
@@ -40,7 +41,7 @@ in
     passthru.updateScript = ./update.sh;
 
     meta = previousAttrs.meta // {
-      platforms = builtins.attrNames platforms;
+      platforms = lib.attrNames platforms;
     };
   }
 )

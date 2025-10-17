@@ -5,6 +5,9 @@
   lib,
   ...
 }:
+let
+  inherit (osConfig.nixpkgs.hostPlatform) isDarwin;
+in
 {
   imports = lib.readSubmodules ./.;
 
@@ -67,6 +70,19 @@
     berkeley-mono-variable
     pragmata-pro-variable
   ];
+
+  dock =
+    with config.programs;
+    map (program: program.package or program) (
+      lib.optional (!isDarwin) pkgs.nautilus
+      ++ [
+        ghostty
+        firefox
+        vscode
+        vesktop
+        (if isDarwin then "/System/Applications/Music.app" else cider-2)
+      ]
+    );
 
   fonts.fontconfig.enable = true;
 

@@ -70,7 +70,7 @@
             firefox-addons.overlays.default
             agenix.overlays.default
           ]
-          ++ builtins.attrValues self.overlays;
+          ++ lib.attrValues self.overlays;
       };
 
       forEachSystem =
@@ -101,7 +101,7 @@
           ];
 
           osModules = map (input: input."${class}Modules".default) (
-            builtins.filter (input: input ? "${class}Modules") moduleInputs
+            lib.filter (input: input ? "${class}Modules") moduleInputs
           );
 
           homeModules = with inputs; [
@@ -129,14 +129,14 @@
                     let
                       flakes = lib.filterAttrs (_: input: input ? _type && input._type == "flake") inputs;
                     in
-                    builtins.mapAttrs (_: flake: { inherit flake; }) flakes;
+                    lib.mapAttrs (_: flake: { inherit flake; }) flakes;
 
                   home-manager = {
                     users =
                       let
-                        allUsers = builtins.attrValues config.users.users;
+                        allUsers = lib.attrValues config.users.users;
                         isNormalUser = user: (user.isNormalUser or true) && !(lib.hasPrefix "_" user.name);
-                        users = builtins.filter isNormalUser allUsers;
+                        users = lib.filter isNormalUser allUsers;
                       in
                       lib.genAttrs' users (user: lib.nameValuePair user.name ./users/${user.name});
                     sharedModules = homeModules;
@@ -183,9 +183,9 @@
                     inherit (host.config.nixpkgs.hostPlatform) system;
                   };
                 in
-                hosts: builtins.attrValues (builtins.mapAttrs mkMatrixElement hosts);
+                hosts: lib.attrValues (lib.mapAttrs mkMatrixElement hosts);
             in
-            builtins.toJSON {
+            pkgs.lib.generators.toJSON {
               include =
                 (mkMatrixElements self.nixosConfigurations) ++ (mkMatrixElements self.darwinConfigurations);
             }
