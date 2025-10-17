@@ -185,7 +185,7 @@
                 in
                 hosts: lib.attrValues (lib.mapAttrs mkMatrixElement hosts);
             in
-            pkgs.lib.generators.toJSON {
+            pkgs.lib.strings.toJSON {
               include =
                 (mkMatrixElements self.nixosConfigurations) ++ (mkMatrixElements self.darwinConfigurations);
             }

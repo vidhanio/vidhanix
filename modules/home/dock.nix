@@ -41,7 +41,7 @@ in
                   if (builtins.length applications) == 1 then
                     builtins.head applications
                   else
-                    throw "dock item '${lib.getName config.package}' has multiple applications (${lib.concatStringsSep ", " applications}), name must be specified";
+                    throw "dock item \"${lib.getName config.package}\" has multiple applications (${lib.concatStringsSep ", " applications}), name must be specified";
               };
           };
         }
@@ -88,10 +88,19 @@ in
         {
           assertions = map (pkg: {
             assertion = isInstalledPackage pkg;
-            message = "dock item '${lib.getName pkg}' is not in home.packages or environment.systemPackages";
+            message = "dock item \"${lib.getName pkg}\" is not in home.packages or environment.systemPackages";
           }) packages;
         }
         (lib.mkIf isDarwin {
+          home.activation.checkDockApps = lib.hm.dag.entryBetween [ "linkApps" ] [ "setDarwinDefaults" ] ''
+            for app in ${lib.escapeShellArgs appFiles}; do
+              if [[ ! -e "$app" ]]; then
+                printf >&2 '\e[1;31merror: dock item "%s" does not exist\e[0m\n' "$app"
+                exit 1
+              fi
+            done
+          '';
+
           targets.darwin.defaults."com.apple.dock".persistent-apps = map (path: {
             tile-data.file-data = {
               _CFURLString = path;
@@ -99,20 +108,9 @@ in
             };
           }) appFiles;
 
-          home.activation = {
-            checkDockApps = lib.hm.dag.entryBetween [ "linkApps" ] [ "setDarwinDefaults" ] ''
-              for app in ${lib.escapeShellArgs appFiles}; do
-                if [[ ! -e "$app" ]]; then
-                  printf >&2 '\e[1;31merror: dock item "%s" does not exist, aborting activation\e[0m\n' "$app"
-                  exit 1
-                fi
-              done
-            '';
-
-            updateDock = lib.hm.dag.entryAfter [ "setDarwinDefaults" ] ''
-              /usr/bin/killall Dock || true
-            '';
-          };
+          home.activation.updateDock = lib.hm.dag.entryAfter [ "setDarwinDefaults" ] ''
+            /usr/bin/killall Dock || true
+          '';
         })
         (lib.mkIf (isInstalledPackage pkgs.gnome-shell) {
           dconf.settings."org/gnome/shell".favorite-apps = appFiles;
