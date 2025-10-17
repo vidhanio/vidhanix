@@ -9,6 +9,12 @@ let
   inherit (lib) types;
   inherit (osConfig.nixpkgs.hostPlatform) isDarwin;
   cfg = config.dock;
+  getApplications =
+    pkg:
+    let
+      dir = "${pkg}/${if isDarwin then "Applications" else "share/applications"}";
+    in
+    lib.attrNames (builtins.readDir dir);
 in
 {
   options.dock =
@@ -22,15 +28,21 @@ in
               type = types.package;
             };
 
-            name = lib.mkOption {
-              description = "The name of the application.";
-              type = types.str;
-              default =
-                let
-                  applications = "${config.package}/${if isDarwin then "Applications" else "share/applications"}";
-                in
-                lib.head (lib.attrNames (builtins.readDir applications));
-            };
+            name =
+              let
+                applications = getApplications config.package;
+              in
+              lib.mkOption {
+                description = "The name of the application.";
+                type = types.str // {
+                  check = name: lib.elem name applications;
+                };
+                default =
+                  if (builtins.length applications) == 1 then
+                    builtins.head applications
+                  else
+                    throw "dock item '${lib.getName config.package}' has multiple applications (${lib.concatStringsSep ", " applications}), name must be specified";
+              };
           };
         }
       );
