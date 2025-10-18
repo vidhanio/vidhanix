@@ -200,7 +200,12 @@
                 hosts: lib.attrValues (lib.mapAttrs mkMatrixElement hosts);
             in
             pkgs.lib.strings.toJSON {
+<<<<<<< HEAD
               include = (mkMatrixElements self.nixosConfigurations);
+=======
+              include =
+                (mkMatrixElements self.nixosConfigurations);
+>>>>>>> a7c4ac7 (macbook)
             }
           );
         }

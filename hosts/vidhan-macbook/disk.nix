@@ -11,25 +11,27 @@
           type = "gpt";
           partitions = {
             iBootSystemContainer = {
+              priority = 1;
               type = "AF0B";
               device = "/dev/nvme0n1p1";
             };
 
             macOSContainer = {
+              priority = 2;
               type = "AF0A";
               device = "/dev/nvme0n1p2";
             };
 
             NixOSContainer = {
+              priority = 3;
               type = "AF0A";
               device = "/dev/nvme0n1p3";
             };
 
             ESP = {
+              priority = 4;
               type = "EF00";
               device = "/dev/nvme0n1p4";
-
-              priority = 1;
 
               content = {
                 type = "filesystem";
@@ -43,6 +45,7 @@
             };
 
             root = {
+              priority = 5;
               type = "8300";
               device = "/dev/nvme0n1p5";
 
@@ -79,6 +82,7 @@
             };
 
             RecoveryOSContainer = {
+              priority = 6;
               type = "AF0C";
               device = "/dev/nvme0n1p6";
             };
