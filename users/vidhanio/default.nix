@@ -5,9 +5,6 @@
   lib,
   ...
 }:
-let
-  inherit (osConfig.nixpkgs.hostPlatform) isDarwin;
-in
 {
   imports = lib.readSubmodules ./.;
 
@@ -33,7 +30,6 @@ in
   programs = {
     _1password.enable = true;
     bat.enable = true;
-    cider-2.enable = true;
     direnv.enable = true;
     eza.enable = true;
     firefox.enable = true;
@@ -48,7 +44,7 @@ in
     };
     neovim.enable = true;
     ripgrep.enable = true;
-    vacuum-tube.enable = lib.mkIf osConfig.nixpkgs.hostPlatform.isLinux true;
+    vacuum-tube.enable = true;
     vesktop.enable = true;
     vscode.enable = true;
     zoxide.enable = true;
@@ -71,26 +67,23 @@ in
     pragmata-pro-variable
   ];
 
-  dock =
-    with config.programs;
-    lib.optional (!isDarwin) {
+  desktop.dock = with config.programs; [
+    {
       package = pkgs.nautilus;
       name = "org.gnome.Nautilus.desktop";
     }
-    ++ [
-      ghostty.package
-      firefox.package
-      {
-        inherit (vscode) package;
-        name = lib.mkIf (!isDarwin) "code-insiders.desktop";
-      }
-      vesktop.package
-      (if isDarwin then "/System/Applications/Music.app" else cider-2.package)
-    ];
+    ghostty.package
+    firefox.package
+    {
+      inherit (vscode) package;
+      name = "code-insiders.desktop";
+    }
+    vesktop.package
+  ];
 
   fonts.fontconfig.enable = true;
 
-  xdg.autostart.enable = lib.mkIf osConfig.nixpkgs.hostPlatform.isLinux true;
+  xdg.autostart.enable = true;
 
   home.stateVersion = "25.11";
 }

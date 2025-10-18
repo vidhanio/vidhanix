@@ -18,11 +18,6 @@ let
       ext = "tar.gz";
       hash = "sha256-bcLLMg4FkpDsquZR5l8lID312/jOoT34tn2u0QiYsVk=";
     };
-    "aarch64-darwin" = {
-      os = "darwin-arm64";
-      ext = "zip";
-      hash = "sha256-6fgeD24cnPKBsUo8WDSJ8lEqqjrkjA9CACGXiAjlr/s=";
-    };
   };
 
   inherit (platforms.${system} or (throw "Unsupported system: ${system}")) os ext hash;

@@ -2,14 +2,12 @@
   lib,
   config,
   pkgs,
-  osConfig,
   ...
 }:
 let
   cfg = config.programs.vesktop;
   jsonFormat = pkgs.formats.json { };
   stateFile.source = jsonFormat.generate "vesktop-state" cfg.state;
-  inherit (osConfig.nixpkgs.hostPlatform) isDarwin;
 in
 {
   options.programs.vesktop = {
@@ -48,8 +46,7 @@ in
 
       impermanence.directories = [ ".config/vesktop/sessionData/Local Storage" ];
 
-      xdg.configFile."vesktop/state.json" = lib.mkIf (!isDarwin) stateFile;
-      home.file."Library/Application Support/vesktop/state.json" = lib.mkIf isDarwin stateFile;
+      xdg.configFile."vesktop/state.json" = lib.mkIf (cfg.state != { }) stateFile;
     })
   ];
 }

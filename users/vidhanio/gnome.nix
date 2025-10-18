@@ -14,7 +14,6 @@ in
       with pkgs.gnomeExtensions;
       map (package: { inherit package; }) [
         appindicator
-        blur-my-shell
         dash-to-panel
         pip-on-top
         rounded-window-corners-reborn

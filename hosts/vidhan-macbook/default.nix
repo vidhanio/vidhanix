@@ -1,27 +1,18 @@
-{ pkgs, ... }:
-let
-  username = "vidhanio";
-in
 {
-  nixpkgs.hostPlatform = "aarch64-darwin";
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  imports = lib.readSubmodules ./.;
 
-  users = {
-    users.${username} = {
-      uid = 501;
+  nixpkgs.hostPlatform = "aarch64-linux";
 
-      description = "Vidhan Bhatt";
-
-      home = "/Users/${username}";
-      createHome = true;
-      shell = pkgs.fish;
-    };
-
-    knownUsers = [ username ];
+  nix.settings = {
+    cores = 1;
+    max-jobs = 2;
   };
 
-  programs = {
-    fish.enable = true;
-  };
-
-  system.stateVersion = 6;
+  system.stateVersion = "25.11";
 }

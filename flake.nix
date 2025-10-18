@@ -1,12 +1,22 @@
 {
+  nixConfig = {
+    extra-substituters = [
+      "https://cache.nixos.org/"
+      "https://install.determinate.systems"
+      "https://cache.flakehub.com/"
+      "https://nix-community.cachix.org/"
+    ];
+
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
   inputs = {
     self.submodules = true;
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    darwin = {
-      url = "github:nix-darwin/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     determinate = {
       url = "github:DeterminateSystems/determinate";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,13 +53,16 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    apple-silicon = {
+      url = "github:nix-community/nixos-apple-silicon";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      darwin,
       ...
     }@inputs:
     let
@@ -58,7 +71,6 @@
       systems = [
         "x86_64-linux"
         "aarch64-linux"
-        "aarch64-darwin"
       ];
 
       nixpkgsCfg = {
@@ -69,6 +81,7 @@
             determinate-nix.overlays.default
             firefox-addons.overlays.default
             agenix.overlays.default
+            apple-silicon.overlays.default
           ]
           ++ lib.attrValues self.overlays;
       };
@@ -98,6 +111,7 @@
             agenix
             impermanence
             disko
+            apple-silicon
           ];
 
           osModules = map (input: input."${class}Modules".default) (
@@ -155,14 +169,12 @@
           disko
         ];
       };
-      mkDarwinConfigurations = mkConfigurations {
-        class = "darwin";
-        mkSystem = darwin.lib.darwinSystem;
-      };
     in
     {
-      nixosConfigurations = mkNixosConfigurations [ "vidhan-pc" ];
-      darwinConfigurations = mkDarwinConfigurations [ "vidhan-macbook" ];
+      nixosConfigurations = mkNixosConfigurations [
+        "vidhan-pc"
+        "vidhan-macbook"
+      ];
 
       overlays = lib.importDirAttrs ./overlays;
 
@@ -186,8 +198,7 @@
                 hosts: lib.attrValues (lib.mapAttrs mkMatrixElement hosts);
             in
             pkgs.lib.strings.toJSON {
-              include =
-                (mkMatrixElements self.nixosConfigurations) ++ (mkMatrixElements self.darwinConfigurations);
+              include = (mkMatrixElements self.nixosConfigurations);
             }
           );
         }
@@ -211,21 +222,7 @@
               # add all changes to git
               git add .
 
-              # run command
-              # we will use `nix eval --json .#nixosConfigurations/darwinConfigurations --apply builtins.attrNames` | jq to find whether this uname -n is a darwin or nixos system
-              is_class() {
-                local class=$1
-                nix eval --json .#"$class"Configurations --apply builtins.attrNames | jq --arg hostname "$(uname -n)" -e 'any(. == $hostname)' >/dev/null
-              }
-
-              if is_class darwin; then
-                nh darwin "''${@:-switch}"
-              elif is_class nixos; then
-                nh os "''${@:-switch}"
-              else
-                echo "unknown host: $(uname -n)"
-                exit 1
-              fi
+              nh os "''${@:-switch}"
 
               direnv reload
             '';

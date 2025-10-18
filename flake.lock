@@ -24,6 +24,27 @@
         "type": "github"
       }
     },
+    "apple-silicon": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1759818599,
+        "narHash": "sha256-4Go3gVl3E+geWMcFQ+06qlkO/lJlSvS9dyhYiXLWYq0=",
+        "owner": "nix-community",
+        "repo": "nixos-apple-silicon",
+        "rev": "24ab28e47b586f741910b3a2f0428f3523a0fff3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixos-apple-silicon",
+        "type": "github"
+      }
+    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -110,26 +131,6 @@
       "original": {
         "owner": "lnl7",
         "ref": "master",
-        "repo": "nix-darwin",
-        "type": "github"
-      }
-    },
-    "darwin_2": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1760338583,
-        "narHash": "sha256-IGwy02SH5K2hzIFrKMRsCmyvwOwWxrcquiv4DbKL1S4=",
-        "owner": "nix-darwin",
-        "repo": "nix-darwin",
-        "rev": "9a9ab01072f78823ca627ae5e895e40d493c3ecf",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-darwin",
         "repo": "nix-darwin",
         "type": "github"
       }
@@ -281,6 +282,21 @@
       }
     },
     "flake-compat": {
+      "locked": {
+        "lastModified": 1746162366,
+        "narHash": "sha256-5SSSZ/oQkwfcAz/o/6TlejlVGqeK08wyREBQ5qFFPhM=",
+        "owner": "nix-community",
+        "repo": "flake-compat",
+        "rev": "0f158086a2ecdbb138cd0429410e44994f1b7e4b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-compat_2": {
       "flake": false,
       "locked": {
         "lastModified": 1696426674,
@@ -296,7 +312,7 @@
         "type": "github"
       }
     },
-    "flake-compat_2": {
+    "flake-compat_3": {
       "flake": false,
       "locked": {
         "lastModified": 1696426674,
@@ -392,7 +408,7 @@
     },
     "git-hooks-nix": {
       "inputs": {
-        "flake-compat": "flake-compat",
+        "flake-compat": "flake-compat_2",
         "gitignore": [
           "determinate",
           "nix"
@@ -418,7 +434,7 @@
     },
     "git-hooks-nix_2": {
       "inputs": {
-        "flake-compat": "flake-compat_2",
+        "flake-compat": "flake-compat_3",
         "gitignore": [
           "determinate-nix"
         ],
@@ -698,7 +714,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "darwin": "darwin_2",
+        "apple-silicon": "apple-silicon",
         "determinate": "determinate",
         "determinate-nix": "determinate-nix",
         "disko": "disko",
