@@ -1,14 +1,15 @@
 final: prev:
 let
   readDirContents' =
-    let
-      isNixModule = name: type: (type == "regular" && prev.hasSuffix ".nix" name) || type == "directory";
-    in
-    with builtins;
     cond: path:
-    prev.pipe (readDir path) [
+    let
+      isNixFile = name: type: type == "regular" && prev.hasSuffix ".nix" name;
+      isNixFolder = name: type: type == "directory" && (prev.pathIsRegularFile "${path}/${name}/default.nix");
+      isNixModule = name: type: isNixFile name type || isNixFolder name type;
+    in
+    prev.pipe (builtins.readDir path) [
       (prev.filterAttrs (name: type: isNixModule name type && cond name))
-      attrNames
+      prev.attrNames
       (map (name: path + "/${name}"))
     ];
 in

@@ -1,0 +1,3 @@
+{
+  hardware.asahi.peripheralFirmwareDirectory = ./firmware;
+}
