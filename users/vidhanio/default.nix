@@ -63,8 +63,8 @@
     nil
 
     # fonts
-    berkeley-mono-variable
-    pragmata-pro-variable
+    # berkeley-mono-variable
+    # pragmata-pro-variable
   ];
 
   desktop.dock = with config.programs; [
