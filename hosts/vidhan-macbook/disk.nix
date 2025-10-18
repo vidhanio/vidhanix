@@ -4,7 +4,7 @@
       main = {
         type = "disk";
         device = "/dev/nvme0n1";
-        # destroy = false;
+        destroy = false;
 
         content = {
           type = "gpt";
