@@ -49,7 +49,6 @@
 
             root = {
               priority = 5;
-              type = "8300";
               device = "/dev/nvme0n1p5";
 
               content = {
