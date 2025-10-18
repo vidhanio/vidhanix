@@ -51,7 +51,6 @@
     substituters = [
       "https://cache.nixos.org/"
       "https://install.determinate.systems"
-      "https://cache.flakehub.com/"
       "https://nix-community.cachix.org/"
       "https://nixos-apple-silicon.cachix.org"
     ];
