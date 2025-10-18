@@ -11,18 +11,21 @@
           type = "gpt";
           partitions = {
             iBootSystemContainer = {
+              label = "iBootSystemContainer";
               priority = 1;
               type = "AF0B";
               device = "/dev/nvme0n1p1";
             };
 
             macOSContainer = {
+              label = "macOSContainer";
               priority = 2;
               type = "AF0A";
               device = "/dev/nvme0n1p2";
             };
 
             NixOSContainer = {
+              label = "NixOSContainer";
               priority = 3;
               type = "AF0A";
               device = "/dev/nvme0n1p3";
@@ -82,6 +85,7 @@
             };
 
             RecoveryOSContainer = {
+              label = "RecoveryOSContainer";
               priority = 6;
               type = "AF0C";
               device = "/dev/nvme0n1p6";
