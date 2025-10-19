@@ -13,27 +13,27 @@
               label = "iBootSystemContainer";
               priority = 1;
               type = "AF0B";
-              device = "/dev/nvme0n1p1";
+              uuid = "7f28fe23-37e9-4d77-80e9-7e9a1851ce4c";
             };
 
             macOSContainer = {
               label = "macOSContainer";
               priority = 2;
               type = "AF0A";
-              device = "/dev/nvme0n1p2";
+              uuid = "472ca1d5-7ae2-40a5-bab8-bd2843387e1e";
             };
 
             NixOSContainer = {
               label = "NixOSContainer";
               priority = 3;
               type = "AF0A";
-              device = "/dev/nvme0n1p3";
+              uuid = "98e46bbd-97fb-4e58-8bec-4e350e4409e2";
             };
 
             ESP = {
               priority = 4;
               type = "EF00";
-              device = "/dev/nvme0n1p4";
+              uuid = "6383c35f-4241-4dda-b6f9-f662cdb81141";
 
               content = {
                 type = "filesystem";
@@ -48,7 +48,6 @@
 
             root = {
               priority = 5;
-              device = "/dev/nvme0n1p5";
 
               content = {
                 type = "btrfs";
@@ -86,7 +85,7 @@
               label = "RecoveryOSContainer";
               priority = 6;
               type = "AF0C";
-              device = "/dev/nvme0n1p6";
+              uuid = "3dfb4d81-0d88-473a-81a0-57088bfa54bd";
             };
           };
         };
