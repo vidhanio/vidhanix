@@ -13,7 +13,7 @@
               label = "iBootSystemContainer";
               priority = 1;
               type = "AF0B";
-              uuid = "7f28fe23-37e9-4d77-80e9-7e9a1851ce4c";
+              uuid = "7f28fe23-37e9-4d77-80e9-7e9a1851ce4d";
             };
 
             Container = {
