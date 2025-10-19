@@ -16,8 +16,8 @@
               uuid = "7f28fe23-37e9-4d77-80e9-7e9a1851ce4c";
             };
 
-            macOSContainer = {
-              label = "macOSContainer";
+            Container = {
+              label = "Container";
               priority = 2;
               type = "AF0A";
               uuid = "472ca1d5-7ae2-40a5-bab8-bd2843387e1e";
