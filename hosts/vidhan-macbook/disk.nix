@@ -8,6 +8,10 @@
 
         content = {
           type = "gpt";
+          postCreateHook = ''
+            sgdisk --sort
+          '';
+
           partitions = {
             iBootSystemContainer = {
               label = "iBootSystemContainer";
