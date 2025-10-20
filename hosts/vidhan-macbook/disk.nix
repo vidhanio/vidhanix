@@ -13,27 +13,27 @@
               label = "iBootSystemContainer";
               priority = 1;
               type = "AF0B";
-              uuid = "7f28fe23-37e9-4d77-80e9-7e9a1851ce4d";
+              uuid = "174510dd-4f09-4210-b777-c6704b547835";
             };
 
             Container = {
               label = "Container";
               priority = 2;
               type = "AF0A";
-              uuid = "472ca1d5-7ae2-40a5-bab8-bd2843387e1e";
+              uuid = "a2b24943-af07-4577-ab01-1a608662946e";
             };
 
             NixOSContainer = {
               label = "NixOSContainer";
               priority = 3;
               type = "AF0A";
-              uuid = "98e46bbd-97fb-4e58-8bec-4e350e4409e2";
+              uuid = "abff7d6b-ce0a-4544-9f95-3107ae3f9b61";
             };
 
             ESP = {
               priority = 4;
               type = "EF00";
-              uuid = "6383c35f-4241-4dda-b6f9-f662cdb81141";
+              uuid = "24e999b2-7fa5-49a6-b4c1-83010039a359";
 
               content = {
                 type = "filesystem";
@@ -48,6 +48,7 @@
 
             root = {
               priority = 5;
+              size = "100%";
 
               content = {
                 type = "btrfs";
@@ -85,7 +86,7 @@
               label = "RecoveryOSContainer";
               priority = 6;
               type = "AF0C";
-              uuid = "3dfb4d81-0d88-473a-81a0-57088bfa54bd";
+              uuid = "a91a89f1-ca9d-4dfb-b3c3-a1d389d612ac";
             };
           };
         };
