@@ -47,6 +47,7 @@
             };
 
             root = {
+              _index = 0;
               priority = 5;
               size = "100%";
 
