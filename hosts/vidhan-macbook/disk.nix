@@ -8,36 +8,32 @@
 
         content = {
           type = "gpt";
-          postCreateHook = ''
-            sgdisk --sort $device
-          '';
 
           partitions = {
             iBootSystemContainer = {
               label = "iBootSystemContainer";
               priority = 1;
               type = "AF0B";
-              uuid = "174510dd-4f09-4210-b777-c6704b547835";
+              uuid = "62132ea7-731c-44eb-848a-80a899f51311";
             };
 
             Container = {
               label = "Container";
               priority = 2;
               type = "AF0A";
-              uuid = "a2b24943-af07-4577-ab01-1a608662946e";
+              uuid = "18fa4f40-f0b2-407f-9eea-a1491cefeaa4";
             };
 
             NixOSContainer = {
-              label = "NixOSContainer";
               priority = 3;
               type = "AF0A";
-              uuid = "abff7d6b-ce0a-4544-9f95-3107ae3f9b61";
+              uuid = "4238759e-8d52-4fd7-a67f-c1476fce03f9";
             };
 
             ESP = {
               priority = 4;
               type = "EF00";
-              uuid = "24e999b2-7fa5-49a6-b4c1-83010039a359";
+              uuid = "ff9579f2-e598-4e95-b8be-91f66eaba3a4";
 
               content = {
                 type = "filesystem";
@@ -89,7 +85,7 @@
               label = "RecoveryOSContainer";
               priority = 5;
               type = "AF0C";
-              uuid = "a91a89f1-ca9d-4dfb-b3c3-a1d389d612ac";
+              uuid = "37b1fd46-dc1b-4342-887c-f533d6ca1de2";
             };
           };
         };
