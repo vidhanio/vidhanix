@@ -9,7 +9,7 @@
         content = {
           type = "gpt";
           postCreateHook = ''
-            sgdisk --sort
+            sgdisk --sort $device
           '';
 
           partitions = {
