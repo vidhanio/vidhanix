@@ -32,18 +32,22 @@
     };
   };
 
+  programs = {
+    fish.enable = true;
+    ssh.knownHosts."github.com".publicKey =
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+  };
+
   networking.networkmanager.enable = true;
 
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_CA.UTF-8";
 
-  services.printing.enable = true;
-
-  security.rtkit.enable = true;
-
-  programs = {
-    fish.enable = true;
+  services = {
+    printing.enable = true;
+    openssh.enable = true;
   };
+  security.rtkit.enable = true;
 
   nix.settings = {
     trusted-users = [ "vidhanio" ];
@@ -74,7 +78,4 @@
       "/etc/machine-id"
     ];
   };
-
-  programs.ssh.knownHosts."github.com".publicKey =
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
 }

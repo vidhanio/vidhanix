@@ -17,8 +17,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     agenix = {
-      # https://github.com/ryantm/agenix/pull/350
-      url = "github:vidhanio/agenix/pkgs-getconf";
+      url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {

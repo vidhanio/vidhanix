@@ -10,16 +10,15 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1760482530,
+        "lastModified": 1760836749,
         "narHash": "sha256-wyT7Pl6tMFbFrs8Lk/TlEs81N6L+VSybPfiIgzU8lbQ=",
-        "owner": "vidhanio",
+        "owner": "ryantm",
         "repo": "agenix",
-        "rev": "d796cc5de4918b93657557bed43ad41e9fb6d2c3",
+        "rev": "2f0f812f69f3eb4140157fe15e12739adf82e32a",
         "type": "github"
       },
       "original": {
-        "owner": "vidhanio",
-        "ref": "pkgs-getconf",
+        "owner": "ryantm",
         "repo": "agenix",
         "type": "github"
       }
