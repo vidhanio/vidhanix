@@ -14,6 +14,8 @@
               priority = 1;
               type = "AF0B";
               uuid = "174510dd-4f09-4210-b777-c6704b547835";
+              start = "6s";
+              end = "128005s";
             };
 
             Container = {
@@ -21,6 +23,8 @@
               priority = 2;
               type = "AF0A";
               uuid = "a2b24943-af07-4577-ab01-1a608662946e";
+              start = "128006s";
+              end = "16762629s";
             };
 
             NixOSContainer = {
@@ -28,12 +32,16 @@
               priority = 3;
               type = "AF0A";
               uuid = "abff7d6b-ce0a-4544-9f95-3107ae3f9b61";
+              start = "16762630s";
+              end = "17372933s";
             };
 
             ESP = {
               priority = 4;
               type = "EF00";
               uuid = "24e999b2-7fa5-49a6-b4c1-83010039a359";
+              start = "17372934s";
+              end = "17495045s";
 
               content = {
                 type = "filesystem";
@@ -47,7 +55,6 @@
             };
 
             root = {
-              _index = 0;
               priority = 5;
               size = "100%";
 
@@ -88,6 +95,8 @@
               priority = 6;
               type = "AF0C";
               uuid = "a91a89f1-ca9d-4dfb-b3c3-a1d389d612ac";
+              start = "59968630s";
+              end = "61279338s";
             };
           };
         };
