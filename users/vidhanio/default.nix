@@ -1,6 +1,5 @@
 {
   pkgs,
-  osConfig,
   config,
   lib,
   ...
@@ -40,7 +39,7 @@
     ghostty.enable = true;
     git = {
       enable = true;
-      userEmail = "me@vidhan.io";
+      settings.user.email = "me@vidhan.io";
     };
     neovim.enable = true;
     ripgrep.enable = true;
@@ -48,10 +47,6 @@
     vesktop.enable = true;
     vscode.enable = true;
     zoxide.enable = true;
-    nh = {
-      enable = true;
-      flake = "${config.home.homeDirectory}/Projects/vidhanix";
-    };
   };
 
   services = {
