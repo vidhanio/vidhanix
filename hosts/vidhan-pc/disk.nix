@@ -19,7 +19,7 @@
             ESP = {
               priority = 1;
               start = "1M";
-              end = "128M";
+              end = "500M";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -49,6 +49,10 @@
                     "/persist" = {
                       inherit mountOptions;
                       mountpoint = "/persist";
+                    };
+                    "/swap" = {
+                      mountpoint = "/swap";
+                      swap.swapfile.size = "16G";
                     };
                   };
               };
