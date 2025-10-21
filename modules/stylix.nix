@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   stylix = {
     enable = true;
@@ -9,8 +9,11 @@
         package = pkgs.berkeley-mono-variable;
         name = "Berkeley Mono Variable";
       };
-      serif = config.stylix.fonts.monospace;
-      sansSerif = config.stylix.fonts.monospace;
+      # serif = config.stylix.fonts.monospace;
+      sansSerif = {
+        package = pkgs.inter;
+        name = "Inter";
+      };
     };
   };
 }

@@ -93,5 +93,7 @@
     };
   };
 
+  boot.kernel.sysfs.module.zswap.parameters.enabled = true;
+
   impermanence.enable = true;
 }

@@ -12,6 +12,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    apple-silicon = {
+      url = "github:nix-community/nixos-apple-silicon";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    determinate-nix = {
+      url = "github:DeterminateSystems/nix-src";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,16 +39,8 @@
       url = "github:vidhanio/impermanence/hmv2-trash";
     };
 
-    determinate-nix = {
-      url = "github:DeterminateSystems/nix-src";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    apple-silicon = {
-      url = "github:nix-community/nixos-apple-silicon";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -81,27 +82,19 @@
           }
         );
 
-      mkConfigurations =
-        {
-          class,
-          mkSystem,
-          extras ? [ ],
-        }:
+      mkNixOSConfigurations =
         hosts:
         let
-          moduleInputs = with inputs; [
-            determinate
-            home-manager
-            stylix
-            agenix
-            impermanence
-            disko
-            apple-silicon
-          ];
-
-          osModules = map (input: input."${class}Modules".default) (
-            lib.filter (input: input ? "${class}Modules") moduleInputs
-          );
+          nixosModules =
+            with inputs;
+            map (input: input.nixosModules.default) [
+              determinate
+              home-manager
+              stylix
+              agenix
+              impermanence
+              disko
+            ];
 
           homeModules = with inputs; [
             impermanence.homeManagerModules.default
@@ -110,18 +103,24 @@
         in
         lib.genAttrs hosts (
           host:
-          mkSystem {
+          nixpkgs.lib.nixosSystem {
             inherit lib;
+            specialArgs = { inherit inputs; };
 
             modules = [
               ./hosts/${host}
               { networking.hostName = host; }
             ]
-            ++ osModules
+            ++ nixosModules
             ++ lib.readDirContents ./modules
             ++ [
               (
-                { lib, config, ... }:
+                {
+                  lib,
+                  config,
+                  inputs,
+                  ...
+                }:
                 {
                   nixpkgs = nixpkgsCfg;
                   nix.registry =
@@ -133,30 +132,20 @@
                   home-manager = {
                     users =
                       let
-                        allUsers = lib.attrValues config.users.users;
-                        isNormalUser = user: (user.isNormalUser or true) && !(lib.hasPrefix "_" user.name);
-                        users = lib.filter isNormalUser allUsers;
+                        users = lib.filter (user: user.isNormalUser) (lib.attrValues config.users.users);
                       in
                       lib.genAttrs' users (user: lib.nameValuePair user.name ./users/${user.name});
                     sharedModules = homeModules;
+                    extraSpecialArgs = { inherit inputs; };
                   };
                 }
               )
             ];
           }
         );
-
-      mkNixosConfigurations = mkConfigurations {
-        class = "nixos";
-        mkSystem = nixpkgs.lib.nixosSystem;
-        extras = with inputs; [
-          impermanence
-          disko
-        ];
-      };
     in
     {
-      nixosConfigurations = mkNixosConfigurations [
+      nixosConfigurations = mkNixOSConfigurations [
         "vidhan-pc"
         "vidhan-macbook"
       ];

@@ -10,18 +10,19 @@ in
 {
   assertions = lib.mkIf cfg.enable [
     {
-      assertion = cfg.userEmail != null;
-      message = "programs.git.userEmail must be set";
+      assertion = cfg.settings.user.email != null;
+      message = "programs.git.settings.user.email must be set";
     }
   ];
 
   programs.git = {
-    userName = lib.mkDefault osConfig.users.users.${config.home.username}.description;
     signing = {
       format = "ssh";
       signByDefault = true;
     };
-    extraConfig = {
+    settings = {
+      user.name = lib.mkDefault osConfig.users.users.${config.home.username}.description;
+
       init.defaultBranch = "main";
       user.signingkey = "~/.ssh/id_ed25519.pub";
 

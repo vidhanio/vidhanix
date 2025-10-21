@@ -1,9 +1,10 @@
 {
   lib,
+  inputs,
   ...
 }:
 {
-  imports = lib.readSubmodules ./.;
+  imports = [ inputs.apple-silicon.nixosModules.default ] ++ lib.readSubmodules ./.;
 
   nixpkgs.hostPlatform = "aarch64-linux";
 
