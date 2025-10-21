@@ -1,4 +1,0 @@
-[submodule "fonts"]
-	path = fonts
-	url = git@github.com:vidhanio/fonts.git
-	branch = main
