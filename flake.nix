@@ -1,7 +1,5 @@
 {
   inputs = {
-    self.submodules = true;
-
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     determinate = {
       url = "github:DeterminateSystems/determinate";
@@ -42,6 +40,10 @@
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    fonts = {
+      url = "git+ssh://git@github.com/vidhanio/fonts";
+      flake = false;
     };
   };
 
@@ -145,12 +147,15 @@
         );
     in
     {
+      inherit inputs;
       nixosConfigurations = mkNixOSConfigurations [
         "vidhan-pc"
         "vidhan-macbook"
       ];
 
-      overlays = lib.importDirAttrs ./overlays;
+      overlays = lib.importDirAttrs ./overlays // {
+        fonts = final: prev: { inherit (inputs) fonts; };
+      };
 
       packages = forEachSystem (
         { pkgs, ... }:

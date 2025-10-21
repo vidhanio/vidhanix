@@ -1,16 +1,20 @@
-{ lib, stdenvNoCC }:
+{
+  lib,
+  stdenvNoCC,
+  fonts,
+}:
 
 stdenvNoCC.mkDerivation {
   pname = "pragmata-pro-variable";
   version = "0.9";
 
-  src = ../../fonts/pragmata-pro-variable;
+  src = fonts;
 
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/share/fonts/truetype/
-    cp *.ttf $out/share/fonts/truetype/
+    cp $pname/*.ttf $out/share/fonts/truetype/
 
     runHook postInstall
   '';

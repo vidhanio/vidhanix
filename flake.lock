@@ -389,6 +389,22 @@
         "type": "github"
       }
     },
+    "fonts": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1760649632,
+        "narHash": "sha256-6OKeinjE4YDqcwPMWDfQuvwdIGgf+RHHyBb/h2ISuIs=",
+        "ref": "refs/heads/main",
+        "rev": "2caaee7e5c21b4a346c1ea7502081017ebb8bea9",
+        "revCount": 8,
+        "type": "git",
+        "url": "ssh://git@github.com/vidhanio/fonts"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/vidhanio/fonts"
+      }
+    },
     "fromYaml": {
       "flake": false,
       "locked": {
@@ -718,6 +734,7 @@
         "determinate-nix": "determinate-nix",
         "disko": "disko",
         "firefox-addons": "firefox-addons",
+        "fonts": "fonts",
         "home-manager": "home-manager_2",
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs_3",
