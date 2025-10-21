@@ -30,6 +30,8 @@
     shellAliases = {
       vi = "nvim";
     };
+
+    sessionVariables.NIXOS_OZONE_WL = "1";
   };
 
   programs = {
