@@ -1,5 +1,14 @@
 {
   disko.devices = {
+    nodev."/" = {
+      fsType = "tmpfs";
+      mountOptions = [
+        "size=2G"
+        "defaults"
+        "mode=755"
+      ];
+    };
+
     disk = {
       main = {
         type = "disk";
@@ -61,10 +70,6 @@
                     ];
                   in
                   {
-                    "/root" = {
-                      inherit mountOptions;
-                      mountpoint = "/";
-                    };
                     "/nix" = {
                       inherit mountOptions;
                       mountpoint = "/nix";
@@ -93,7 +98,7 @@
     };
   };
 
-  boot.kernel.sysfs.module.zswap.parameters.enabled = true;
+  boot.kernel.sysfs.module.zswap.parameters.enabled = 1;
 
   impermanence.enable = true;
 }
