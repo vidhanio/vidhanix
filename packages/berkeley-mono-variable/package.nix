@@ -1,16 +1,20 @@
-{ lib, stdenvNoCC }:
+{
+  lib,
+  stdenvNoCC,
+  fonts,
+}:
 
 stdenvNoCC.mkDerivation {
   pname = "berkeley-mono-variable";
   version = "2.003";
 
-  src = ../../fonts/berkeley-mono-variable;
+  src = fonts;
 
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/share/fonts/opentype/
-    cp *.otf $out/share/fonts/opentype/
+    cp $pname/*.otf $out/share/fonts/opentype/
 
     runHook postInstall
   '';
