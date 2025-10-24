@@ -20,6 +20,13 @@ in
       ];
   };
 
+  dconf.settings = {
+    "org/gnome/shell/extensions/dash-to-panel" = {
+      scroll-icon-action = "PASS_THROUGH";
+      scroll-panel-action = "NOTHING";
+    };
+  };
+
   impermanence.directories =
     lib.mkIf (lib.elem pkgs.gnome-keyring osConfig.environment.systemPackages)
       [ ".local/share/keyrings" ];

@@ -4,7 +4,8 @@ let
     cond: path:
     let
       isNixFile = name: type: type == "regular" && prev.hasSuffix ".nix" name;
-      isNixFolder = name: type: type == "directory" && (prev.pathIsRegularFile "${path}/${name}/default.nix");
+      isNixFolder =
+        name: type: type == "directory" && (prev.pathIsRegularFile "${path}/${name}/default.nix");
       isNixModule = name: type: isNixFile name type || isNixFolder name type;
     in
     prev.pipe (builtins.readDir path) [

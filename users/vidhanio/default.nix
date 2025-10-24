@@ -43,6 +43,7 @@
     };
     neovim.enable = true;
     ripgrep.enable = true;
+    spotify-player.enable = true;
     vacuum-tube.enable = true;
     vesktop.enable = true;
     vscode.enable = true;

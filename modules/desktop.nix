@@ -43,11 +43,11 @@
             show-image-thumbnails = "always";
           };
         };
-        # gdm = {
-        #   "org/gnome/desktop/peripherals/mouse" = {
-        #     accel-profile = "flat";
-        #   };
-        # };
+        gdm = {
+          "org/gnome/desktop/peripherals/mouse" = {
+            accel-profile = "flat";
+          };
+        };
       };
   };
 
