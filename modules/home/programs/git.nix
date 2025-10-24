@@ -21,13 +21,16 @@ in
       signByDefault = true;
     };
     settings = {
-      user.name = lib.mkDefault osConfig.users.users.${config.home.username}.description;
+      user = {
+        name = lib.mkDefault osConfig.users.users.${config.home.username}.description;
+        signingkey = "~/.ssh/id_ed25519.pub";
+      };
 
       init.defaultBranch = "main";
-      user.signingkey = "~/.ssh/id_ed25519.pub";
 
       push.autoSetupRemote = true;
       pull.rebase = true;
+      rebase.autostash = true;
       merge.ff = "only";
       submodule.recurse = true;
 

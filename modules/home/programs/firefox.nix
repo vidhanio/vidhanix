@@ -15,6 +15,7 @@ lib.mkIf cfg.enable {
         packages = with pkgs.firefox-addons; [
           onepassword-password-manager
           ublock-origin
+          csgofloat
         ];
       };
 
@@ -107,7 +108,7 @@ lib.mkIf cfg.enable {
   impermanence.directories = [ ".mozilla/firefox/default" ];
 
   stylix.targets.firefox = {
-    colorTheme.enable = true;
+    firefoxGnomeTheme.enable = true;
     profileNames = [ "default" ];
   };
 }

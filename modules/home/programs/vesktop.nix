@@ -34,6 +34,7 @@ in
           hardwareAcceleration = true;
           hardwareVideoAcceleration = true;
           customTitleBar = true;
+          disableMinSize = true;
         };
         state = {
           firstLaunch = false;
