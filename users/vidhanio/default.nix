@@ -46,6 +46,7 @@
     vacuum-tube.enable = true;
     vesktop.enable = true;
     vscode.enable = true;
+    zellij.enable = true;
     zoxide.enable = true;
   };
 
