@@ -159,7 +159,8 @@
 
       packages = forEachSystem (
         { pkgs, ... }:
-        pkgs.lib.packagesFromDirectoryRecursive {
+        pkgs
+        // pkgs.lib.packagesFromDirectoryRecursive {
           inherit (pkgs) callPackage;
           directory = ./packages;
         }
