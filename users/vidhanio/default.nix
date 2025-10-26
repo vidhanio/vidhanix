@@ -42,6 +42,7 @@
       settings.user.email = "me@vidhan.io";
     };
     neovim.enable = true;
+    prismlauncher.enable = true;
     ripgrep.enable = true;
     spotify-player.enable = true;
     vacuum-tube.enable = true;
@@ -76,6 +77,7 @@
       name = "code-insiders.desktop";
     }
     vesktop.package
+    prismlauncher.package
   ];
 
   fonts.fontconfig.enable = true;
