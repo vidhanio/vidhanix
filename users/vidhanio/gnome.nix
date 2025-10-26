@@ -17,6 +17,7 @@ in
         dash-to-panel
         pip-on-top
         rounded-window-corners-reborn
+        steal-my-focus-window
       ];
   };
 
