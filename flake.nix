@@ -1,21 +1,14 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    determinate = {
-      url = "github:DeterminateSystems/determinate";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+
+    # no `follows` to avoid invalidating cache
+    determinate.url = "github:DeterminateSystems/determinate";
+    determinate-nix.url = "github:DeterminateSystems/nix-src";
+    apple-silicon.url = "github:nix-community/nixos-apple-silicon";
+
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    apple-silicon = {
-      url = "github:nix-community/nixos-apple-silicon";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    determinate-nix = {
-      url = "github:DeterminateSystems/nix-src";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
