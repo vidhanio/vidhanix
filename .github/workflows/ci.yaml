@@ -27,7 +27,7 @@ jobs:
         name: Generate Flake Info
         run: |
           echo "host-matrix=$(cat $(nix build .#vidhanix-github-matrix --print-out-paths))" >> $GITHUB_OUTPUT
-          runners='{"x86_64-linux":"ubuntu-latest","aarch64-linux":"ubuntu-24.04-arm","aarch64-darwin":"macos-26"}'
+          runners='{"x86_64-linux":"ubuntu-latest","aarch64-linux":"ubuntu-24.04-arm"}'
           echo "runners=$runners" >> $GITHUB_OUTPUT
           echo "runner-matrix=$(echo $runners | jq -c 'to_entries | map({system: .key, runner: .value})')" >> $GITHUB_OUTPUT
           echo 'title-classes={"nixos":"NixOS","darwin":"Darwin"}' >> $GITHUB_OUTPUT
