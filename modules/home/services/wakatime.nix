@@ -22,13 +22,9 @@ in
       file = cfg.apiKeyFile;
     };
 
-    home.activation.wakatimeCfg =
-      let
-        wakatime-cli = lib.getExe pkgs.wakatime;
-      in
-      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        export XDG_RUNTIME_DIR=''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
-        run ${wakatime-cli} --config-write api_key_vault_cmd="cat ${config.age.secrets.wakatime.path}"
-      '';
+    home.activation.wakatimeCfg = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      export XDG_RUNTIME_DIR=''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
+      run ${lib.getExe pkgs.wakatime-cli} --config-write api_key_vault_cmd="cat ${config.age.secrets.wakatime.path}"
+    '';
   };
 }

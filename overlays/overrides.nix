@@ -9,7 +9,7 @@ in
     '';
   });
 }
-// lib.optionalAttrs stdenv.isAarch64 {
+// lib.optionalAttrs stdenv.hostPlatform.isAarch64 {
   wrapFirefox =
     browser: opts:
     let
