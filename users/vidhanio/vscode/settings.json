@@ -1,136 +1,16 @@
 {
-  "[astro]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[dockercompose]": {
-    "editor.autoIndent": "advanced",
-    "editor.defaultFormatter": "redhat.vscode-yaml",
-    "editor.insertSpaces": true,
-    "editor.quickSuggestions": {
-      "comments": false,
-      "other": true,
-      "strings": true
-    },
-    "editor.tabSize": 2
-  },
-  "[dockerfile]": {
-    "editor.defaultFormatter": "ms-azuretools.vscode-containers"
-  },
-  "[elm]": {
-    "editor.codeLens": false
-  },
-  "[github-actions-workflow]": {
-    "editor.defaultFormatter": "redhat.vscode-yaml",
-    "editor.tabSize": 2
-  },
-  "[go]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll": "explicit",
-      "source.fixAll.sortJSON": "never",
-      "source.organizeImports": "explicit"
-    },
-    "editor.defaultFormatter": "golang.go"
-  },
-  "[haskell]": {
-    "editor.defaultFormatter": "haskell.haskell"
-  },
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[markdown]": {
-    "editor.defaultFormatter": "yzhang.markdown-all-in-one",
-    "editor.wordWrap": "on"
-  },
-  "[mdx]": {
-    "editor.wordWrap": "on"
-  },
-  "[nix]": {
-    "editor.defaultFormatter": "jnoortheen.nix-ide"
-  },
-  "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff"
-  },
-  "[solidity]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[sql]": {
-    "editor.defaultFormatter": "bradymholt.pgformatter"
-  },
-  "[svelte]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[svg]": {
-    "editor.defaultFormatter": "jock.svg"
-  },
-  "[toml]": {
-    "editor.defaultFormatter": "tombi-toml.tombi"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[vue]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[yaml]": {
-    "editor.defaultFormatter": "redhat.vscode-yaml"
-  },
-  "accessibility.signals.terminalBell": {
-    "sound": "on"
-  },
-  "atlascode.jira.lastCreateSiteAndProject": {
-    "projectKey": "ABIT",
-    "siteId": "5d9c002c-b1cd-47a5-95ba-2565ccb0e5f8"
-  },
-  "black-formatter.args": [
-    "--preview"
-  ],
-  "black-formatter.importStrategy": "fromEnvironment",
-  "C_Cpp.autocompleteAddParentheses": true,
-  "C_Cpp.codeAnalysis.clangTidy.enabled": true,
-  "chat.tools.terminal.autoApprove": {
-    "pnpm": true
-  },
-  "conventionalCommits.gitmoji": false,
   "crates.compatibleDecorator": "",
   "crates.errorDecorator": "!",
   "crates.incompatibleDecorator": "× ${version}",
-  "diffEditor.ignoreTrimWhitespace": false,
-  "discord.detailsIdling": "Idle",
-  "discord.largeImageIdling": "Idle",
-  "discord.lowerDetailsDebugging": "Workspace: {workspace}",
-  "discord.lowerDetailsIdling": "{empty}",
-  "discord.lowerDetailsNoWorkspaceFound": "{empty}",
-  "docker.extension.dockerEngineAvailabilityPrompt": false,
-  "docker.extension.enableComposeLanguageServer": false,
-  "dotenv.enableAutocloaking": false,
   "editor.acceptSuggestionOnCommitCharacter": false,
-  "editor.accessibilitySupport": "off",
   "editor.autoIndent": "full",
   "editor.bracketPairColorization.enabled": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit",
-    "source.fixAll.sortJSON": "never"
+    "source.fixAll": "explicit"
   },
   "editor.cursorBlinking": "expand",
   "editor.cursorSmoothCaretAnimation": "on",
-  "editor.fontFamily": "Berkeley Mono Variable",
   "editor.fontLigatures": true,
-  "editor.fontWeight": "375",
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": "active",
@@ -151,17 +31,9 @@
   "editor.stickyTabStops": true,
   "editor.suggestSelection": "first",
   "editor.tabCompletion": "on",
-  "eslint.format.enable": true,
-  "eslint.validate": [
-    "javascript",
-    "typescript",
-    "svelte",
-    "astro"
-  ],
-  "evenBetterToml.formatter.indentTables": true,
-  "evenBetterToml.formatter.reorderKeys": false,
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
+  "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "*.db": "${capture}.${extname}-*",
     "*.db3": "${capture}.${extname}-*",
@@ -171,27 +43,22 @@
     "*.sdb": "${capture}.${extname}-*",
     "*.sqlite": "${capture}.${extname}-*",
     "*.sqlite3": "${capture}.${extname}-*",
-    "*.ts": "${capture}.js",
-    "*.tsx": "${capture}.ts",
+    "*.ts": "${capture}.js, ${capture}.test.ts",
+    "*.tsx": "${capture}.test.tsx",
     "Cargo.toml": "Cargo.lock",
+    "flake.nix": "flake.lock",
     "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
     "tsconfig.json": "tsconfig.*.json"
   },
   "explorer.sortOrder": "type",
   "files.associations": {
-    ".env*": "dotenv",
+    ".env": "dotenv",
+    ".env.*": "dotenv",
     "*.css": "tailwindcss",
-    "*.css.liquid": "liquid-css",
-    "*.js.liquid": "liquid-javascript",
-    "*.json.liquid": "json",
-    "*.md.liquid": "markdown",
-    "*.scss.liquid": "liquid-scss",
-    "*.yaml.liquid": "yaml",
     "flake.lock": "json"
   },
   "files.exclude": {
     "**/.DS_Store": true,
-    "**/.svelte-kit": true,
     "**/node_modules": true
   },
   "git.autofetch": true,
@@ -205,42 +72,9 @@
     }
   ],
   "github.copilot.editor.enableCodeActions": false,
-  "github.copilot.enable": {
-    "*": true,
-    "markdown": true,
-    "plaintext": true,
-    "scminput": false
-  },
   "github.copilot.nextEditSuggestions.enabled": false,
-  "githubPullRequests.pullBranch": "never",
-  "gitlens.codeLens.enabled": false,
-  "gitlens.currentLine.enabled": false,
-  "gitlens.gitCommands.skipConfirmations": [
-    "fetch:command",
-    "stash-push:command",
-    "switch:command",
-    "push:command"
-  ],
-  "gitlens.graph.dimMergeCommits": true,
-  "gitlens.hovers.currentLine.over": "line",
-  "go.lintFlags": [
-    "--fast"
-  ],
-  "go.lintTool": "golangci-lint",
-  "go.toolsManagement.autoUpdate": true,
-  "haskell.formattingProvider": "fourmolu",
-  "haskell.manageHLS": "GHCup",
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "license.default": "AGPL-3.0",
-  "ltex.additionalRules.motherTongue": "en-CA",
-  "ltex.dictionary": {
-    "en-CA": [
-      "Vidhan",
-      "Bhatt"
-    ]
-  },
-  "ltex.language": "en-CA",
-  "makefile.configureOnOpen": true,
+  "license.default": "MIT",
   "material-icon-theme.files.associations": {
     "NOTICE": "certificate",
     "NOTICE-APACHE": "certificate"
@@ -253,7 +87,6 @@
     "typechain": "typescript",
     "workflows": "ci"
   },
-  "mypy.runUsingActiveInterpreter": true,
   "nix.enableLanguageServer": true,
   "nix.serverPath": "nil",
   "nix.serverSettings": {
@@ -268,22 +101,14 @@
   "notebook.formatOnCellExecution": true,
   "notebook.formatOnSave.enabled": true,
   "notebook.lineNumbers": "on",
-  "playwright.reuseBrowser": true,
-  "Prettier-SQL.keywordCase": "lower",
-  "Prettier-SQL.SQLFlavourOverride": "postgresql",
-  "prettier.documentSelectors": [
-    "**/*.astro"
-  ],
-  "prettier.resolveGlobalModules": true,
   "python.analysis.autoImportCompletions": true,
   "python.analysis.completeFunctionParens": true,
-  "python.analysis.enableSyncServer": true,
   "python.analysis.inlayHints.functionReturnTypes": true,
   "python.analysis.inlayHints.pytestParameters": true,
   "python.analysis.inlayHints.variableTypes": true,
   "python.analysis.typeCheckingMode": "strict",
   "python.languageServer": "Pylance",
-  "redhat.telemetry.enabled": true,
+  "redhat.telemetry.enabled": false,
   "rust-analyzer.cargo.features": "all",
   "rust-analyzer.cargo.targetDir": true,
   "rust-analyzer.check.command": "clippy",
@@ -299,18 +124,6 @@
   "rust-analyzer.rustfmt.rangeFormatting.enable": true,
   "scm.diffDecorations": "none",
   "security.workspace.trust.untrustedFiles": "open",
-  "settingsSync.ignoredSettings": [
-    "shellformat.path"
-  ],
-  "shellformat.flag": "-i=0",
-  "shellformat.path": "/opt/homebrew/bin/shfmt",
-  "sonarlint.connectedMode.connections.sonarqube": [
-    {
-      "connectionId": "https-sonarqube-flipp-com-",
-      "serverUrl": "https://sonarqube.flipp.com"
-    }
-  ],
-  "svelte.enable-ts-plugin": true,
   "tailwindCSS.experimental.classRegex": [
     [
       "\\.\"([^\"]*)\"",
@@ -330,11 +143,7 @@
   "terminal.integrated.enableMultiLinePasteWarning": "never",
   "terminal.integrated.enableVisualBell": true,
   "terminal.integrated.persistentSessionReviveProcess": "never",
-  "todo-tree.regex.regex": "(--|//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
-  "todo-tree.ripgrep.ripgrep": "/opt/homebrew/bin/rg",
-  "todo-tree.tree.expanded": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "typescriptupdateImportsOnFileMove.enabled": "always",
   "vim.handleKeys": {
     "<C-a>": false,
     "<C-c>": false,
@@ -346,14 +155,10 @@
     "<C-z>": false
   },
   "vim.useSystemClipboard": true,
-  "vscode_custom_css.imports": [
-    "file:///home/vidhanio/.vscode-insiders/extensions/yesitsfebreeze.smearcursor-1.2.0/_smearcursor.js"
-  ],
   "workbench.editor.empty.hint": "hidden",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.productIconTheme": "material-product-icons",
   "workbench.secondarySideBar.defaultVisibility": "hidden",
-  "yaml.format.singleQuote": true,
   "zenMode.centerLayout": false,
   "zenMode.fullScreen": false,
   "zenMode.hideLineNumbers": false
