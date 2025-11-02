@@ -216,7 +216,7 @@
               shellcheck
               shfmt
 
-              pkgs.agenix
+              agenix
 
               update-package
 

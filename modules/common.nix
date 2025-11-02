@@ -63,6 +63,8 @@
     ];
   };
 
+  boot.loader.systemd-boot.configurationLimit = 10;
+
   impermanence = {
     directories = [
       "/var/log"

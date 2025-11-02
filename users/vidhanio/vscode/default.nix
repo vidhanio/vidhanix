@@ -28,6 +28,8 @@
         ultram4rine.vscode-choosealicense
         vscodevim.vim
         wakatime.vscode-wakatime
+        pkief.material-icon-theme
+        pkief.material-product-icons
       ];
     };
   };
