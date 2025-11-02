@@ -776,7 +776,8 @@
         "home-manager": "home-manager_2",
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs_6",
-        "stylix": "stylix"
+        "stylix": "stylix",
+        "vscode-extensions": "vscode-extensions"
       }
     },
     "stylix": {
@@ -921,6 +922,26 @@
       "original": {
         "owner": "tinted-theming",
         "repo": "base16-zed",
+        "type": "github"
+      }
+    },
+    "vscode-extensions": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1761962287,
+        "narHash": "sha256-Wm9p7PpkSy6bgw9NU+NKCy1i3CQCYbTEbsHURaGnINA=",
+        "owner": "nix-community",
+        "repo": "nix-vscode-extensions",
+        "rev": "1a37285c50e143620fad2e9fb322adff5e2df1f2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-vscode-extensions",
         "type": "github"
       }
     }
