@@ -12,11 +12,9 @@ lib.mkMerge [
     programs.vscode.package = pkgs.vscode-insiders;
   }
   (lib.mkIf cfg.enable {
-    impermanence.directories = [
-      ".vscode-insiders"
-      ".config/Code - Insiders"
-    ];
-
-    stylix.targets.vscode.enable = false;
+    # impermanence.directories = [
+    #   ".vscode-insiders"
+    #   ".config/Code - Insiders"
+    # ];
   })
 ]

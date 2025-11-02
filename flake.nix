@@ -34,6 +34,10 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     fonts = {
       url = "git+ssh://git@github.com/vidhanio/fonts";
       flake = false;
@@ -62,7 +66,7 @@
             determinate-nix.overlays.default
             firefox-addons.overlays.default
             agenix.overlays.default
-            apple-silicon.overlays.default
+            vscode-extensions.overlays.default
           ]
           ++ lib.attrValues self.overlays;
       };

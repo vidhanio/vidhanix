@@ -24,7 +24,7 @@ let
 in
 (vscode.override { isInsiders = true; }).overrideAttrs (
   finalAttrs: previousAttrs: {
-    version = "latest";
+    version = "1.106.0-insider-2025-10-31";
     commit = "e637e2ef735545f15caaeb95cfa6c5998dab8124";
 
     src = fetchurl {
