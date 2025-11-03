@@ -59,10 +59,6 @@
   home.packages = with pkgs; [
     nixfmt-rfc-style
     nil
-
-    # fonts
-    berkeley-mono-variable
-    pragmata-pro-variable
   ];
 
   desktop.dock = with config.programs; [
@@ -79,8 +75,6 @@
     vesktop.package
     prismlauncher.package
   ];
-
-  fonts.fontconfig.enable = true;
 
   xdg.autostart.enable = true;
 
