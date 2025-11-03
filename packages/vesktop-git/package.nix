@@ -10,11 +10,11 @@
   ]
 )).overrideAttrs
   (previousAttrs: {
-    version = "1.6.1-unstable-2025-10-28";
+    version = "1.6.1-unstable-2025-11-03";
 
     src = previousAttrs.src.override {
-      rev = "9193ed58c9ad995da2c648ebe6286bda4e506e25";
-      hash = "sha256-ZFAsyH+5duKerZissOR/lESLetqqEMLk86msLlQO1xU=";
+      rev = "f57245f297c972de7f1ee1e0707305d7f5c7f7dc";
+      hash = "sha256-RYGxl5pFkhri0KZF6t97jibBX4Mn0rWB/yzfcVcwqS4=";
     };
 
     pnpmDeps = previousAttrs.pnpmDeps.override {
