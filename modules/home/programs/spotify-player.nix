@@ -3,7 +3,7 @@ let
   cfg = config.programs.spotify-player;
 in
 lib.mkIf cfg.enable {
-  impermanence.files = [
+  persist.files = [
     ".cache/spotify-player/credentials.json"
   ];
 }

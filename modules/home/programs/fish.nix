@@ -27,5 +27,5 @@ in
     };
   };
 
-  impermanence.files = lib.mkIf cfg.enable [ ".local/share/fish/fish_history" ];
+  persist.files = lib.mkIf cfg.enable [ ".local/share/fish/fish_history" ];
 }

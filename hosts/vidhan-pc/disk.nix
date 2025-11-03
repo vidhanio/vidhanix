@@ -63,5 +63,5 @@
     };
   };
 
-  impermanence.enable = true;
+  persist.enable = true;
 }

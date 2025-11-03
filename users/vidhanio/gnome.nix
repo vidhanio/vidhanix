@@ -28,7 +28,7 @@ in
     };
   };
 
-  impermanence.directories =
-    lib.mkIf (lib.elem pkgs.gnome-keyring osConfig.environment.systemPackages)
-      [ ".local/share/keyrings" ];
+  persist.directories = lib.mkIf (lib.elem pkgs.gnome-keyring osConfig.environment.systemPackages) [
+    ".local/share/keyrings"
+  ];
 }

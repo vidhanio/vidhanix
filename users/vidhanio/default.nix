@@ -1,5 +1,6 @@
 {
   pkgs,
+  osConfig,
   config,
   lib,
   ...
@@ -17,7 +18,7 @@
     };
   };
 
-  impermanence = {
+  persist = {
     directories = [
       "Downloads"
       "Projects"
@@ -27,7 +28,6 @@
   };
 
   programs = {
-    _1password.enable = true;
     bat.enable = true;
     direnv.enable = true;
     eza.enable = true;
@@ -61,22 +61,31 @@
     nil
   ];
 
-  desktop.dock = with config.programs; [
-    {
-      package = pkgs.nautilus;
-      name = "org.gnome.Nautilus.desktop";
-    }
-    ghostty.package
-    firefox.package
-    {
-      inherit (vscode) package;
-      name = "code-insiders.desktop";
-    }
-    vesktop.package
-    prismlauncher.package
-  ];
+  desktop = {
+    autostart = with config.programs; [
+      {
+        package = pkgs.solaar;
+        name = "solaar-autostart.desktop";
+      }
+      osConfig.programs._1password-gui.package
+      firefox.finalPackage
+      vesktop.package
+    ];
 
-  xdg.autostart.enable = true;
+    dock = with config.programs; [
+      {
+        package = pkgs.nautilus;
+        name = "org.gnome.Nautilus.desktop";
+      }
+      ghostty.package
+      firefox.finalPackage
+      {
+        inherit (vscode) package;
+        name = "code-insiders.desktop";
+      }
+      vesktop.package
+    ];
+  };
 
   home.stateVersion = "25.11";
 }

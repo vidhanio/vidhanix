@@ -36,6 +36,6 @@ in
       source = jsonFormat.generate "vacuumtube-config" cfg.config;
     };
 
-    impermanence.directories = [ ".config/VacuumTube/sessionData/Local Storage" ];
+    persist.directories = [ ".config/VacuumTube/sessionData/Local Storage" ];
   };
 }

@@ -6,10 +6,13 @@
 }:
 let
   cfg = config.programs.firefox;
+  profileName = "dev-edition-default";
 in
 lib.mkIf cfg.enable {
   programs.firefox = {
-    profiles.default = {
+    package = pkgs.firefox-devedition;
+
+    profiles.${profileName} = {
       extensions = {
         force = true;
         packages = with pkgs.firefox-addons; [
@@ -103,12 +106,10 @@ lib.mkIf cfg.enable {
     };
   };
 
-  xdg.autostart.entries = map lib.getDesktop [ cfg.package ];
-
-  impermanence.directories = [ ".mozilla/firefox/default" ];
+  persist.directories = [ ".mozilla/firefox/${profileName}" ];
 
   stylix.targets.firefox = {
     firefoxGnomeTheme.enable = true;
-    profileNames = [ "default" ];
+    profileNames = [ profileName ];
   };
 }
