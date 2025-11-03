@@ -7,5 +7,5 @@ in
     "--cmd"
     "cd"
   ];
-  impermanence.directories = lib.mkIf cfg.enable [ ".local/share/zoxide" ];
+  persist.directories = lib.mkIf cfg.enable [ ".local/share/zoxide" ];
 }

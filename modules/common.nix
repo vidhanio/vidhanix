@@ -35,6 +35,9 @@
   };
 
   programs = {
+    _1password.enable = true;
+    _1password-gui.enable = true;
+
     fish.enable = true;
     ssh.knownHosts."github.com".publicKey =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
@@ -52,6 +55,8 @@
   security.rtkit.enable = true;
 
   nix.settings = {
+    trusted-users = [ "vidhanio" ];
+
     extra-substituters = [
       "https://nix-community.cachix.org/"
       "https://nixos-apple-silicon.cachix.org"
@@ -65,7 +70,7 @@
 
   boot.loader.systemd-boot.configurationLimit = 10;
 
-  impermanence = {
+  persist = {
     directories = [
       "/var/log"
       "/var/lib/bluetooth"

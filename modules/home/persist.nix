@@ -5,11 +5,11 @@
   ...
 }:
 let
-  osCfg = osConfig.impermanence;
-  cfg = config.impermanence;
+  osCfg = osConfig.persist;
+  cfg = config.persist;
 in
 {
-  options.impermanence =
+  options.persist =
     let
       inherit (lib) mkOption types;
     in

@@ -8,5 +8,5 @@ in
     nix-direnv.enable = true;
   };
 
-  impermanence.directories = lib.mkIf cfg.enable [ ".local/share/direnv/allow" ];
+  persist.directories = lib.mkIf cfg.enable [ ".local/share/direnv/allow" ];
 }

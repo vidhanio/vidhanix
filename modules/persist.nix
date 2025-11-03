@@ -4,10 +4,10 @@
   ...
 }:
 let
-  cfg = config.impermanence;
+  cfg = config.persist;
 in
 {
-  options.impermanence =
+  options.persist =
     let
       inherit (lib) mkEnableOption mkOption types;
     in

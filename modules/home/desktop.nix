@@ -7,8 +7,8 @@
 }:
 let
   inherit (lib) types;
-  inherit (pkgs.stdenv) isDarwin;
   cfg = config.desktop;
+  getApplicationsDir = pkg: "${pkg}/share/applications";
 in
 {
   options.desktop =
@@ -24,12 +24,7 @@ in
 
             name =
               let
-                getApplications =
-                  pkg:
-                  let
-                    dir = "${pkg}/${if isDarwin then "Applications" else "share/applications"}";
-                  in
-                  lib.attrNames (builtins.readDir dir);
+                getApplications = pkg: lib.attrNames (builtins.readDir (getApplicationsDir pkg));
 
                 applications = getApplications config.package;
               in
@@ -73,31 +68,22 @@ in
       isSystemPackage = pkg: lib.elem pkg osConfig.environment.systemPackages;
       isInstalledPackage = pkg: isHomePackage pkg || isSystemPackage pkg;
 
-      autostart =
-        let
-        in
-        { };
+      autostartEntries = map ({ package, name }: "${getApplicationsDir package}/${name}") cfg.autostart;
 
-      dock =
-        let
-          packages = getPackages cfg.dock;
-
-          files = map (item: item.name) cfg.dock;
-        in
-        lib.mkMerge [
-          {
-            assertions = map (pkg: {
-              assertion = isInstalledPackage pkg;
-              message = "desktop.dock item \"${lib.getName pkg}\" is not in home.packages or environment.systemPackages";
-            }) packages;
-          }
-          (lib.mkIf (isInstalledPackage pkgs.gnome-shell) {
-            dconf.settings."org/gnome/shell".favorite-apps = files;
-          })
-        ];
+      favoriteApps = map ({ package, name }: name) cfg.dock;
     in
-    lib.mkMerge [
-      (lib.mkIf (cfg.autostart != [ ]) autostart)
-      (lib.mkIf (cfg.dock != [ ]) dock)
-    ];
+    {
+      assertions = map (pkg: {
+        assertion = isInstalledPackage pkg;
+        message = "desktop.autostart item \"${lib.getName pkg}\" is not in home.packages or environment.systemPackages";
+      }) (getPackages cfg.autostart);
+
+      xdg.autostart = {
+        enable = lib.mkIf (cfg.autostart != [ ]) true;
+        entries = autostartEntries;
+      };
+
+      dconf.settings."org/gnome/shell".favorite-apps =
+        lib.mkIf (isInstalledPackage pkgs.gnome-shell) favoriteApps;
+    };
 }

@@ -100,5 +100,5 @@
 
   boot.kernel.sysfs.module.zswap.parameters.enabled = 1;
 
-  impermanence.enable = true;
+  persist.enable = true;
 }

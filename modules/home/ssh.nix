@@ -1,6 +1,6 @@
 { lib, pkgs, ... }:
 {
-  impermanence.files = [
+  persist.files = [
     ".ssh/id_ed25519"
   ];
 

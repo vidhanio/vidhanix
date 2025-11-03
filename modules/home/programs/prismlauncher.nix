@@ -16,6 +16,6 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = [ cfg.package ];
 
-    impermanence.directories = [ ".local/share/PrismLauncher" ];
+    persist.directories = [ ".local/share/PrismLauncher" ];
   };
 }

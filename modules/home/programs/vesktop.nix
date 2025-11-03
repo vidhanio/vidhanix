@@ -43,9 +43,7 @@ in
       };
     }
     (lib.mkIf cfg.enable {
-      xdg.autostart.entries = map lib.getDesktop [ cfg.package ];
-
-      impermanence.directories = [ ".config/vesktop/sessionData/Local Storage" ];
+      persist.directories = [ ".config/vesktop/sessionData/Local Storage" ];
 
       xdg.configFile."vesktop/state.json" = lib.mkIf (cfg.state != { }) stateFile;
     })

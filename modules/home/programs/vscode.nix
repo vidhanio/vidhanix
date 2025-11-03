@@ -23,7 +23,7 @@ lib.mkMerge [
 
   }
   (lib.mkIf cfg.enable {
-    impermanence.directories = [
+    persist.directories = [
       ".config/Code - Insiders/User/globalStorage"
     ];
   })
