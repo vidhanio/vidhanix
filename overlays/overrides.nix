@@ -3,11 +3,20 @@ let
   inherit (prev) lib stdenv;
 in
 {
-  solaar = prev.solaar.overrideAttrs (previousAttrs: {
-    postInstall = previousAttrs.postInstall or "" + ''
-      cp $src/share/autostart/solaar.desktop $out/share/applications/solaar-autostart.desktop
-    '';
-  });
+  solaar = prev.solaar.overrideAttrs (
+    finalAttrs: previousAttrs: {
+      version = "1.1.16";
+      src = previousAttrs.src.override {
+        tag = finalAttrs.version;
+        hash = "sha256-PhZoDRsckJXk2t2qR8O3ZGGeMUhmliqSpibfQDO7BeA=";
+      };
+      buildInputs = previousAttrs.buildInputs ++ [ final.upower ];
+
+      postInstall = previousAttrs.postInstall or "" + ''
+        cp $src/share/autostart/solaar.desktop $out/share/applications/solaar-autostart.desktop
+      '';
+    }
+  );
 }
 // lib.optionalAttrs stdenv.hostPlatform.isAarch64 {
   wrapFirefox =

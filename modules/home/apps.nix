@@ -7,11 +7,11 @@
 }:
 let
   inherit (lib) types;
-  cfg = config.desktop;
+  cfg = config.apps;
   getApplicationsDir = pkg: "${pkg}/share/applications";
 in
 {
-  options.desktop =
+  options.apps =
     let
       app = types.submodule (
         { config, ... }:
@@ -35,7 +35,7 @@ in
                   if (builtins.length applications) == 1 then
                     builtins.head applications
                   else
-                    throw "desktop.dock item \"${lib.getName config.package}\" has multiple applications (${
+                    throw "apps.dock item \"${lib.getName config.package}\" has multiple applications (${
                       lib.concatStringsSep ", " (map (app: "\"${app}\"") applications)
                     }), name must be specified";
               };
@@ -75,7 +75,7 @@ in
     {
       assertions = map (pkg: {
         assertion = isInstalledPackage pkg;
-        message = "desktop.autostart item \"${lib.getName pkg}\" is not in home.packages or environment.systemPackages";
+        message = "apps.autostart item \"${lib.getName pkg}\" is not in home.packages or environment.systemPackages";
       }) (getPackages cfg.autostart);
 
       xdg.autostart = {
@@ -83,7 +83,8 @@ in
         entries = autostartEntries;
       };
 
-      dconf.settings."org/gnome/shell".favorite-apps =
-        lib.mkIf (isInstalledPackage pkgs.gnome-shell) favoriteApps;
+      dconf.settings."org/gnome/shell".favorite-apps = lib.mkIf (
+        isInstalledPackage pkgs.gnome-shell && cfg.dock != [ ]
+      ) favoriteApps;
     };
 }

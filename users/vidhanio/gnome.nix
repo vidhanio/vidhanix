@@ -18,6 +18,7 @@ in
         pip-on-top
         rounded-window-corners-reborn
         steal-my-focus-window
+        solaar-extension
       ];
   };
 
@@ -28,7 +29,7 @@ in
     };
   };
 
-  persist.directories = lib.mkIf (lib.elem pkgs.gnome-keyring osConfig.environment.systemPackages) [
+  persist.directories = lib.mkIf osConfig.services.gnome.gnome-keyring.enable [
     ".local/share/keyrings"
   ];
 }

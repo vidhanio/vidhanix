@@ -38,6 +38,10 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     fonts = {
       url = "git+ssh://git@github.com/vidhanio/fonts";
       flake = false;
@@ -93,12 +97,16 @@
               agenix
               impermanence
               disko
+              spicetify-nix
             ];
 
-          homeModules = with inputs; [
-            impermanence.homeManagerModules.default
-            agenix.homeManagerModules.default
-          ];
+          homeModules =
+            with inputs;
+            map (input: (input.homeModules or input.homeManagerModules).default) [
+              impermanence
+              agenix
+              spicetify-nix
+            ];
         in
         lib.genAttrs hosts (
           host:
