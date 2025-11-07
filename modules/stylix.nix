@@ -3,7 +3,8 @@
   stylix = {
     enable = true;
     polarity = "dark";
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
+    image = config.lib.stylix.pixel "base00";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/horizon-terminal-dark.yaml";
     fonts = {
       monospace = {
         package = pkgs.berkeley-mono-variable;

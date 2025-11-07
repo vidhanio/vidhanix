@@ -45,6 +45,7 @@
     prismlauncher.enable = true;
     ripgrep.enable = true;
     spotify-player.enable = true;
+    spicetify.enable = pkgs.stdenv.hostPlatform.isx86_64;
     vacuum-tube.enable = true;
     vesktop.enable = true;
     vscode.enable = true;
@@ -61,31 +62,46 @@
     nil
   ];
 
-  desktop = {
-    autostart = with config.programs; [
-      {
-        package = pkgs.solaar;
-        name = "solaar-autostart.desktop";
-      }
-      osConfig.programs._1password-gui.package
-      firefox.finalPackage
-      vesktop.package
-    ];
+  apps =
+    let
+      ifEnabled = lib.concatMap (program: lib.optional program.enable program.package);
+      inherit (config) programs;
+      osPrograms = osConfig.programs;
+      maybeSpicetify = lib.optional programs.spicetify.enable programs.spicetify.spicedSpotify;
+    in
+    {
+      autostart = [
+        {
+          package = pkgs.solaar;
+          name = "solaar-autostart.desktop";
+        }
+        programs.firefox.finalPackage
+        programs.vesktop.package
+      ]
+      ++ maybeSpicetify
+      ++ ifEnabled [
+        osPrograms._1password-gui
+        osPrograms.steam
+      ];
 
-    dock = with config.programs; [
-      {
-        package = pkgs.nautilus;
-        name = "org.gnome.Nautilus.desktop";
-      }
-      ghostty.package
-      firefox.finalPackage
-      {
-        inherit (vscode) package;
-        name = "code-insiders.desktop";
-      }
-      vesktop.package
-    ];
-  };
+      dock = [
+        {
+          package = pkgs.nautilus;
+          name = "org.gnome.Nautilus.desktop";
+        }
+        programs.ghostty.package
+        programs.firefox.finalPackage
+        {
+          inherit (programs.vscode) package;
+          name = "code-insiders.desktop";
+        }
+        programs.vesktop.package
+      ]
+      ++ maybeSpicetify
+      ++ ifEnabled [
+        osPrograms.steam
+      ];
+    };
 
   home.stateVersion = "25.11";
 }
