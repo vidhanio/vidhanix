@@ -19,21 +19,15 @@ in
       (
         { lib, ... }:
         {
-          home.activation.updateSteamTheme =
-            let
-              applySteamTheme = pkgs.writeShellScript "applySteamTheme" ''
-                # This file gets copied with read-only permission from the nix store
-                # if it is present, it causes an error when the theme is applied. Delete it.
-                custom="$HOME/.cache/AdwSteamInstaller/extracted/custom/custom.css"
-                if [[ -f "$custom" ]]; then
-                  rm -f "$custom"
-                fi
-                ${lib.getExe pkgs.adwsteamgtk} -i
-              '';
-            in
-            lib.hm.dag.entryAfter [ "dconfSettings" "writeBoundary" ] ''
-              run ${applySteamTheme}
-            '';
+          home.activation.updateSteamTheme = lib.hm.dag.entryAfter [ "dconfSettings" "writeBoundary" ] ''
+            # This file gets copied with read-only permission from the nix store
+            # if it is present, it causes an error when the theme is applied. Delete it.
+            custom="$HOME/.cache/AdwSteamInstaller/extracted/custom/custom.css"
+            if [[ -f "$custom" ]]; then
+              run rm -f "$custom"
+            fi
+            run ${lib.getExe pkgs.adwsteamgtk} -i
+          '';
 
           dconf.settings."io/github/Foldex/AdwSteamGtk".prefs-install-custom-css = true;
 
