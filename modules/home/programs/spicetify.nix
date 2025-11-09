@@ -9,6 +9,6 @@ lib.mkMerge [
     };
   }
   (lib.mkIf cfg.enable {
-    persist.directories = [ ".cache/spotify" ];
+    persist.directories = [ ".config/spotify" ];
   })
 ]
