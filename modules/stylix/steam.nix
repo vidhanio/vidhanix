@@ -8,13 +8,14 @@
 let
   stylixCfg = config.stylix;
   cfg = stylixCfg.targets.steam;
+  steamCfg = config.programs.steam;
 in
 {
   options.stylix.targets.steam.enable = lib.mkEnableOption "theming for Steam via AdwSteamGtk" // {
     default = config.stylix.autoEnable;
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (cfg.enable && steamCfg.enable) {
     home-manager.sharedModules = [
       (
         { lib, ... }:
