@@ -21,6 +21,9 @@
         ms-python.python
         ms-python.vscode-pylance
         myriad-dreamin.tinymist
+        pkief.material-icon-theme
+        pkief.material-product-icons
+        redhat.vscode-xml
         redhat.vscode-yaml
         rust-lang.rust-analyzer
         timonwong.shellcheck
@@ -28,8 +31,6 @@
         ultram4rine.vscode-choosealicense
         vscodevim.vim
         wakatime.vscode-wakatime
-        pkief.material-icon-theme
-        pkief.material-product-icons
       ];
     };
   };
