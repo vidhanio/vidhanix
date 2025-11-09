@@ -152,7 +152,8 @@
     "<C-v>": false,
     "<C-w>": false,
     "<C-x>": false,
-    "<C-z>": false
+    "<C-z>": false,
+    "<C-p>": false
   },
   "vim.useSystemClipboard": true,
   "workbench.editor.empty.hint": "hidden",

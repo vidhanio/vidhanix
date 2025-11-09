@@ -25,7 +25,7 @@
         teeth = base07;
         eye = base07;
       };
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/horizon-dark.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
     fonts = {
       monospace = {
         package = pkgs.berkeley-mono-variable;
