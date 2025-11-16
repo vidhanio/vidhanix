@@ -6,19 +6,26 @@
 }:
 let
   cfg = config.programs.vesktop;
-  jsonFormat = pkgs.formats.json { };
-  stateFile.source = jsonFormat.generate "vesktop-state" cfg.state;
+  json = pkgs.formats.json { };
 in
 {
   options.programs.vesktop = {
     state = lib.mkOption {
-      type = jsonFormat.type;
+      inherit (json) type;
       default = { };
       description = ''
         Vesktop state written to
         {file}`$XDG_CONFIG_HOME/vesktop/state.json`. See
         <https://github.com/Vencord/Vesktop/blob/main/src/shared/settings.d.ts>
         for available options.
+      '';
+    };
+
+    quickCss = lib.mkOption {
+      type = lib.types.lines;
+      default = "";
+      description = ''
+        Custom CSS to inject into Vesktop.
       '';
     };
   };
@@ -40,12 +47,22 @@ in
           firstLaunch = false;
           maximized = true;
         };
+        quickCss = ''
+          @import url(https://codeberg.org/ridge/Discord-Adblock/raw/branch/main/discord-adblock.css);
+        '';
       };
     }
     (lib.mkIf cfg.enable {
       persist.directories = [ ".config/vesktop/sessionData/Local Storage" ];
 
-      xdg.configFile."vesktop/state.json" = lib.mkIf (cfg.state != { }) stateFile;
+      xdg.configFile = {
+        "vesktop/state.json" = lib.mkIf (cfg.state != { }) {
+          source = json.generate "vesktop-state" cfg.state;
+        };
+        "vesktop/settings/quickCss.css" = lib.mkIf (cfg.quickCss != "") {
+          text = cfg.quickCss;
+        };
+      };
     })
   ];
 }

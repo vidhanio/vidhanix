@@ -1,0 +1,16 @@
+diff --git a/scripts/lib/common.sh b/scripts/lib/common.sh
+index 1bbe619..b795423 100644
+--- a/scripts/lib/common.sh
++++ b/scripts/lib/common.sh
+@@ -28,11 +28,6 @@ function update_src_repo()
+ 	then
+ 		# If path exists, update local repository
+ 		cd "$repo_path"
+-		if ! git fetch --depth 1 && git reset --hard origin/"$repo_branch" && git clean -dfx
+-		then
+-			echo "update_src_repo: failed to update repository $repo_name..."
+-			exit 2
+-		fi
+ 	else
+ 		# Otherwise clone a new copy
+ 		if ! git clone -b "$repo_branch" "$repo_url" --depth=1 "$repo_path"

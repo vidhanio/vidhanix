@@ -25,7 +25,7 @@
         teeth = base07;
         eye = base07;
       };
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/horizon-terminal-dark.yaml";
     fonts = {
       monospace = {
         package = pkgs.berkeley-mono-variable;
@@ -33,8 +33,8 @@
       };
       serif = config.stylix.fonts.monospace;
       sansSerif = {
-        package = pkgs.inter;
-        name = "Inter";
+        package = pkgs.rubik;
+        name = "Rubik";
       };
     };
   };

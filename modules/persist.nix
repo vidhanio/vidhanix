@@ -30,18 +30,32 @@ in
       };
     };
 
-  config = lib.mkIf cfg.enable {
-    environment.persistence.${cfg.path} = {
-      hideMounts = true;
-      allowTrash = true;
+  config = lib.mkMerge [
+    {
+      persist = {
+        directories = [
+          "/var/log"
+          "/var/lib/bluetooth"
+          "/var/lib/nixos"
+        ];
+        files = [
+          "/etc/machine-id"
+        ];
+      };
+    }
+    (lib.mkIf cfg.enable {
+      environment.persistence.${cfg.path} = {
+        hideMounts = true;
+        allowTrash = true;
 
-      inherit (cfg) directories files;
-    };
+        inherit (cfg) directories files;
+      };
 
-    fileSystems.${cfg.path}.neededForBoot = true;
+      fileSystems.${cfg.path}.neededForBoot = true;
 
-    security.sudo.extraConfig = ''
-      Defaults lecture = never
-    '';
-  };
+      security.sudo.extraConfig = ''
+        Defaults lecture = never
+      '';
+    })
+  ];
 }

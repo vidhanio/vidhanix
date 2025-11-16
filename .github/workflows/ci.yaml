@@ -62,27 +62,6 @@ jobs:
       - name: Check Flake
         run: nix flake check --print-build-logs --keep-going
 
-  build-systems:
-    name: 'Build ${{ fromJson(needs.flake-info.outputs.title-classes)[matrix.class] }} System: ${{ matrix.name }}'
-    needs: flake-info
-    runs-on: ${{ fromJson(needs.flake-info.outputs.runners)[matrix.system] }}
-    strategy:
-      matrix: ${{ fromJson(needs.flake-info.outputs.host-matrix) }}
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v5
-      - uses: DeterminateSystems/determinate-nix-action@main
-        with:
-          extra-conf: |
-            extra-substituters = https://nix-community.cachix.org/ https://nixos-apple-silicon.cachix.org
-            extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= nixos-apple-silicon.cachix.org-1:8psDu5SA5dAD7qA0zMy5UT292TxeEPzIz8VVEr2Js20=
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-      - uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-      - name: Build System
-        run: nix build .#${{ matrix.class }}Configurations.${{ matrix.name }}.config.system.build.toplevel --print-build-logs
-
   check-formatting:
     name: Check Formatting
     runs-on: ubuntu-latest

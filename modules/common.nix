@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -7,16 +8,15 @@
     mutableUsers = false;
     users."vidhanio" = {
       description = "Vidhan Bhatt";
-      hashedPassword = "$y$j9T$LCdHSdiGd3E0QIKpfQJXC1$/XXchmDGIM2kQganFqhqwS7BHrOE8JwnxCQ3PW2GHO7";
+      hashedPasswordFile = config.age.secrets.password.path;
 
       isNormalUser = true;
-      extraGroups = [
-        "networkmanager"
-        "wheel"
-      ];
+      extraGroups = [ "wheel" ];
       shell = pkgs.fish;
     };
   };
+
+  age.secrets.password.file = ../secrets/password.age;
 
   environment = {
     systemPackages = with pkgs; [
@@ -40,18 +40,13 @@
     _1password-gui.enable = true;
 
     fish.enable = true;
-    ssh.knownHosts."github.com".publicKey =
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
   };
-
-  networking.networkmanager.enable = true;
 
   time.timeZone = "America/Toronto";
   i18n.defaultLocale = "en_CA.UTF-8";
 
   services = {
     printing.enable = true;
-    openssh.enable = true;
   };
   security.rtkit.enable = true;
 
@@ -66,20 +61,6 @@
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "nixos-apple-silicon.cachix.org-1:8psDu5SA5dAD7qA0zMy5UT292TxeEPzIz8VVEr2Js20="
-    ];
-  };
-
-  boot.loader.systemd-boot.configurationLimit = 10;
-
-  persist = {
-    directories = [
-      "/var/log"
-      "/var/lib/bluetooth"
-      "/var/lib/nixos"
-      "/etc/NetworkManager/system-connections"
-    ];
-    files = [
-      "/etc/machine-id"
     ];
   };
 }
