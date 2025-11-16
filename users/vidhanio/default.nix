@@ -30,6 +30,7 @@
   programs = {
     bat.enable = true;
     direnv.enable = true;
+    dolphin-emu.enable = true;
     eza.enable = true;
     firefox.enable = true;
     gh = {
@@ -43,6 +44,13 @@
     };
     neovim.enable = true;
     prismlauncher.enable = true;
+    retroarch = {
+      enable = true;
+      settings = {
+        menu_swap_ok_cancel_buttons = "true";
+        input_player1_joypad_index = "1"; # Xbox Wireless Controller
+      };
+    };
     ripgrep.enable = true;
     spotify-player.enable = true;
     spicetify.enable = pkgs.stdenv.hostPlatform.isx86_64;
@@ -61,6 +69,35 @@
     nixfmt-rfc-style
     nil
   ];
+
+  roms = {
+    enable = true;
+    systems = {
+      nes.games = [
+        "Super Mario Bros. (World)"
+      ];
+
+      n64.games = [
+        "Mario Kart 64 (USA)"
+        "Paper Mario (USA)"
+      ];
+
+      wii.games = [
+        {
+          name = "New Super Mario Bros. Wii (USA) (En,Fr,Es) (Rev 2)";
+          hash = "sha1-4hMjtyrMo9tEi1oKNwQohRuSJBQ=";
+        }
+        {
+          name = "Mario Kart Wii (USA) (En,Fr,Es)";
+          hash = "sha1-mx13tUxzPt2IMe0oRWweEBiwS+k=";
+        }
+        {
+          name = "Kirby's Epic Yarn (USA) (En,Fr,Es)";
+          hash = "sha1-t1tltpHmtED+djMXtj05W2rVhfI=";
+        }
+      ];
+    };
+  };
 
   apps =
     let

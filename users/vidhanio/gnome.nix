@@ -22,13 +22,6 @@ in
       ];
   };
 
-  dconf.settings = {
-    "org/gnome/shell/extensions/dash-to-panel" = {
-      scroll-icon-action = "PASS_THROUGH";
-      scroll-panel-action = "NOTHING";
-    };
-  };
-
   persist.directories = lib.mkIf osConfig.services.gnome.gnome-keyring.enable [
     ".local/share/keyrings"
   ];
