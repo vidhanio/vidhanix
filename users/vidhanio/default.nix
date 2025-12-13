@@ -48,7 +48,7 @@
       enable = true;
       settings = {
         menu_swap_ok_cancel_buttons = "true";
-        input_player1_joypad_index = "1"; # Xbox Wireless Controller
+        input_player1_joypad_index = "1"; # Controller
       };
     };
     ripgrep.enable = true;
@@ -95,6 +95,18 @@
           name = "Kirby's Epic Yarn (USA) (En,Fr,Es)";
           hash = "sha1-t1tltpHmtED+djMXtj05W2rVhfI=";
         }
+        {
+          name = "Marble Saga - Kororinpa (USA) (En,Fr,Es)";
+          hash = "sha1-5BLSY/FIjz1ohV7Zs48UHPJgoCI=";
+        }
+        {
+          name = "Disney-Pixar Cars (USA) (En,Es)";
+          hash = "sha1-LA2PEsBOdpWgiTbXMRAjIei+zfk=";
+        }
+        {
+          name = "Wii Play (USA) (Rev 1)";
+          hash = "sha1-WoPx+LcgYncDyBsj+4uc8tofhcc=";
+        }
       ];
     };
   };
@@ -140,5 +152,5 @@
       ];
     };
 
-  home.stateVersion = "25.11";
+  home.stateVersion = "26.05";
 }

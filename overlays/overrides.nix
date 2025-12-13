@@ -4,15 +4,8 @@ let
 in
 {
   solaar = prev.solaar.overrideAttrs (
-    finalAttrs: previousAttrs: {
-      version = "1.1.16";
-      src = previousAttrs.src.override {
-        tag = finalAttrs.version;
-        hash = "sha256-PhZoDRsckJXk2t2qR8O3ZGGeMUhmliqSpibfQDO7BeA=";
-      };
-      buildInputs = previousAttrs.buildInputs ++ [ final.upower ];
-
-      postInstall = previousAttrs.postInstall or "" + ''
+    finalAttrs: prevAttrs: {
+      postInstall = prevAttrs.postInstall or "" + ''
         cp $src/share/autostart/solaar.desktop $out/share/applications/solaar-autostart.desktop
       '';
     }
@@ -34,8 +27,8 @@ in
       widevineCdmDir = "${final.widevine-cdm}/share/google/chrome/WidevineCdm";
       widevineOutDir = "$out/gmp-widevinecdm/system-installed";
     in
-    (prev.wrapFirefox browser (opts // { inherit extraPrefs; })).overrideAttrs (previousAttrs: {
-      buildCommand = previousAttrs.buildCommand + ''
+    (prev.wrapFirefox browser (opts // { inherit extraPrefs; })).overrideAttrs (prevAttrs: {
+      buildCommand = prevAttrs.buildCommand + ''
         mkdir -p "${widevineOutDir}"
         ln -s "${widevineCdmDir}/_platform_specific/linux_arm64/libwidevinecdm.so" "${widevineOutDir}/libwidevinecdm.so"
         ln -s "${widevineCdmDir}/manifest.json" "${widevineOutDir}/manifest.json"

@@ -67,7 +67,7 @@
         overlays =
           with inputs;
           [
-            determinate-nix.overlays.default
+            # determinate-nix.overlays.default
             firefox-addons.overlays.default
             agenix.overlays.default
             vscode-extensions.overlays.default
@@ -191,14 +191,35 @@
       devShells = forEachSystem (
         { system, pkgs }:
         let
+          update = pkgs.writeShellApplication {
+            name = "update";
+
+            runtimeInputs = with pkgs; [
+              nix
+              nix-update
+              jq
+            ];
+
+            text = ''
+              nix flake update
+
+              packages=$(
+                nix eval --json .#packages."${system}" --apply 'builtins.mapAttrs (_: pkg: pkg ? passthru.updateScript)' |
+                  jq -r 'with_entries(select(.value)) | keys | .[]'
+              )
+
+              for package in $packages; do
+                nix-update --flake -u --build "$package"
+              done
+            '';
+          };
+
           rebuild = pkgs.writeShellApplication {
             name = "rebuild";
 
             runtimeInputs = with pkgs; [
               git
-              nix
               nh
-              jq
               direnv
             ];
 
@@ -226,8 +247,7 @@
 
               agenix
 
-              update-package
-
+              update
               rebuild
             ];
           };

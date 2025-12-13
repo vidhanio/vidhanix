@@ -6,6 +6,10 @@
           switch-windows = [ "<Alt>Tab" ];
           switch-windows-backward = [ "<Shift><Alt>Tab" ];
         };
+
+        "org/gnome/mutter" = {
+          experimental-features = [ "variable-refresh-rate" ];
+        };
       };
     }
   ];

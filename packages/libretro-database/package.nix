@@ -17,13 +17,13 @@ let
 in
 stdenvNoCC.mkDerivation {
   pname = "libretro-database";
-  version = "1.22.1";
+  version = "1.22.1-unstable-2025-11-30";
 
   src = fetchFromGitHub {
     owner = "libretro";
     repo = "libretro-database";
-    rev = "fbcc8c1c24d8b20b6aaca95b4da6a2f39ad85f05";
-    hash = "sha256-othU6KJQs2MgSbsZMo0AOmn0ykQT48athTf2EPJLSw4=";
+    rev = "06bf35279fc476f1b1d48acc169a273a3428a664";
+    hash = "sha256-pqjmVjMQ9ZPUR6V3i2yM/l+tZZgGGw1XW6oa/Ta56S0=";
   };
 
   postUnpack = ''
@@ -52,6 +52,7 @@ stdenvNoCC.mkDerivation {
   passthru.updateScript = nix-update-script {
     extraArgs = [
       "--flake"
+      "--version=branch"
     ];
   };
 

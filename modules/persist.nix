@@ -12,7 +12,7 @@ in
       inherit (lib) mkEnableOption mkOption types;
     in
     {
-      enable = mkEnableOption "impermanence";
+      enable = mkEnableOption "persisting specified files and directories";
       path = mkOption {
         type = types.str;
         default = "/persist";
