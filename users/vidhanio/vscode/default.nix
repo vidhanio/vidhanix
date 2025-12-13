@@ -29,6 +29,7 @@
           rust-lang.rust-analyzer
           timonwong.shellcheck
           tombi-toml.tombi
+          tomoki1207.pdf
           ultram4rine.vscode-choosealicense
           vscodevim.vim
           wakatime.vscode-wakatime

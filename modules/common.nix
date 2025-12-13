@@ -21,6 +21,7 @@
   environment = {
     systemPackages = with pkgs; [
       neovim
+      wl-clipboard
     ];
 
     variables = {
@@ -35,7 +36,6 @@
   };
 
   programs = {
-    nix-ld.enable = true;
     _1password.enable = true;
     _1password-gui.enable = true;
 
@@ -49,6 +49,8 @@
     printing.enable = true;
   };
   security.rtkit.enable = true;
+
+  virtualisation.waydroid.enable = true;
 
   nix.settings = {
     trusted-users = [ "vidhanio" ];

@@ -66,10 +66,10 @@ let
         hash = "sha256-jp58bKr8bisJOXCz9M+bmA06p8bPJw9Bn9eJJy4aGEg=";
       };
       Dinothawr = {
-        version = "0-unstable-2024-10-21";
+        version = "0-unstable-2025-12-12";
 
-        rev = "e57e780a963372b89736620d7e3b8608190f7581";
-        hash = "sha256-Gg7yEiHisMgC5+yQ0dxyf4x0QOTDqpBlI8+E3gtMLHI=";
+        rev = "d66dde551be8e68e47c05e88838b4f1c6b114c99";
+        hash = "sha256-wJj1wzCnMc1/KIOQ1mi3JyaxWtVIkquYgzgz/W6XOVs=";
       };
       DirkSimple = {
         version = "0-unstable-2024-12-03";

@@ -23,6 +23,12 @@ in
     settings = lib.mkOption {
       inherit (ini) type;
       default = { };
+      apply =
+        let
+          # true -> True, false -> False
+          valueApply = value: if lib.isBool value then (if value then "True" else "False") else value;
+        in
+        settings: lib.mapAttrs (_: section: lib.mapAttrs (_: value: valueApply value) section) settings;
       description = ''
         Dolphin emulator settings written to
         {file}`$XDG_CONFIG_HOME/dolphin-emu/Dolphin.ini`.
@@ -32,14 +38,25 @@ in
 
   config = lib.mkMerge [
     {
-      programs.dolphin-emu.settings.General = lib.mkIf (cfg.gamesDirectories != [ ]) (
-        {
-          ISOPaths = lib.length cfg.gamesDirectories;
-        }
-        // lib.listToAttrs (
-          lib.imap0 (i: path: lib.nameValuePair "ISOPath${toString i}" "${path}") cfg.gamesDirectories
-        )
-      );
+      programs.dolphin-emu.settings = {
+        Analytics.PermissionAsked = true;
+        Core = {
+          EnableWiiLink = true;
+          WiimoteContinuousScanning = true;
+          WiimoteEnableSpeaker = true;
+          WiiSDCardAllowWrites = true;
+          WiiSDCardEnableFolderSync = true;
+          WiiSDCardFilesize = 0;
+        };
+        General = lib.mkIf (cfg.gamesDirectories != [ ]) (
+          {
+            ISOPaths = lib.length cfg.gamesDirectories;
+          }
+          // lib.listToAttrs (
+            lib.imap0 (i: path: lib.nameValuePair "ISOPath${toString i}" "${path}") cfg.gamesDirectories
+          )
+        );
+      };
     }
     (lib.mkIf cfg.enable {
       home.packages = [ cfg.package ];

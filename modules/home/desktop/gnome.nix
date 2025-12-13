@@ -19,6 +19,7 @@ in
         rounded-window-corners-reborn
         steal-my-focus-window
         solaar-extension
+        gsconnect
       ];
   };
 

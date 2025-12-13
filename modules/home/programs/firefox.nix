@@ -106,39 +106,8 @@ lib.mkIf cfg.enable {
       };
     };
   };
-  persist =
-    let
-      withProfileDir = d: ".mozilla/firefox/${profileName}/${d}";
-    in
-    {
-      directories = map withProfileDir [
-        "storage/default"
-        "storage/permanent"
-      ];
 
-      files = map withProfileDir (
-        [
-          "prefs.js"
-          "signedInUser.json"
-          "logins.json"
-        ]
-        ++
-          lib.concatMap
-            (db: [
-              "${db}.sqlite"
-              "${db}.sqlite-wal"
-            ])
-            [
-              "content-prefs"
-              "cookies"
-              "favicons"
-              "permissions"
-              "places"
-              "storage"
-              "synced-tabs"
-            ]
-      );
-    };
+  persist.directories = [ ".mozilla/firefox/${profileName}" ];
 
   stylix.targets.firefox = {
     firefoxGnomeTheme.enable = true;

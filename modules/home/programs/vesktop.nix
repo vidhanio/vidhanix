@@ -33,15 +33,17 @@ in
   config = lib.mkMerge [
     {
       programs.vesktop = {
-        package = pkgs.vesktop-git;
         settings = {
           discordBranch = "canary";
           minimizeToTray = true;
           arRPC = true;
           hardwareAcceleration = true;
           hardwareVideoAcceleration = true;
-          customTitleBar = true;
+          customTitleBar = false;
           disableMinSize = true;
+          plugins = {
+            SpotifyCrack.enabled = true;
+          };
         };
         state = {
           firstLaunch = false;
