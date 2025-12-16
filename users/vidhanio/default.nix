@@ -71,7 +71,7 @@
   ];
 
   roms = {
-    enable = true;
+    enable = osConfig.networking.hostName == "vidhan-pc";
     systems = {
       nes.games = [
         "Super Mario Bros. (World)"

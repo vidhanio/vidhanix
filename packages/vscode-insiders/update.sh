@@ -54,7 +54,7 @@ old_commit=$(nix eval --raw .#vscode-insiders.commit)
 contents=${contents//"$old_commit"/"$commit"}
 
 old_full_version=$(nix eval --raw .#vscode-insiders.version)
-full_version="$version-$(date -u -d "@$((timestamp / 1000))" +%F)"
+full_version="$version-$(date -u -d "$timestamp" +%F)"
 contents=${contents//"$old_full_version"/"$full_version"}
 
 echo "$contents" >"$file"
