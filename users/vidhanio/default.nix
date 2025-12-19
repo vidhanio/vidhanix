@@ -6,7 +6,7 @@
   ...
 }:
 {
-  imports = lib.readSubmodules ./.;
+  imports = lib.readDirImportsRecursively ./.;
 
   home = {
     file = {
@@ -71,44 +71,58 @@
   ];
 
   roms = {
-    enable = osConfig.networking.hostName == "vidhan-pc";
-    systems = {
-      nes.games = [
-        "Super Mario Bros. (World)"
-      ];
+    enable = true;
+    systems = lib.mkMerge [
+      (lib.mkIf (osConfig.networking.hostName == "vidhan-pc") {
+        nes.games = [
+          "Super Mario Bros. (World)"
+        ];
 
-      n64.games = [
-        "Mario Kart 64 (USA)"
-        "Paper Mario (USA)"
-      ];
+        n64.games = [
+          "Mario Kart 64 (USA)"
+          "Paper Mario (USA)"
+        ];
 
-      wii.games = [
-        {
-          name = "New Super Mario Bros. Wii (USA) (En,Fr,Es) (Rev 2)";
-          hash = "sha1-4hMjtyrMo9tEi1oKNwQohRuSJBQ=";
-        }
-        {
-          name = "Mario Kart Wii (USA) (En,Fr,Es)";
-          hash = "sha1-mx13tUxzPt2IMe0oRWweEBiwS+k=";
-        }
-        {
-          name = "Kirby's Epic Yarn (USA) (En,Fr,Es)";
-          hash = "sha1-t1tltpHmtED+djMXtj05W2rVhfI=";
-        }
-        {
-          name = "Marble Saga - Kororinpa (USA) (En,Fr,Es)";
-          hash = "sha1-5BLSY/FIjz1ohV7Zs48UHPJgoCI=";
-        }
-        {
-          name = "Disney-Pixar Cars (USA) (En,Es)";
-          hash = "sha1-LA2PEsBOdpWgiTbXMRAjIei+zfk=";
-        }
-        {
-          name = "Wii Play (USA) (Rev 1)";
-          hash = "sha1-WoPx+LcgYncDyBsj+4uc8tofhcc=";
-        }
-      ];
-    };
+        wii.games = [
+          {
+            name = "New Super Mario Bros. Wii (USA) (En,Fr,Es) (Rev 2)";
+            hash = "sha1-4hMjtyrMo9tEi1oKNwQohRuSJBQ=";
+          }
+          {
+            name = "Kirby's Epic Yarn (USA) (En,Fr,Es)";
+            hash = "sha1-t1tltpHmtED+djMXtj05W2rVhfI=";
+          }
+          {
+            name = "Mario Kart Wii (USA) (En,Fr,Es)";
+            hash = "sha1-mx13tUxzPt2IMe0oRWweEBiwS+k=";
+          }
+          {
+            name = "Marble Saga - Kororinpa (USA) (En,Fr,Es)";
+            hash = "sha1-5BLSY/FIjz1ohV7Zs48UHPJgoCI=";
+          }
+          {
+            name = "Disney-Pixar Cars (USA) (En,Es)";
+            hash = "sha1-LA2PEsBOdpWgiTbXMRAjIei+zfk=";
+          }
+          {
+            name = "Wii Play (USA) (Rev 1)";
+            hash = "sha1-WoPx+LcgYncDyBsj+4uc8tofhcc=";
+          }
+        ];
+      })
+      (lib.mkIf (osConfig.networking.hostName == "vidhan-macbook") {
+        wii.games = [
+          {
+            name = "Mario Kart Wii (USA) (En,Fr,Es)";
+            hash = "sha1-mx13tUxzPt2IMe0oRWweEBiwS+k=";
+          }
+          {
+            name = "Wii Play (USA) (Rev 1)";
+            hash = "sha1-WoPx+LcgYncDyBsj+4uc8tofhcc=";
+          }
+        ];
+      })
+    ];
   };
 
   apps =

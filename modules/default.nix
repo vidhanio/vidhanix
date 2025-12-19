@@ -1,9 +1,12 @@
 {
+  lib,
   config,
   pkgs,
   ...
 }:
 {
+  imports = lib.readDirImportsRecursively ./.;
+
   users = {
     mutableUsers = false;
     users."vidhanio" = {

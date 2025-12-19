@@ -115,11 +115,11 @@
             specialArgs = { inherit inputs; };
 
             modules = [
+              ./modules
               ./hosts/${host}
               { networking.hostName = host; }
             ]
             ++ nixosModules
-            ++ lib.readDirContents ./modules
             ++ [
               (
                 {
@@ -198,9 +198,12 @@
               nix
               nix-update
               jq
+              git
             ];
 
             text = ''
+              git add .
+
               nix flake update
 
               packages=$(
@@ -209,7 +212,7 @@
               )
 
               for package in $packages; do
-                nix-update --flake -u --build "$package"
+                nix-update --flake --use-update-script "$package"
               done
             '';
           };
