@@ -1,12 +1,9 @@
 {
-  lib,
   config,
   pkgs,
   ...
 }:
 {
-  imports = lib.readSubmodules ./.;
-
   stylix = {
     enable = true;
     polarity = "dark";

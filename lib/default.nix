@@ -1,22 +1,23 @@
-final: prev:
-let
-  readDirContents' =
-    cond: path:
+final: prev: {
+  readDirImportsRecursively =
+    path:
     let
-      isNixFile = name: type: type == "regular" && prev.hasSuffix ".nix" name;
-      isNixFolder =
-        name: type: type == "directory" && (prev.pathIsRegularFile "${path}/${name}/default.nix");
-      isNixModule = name: type: isNixFile name type || isNixFolder name type;
+      processEntry =
+        name: type:
+        let
+          fullPath = path + "/${name}";
+        in
+        if type == "regular" && prev.hasSuffix ".nix" name && name != "default.nix" then
+          [ fullPath ]
+        else if type == "directory" then
+          if (prev.pathIsRegularFile (fullPath + "/default.nix")) then
+            [ (fullPath + "/default.nix") ]
+          else
+            final.readDirImportsRecursively fullPath
+        else
+          [ ];
     in
-    prev.pipe (builtins.readDir path) [
-      (prev.filterAttrs (name: type: isNixModule name type && cond name))
-      prev.attrNames
-      (map (name: path + "/${name}"))
-    ];
-in
-{
-  readDirContents = readDirContents' (_: true);
-  readSubmodules = readDirContents' (name: name != "default.nix");
+    prev.concatLists (prev.mapAttrsToList processEntry (builtins.readDir path));
 
   importDirAttrs =
     path:

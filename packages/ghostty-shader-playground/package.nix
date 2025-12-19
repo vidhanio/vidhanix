@@ -12,7 +12,7 @@ stdenvNoCC.mkDerivation {
     owner = "KroneCorylus";
     repo = "ghostty-shader-playground";
     rev = "7b0c94df4c5dfeb6686edeb9ef8d89456bbc8ae3";
-    hash = "sha256-ha45+1ri4LciepHX4Y5BIi883T4t7dT7CTuhq/9Z4EA=";
+    hash = "";
   };
 
   installPhase = ''
