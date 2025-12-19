@@ -8,7 +8,7 @@
   imports = [
     inputs.apple-silicon.nixosModules.default
   ]
-  ++ lib.readDirImportsRecursively ./.;
+  ++ lib.readImportsRecursively ./.;
 
   nixpkgs.hostPlatform = "aarch64-linux";
 

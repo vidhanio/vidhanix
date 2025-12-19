@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   home-manager = {
-    sharedModules = lib.readDirImportsRecursively ./.;
+    sharedModules = lib.readImportsRecursively ./.;
     useGlobalPkgs = true;
   };
 }

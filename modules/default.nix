@@ -5,7 +5,7 @@
   ...
 }:
 {
-  imports = lib.readDirImportsRecursively ./.;
+  imports = lib.readImportsRecursively ./.;
 
   users = {
     mutableUsers = false;

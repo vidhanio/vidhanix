@@ -3,7 +3,7 @@
   ...
 }:
 {
-  imports = lib.readDirImportsRecursively ./.;
+  imports = lib.readImportsRecursively ./.;
 
   nixpkgs.hostPlatform = "x86_64-linux";
 
