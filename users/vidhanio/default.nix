@@ -6,7 +6,7 @@
   ...
 }:
 {
-  imports = lib.readDirImportsRecursively ./.;
+  imports = lib.readImportsRecursively ./.;
 
   home = {
     file = {
@@ -16,6 +16,13 @@
         sha256 = "sha256-ihQAIrfg5L1k1AUWo6Ga7ZuGI00Rha4KaTOowUeCp/E=";
       };
     };
+
+    packages = with pkgs; [
+      nixfmt-rfc-style
+      nil
+
+      helium-bin
+    ];
   };
 
   persist = {
@@ -64,11 +71,6 @@
   services = {
     wakatime.enable = true;
   };
-
-  home.packages = with pkgs; [
-    nixfmt-rfc-style
-    nil
-  ];
 
   roms = {
     enable = true;
@@ -138,7 +140,6 @@
           package = pkgs.solaar;
           name = "solaar-autostart.desktop";
         }
-        programs.firefox.finalPackage
         programs.vesktop.package
       ]
       ++ maybeSpicetify
@@ -154,6 +155,7 @@
         }
         programs.ghostty.package
         programs.firefox.finalPackage
+        pkgs.helium-bin
         {
           inherit (programs.vscode) package;
           name = "code-insiders.desktop";

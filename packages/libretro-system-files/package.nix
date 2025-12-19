@@ -8,8 +8,8 @@
   p7zip,
   zip,
   unzip,
-  writeScript,
-  nix-update,
+  _experimental-update-script-combinators,
+  nix-update-script,
 }:
 let
   packagedRepos = with libretro; {
@@ -151,16 +151,26 @@ stdenvNoCC.mkDerivation {
   '';
 
   passthru = {
-    updateScript =
-      let
-        nix-update-latest = "${lib.getExe nix-update} --flake --version=branch";
-      in
-      writeScript "update.sh" ''
-        ${nix-update-latest}
-        ${lib.concatMapStrings (name: ''
-          ${nix-update-latest} "''${UPDATE_NIX_ATTR_PATH:?}".repos.${name}
-        '') (lib.attrNames customRepos)}
-      '';
+    updateScript = _experimental-update-script-combinators.sequence (
+      [
+        (nix-update-script {
+          extraArgs = [
+            "--flake"
+            "--version=branch"
+          ];
+        })
+      ]
+      ++ map (
+        name:
+        (nix-update-script {
+          extraArgs = [
+            "--flake"
+            "--version=branch"
+            "libretro-system-files.repos.${name}"
+          ];
+        })
+      ) (lib.attrNames customRepos)
+    );
 
     repos = customRepos;
   };

@@ -1,5 +1,5 @@
 final: prev: {
-  readDirImportsRecursively =
+  readImportsRecursively =
     path:
     let
       processEntry =
@@ -13,7 +13,7 @@ final: prev: {
           if (prev.pathIsRegularFile (fullPath + "/default.nix")) then
             [ (fullPath + "/default.nix") ]
           else
-            final.readDirImportsRecursively fullPath
+            final.readImportsRecursively fullPath
         else
           [ ];
     in

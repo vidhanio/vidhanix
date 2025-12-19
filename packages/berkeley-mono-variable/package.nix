@@ -3,7 +3,6 @@
   stdenvNoCC,
   fonts,
 }:
-
 stdenvNoCC.mkDerivation {
   pname = "berkeley-mono-variable";
   version = "2.003";
