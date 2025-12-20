@@ -5,13 +5,13 @@
 }:
 stdenvNoCC.mkDerivation {
   pname = "libretro-super";
-  version = "Latest-unstable-2025-12-07";
+  version = "Latest-unstable-2025-12-20";
 
   src = fetchFromGitHub {
     owner = "libretro";
     repo = "libretro-super";
-    rev = "4ea922bd9a89684779684693121dda7297d45ade";
-    hash = "sha256-+acFG7bV89Dll6sIXb1mswKLMKIumHRPL3w+N8Tx1y4=";
+    rev = "66669345636be8c1a10e6afc319ca19346390853";
+    hash = "sha256-XOJ2uSmjvZF00jNWl9TTZp+vgEUhJ+rNv96KvSWgCi0=";
   };
 
   phases = [
