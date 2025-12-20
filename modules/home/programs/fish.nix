@@ -11,7 +11,7 @@ let
 in
 {
   programs.fish = {
-    enable = osCfg.enable;
+    inherit (osCfg) enable;
     shellInit = ''
       if [ "$TERM_PROGRAM" = "vscode" ]
           set -x EDITOR "code-insiders --wait"

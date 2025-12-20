@@ -205,7 +205,7 @@ in
         ];
 
         retroarch = {
-          cores = lib.mapAttrs (name: system: {
+          cores = lib.mapAttrs (_name: system: {
             enable = system.games != [ ];
             package = system.core;
           }) cfg.systems;

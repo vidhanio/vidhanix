@@ -33,6 +33,7 @@
           ultram4rine.vscode-choosealicense
           vscodevim.vim
           wakatime.vscode-wakatime
+          ibecker.treefmt-vscode
         ]
         ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
           # https://github.com/redhat-developer/vscode-xml/pull/1112

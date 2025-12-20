@@ -20,7 +20,7 @@
           ];
         };
       in
-      lib.mapAttrs (_: settings: mkDatabases settings) {
+      lib.mapAttrs (_: mkDatabases) {
         user = {
           "org/gnome/desktop/wm/keybindings" = {
             switch-applications = mkEmptyArray type.string;

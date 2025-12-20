@@ -15,7 +15,7 @@ lib.mkMerge [
   })
   {
     wayland.windowManager.hyprland = {
-      enable = osCfg.enable;
+      inherit (osCfg) enable;
       package = null;
       portalPackage = null;
 

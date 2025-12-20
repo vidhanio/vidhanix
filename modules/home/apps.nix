@@ -63,14 +63,14 @@ in
 
   config =
     let
-      getPackages = map ({ package, name }: package);
+      getPackages = map ({ package }: package);
       isHomePackage = pkg: lib.elem pkg config.home.packages;
       isSystemPackage = pkg: lib.elem pkg osConfig.environment.systemPackages;
       isInstalledPackage = pkg: isHomePackage pkg || isSystemPackage pkg;
 
       autostartEntries = map ({ package, name }: "${getApplicationsDir package}/${name}") cfg.autostart;
 
-      favoriteApps = map ({ package, name }: name) cfg.dock;
+      favoriteApps = map ({ name }: name) cfg.dock;
     in
     {
       assertions = map (pkg: {

@@ -28,7 +28,7 @@ in
           # true -> True, false -> False
           valueApply = value: if lib.isBool value then (if value then "True" else "False") else value;
         in
-        settings: lib.mapAttrs (_: section: lib.mapAttrs (_: value: valueApply value) section) settings;
+        settings: lib.mapAttrs (_: section: lib.mapAttrs (_: valueApply) section) settings;
       description = ''
         Dolphin emulator settings written to
         {file}`$XDG_CONFIG_HOME/dolphin-emu/Dolphin.ini`.

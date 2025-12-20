@@ -4,7 +4,7 @@ let
 in
 {
   solaar = prev.solaar.overrideAttrs (
-    finalAttrs: prevAttrs: {
+    _finalAttrs: prevAttrs: {
       postInstall = prevAttrs.postInstall or "" + ''
         cp $src/share/autostart/solaar.desktop $out/share/applications/solaar-autostart.desktop
       '';

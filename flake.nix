@@ -4,20 +4,17 @@
 
     # no `follows` to avoid invalidating cache
     determinate.url = "github:DeterminateSystems/determinate";
-    determinate-nix.url = "github:DeterminateSystems/nix-src";
     nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    treefmt-nix.url = "github:numtide/treefmt-nix";
 
     stylix = {
       url = "github:nix-community/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    agenix = {
-      url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
@@ -30,6 +27,10 @@
       url = "github:vidhanio/impermanence/hmv2-trash";
     };
 
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -46,218 +47,157 @@
       url = "git+ssh://git@github.com/vidhanio/fonts";
       flake = false;
     };
+
+    import-tree.url = "github:vic/import-tree";
   };
 
   outputs =
-    {
+    inputs@{
       self,
       nixpkgs,
+      import-tree,
       ...
-    }@inputs:
-    let
-      lib = nixpkgs.lib.extend (import ./lib);
-
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-      ];
-
-      nixpkgsCfg = {
-        config.allowUnfree = true;
-        overlays =
+    }:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+      {
+        withSystem,
+        lib,
+        ...
+      }:
+      let
+        flakeModules =
           with inputs;
-          [
-            # determinate-nix.overlays.default
-            firefox-addons.overlays.default
-            agenix.overlays.default
-            vscode-extensions.overlays.default
-          ]
-          ++ lib.attrValues self.overlays;
-      };
+          map (input: input.flakeModule or input.flakeModules.default) [
+            treefmt-nix
+          ];
 
-      forEachSystem =
-        f:
-        lib.genAttrs systems (
-          system:
-          f {
-            inherit system;
-            pkgs = import nixpkgs (nixpkgsCfg // { system = system; });
-          }
-        );
+        nixosModules =
+          with inputs;
+          map (input: input.nixosModules.default) [
+            determinate
+            home-manager
+            stylix
+            agenix
+            impermanence
+            disko
+            spicetify-nix
+          ];
 
-      mkNixOSConfigurations =
-        hosts:
-        let
-          nixosModules =
-            with inputs;
-            map (input: input.nixosModules.default) [
-              determinate
-              home-manager
-              stylix
-              agenix
-              impermanence
-              disko
-              spicetify-nix
+        homeModules =
+          with inputs;
+          map (input: (input.homeModules or input.homeManagerModules).default) [
+            impermanence
+            agenix
+            spicetify-nix
+          ];
+      in
+      {
+        imports = flakeModules ++ import-tree ./modules/flake ++ import-tree ./config/flake;
+
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+        ];
+
+        flake =
+          let
+            mkNixOSConfigurations = hosts: lib.genAttrs hosts (
+              host: system:
+              nixpkgs.lib.nixosSystem {
+                specialArgs = { inherit inputs; };
+
+                modules =
+                  nixosModules
+                  ++ import-tree ./modules/nixos
+                  ++ import-tree ./config/nixos
+                  ++ import-tree ./hosts/${host}
+                  ++ [
+                    (
+                      {
+                        lib,
+                        config,
+                        inputs,
+                        ...
+                      }:
+                      {
+                        networking.hostName = host;
+
+                        nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system ({ pkgs, ... }: pkgs);
+
+                        nix.registry =
+                          let
+                            flakes = lib.filterAttrs (_: input: input ? _type && input._type == "flake") inputs;
+                          in
+                          lib.mapAttrs (_: flake: { inherit flake; }) flakes;
+
+                        home-manager.sharedModules = homeModules;
+                      }
+                    )
+                  ];
+              }
+            );
+          in
+          {
+            nixosConfigurations = mkNixOSConfigurations [
+              "vidhan-pc"
+              "vidhan-macbook"
             ];
 
-          homeModules =
-            with inputs;
-            map (input: (input.homeModules or input.homeManagerModules).default) [
-              impermanence
-              agenix
-              spicetify-nix
-            ];
-        in
-        lib.genAttrs hosts (
-          host:
-          nixpkgs.lib.nixosSystem {
-            inherit lib;
-            specialArgs = { inherit inputs; };
+            overlays = {
+              default = import ./overlays/default.nix;
+              patches = import ./overlays/patches.nix;
+              overrides = import ./overlays/overrides.nix;
+              fonts = _final: _prev: { inherit (inputs) fonts; };
+            };
+          };
 
-            modules = [
-              ./modules
-              ./hosts/${host}
-              { networking.hostName = host; }
-            ]
-            ++ nixosModules
-            ++ [
-              (
-                {
-                  lib,
-                  config,
-                  inputs,
-                  ...
-                }:
-                {
-                  nixpkgs = nixpkgsCfg;
-                  nix.registry =
-                    let
-                      flakes = lib.filterAttrs (_: input: input ? _type && input._type == "flake") inputs;
-                    in
-                    lib.mapAttrs (_: flake: { inherit flake; }) flakes;
+        perSystem =
+          {
+            system,
+            pkgs,
+            ...
+          }:
+          let
+            inherit (pkgs) lib;
+          in
+          {
+            _module.args.pkgs = import nixpkgs {
+              inherit system;
+              overlays =
+                with inputs;
+                map (input: input.overlays.default) [
+                  firefox-addons
+                  agenix
+                  vscode-extensions
+                ]
+                ++ lib.attrValues self.overlays;
+              config.allowUnfree = true;
+            };
 
-                  home-manager = {
-                    users =
+            packages =
+              lib.packagesFromDirectoryRecursive {
+                inherit (pkgs) callPackage;
+                directory = ./packages;
+              }
+              // {
+                vidhanix-github-matrix = pkgs.writeText "matrix.json" (
+                  let
+                    mkMatrixElements =
                       let
-                        users = lib.filter (user: user.isNormalUser) (lib.attrValues config.users.users);
+                        mkMatrixElement = name: host: {
+                          inherit name;
+                          inherit (host) class;
+                          inherit (host.config.nixpkgs.hostPlatform) system;
+                        };
                       in
-                      lib.genAttrs' users (user: lib.nameValuePair user.name ./users/${user.name});
-                    sharedModules = homeModules;
-                    extraSpecialArgs = { inherit inputs; };
-                  };
-                }
-              )
-            ];
-          }
-        );
-    in
-    {
-      inherit inputs;
-      nixosConfigurations = mkNixOSConfigurations [
-        "vidhan-pc"
-        "vidhan-macbook"
-      ];
-
-      overlays = lib.importDirAttrs ./overlays // {
-        fonts = final: prev: { inherit (inputs) fonts; };
-      };
-
-      packages = forEachSystem (
-        { pkgs, ... }:
-        pkgs.lib.packagesFromDirectoryRecursive {
-          inherit (pkgs) callPackage;
-          directory = ./packages;
-        }
-        // {
-          vidhanix-github-matrix = pkgs.writeText "matrix.json" (
-            let
-              mkMatrixElements =
-                let
-                  mkMatrixElement = name: host: {
-                    inherit name;
-                    inherit (host) class;
-                    inherit (host.config.nixpkgs.hostPlatform) system;
-                  };
-                in
-                hosts: lib.attrValues (lib.mapAttrs mkMatrixElement hosts);
-            in
-            pkgs.lib.strings.toJSON {
-              include = (mkMatrixElements self.nixosConfigurations);
-            }
-          );
-        }
-      );
-
-      devShells = forEachSystem (
-        { system, pkgs }:
-        let
-          update = pkgs.writeShellApplication {
-            name = "update";
-
-            runtimeInputs = with pkgs; [
-              nix
-              nix-update
-              jq
-              git
-            ];
-
-            text = ''
-              git add .
-
-              nix flake update
-
-              packages=$(
-                nix eval --json .#packages."${system}" --apply 'builtins.mapAttrs (_: pkg: pkg ? passthru.updateScript)' |
-                  jq -r 'with_entries(select(.value)) | keys | .[]'
-              )
-
-              for package in $packages; do
-                nix-update --flake --use-update-script "$package"
-              done
-            '';
+                      hosts: lib.attrValues (lib.mapAttrs mkMatrixElement hosts);
+                  in
+                  pkgs.lib.strings.toJSON {
+                    include = mkMatrixElements self.nixosConfigurations;
+                  }
+                );
+              };
           };
-
-          rebuild = pkgs.writeShellApplication {
-            name = "rebuild";
-
-            runtimeInputs = with pkgs; [
-              git
-              nh
-              direnv
-            ];
-
-            text = ''
-              git add .
-
-              nh os "''${@:-switch}"
-
-              direnv reload
-            '';
-          };
-        in
-        {
-          default = pkgs.mkShell {
-            packages = with pkgs; [
-              git
-              direnv
-
-              nixfmt-rfc-style
-              nil
-
-              shellcheck
-              shfmt
-
-              agenix
-
-              update
-              rebuild
-            ];
-          };
-        }
-      );
-
-      formatter = forEachSystem (
-        { pkgs, ... }: pkgs.nixfmt-tree.override { nixfmtPackage = pkgs.nixfmt-rfc-style; }
-      );
-    };
+      }
+    );
 }

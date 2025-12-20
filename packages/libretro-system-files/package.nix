@@ -14,15 +14,15 @@
 let
   packagedRepos = with libretro; {
     blueMSX-libretro = bluemsx;
-    dolphin = dolphin;
+    inherit dolphin;
     FBNeo = fbneo;
     mame2003-plus-libretro = mame2003-plus;
     mame2003-libretro = mame2003;
     nxengine-libretro = nxengine;
     ps2 = pcsx2;
-    ppsspp = ppsspp;
+    inherit ppsspp;
     libretro-prboom = prboom;
-    scummvm = scummvm;
+    inherit scummvm;
   };
 
   customRepos =

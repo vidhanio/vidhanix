@@ -5,10 +5,9 @@
   ...
 }:
 {
-  imports = lib.readImportsRecursively ./.;
-
   users = {
     mutableUsers = false;
+
     users."vidhanio" = {
       description = "Vidhan Bhatt";
       hashedPasswordFile = config.age.secrets.password.path;

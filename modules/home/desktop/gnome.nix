@@ -9,7 +9,7 @@ let
 in
 {
   programs.gnome-shell = {
-    enable = osCfg.enable;
+    inherit (osCfg) enable;
     extensions =
       with pkgs.gnomeExtensions;
       map (package: { inherit package; }) [

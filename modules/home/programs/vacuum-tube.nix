@@ -12,7 +12,7 @@ in
   options.programs.vacuum-tube = {
     enable = lib.mkEnableOption "VacuumTube";
     config = lib.mkOption {
-      type = jsonFormat.type;
+      inherit (jsonFormat) type;
       default = {
         fullscreen = false;
         adblock = true;

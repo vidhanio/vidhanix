@@ -1,5 +1,4 @@
 {
-  lib,
   inputs,
   pkgs,
   ...
@@ -7,10 +6,9 @@
 {
   imports = [
     inputs.nixos-apple-silicon.nixosModules.default
-  ]
-  ++ lib.readImportsRecursively ./.;
+  ];
 
-  nixpkgs.hostPlatform = "aarch64-linux";
+  nixpkgs.hostPlatform = "aarch64-darwin";
 
   hardware.graphics.package =
     # Workaround for Mesa 25.3.0 regression
