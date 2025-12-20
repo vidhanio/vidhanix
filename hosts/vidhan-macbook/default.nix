@@ -6,7 +6,7 @@
 }:
 {
   imports = [
-    inputs.apple-silicon.nixosModules.default
+    inputs.nixos-apple-silicon.nixosModules.default
   ]
   ++ lib.readImportsRecursively ./.;
 

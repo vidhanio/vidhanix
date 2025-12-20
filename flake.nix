@@ -5,7 +5,7 @@
     # no `follows` to avoid invalidating cache
     determinate.url = "github:DeterminateSystems/determinate";
     determinate-nix.url = "github:DeterminateSystems/nix-src";
-    apple-silicon.url = "github:nix-community/nixos-apple-silicon";
+    nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
 
     home-manager = {
       url = "github:nix-community/home-manager";
