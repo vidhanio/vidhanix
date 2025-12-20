@@ -22,4 +22,5 @@ in
   "secrets/password.age".publicKeys = all;
   "secrets/wakatime.age".publicKeys = all;
   "secrets/networks.age".publicKeys = all;
+  "secrets/tailscale.age".publicKeys = all;
 }
