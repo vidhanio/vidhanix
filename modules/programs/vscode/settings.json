@@ -1,0 +1,168 @@
+{
+  "[nix]": {
+    "editor.defaultFormatter": "jnoortheen.nix-ide"
+  },
+  "crates.compatibleDecorator": "",
+  "crates.errorDecorator": "!",
+  "crates.incompatibleDecorator": "× ${version}",
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.autoIndent": "full",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.cursorBlinking": "expand",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.fontLigatures": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.hideCursorInOverviewRuler": true,
+  "editor.inlayHints.enabled": "offUnlessPressed",
+  "editor.inlineSuggest.enabled": true,
+  "editor.linkedEditing": true,
+  "editor.minimap.enabled": false,
+  "editor.occurrencesHighlight": "off",
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.renderWhitespace": "none",
+  "editor.scrollBeyondLastLine": false,
+  "editor.smoothScrolling": true,
+  "editor.stickyScroll.enabled": true,
+  "editor.stickyTabStops": true,
+  "editor.suggestSelection": "first",
+  "editor.tabCompletion": "on",
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.db": "${capture}.${extname}-*",
+    "*.db3": "${capture}.${extname}-*",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.s3db": "${capture}.${extname}-*",
+    "*.sdb": "${capture}.${extname}-*",
+    "*.sqlite": "${capture}.${extname}-*",
+    "*.sqlite3": "${capture}.${extname}-*",
+    "*.ts": "${capture}.js, ${capture}.test.ts",
+    "*.tsx": "${capture}.test.tsx",
+    "Cargo.toml": "Cargo.lock",
+    "flake.nix": "flake.lock",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
+    "tsconfig.json": "tsconfig.*.json"
+  },
+  "explorer.sortOrder": "type",
+  "files.associations": {
+    ".env": "dotenv",
+    ".env.*": "dotenv",
+    "*.css": "tailwindcss",
+    "flake.lock": "json"
+  },
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/node_modules": true
+  },
+  "git.autofetch": true,
+  "git.blame.editorDecoration.enabled": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.openRepositoryInParentFolders": "always",
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Use conventional commit message format."
+    }
+  ],
+  "github.copilot.editor.enableCodeActions": false,
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "license.default": "MIT",
+  "material-icon-theme.files.associations": {
+    "NOTICE": "certificate",
+    "NOTICE-APACHE": "certificate"
+  },
+  "material-icon-theme.folders.associations": {
+    ".sqlx": "database",
+    "migrations": "database",
+    "queries": "database",
+    "telemetry": "log",
+    "typechain": "typescript",
+    "workflows": "ci"
+  },
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nil",
+  "nix.serverSettings": {
+    "nil": {
+      "formatting": {
+        "command": [
+          "nixfmt"
+        ]
+      }
+    }
+  },
+  "notebook.formatOnCellExecution": true,
+  "notebook.formatOnSave.enabled": true,
+  "notebook.lineNumbers": "on",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.pytestParameters": true,
+  "python.analysis.inlayHints.variableTypes": true,
+  "python.analysis.typeCheckingMode": "strict",
+  "python.languageServer": "Pylance",
+  "redhat.telemetry.enabled": false,
+  "rust-analyzer.cargo.features": "all",
+  "rust-analyzer.cargo.targetDir": true,
+  "rust-analyzer.check.command": "clippy",
+  "rust-analyzer.completion.fullFunctionSignatures.enable": true,
+  "rust-analyzer.completion.privateEditable.enable": true,
+  "rust-analyzer.completion.termSearch.enable": true,
+  "rust-analyzer.diagnostics.experimental.enable": true,
+  "rust-analyzer.imports.prefix": "self",
+  "rust-analyzer.interpret.tests": true,
+  "rust-analyzer.rustfmt.extraArgs": [
+    "+nightly"
+  ],
+  "rust-analyzer.rustfmt.rangeFormatting.enable": true,
+  "scm.diffDecorations": "none",
+  "security.workspace.trust.untrustedFiles": "open",
+  "tailwindCSS.experimental.classRegex": [
+    [
+      "\\.\"([^\"]*)\"",
+      "(\\S+)"
+    ],
+    [
+      "(?:class(?:es)?|CLASS(?:ES)?) *(?::.*?)? *= *\"([^\"]*)\"]*?",
+      "(\\S+)"
+    ]
+  ],
+  "tailwindCSS.includeLanguages": {
+    "rust": "html"
+  },
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "terminal.integrated.enableVisualBell": true,
+  "terminal.integrated.persistentSessionReviveProcess": "never",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "vim.handleKeys": {
+    "<C-a>": false,
+    "<C-c>": false,
+    "<C-f>": false,
+    "<C-s>": false,
+    "<C-v>": false,
+    "<C-w>": false,
+    "<C-x>": false,
+    "<C-z>": false,
+    "<C-p>": false
+  },
+  "vim.useSystemClipboard": true,
+  "workbench.editor.empty.hint": "hidden",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.productIconTheme": "material-product-icons",
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "zenMode.centerLayout": false,
+  "zenMode.fullScreen": false,
+  "zenMode.hideLineNumbers": false
+}
