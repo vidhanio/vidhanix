@@ -32,7 +32,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      url = "gitlab:nix-community/nur-combined?dir=repos/rycee/pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vscode-extensions = {
@@ -65,17 +65,9 @@
         ...
       }:
       let
-        flakeModules =
-          with inputs;
-          map (input: input.flakeModule or input.flakeModules.default) [
-            treefmt-nix
-          ];
-
         nixosModules =
           with inputs;
           map (input: input.nixosModules.default) [
-            determinate
-            home-manager
             stylix
             agenix
             impermanence
@@ -90,66 +82,7 @@
             agenix
             spicetify-nix
           ];
-      in
-      {
-        imports = flakeModules ++ import-tree ./modules/flake ++ import-tree ./config/flake;
-
-        systems = [
-          "x86_64-linux"
-          "aarch64-linux"
-        ];
-
-        flake =
-          let
-            mkNixOSConfigurations = hosts: lib.genAttrs hosts (
-              host: system:
-              nixpkgs.lib.nixosSystem {
-                specialArgs = { inherit inputs; };
-
-                modules =
-                  nixosModules
-                  ++ import-tree ./modules/nixos
-                  ++ import-tree ./config/nixos
-                  ++ import-tree ./hosts/${host}
-                  ++ [
-                    (
-                      {
-                        lib,
-                        config,
-                        inputs,
-                        ...
-                      }:
-                      {
-                        networking.hostName = host;
-
-                        nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system ({ pkgs, ... }: pkgs);
-
-                        nix.registry =
-                          let
-                            flakes = lib.filterAttrs (_: input: input ? _type && input._type == "flake") inputs;
-                          in
-                          lib.mapAttrs (_: flake: { inherit flake; }) flakes;
-
-                        home-manager.sharedModules = homeModules;
-                      }
-                    )
-                  ];
-              }
-            );
-          in
-          {
-            nixosConfigurations = mkNixOSConfigurations [
-              "vidhan-pc"
-              "vidhan-macbook"
-            ];
-
-            overlays = {
-              default = import ./overlays/default.nix;
-              patches = import ./overlays/patches.nix;
-              overrides = import ./overlays/overrides.nix;
-              fonts = _final: _prev: { inherit (inputs) fonts; };
-            };
-          };
+      in {};
 
         perSystem =
           {

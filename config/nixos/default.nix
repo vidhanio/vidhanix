@@ -10,15 +10,11 @@
 
     users."vidhanio" = {
       description = "Vidhan Bhatt";
-      hashedPasswordFile = config.age.secrets.password.path;
-
       isNormalUser = true;
       extraGroups = [ "wheel" ];
       shell = pkgs.fish;
     };
   };
-
-  age.secrets.password.file = ../secrets/password.age;
 
   environment = {
     systemPackages = with pkgs; [
