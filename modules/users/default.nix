@@ -1,4 +1,7 @@
-{ lib, ... }:
+{ lib, config, ... }:
+let
+  cfg = config.users;
+in
 {
   options.users = lib.mkOption {
     type = lib.types.attrsOf lib.types.submodule {
@@ -21,5 +24,29 @@
         };
       };
     };
+  };
+
+  config.flake.modules.nixos.default = nixos: {
+    age.secrets.password.file = ../../secrets/password.age;
+
+    users.users = lib.mapAttrs cfg (
+      _: user: {
+        enable = lib.mkDefault false;
+        isNormalUser = true;
+        description = user.fullName;
+        # TODO: handle seperate passwords per user?
+        hashedPasswordFile = config.age.secrets.password.path;
+        extraGroups = [ "wheel" ];
+      }
+    );
+
+    home-manager.users =
+      let
+        activeUserNames = lib.attrNames (
+          lib.filterAttrs (_: user: user.enable && user.isNormalUser) nixos.users.users
+        );
+        activeUsers = lib.getAttrs activeUserNames cfg;
+      in
+      lib.mapAttrs activeUsers (_: user: user.module);
   };
 }
