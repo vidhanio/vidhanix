@@ -32,7 +32,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     firefox-addons = {
-      url = "gitlab:nix-community/nur-combined?dir=repos/rycee/pkgs/firefox-addons";
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     vscode-extensions = {
@@ -82,8 +82,8 @@
             agenix
             spicetify-nix
           ];
-      in {};
-
+      in
+      {
         perSystem =
           {
             system,

@@ -1,7 +1,4 @@
-{ lib, config, ... }:
-let
-  cfg = config.users;
-in
+{ lib, ... }:
 {
   options.users = lib.mkOption {
     type = lib.types.attrsOf lib.types.submodule {
@@ -22,23 +19,6 @@ in
           type = lib.types.deferredModule;
           description = "Home Manager configuration for the user.";
         };
-      };
-    };
-  };
-
-  config.flake.modules = {
-    nixos.default = nixos: {
-      age.secrets.password.file = ../secrets/password.age;
-
-      users = {
-        mutableUsers = false;
-        users = lib.mapAttrs (_: userCfg: {
-          description = userCfg.fullName;
-          # TODO: handle seperate passwords per user?
-          hashedPasswordFile = nixos.config.age.secrets.password.path;
-          isNormalUser = true;
-          extraGroups = [ "wheel" ];
-        }) cfg;
       };
     };
   };
