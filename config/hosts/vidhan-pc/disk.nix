@@ -4,7 +4,6 @@
       fsType = "tmpfs";
       mountOptions = [
         "size=8G"
-        "defaults"
         "mode=755"
       ];
     };
@@ -55,6 +54,24 @@
                       swap.swapfile.size = "16G";
                     };
                   };
+              };
+            };
+          };
+        };
+      };
+      games = {
+        type = "disk";
+        device = "/dev/disk/by-id/ata-SHPP41-2000GM_ANDAN55971120B355";
+        content = {
+          type = "gpt";
+          partitions = {
+            games = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/mnt/games";
+                mountOptions = [ "nofail" ];
               };
             };
           };

@@ -110,6 +110,10 @@
             name = "Wii Play (USA) (Rev 1)";
             hash = "sha1-WoPx+LcgYncDyBsj+4uc8tofhcc=";
           }
+          {
+            name = "Super Smash Bros. Brawl (USA, Canada) (Rev 2)";
+            hash = "sha1-a4gfqsmmKoMfTV8ZzpRFUXzKyUI=";
+          }
         ];
       })
       (lib.mkIf (osConfig.networking.hostName == "vidhan-macbook") {

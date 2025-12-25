@@ -4,7 +4,6 @@
       fsType = "tmpfs";
       mountOptions = [
         "size=2G"
-        "defaults"
         "mode=755"
       ];
     };
@@ -91,6 +90,24 @@
               priority = 5;
               type = "AF0C";
               uuid = "37b1fd46-dc1b-4342-887c-f533d6ca1de2";
+            };
+          };
+        };
+      };
+      games = {
+        type = "disk";
+        device = "/dev/disk/by-id/ata-SHPP41-2000GM_ANDAN55971120B355";
+        content = {
+          type = "gpt";
+          partitions = {
+            games = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/mnt/games";
+                mountOptions = [ "nofail" ];
+              };
             };
           };
         };
