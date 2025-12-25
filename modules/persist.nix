@@ -2,62 +2,81 @@
   lib,
   ...
 }:
+let
+  sharedOptions = {
+    directories = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "Directories that you want to persist.";
+    };
+    files = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "Files that you want to persist.";
+    };
+  };
+in
 {
-  flake.modules.nixos.base =
-    nixos:
-    let
-      cfg = nixos.config.persist;
-    in
-    {
-      options.persist =
-        let
-          inherit (lib) mkEnableOption mkOption types;
-        in
-        {
-          enable = mkEnableOption "persisting specified files and directories";
-          path = mkOption {
-            type = types.str;
+  flake.modules = {
+    nixos.default =
+      nixos:
+      let
+        cfg = nixos.config.persist;
+      in
+      {
+        options.persist = sharedOptions // {
+          enable = lib.mkEnableOption "persisting specified files and directories";
+          path = lib.mkOption {
+            type = lib.types.str;
             default = "/persist";
             description = "The path where persisted data will be stored.";
           };
-          directories = mkOption {
-            type = types.listOf types.str;
-            default = [ ];
-            description = "Directories that you want to persist.";
-          };
-          files = mkOption {
-            type = types.listOf types.str;
-            default = [ ];
-            description = "Files that you want to persist.";
-          };
         };
 
-      config = lib.mkMerge [
-        {
-          persist = {
-            directories = [
-              "/var/log"
-              "/var/lib/nixos"
-            ];
-            files = [
-              "/etc/machine-id"
-            ];
-          };
-        }
-        (lib.mkIf cfg.enable {
-          environment.persistence.${cfg.path} = {
-            hideMounts = true;
-            allowTrash = true;
+        config = lib.mkMerge [
+          {
+            persist = {
+              directories = [
+                "/var/log"
+                "/var/lib/nixos"
+              ];
+              files = [
+                "/etc/machine-id"
+              ];
+            };
+          }
+          (lib.mkIf cfg.enable {
+            environment.persistence.${cfg.path} = {
+              hideMounts = true;
+              allowTrash = true;
 
+              inherit (cfg) directories files;
+            };
+
+            fileSystems.${cfg.path}.neededForBoot = true;
+
+            security.sudo.extraConfig = ''
+              Defaults lecture = never
+            '';
+          })
+        ];
+      };
+    homeManager.default =
+      homeManager:
+      let
+        osCfg = homeManager.osConfig.persist;
+        cfg = homeManager.config.persist;
+      in
+      {
+        options.persist = sharedOptions;
+
+        config = {
+          home.persistence."${osCfg.path}" = {
+            inherit (osCfg) enable;
+            inherit (homeManager.osConfig.environment.persistence."${osCfg.path}") hideMounts allowTrash;
             inherit (cfg) directories files;
           };
-
-          fileSystems.${cfg.path}.neededForBoot = true;
-
-          security.sudo.extraConfig = ''
-            Defaults lecture = never
-          '';
-        })
-      ];
-    };
+        };
+      };
+  };
 }

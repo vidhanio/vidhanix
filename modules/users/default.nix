@@ -14,10 +14,6 @@ in
           type = lib.types.str;
           description = "The email address of the user.";
         };
-        githubUsername = lib.mkOption {
-          type = lib.types.str;
-          description = "The GitHub username of the user.";
-        };
         module = lib.mkOption {
           type = lib.types.deferredModule;
           description = "Home Manager configuration for the user.";
@@ -37,6 +33,7 @@ in
         # TODO: handle seperate passwords per user?
         hashedPasswordFile = config.age.secrets.password.path;
         extraGroups = [ "wheel" ];
+        useDefaultShell = true;
       }
     );
 
