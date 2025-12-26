@@ -14,16 +14,16 @@
   };
 
   config = {
-    perSystem = perSystem: {
+    perSystem = args: {
       _module.args.pkgs = import inputs.nixpkgs {
-        inherit (perSystem) system;
+        inherit (args) system;
         inherit (config.nixpkgs) overlays;
         config.allowUnfree = true;
       };
     };
 
-    flake.modules.nixos.base = nixos: {
-      nixpkgs.pkgs = withSystem nixos.config.nixpkgs.hostPlatform (perSystem: perSystem.pkgs);
+    flake.modules.nixos.base = args: {
+      nixpkgs.pkgs = withSystem args.config.nixpkgs.hostPlatform (args: args.pkgs);
     };
   };
 

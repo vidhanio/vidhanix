@@ -1,12 +1,12 @@
 { lib, ... }:
 {
-  flake.modules.nixos.default = nixos: {
+  flake.modules.nixos.default = args: {
     age.secrets.networks.file = ../secrets/networks.age;
 
     networking.networkmanager = {
       enable = true;
       ensureProfiles = {
-        environmentFiles = [ nixos.config.age.secrets.networks.path ];
+        environmentFiles = [ args.config.age.secrets.networks.path ];
         profiles =
           let
             mkWifiProfile = id: pskVar: {

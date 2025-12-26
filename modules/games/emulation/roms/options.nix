@@ -1,13 +1,14 @@
 {
+  withSystem,
   lib,
   pkgs,
   ...
 }:
 {
   flake.modules.homeManager.default =
-    homeManager:
+    args:
     let
-      cfg = homeManager.config.roms;
+      cfg = args.config.roms;
     in
     {
       options.roms =

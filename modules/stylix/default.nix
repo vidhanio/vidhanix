@@ -1,16 +1,16 @@
 { pkgs, ... }:
 {
   flake.modules.nixos.default =
-    nixos:
+    args:
     let
-      cfg = nixos.config.stylix;
+      cfg = args.config.stylix;
     in
     {
       stylix = {
         enable = true;
         polarity = "dark";
         image =
-          with nixos.config.lib.stylix.colors.withHashtag;
+          with args.config.lib.stylix.colors.withHashtag;
           pkgs.replaceVars ./wallpaper.svg {
             bg = base00;
 

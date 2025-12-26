@@ -1,7 +1,7 @@
 {
-  flake.modules.homeManager.default = homeManager: {
+  flake.modules.homeManager.default = args: {
     dconf.settings."org/gnome/shell/extensions/lockscreen-extension" =
-      with homeManager.config.lib.stylix.colors.withHashtag; {
+      with args.config.lib.stylix.colors.withHashtag; {
         hide-lockscreen-extension-button = true;
 
         user-background-1 = false;

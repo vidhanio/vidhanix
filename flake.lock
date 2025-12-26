@@ -91,6 +91,22 @@
         "type": "github"
       }
     },
+    "cannonball": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1729530221,
+        "narHash": "sha256-jp58bKr8bisJOXCz9M+bmA06p8bPJw9Bn9eJJy4aGEg=",
+        "owner": "libretro",
+        "repo": "cannonball",
+        "rev": "5137a791d229a5b9c7c089cf1edcce4db3c57d64",
+        "type": "github"
+      },
+      "original": {
+        "owner": "libretro",
+        "repo": "cannonball",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -196,6 +212,38 @@
         "url": "https://install.determinate.systems/determinate-nixd/tag/v3.15.1/x86_64-linux"
       }
     },
+    "dinothawr": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1765543372,
+        "narHash": "sha256-wJj1wzCnMc1/KIOQ1mi3JyaxWtVIkquYgzgz/W6XOVs=",
+        "owner": "libretro",
+        "repo": "dinothawr",
+        "rev": "d66dde551be8e68e47c05e88838b4f1c6b114c99",
+        "type": "github"
+      },
+      "original": {
+        "owner": "libretro",
+        "repo": "dinothawr",
+        "type": "github"
+      }
+    },
+    "dirksimple": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733188154,
+        "narHash": "sha256-ZaQMWVgKP1D+biJaNrLqqtLqMfRp1FovlI6AEBlCO5Y=",
+        "owner": "icculus",
+        "repo": "DirkSimple",
+        "rev": "a5b0ebca483cd10babe930a57e75b0e6094686fb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "icculus",
+        "repo": "DirkSimple",
+        "type": "github"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -213,6 +261,22 @@
       "original": {
         "owner": "nix-community",
         "repo": "disko",
+        "type": "github"
+      }
+    },
+    "ecwolf": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1744813599,
+        "narHash": "sha256-KOZfm1MpLAng9YzydU7YeJfDN1lqkX78gz5tzRe0aOE=",
+        "owner": "libretro",
+        "repo": "ecwolf",
+        "rev": "c57ad894d5942740b4896511e8554c9a776b04a6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "libretro",
+        "repo": "ecwolf",
         "type": "github"
       }
     },
@@ -377,6 +441,22 @@
         "type": "github"
       }
     },
+    "ghostty-shader-playground": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1760399422,
+        "narHash": "sha256-ha45+1ri4LciepHX4Y5BIi883T4t7dT7CTuhq/9Z4EA=",
+        "owner": "KroneCorylus",
+        "repo": "ghostty-shader-playground",
+        "rev": "7b0c94df4c5dfeb6686edeb9ef8d89456bbc8ae3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "KroneCorylus",
+        "repo": "ghostty-shader-playground",
+        "type": "github"
+      }
+    },
     "git-hooks-nix": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -516,6 +596,54 @@
       "original": {
         "owner": "vic",
         "repo": "import-tree",
+        "type": "github"
+      }
+    },
+    "libretro-database": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1766667440,
+        "narHash": "sha256-xb7E2tPTXt39CgCJ2pXJ0jotOQcZl7OoL4hfZIn6Gps=",
+        "owner": "libretro",
+        "repo": "libretro-database",
+        "rev": "3b049cde2a6d475535ee09ea49668107caeba115",
+        "type": "github"
+      },
+      "original": {
+        "owner": "libretro",
+        "repo": "libretro-database",
+        "type": "github"
+      }
+    },
+    "libretro-super": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1766320368,
+        "narHash": "sha256-ttAlK4vZIMHLpm4yklaGSJrPwGUIm3Ta2Bo2w0S8gX8=",
+        "owner": "libretro",
+        "repo": "libretro-super",
+        "rev": "6244066badefb5ccca99e621ce0e653748bb8f37",
+        "type": "github"
+      },
+      "original": {
+        "owner": "libretro",
+        "repo": "libretro-super",
+        "type": "github"
+      }
+    },
+    "libretro-system-files": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1735204489,
+        "narHash": "sha256-7dFJ43nzdUypRNTxK4Vif0WFrpMIs6oy+QcU1PDUtOI=",
+        "owner": "libretro",
+        "repo": "libretro-system-files",
+        "rev": "c9bd84a44c017f7cdf96dd2ab8a064d425d239c6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "libretro",
+        "repo": "libretro-system-files",
         "type": "github"
       }
     },
@@ -723,23 +851,49 @@
         "type": "github"
       }
     },
+    "qemu-libretro": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1755570998,
+        "narHash": "sha256-hBEwJE8x0+wsfvMo0ANWs+lItBRBradZ1F6blY1wzQ4=",
+        "owner": "io12",
+        "repo": "qemu-libretro",
+        "rev": "86ea49ba18309ea003bbf212f5eace20bedbb6f9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "io12",
+        "repo": "qemu-libretro",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "cannonball": "cannonball",
         "determinate": "determinate",
+        "dinothawr": "dinothawr",
+        "dirksimple": "dirksimple",
         "disko": "disko",
+        "ecwolf": "ecwolf",
         "firefox-addons": "firefox-addons",
         "flake-parts": "flake-parts_2",
         "fonts": "fonts",
+        "ghostty-shader-playground": "ghostty-shader-playground",
         "home-manager": "home-manager_2",
         "impermanence": "impermanence",
         "import-tree": "import-tree",
+        "libretro-database": "libretro-database",
+        "libretro-super": "libretro-super",
+        "libretro-system-files": "libretro-system-files",
         "nixos-apple-silicon": "nixos-apple-silicon",
         "nixpkgs": "nixpkgs_5",
+        "qemu-libretro": "qemu-libretro",
         "spicetify-nix": "spicetify-nix",
         "stylix": "stylix",
         "treefmt-nix": "treefmt-nix",
-        "vscode-extensions": "vscode-extensions"
+        "vscode-extensions": "vscode-extensions",
+        "xrick-libretro": "xrick-libretro"
       }
     },
     "spicetify-nix": {
@@ -958,6 +1112,22 @@
       "original": {
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
+        "type": "github"
+      }
+    },
+    "xrick-libretro": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736101509,
+        "narHash": "sha256-rBGY/BuJZZc2KrxnC7e6YgjOP/eCBSvO8IS39re9+vc=",
+        "owner": "libretro",
+        "repo": "xrick-libretro",
+        "rev": "476a9a637a6d2afa3f9f6b202bb98b522a4e95d1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "libretro",
+        "repo": "xrick-libretro",
         "type": "github"
       }
     }

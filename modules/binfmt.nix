@@ -1,10 +1,10 @@
 { lib, ... }:
 {
-  flake.modules.nixos.default = nixos: {
+  flake.modules.nixos.default = args: {
     # make binfmt available for non-native architectures
     binfmt.emulatedSystems =
       let
-        inherit (nixos.config.nixpkgs.hostPlatform) system;
+        inherit (args.config.nixpkgs.hostPlatform) system;
         mkSystemIfNot = target: lib.mkIf (system != target) [ target ];
       in
       lib.mkMerge [

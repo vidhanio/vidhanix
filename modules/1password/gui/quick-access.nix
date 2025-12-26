@@ -1,6 +1,5 @@
-{ lib, ... }:
 {
-  flake.modules.nixos.default = nixos: {
+  flake.modules.nixos.default = args: {
     programs.dconf.profiles.user.databases = [
       {
         settings =

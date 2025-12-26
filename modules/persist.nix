@@ -19,9 +19,9 @@ in
 {
   flake.modules = {
     nixos.default =
-      nixos:
+      args:
       let
-        cfg = nixos.config.persist;
+        cfg = args.config.persist;
       in
       {
         options.persist = sharedOptions // {
@@ -63,10 +63,10 @@ in
         ];
       };
     homeManager.default =
-      homeManager:
+      args:
       let
-        osCfg = homeManager.osConfig.persist;
-        cfg = homeManager.config.persist;
+        osCfg = args.osConfig.persist;
+        cfg = args.config.persist;
       in
       {
         options.persist = sharedOptions;
@@ -74,7 +74,7 @@ in
         config = {
           home.persistence."${osCfg.path}" = {
             inherit (osCfg) enable;
-            inherit (homeManager.osConfig.environment.persistence."${osCfg.path}") hideMounts allowTrash;
+            inherit (args.osConfig.environment.persistence."${osCfg.path}") hideMounts allowTrash;
             inherit (cfg) directories files;
           };
         };

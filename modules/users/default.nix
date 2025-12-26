@@ -22,7 +22,7 @@ in
     };
   };
 
-  config.flake.modules.nixos.default = nixos: {
+  config.flake.modules.nixos.default = args: {
     age.secrets.password.file = ../../secrets/password.age;
 
     users.users = lib.mapAttrs cfg (
@@ -40,7 +40,7 @@ in
     home-manager.users =
       let
         activeUserNames = lib.attrNames (
-          lib.filterAttrs (_: user: user.enable && user.isNormalUser) nixos.users.users
+          lib.filterAttrs (_: user: user.enable && user.isNormalUser) args.users.users
         );
         activeUsers = lib.getAttrs activeUserNames cfg;
       in

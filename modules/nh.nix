@@ -1,8 +1,8 @@
 {
-  flake.modules.nixos.default = nixos: {
+  flake.modules.nixos.default = args: {
     programs.nh = {
       enable = true;
-      flake = "${nixos.config.users.users.vidhanio.home}/Projects/vidhanix";
+      flake = "${args.config.users.users.vidhanio.home}/Projects/vidhanix";
     };
   };
 }

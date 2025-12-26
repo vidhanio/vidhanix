@@ -1,10 +1,10 @@
 { pkgs, lib, ... }:
 {
   flake.modules.homeManager.default =
-    homeManager:
+    args:
     let
       inherit (lib) types;
-      cfg = homeManager.config.apps;
+      cfg = args.config.apps;
       getApplicationsDir = pkg: "${pkg}/share/applications";
     in
     {
@@ -61,8 +61,8 @@
       config =
         let
           getPackages = map ({ package }: package);
-          isHomePackage = pkg: lib.elem pkg homeManager.config.home.packages;
-          isSystemPackage = pkg: lib.elem pkg homeManager.osConfig.environment.systemPackages;
+          isHomePackage = pkg: lib.elem pkg args.config.home.packages;
+          isSystemPackage = pkg: lib.elem pkg args.osConfig.environment.systemPackages;
           isInstalledPackage = pkg: isHomePackage pkg || isSystemPackage pkg;
 
           autostartEntries = map ({ package, name }: "${getApplicationsDir package}/${name}") cfg.autostart;
