@@ -7,11 +7,7 @@ let
   cfg = config.programs.steam;
 in
 {
-  options.programs.steam = {
-
-  };
-
-  config = lib.mkIf cfg.enable {
+  config = {
     home-manager.sharedModules = [
       {
         persist.directories = [ ".local/share/Steam" ];
