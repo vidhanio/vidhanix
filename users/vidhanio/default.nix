@@ -21,7 +21,7 @@
       nixfmt-rfc-style
       nil
 
-      helium-bin
+      moonlight-qt
     ];
   };
 
@@ -39,7 +39,7 @@
     direnv.enable = true;
     dolphin-emu.enable = true;
     eza.enable = true;
-    firefox.enable = true;
+    helium.enable = true;
     gh = {
       enable = true;
       username = "vidhanio";
@@ -158,8 +158,7 @@
           name = "org.gnome.Nautilus.desktop";
         }
         programs.ghostty.package
-        programs.firefox.finalPackage
-        pkgs.helium-bin
+        programs.helium.package
         {
           inherit (programs.vscode) package;
           name = "code-insiders.desktop";
