@@ -14,5 +14,7 @@
         };
       };
     };
+
+    persist.directories = [ ".local/share/dolphin-emu" ];
   };
 }
