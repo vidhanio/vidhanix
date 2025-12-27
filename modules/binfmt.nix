@@ -2,7 +2,7 @@
 {
   flake.modules.nixos.default = args: {
     # make binfmt available for non-native architectures
-    binfmt.emulatedSystems =
+    boot.binfmt.emulatedSystems =
       let
         inherit (args.config.nixpkgs.hostPlatform) system;
         mkSystemIfNot = target: lib.mkIf (system != target) [ target ];

@@ -1,16 +1,19 @@
-{ pkgs, ... }:
 {
   flake.modules = {
-    nixos.default = {
-      programs.kdeconnect = {
-        enable = true;
-        package = pkgs.gnomeExtensions.gsconnect;
+    nixos.default =
+      { pkgs, ... }:
+      {
+        programs.kdeconnect = {
+          enable = true;
+          package = pkgs.gnomeExtensions.gsconnect;
+        };
       };
-    };
-    homeManager.default = {
-      programs.gnome-shell.extensions = with pkgs.gnomeExtensions; [
-        { package = gsconnect; }
-      ];
-    };
+    homeManager.default =
+      { pkgs, ... }:
+      {
+        programs.gnome-shell.extensions = with pkgs.gnomeExtensions; [
+          { package = gsconnect; }
+        ];
+      };
   };
 }

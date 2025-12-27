@@ -1,17 +1,10 @@
-{
-  lib,
-  ...
-}:
-{
-  perSystem =
+let
+  pkg =
     {
-      config,
-      pkgs,
-      ...
+      lib,
+      stdenv,
+      retroarch-bare,
     }:
-    let
-      inherit (pkgs) stdenv retroarch-bare;
-    in
     stdenv.mkDerivation {
       pname = "libretrodb_tool";
       inherit (retroarch-bare) version src;
@@ -39,5 +32,16 @@
         inherit (retroarch-bare.meta) license;
         platforms = lib.platforms.all;
       };
+    };
+in
+{
+  perSystem =
+    {
+      config,
+      pkgs,
+      ...
+    }:
+    {
+      packages.libretrodb_tool = pkgs.callPackage pkg { };
     };
 }

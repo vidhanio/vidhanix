@@ -4,6 +4,7 @@
       enable = true;
       capSysAdmin = true;
       openFirewall = true;
+      persist.directories = [ ".config/sunshine" ];
     };
   };
 }

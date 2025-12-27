@@ -43,6 +43,10 @@
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixcord = {
+      url = "github:FlameFlag/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     fonts = {
       url = "git+ssh://git@github.com/vidhanio/fonts";
       flake = false;
@@ -58,11 +62,11 @@
       url = "github:libretro/libretro-super";
       flake = false;
     };
-    libretro-database = {
+    libretro-database-src = {
       url = "github:libretro/libretro-database";
       flake = false;
     };
-    libretro-system-files = {
+    libretro-system-files-src = {
       url = "github:libretro/libretro-system-files";
       flake = false;
     };
