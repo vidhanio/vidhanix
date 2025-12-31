@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}:
+{ lib, ... }:
 let
   sharedOptions = {
     directories = lib.mkOption {
@@ -19,9 +16,9 @@ in
 {
   flake.modules = {
     nixos.default =
-      args:
+      { config, ... }:
       let
-        cfg = args.config.persist;
+        cfg = config.persist;
       in
       {
         options.persist = sharedOptions // {
@@ -63,10 +60,10 @@ in
         ];
       };
     homeManager.default =
-      args:
+      { config, osConfig, ... }:
       let
-        osCfg = args.osConfig.persist;
-        cfg = args.config.persist;
+        osCfg = osConfig.persist;
+        cfg = config.persist;
       in
       {
         options.persist = sharedOptions;
@@ -74,7 +71,7 @@ in
         config = {
           home.persistence."${osCfg.path}" = {
             inherit (osCfg) enable;
-            inherit (args.osConfig.environment.persistence."${osCfg.path}") hideMounts allowTrash;
+            inherit (osConfig.environment.persistence."${osCfg.path}") hideMounts allowTrash;
             inherit (cfg) directories files;
           };
         };

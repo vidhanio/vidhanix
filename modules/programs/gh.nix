@@ -1,12 +1,9 @@
-{
-  lib,
-  ...
-}:
+{ lib, ... }:
 {
   flake.modules.homeManager.default =
-    args:
+    { config, ... }:
     let
-      cfg = args.config.programs.gh;
+      cfg = config.programs.gh;
     in
     {
       options.programs.gh.username = lib.mkOption {

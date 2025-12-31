@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.default = args: {
+  flake.modules.nixos.default = {
     nix.settings.trusted-users = [
       "root"
       "@wheel"

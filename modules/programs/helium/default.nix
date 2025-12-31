@@ -1,24 +1,18 @@
 {
-  pkgs,
-  lib,
+  withSystem,
   ...
 }:
 {
   flake.modules.homeManager.default =
-    args:
-    let
-      cfg = args.config.programs.helium;
-    in
-    {
-      options.programs.helium = {
-        enable = lib.mkEnableOption "Helium browser";
-        package = lib.mkPackageOption pkgs "helium-bin" { };
-      };
-
-      config = lib.mkIf cfg.enable {
-        home.packages = [ cfg.package ];
+    { pkgs, ... }:
+    withSystem pkgs.stdenvNoCC.hostPlatform.system (
+      { self', ... }:
+      {
+        home.packages = [
+          self'.packages.helium-bin
+        ];
 
         persist.directories = [ ".config/net.imput.helium" ];
-      };
-    };
+      }
+    );
 }

@@ -7,25 +7,47 @@ let
       nix-update-script,
       fetchurl,
       stdenvNoCC,
-
-      helium-appimage-x86_64-linux,
-      helium-appimage-aarch64-linux,
     }:
     let
       inherit (stdenvNoCC.hostPlatform) system;
 
       platforms = {
-        x86_64-linux = helium-appimage-x86_64-linux;
-        aarch64-linux = helium-appimage-aarch64-linux;
+        x86_64-linux = {
+          os = "x86_64";
+          hash = "sha256-qEHUFzCwsCyFNLFCC62wo2x1lr/boAI/UDsaaNP1vrc=";
+        };
+        aarch64-linux = {
+          os = "arm64";
+          hash = "sha256-o4oSTWJtQFH8HCjv+bAEioKBqhSq7EC+f9KJKUFbBWg=";
+        };
       };
 
-      inherit (platforms.${system} or (throw "Unsupported system: ${system}")) src;
+      inherit (platforms.${system} or (throw "Unsupported system: ${system}")) os hash;
     in
     appimageTools.wrapType2 rec {
       pname = "helium";
       version = "0.7.7.1";
 
-      inherit src;
+      src = fetchurl {
+        url = "https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-${os}.AppImage";
+        inherit hash;
+      };
+
+      passthru.updateScript = _experimental-update-script-combinators.sequence [
+        (nix-update-script {
+          extraArgs = [
+            "--flake"
+            "--system=x86_64-linux"
+          ];
+        })
+        (nix-update-script {
+          extraArgs = [
+            "--flake"
+            "--system=aarch64-linux"
+            "--version=skip"
+          ];
+        })
+      ];
 
       extraInstallCommands =
         let
@@ -53,7 +75,6 @@ in
 {
   perSystem =
     {
-      config,
       pkgs,
       ...
     }:

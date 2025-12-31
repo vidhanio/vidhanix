@@ -2,30 +2,35 @@
   config,
   ...
 }:
+let
+  flakeUsers = config.users;
+in
 {
-  flake.modules.homeManager.default = args: {
-    programs.git = {
-      settings = {
-        user =
-          let
-            inherit (args.config.home) username;
-          in
-          {
-            name = config.users.${username}.fullName;
-            email = config.users.${username}.email;
-          };
+  flake.modules.homeManager.default =
+    { config, ... }:
+    {
+      programs.git = {
+        settings = {
+          user =
+            let
+              user = flakeUsers.${config.home.username};
+            in
+            {
+              name = user.fullName;
+              email = user.email;
+            };
 
-        init.defaultBranch = "main";
+          init.defaultBranch = "main";
 
-        push.autoSetupRemote = true;
-        pull.rebase = true;
-        rebase.autostash = true;
-        merge.ff = "only";
-        submodule.recurse = true;
+          push.autoSetupRemote = true;
+          pull.rebase = true;
+          rebase.autostash = true;
+          merge.ff = "only";
+          submodule.recurse = true;
 
-        url."git@github.com:".insteadOf = "https://github.com/";
+          url."git@github.com:".insteadOf = "https://github.com/";
+        };
+        lfs.enable = true;
       };
-      lfs.enable = true;
     };
-  };
 }
