@@ -10,6 +10,7 @@ in
     { config, ... }:
     {
       programs.git = {
+        enable = true;
         settings = {
           user =
             let

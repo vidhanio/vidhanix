@@ -103,11 +103,7 @@ in
 }:
 {
   perSystem =
-    {
-      pkgs,
-      self',
-      ...
-    }:
+    { pkgs, ... }:
     {
       packages.libretro-system-files = pkgs.callPackage pkg {
         inherit (inputs)

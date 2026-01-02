@@ -1,8 +1,9 @@
-{ pkgs, ... }:
 {
-  flake.modules.homeManager.default = {
-    home.packages = with pkgs; [ prismlauncher ];
+  flake.modules.homeManager.default =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [ prismlauncher ];
 
-    persist.directories = [ ".local/share/PrismLauncher" ];
-  };
+      persist.directories = [ ".local/share/PrismLauncher" ];
+    };
 }

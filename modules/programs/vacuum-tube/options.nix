@@ -1,11 +1,7 @@
+{ lib, ... }:
 {
   flake.modules.homeManager.default =
-    {
-      config,
-      pkgs,
-      lib,
-      ...
-    }:
+    { config, pkgs, ... }:
     let
       cfg = config.programs.vacuum-tube;
       json = pkgs.formats.json { };
@@ -13,7 +9,7 @@
     {
       options.programs.vacuum-tube = {
         enable = lib.mkEnableOption "VacuumTube";
-        package = lib.mkPackageOption pkgs "vacuum-tube";
+        package = lib.mkPackageOption pkgs "vacuum-tube" { };
         settings = lib.mkOption {
           inherit (json) type;
           default = { };

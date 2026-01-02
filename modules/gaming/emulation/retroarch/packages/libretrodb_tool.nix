@@ -36,11 +36,7 @@ let
 in
 {
   perSystem =
-    {
-      config,
-      pkgs,
-      ...
-    }:
+    { pkgs, ... }:
     {
       packages.libretrodb_tool = pkgs.callPackage pkg { };
     };

@@ -1,49 +1,43 @@
-{
-  lib,
-  ...
-}:
-{
-  perSystem =
+let
+  pkg =
     {
-      self',
-      pkgs,
-      ...
+      lib,
+      stdenvNoCC,
+      cacert,
+      curl,
+      unzip,
     }:
     {
-      packages.fetchMyrient =
-        let
-          inherit (pkgs)
-            stdenvNoCC
-            cacert
-            curl
-            unzip
-            ;
-        in
-        {
-          group,
-          ext,
-          system,
-          game,
-          hash,
-        }:
-        stdenvNoCC.mkDerivation {
-          name = "${game}.${ext}";
+      group,
+      ext,
+      system,
+      game,
+      hash,
+    }:
+    stdenvNoCC.mkDerivation {
+      name = "${game}.${ext}";
 
-          SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
+      SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
-          buildInputs = [
-            curl
-            unzip
-          ];
+      buildInputs = [
+        curl
+        unzip
+      ];
 
-          url = "https://myrient.erista.me/files/${lib.escapeURL group}/${lib.escapeURL system}/${lib.escapeURL game}.zip";
-          filename = "${game}.${ext}";
+      url = "https://myrient.erista.me/files/${lib.escapeURL group}/${lib.escapeURL system}/${lib.escapeURL game}.zip";
+      filename = "${game}.${ext}";
 
-          builder = ./builder.sh;
+      builder = ./builder.sh;
 
-          outputHash = hash;
-          outputHashAlgo = if hash == "" then "sha1" else null;
-          outputHashMode = "flat";
-        };
+      outputHash = hash;
+      outputHashAlgo = if hash == "" then "sha1" else null;
+      outputHashMode = "flat";
+    };
+in
+{
+  perSystem =
+    { pkgs, ... }:
+    {
+      packages.fetchMyrient = pkgs.callPackage pkg { };
     };
 }

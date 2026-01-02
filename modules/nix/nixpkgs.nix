@@ -8,7 +8,7 @@
 {
   options.nixpkgs = {
     overlays = lib.mkOption {
-      type = lib.types.listOf lib.types.function;
+      type = lib.types.listOf (lib.types.functionTo (lib.types.functionTo lib.types.attrs));
       default = [ ];
     };
   };
@@ -24,10 +24,10 @@
         };
       };
 
-    flake.modules.nixos.base =
+    flake.modules.nixos.default =
       { config, ... }:
       {
-        nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform ({ pkgs, ... }: pkgs);
+        nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system ({ pkgs, ... }: pkgs);
       };
   };
 

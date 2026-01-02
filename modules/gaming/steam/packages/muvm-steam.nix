@@ -80,7 +80,7 @@ let
 in
 {
   perSystem =
-    { self', pkgs, ... }:
+    { pkgs, ... }:
     {
       packages.muvm-steam = pkgs.callPackage pkg { };
     };

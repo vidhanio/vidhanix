@@ -74,10 +74,7 @@ let
 in
 {
   perSystem =
-    {
-      pkgs,
-      ...
-    }:
+    { pkgs, ... }:
     {
       packages.helium-bin = pkgs.callPackage pkg { };
     };

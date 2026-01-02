@@ -1,10 +1,14 @@
+{ withSystem, inputs, ... }:
 {
   flake.modules.homeManager.default =
     { pkgs, lib, ... }:
+
     {
       programs.vscode = {
         enable = true;
-        package = pkgs.vscode-insiders;
+        package = withSystem pkgs.stdenvNoCC.hostPlatform.system (
+          { self', ... }: self'.packages.vscode-insiders
+        );
 
         mutableExtensionsDir = false;
 
@@ -12,7 +16,7 @@
           userSettings = lib.importJSON ./settings.json;
 
           extensions =
-            with pkgs.vscode-marketplace;
+            with (pkgs.extend inputs.vscode-extensions.overlays.default).vscode-marketplace;
             [
               bmalehorn.vscode-fish
               bradlc.vscode-tailwindcss
@@ -43,10 +47,10 @@
               redhat.vscode-xml
             ];
         };
-
-        persist.directories = [
-          ".config/Code - Insiders/User/globalStorage"
-        ];
       };
+
+      persist.directories = [
+        ".config/Code - Insiders/User/globalStorage"
+      ];
     };
 }

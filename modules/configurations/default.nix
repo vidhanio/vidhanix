@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  inputs,
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.configurations;
 in
@@ -6,9 +11,10 @@ in
   options.configurations = lib.mkOption {
     type = lib.types.lazyAttrsOf (
       lib.types.submodule {
-        options = name: {
+        options = {
           module = lib.mkOption {
             type = lib.types.deferredModule;
+            default = { };
             description = "NixOS configuration module for this configuration.";
           };
         };
@@ -16,13 +22,12 @@ in
     );
   };
 
-  config.flake = {
-    nixosConfigurations = lib.mapAttrs (
+  config = {
+    flake.nixosConfigurations = lib.mapAttrs (
       name:
       { module }:
-      lib.nixosSystem {
+      inputs.nixpkgs.lib.nixosSystem {
         modules = [
-          config.flake.modules.nixos.default
           module
           { networking.hostName = name; }
         ];

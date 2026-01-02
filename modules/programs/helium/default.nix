@@ -5,14 +5,11 @@
 {
   flake.modules.homeManager.default =
     { pkgs, ... }:
-    withSystem pkgs.stdenvNoCC.hostPlatform.system (
-      { self', ... }:
-      {
-        home.packages = [
-          self'.packages.helium-bin
-        ];
+    {
+      home.packages = withSystem pkgs.stdenvNoCC.hostPlatform.system (
+        { self', ... }: [ self'.packages.helium-bin ]
+      );
 
-        persist.directories = [ ".config/net.imput.helium" ];
-      }
-    );
+      persist.directories = [ ".config/net.imput.helium" ];
+    };
 }

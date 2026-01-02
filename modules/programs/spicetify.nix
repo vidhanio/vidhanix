@@ -1,14 +1,17 @@
 { inputs, ... }:
 {
-  flake.modules.homeManager.default = {
-    imports = [
-      inputs.spicetify-nix.homeModules.default
-    ];
+  flake.modules.homeManager.default =
+    { pkgs, ... }:
+    {
+      imports = [
+        inputs.spicetify-nix.homeManagerModules.default
+      ];
 
-    programs.spicetify = {
-      enable = true;
-      wayland = false;
+      programs.spicetify = {
+        enable = pkgs.stdenvNoCC.hostPlatform.isx86_64;
+        wayland = false;
+      };
+
+      persist.directories = [ ".config/spotify" ];
     };
-    persist.directories = [ ".config/spotify" ];
-  };
 }

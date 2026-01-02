@@ -1,6 +1,7 @@
 {
   flake.modules.homeManager.default = {
     programs.ghostty = {
+      enable = true;
       settings =
         let
           padding = 10;

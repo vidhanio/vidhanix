@@ -1,16 +1,18 @@
-{ pkgs, ... }:
+{ inputs, withSystem, ... }:
 {
   flake.modules.nixos.default =
-    args:
+    { pkgs, config, ... }:
     let
-      cfg = args.config.stylix;
+      cfg = config.stylix;
     in
     {
+      imports = [ inputs.stylix.nixosModules.default ];
+
       stylix = {
         enable = true;
         polarity = "dark";
         image =
-          with args.config.lib.stylix.colors.withHashtag;
+          with config.lib.stylix.colors.withHashtag;
           pkgs.replaceVars ./wallpaper.svg {
             bg = base00;
 
@@ -27,7 +29,9 @@
         base16Scheme = "${pkgs.base16-schemes}/share/themes/horizon-terminal-dark.yaml";
         fonts = {
           monospace = {
-            package = pkgs.berkeley-mono-variable;
+            package = withSystem pkgs.stdenvNoCC.hostPlatform.system (
+              { self', ... }: self'.packages.berkeley-mono-variable
+            );
             name = "Berkeley Mono Variable";
           };
           serif = cfg.fonts.monospace;

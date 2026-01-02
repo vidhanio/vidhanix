@@ -1,11 +1,9 @@
 {
-  pkgs,
-  ...
-}:
-{
-  flake.modules.homeManager.default = {
-    programs.gnome-shell.extensions = with pkgs.gnomeExtensions; [
-      { package = lockscreen-extension; }
-    ];
-  };
+  flake.modules.homeManager.default =
+    { pkgs, ... }:
+    {
+      programs.gnome-shell.extensions = with pkgs.gnomeExtensions; [
+        { package = lockscreen-extension; }
+      ];
+    };
 }

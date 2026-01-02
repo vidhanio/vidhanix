@@ -1,8 +1,9 @@
-{ pkgs, ... }:
 {
-  flake.modules.nixos.default = {
-    systemPackages = with pkgs; [
-      wl-clipboard
-    ];
-  };
+  flake.modules.nixos.default =
+    { pkgs, ... }:
+    {
+      environment.systemPackages = with pkgs; [
+        wl-clipboard
+      ];
+    };
 }

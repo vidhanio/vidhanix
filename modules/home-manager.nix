@@ -13,8 +13,12 @@
         useGlobalPkgs = true;
       };
     };
-    homeManager.default = {
-      programs.home-manager.enable = true;
-    };
+    homeManager.default =
+      { osConfig, ... }:
+      {
+        programs.home-manager.enable = true;
+
+        home.stateVersion = osConfig.system.stateVersion;
+      };
   };
 }

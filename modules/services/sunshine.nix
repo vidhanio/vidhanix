@@ -1,11 +1,14 @@
 {
-  flake.modules.nixos.default = {
-    services.sunshine = {
-      enable = true;
-      capSysAdmin = true;
-      openFirewall = true;
+  flake.modules = {
+    nixos.default = {
+      services.sunshine = {
+        enable = true;
+        capSysAdmin = true;
+        openFirewall = true;
+      };
     };
-
-    persist.directories = [ ".config/sunshine" ];
+    homeManager.default = {
+      persist.directories = [ ".config/sunshine" ];
+    };
   };
 }
