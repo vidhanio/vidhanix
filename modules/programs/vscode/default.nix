@@ -23,8 +23,10 @@
               bradlc.vscode-tailwindcss
               charliermarsh.ruff
               codezombiech.gitignore
+              dev-sam.vscode-disable-generated-files-edit
               github.copilot
               github.copilot-chat
+              ibecker.treefmt-vscode
               jnoortheen.nix-ide
               mkhl.direnv
               mkhl.shfmt
@@ -41,7 +43,6 @@
               ultram4rine.vscode-choosealicense
               vscodevim.vim
               wakatime.vscode-wakatime
-              ibecker.treefmt-vscode
             ]
             ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
               # https://github.com/redhat-developer/vscode-xml/pull/1112

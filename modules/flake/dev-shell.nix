@@ -1,12 +1,18 @@
 {
   perSystem =
     {
+      config,
       inputs',
       pkgs,
       system,
       ...
     }:
     {
+      files.file.".envrc".text = ''
+        # shellcheck shell=bash
+        use flake
+      '';
+
       devShells.default =
         let
           update = pkgs.writeShellApplication {
@@ -54,17 +60,19 @@
           };
         in
         pkgs.mkShell {
-          packages = with pkgs; [
-            git
-            direnv
+          packages = [
+            pkgs.git
+            pkgs.direnv
 
-            nixfmt-rfc-style
-            nil
+            pkgs.nixfmt-rfc-style
+            pkgs.nil
 
             inputs'.agenix.packages.default
 
             update
             rebuild
+
+            config.files.writer.drv
           ];
         };
     };

@@ -40,7 +40,7 @@
                         inherit mountOptions;
                       };
                       "/persist" = {
-                        mountpoint = config.persist.path;
+                        mountpoint = config.persist.persistentStoragePath;
                         inherit mountOptions;
                       };
                       "/swap" = {
