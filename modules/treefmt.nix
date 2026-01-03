@@ -4,6 +4,8 @@
     inputs.treefmt-nix.flakeModule
   ];
 
+  flake-file.inputs.treefmt-nix.url = "github:numtide/treefmt-nix";
+
   perSystem.treefmt = {
     programs = {
       nixfmt.enable = true;

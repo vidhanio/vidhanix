@@ -1,10 +1,10 @@
 { config, ... }:
 {
-  configurations.vidhan-macbook.module = {
-    imports = with config.flake.modules.nixos; [ apple-silicon ];
-
-    nixpkgs.hostPlatform = "aarch64-linux";
-
-    system.stateVersion = "26.05";
+  configurations.vidhan-macbook = {
+    system = "aarch64-linux";
+    stateVersion = "26.05";
+    module = {
+      imports = with config.flake.modules.nixos; [ macbook ];
+    };
   };
 }

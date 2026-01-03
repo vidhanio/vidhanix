@@ -1,5 +1,7 @@
 { inputs, withSystem, ... }:
 {
+  flake-file.inputs.stylix.url = "github:nix-community/stylix";
+
   flake.modules.nixos.default =
     { pkgs, config, ... }:
     let
@@ -29,7 +31,7 @@
         base16Scheme = "${pkgs.base16-schemes}/share/themes/horizon-terminal-dark.yaml";
         fonts = {
           monospace = {
-            package = withSystem pkgs.stdenvNoCC.hostPlatform.system (
+            package = withSystem pkgs.stdenv.hostPlatform.system (
               { self', ... }: self'.packages.berkeley-mono-variable
             );
             name = "Berkeley Mono Variable";

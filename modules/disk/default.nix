@@ -1,67 +1,68 @@
 { inputs, ... }:
 {
+  flake-file.inputs.disko.url = "github:nix-community/disko";
+
   flake.modules.nixos = {
-    default = {
-      imports = [ inputs.disko.nixosModules.default ];
+    default =
+      { config, ... }:
+      {
+        imports = [ inputs.disko.nixosModules.default ];
 
-      disko.devices.disk.main = {
-        type = "disk";
-
-        content = {
-          type = "gpt";
-
-          partitions = {
-            ESP = {
-              type = "EF00";
-
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [ "umask=0077" ];
+        disko.devices.disk.main = {
+          type = "disk";
+          content = {
+            type = "gpt";
+            partitions = {
+              ESP = {
+                type = "EF00";
+                content = {
+                  type = "filesystem";
+                  format = "vfat";
+                  mountpoint = "/boot";
+                  mountOptions = [ "umask=0077" ];
+                };
               };
-            };
-            root = {
-              size = "100%";
-              content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ];
-                subvolumes =
-                  let
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  in
-                  {
-                    "/nix" = {
-                      mountpoint = "/nix";
-                      inherit mountOptions;
+              root = {
+                size = "100%";
+                content = {
+                  type = "btrfs";
+                  extraArgs = [ "-f" ];
+                  subvolumes =
+                    let
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
+                    in
+                    {
+                      "/nix" = {
+                        mountpoint = "/nix";
+                        inherit mountOptions;
+                      };
+                      "/persist" = {
+                        mountpoint = config.persist.path;
+                        inherit mountOptions;
+                      };
+                      "/swap" = {
+                        mountpoint = "/swap";
+                        swap.swapfile.size = "16G";
+                      };
                     };
-                    "/persist" = {
-                      mountpoint = "/persist";
-                      inherit mountOptions;
-                    };
-                    "/swap" = {
-                      mountpoint = "/swap";
-                      swap.swapfile.size = "16G";
-                    };
-                  };
+                };
               };
             };
           };
         };
-      };
 
-      boot.kernel.sysfs.module.zswap.parameters.enabled = 1;
-    };
-    pc = {
+        boot.kernel.sysfs.module.zswap.parameters.enabled = 1;
+      };
+    desktop = {
       disko.devices.disk.main.content.partitions.ESP = {
         start = "1M";
         end = "500M";
       };
     };
-    apple-silicon =
+    macbook =
       { config, ... }:
       {
         # https://github.com/nix-community/disko/issues/1125#issuecomment-3427875095
@@ -109,5 +110,24 @@
           };
         };
       };
+  };
+
+  configurations = {
+    vidhan-pc.module = {
+      disko.devices.disk.main.device = "/dev/disk/by-id/nvme-SHPP41-2000GM_ASDAN54031240AV5V";
+    };
+    vidhan-macbook.module = {
+      disko.devices.disk.main = {
+        device = "/dev/disk/by-id/nvme-APPLE_SSD_AP0256Q_0ba012e404080419";
+
+        content.partitions = {
+          iBootSystemContainer.uuid = "62132ea7-731c-44eb-848a-80a899f51311";
+          Container.uuid = "18fa4f40-f0b2-407f-9eea-a1491cefeaa4";
+          NixOSContainer.uuid = "4238759e-8d52-4fd7-a67f-c1476fce03f9";
+          ESP.uuid = "ff9579f2-e598-4e95-b8be-91f66eaba3a4";
+          RecoveryOSContainer.uuid = "37b1fd46-dc1b-4342-887c-f533d6ca1de2";
+        };
+      };
+    };
   };
 }

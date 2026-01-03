@@ -9,7 +9,7 @@
             enable = true;
           };
         }
-        (lib.mkIf (pkgs.stdenvNoCC.hostPlatform.system == "aarch64-linux") {
+        (lib.mkIf (pkgs.stdenv.hostPlatform.system == "aarch64-linux") {
           programs.steam.package = pkgs.muvm-steam;
 
           hardware.graphics = {

@@ -6,10 +6,10 @@
         mountOptions = [ "mode=755" ];
       };
     };
-    pc = {
+    desktop = {
       disko.devices.nodev."/".mountOptions = [ "size=8G" ];
     };
-    apple-silicon = {
+    macbook = {
       disko.devices.nodev."/".mountOptions = [ "size=2G" ];
     };
   };

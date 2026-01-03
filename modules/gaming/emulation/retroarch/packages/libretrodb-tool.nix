@@ -6,7 +6,7 @@ let
       retroarch-bare,
     }:
     stdenv.mkDerivation {
-      pname = "libretrodb_tool";
+      pname = "libretrodb-tool";
       inherit (retroarch-bare) version src;
 
       preBuild = ''
@@ -38,6 +38,6 @@ in
   perSystem =
     { pkgs, ... }:
     {
-      packages.libretrodb_tool = pkgs.callPackage pkg { };
+      packages.libretrodb-tool = pkgs.callPackage pkg { };
     };
 }

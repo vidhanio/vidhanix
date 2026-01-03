@@ -1,12 +1,13 @@
 { withSystem, inputs, ... }:
 {
+  flake-file.inputs.vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+
   flake.modules.homeManager.default =
     { pkgs, lib, ... }:
-
     {
       programs.vscode = {
         enable = true;
-        package = withSystem pkgs.stdenvNoCC.hostPlatform.system (
+        package = withSystem pkgs.stdenv.hostPlatform.system (
           { self', ... }: self'.packages.vscode-insiders
         );
 

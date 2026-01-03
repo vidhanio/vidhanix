@@ -15,7 +15,7 @@ let
         runHook preInstall
 
         mkdir -p $out/share/fonts/truetype/
-        cp $pname/*.ttf $out/share/fonts/truetype/
+        cp berkeley-mono-variable/*.ttf $out/share/fonts/truetype/
 
         runHook postInstall
       '';

@@ -6,7 +6,7 @@
   flake.modules.homeManager.default =
     { pkgs, ... }:
     {
-      home.packages = withSystem pkgs.stdenvNoCC.hostPlatform.system (
+      home.packages = withSystem pkgs.stdenv.hostPlatform.system (
         { self', ... }: [ self'.packages.helium-bin ]
       );
 

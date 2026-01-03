@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.modules.nixos.pc = {
+  flake.modules.nixos.desktop = {
     imports = [
       config.flake.modules.nixos.default
     ];

@@ -1,6 +1,11 @@
 {
   perSystem =
-    { pkgs, system, ... }:
+    {
+      inputs',
+      pkgs,
+      system,
+      ...
+    }:
     {
       devShells.default =
         let
@@ -56,7 +61,7 @@
             nixfmt-rfc-style
             nil
 
-            agenix
+            inputs'.agenix.packages.default
 
             update
             rebuild

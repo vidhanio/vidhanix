@@ -1,5 +1,7 @@
 { inputs, ... }:
 {
+  flake-file.inputs.agenix.url = "github:ryantm/agenix";
+
   flake.modules = {
     nixos.default =
       { config, ... }:
@@ -9,7 +11,7 @@
         # agenix runs via an activation script during stage 2,
         # which is before impermanence runs via systemd.
         age.identityPaths = [
-          "/persist/etc/ssh/ssh_host_ed25519_key"
+          "${config.persist.path}/etc/ssh/ssh_host_ed25519_key"
         ];
       };
     homeManager.default = {

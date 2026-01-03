@@ -97,7 +97,7 @@
                       pkgs.runCommand "rom-hashes-${name}.json" { } ''
                         cp "${pkgs.libretro-database}/share/libretro/database/rdb/${config.fullName}.rdb" ./db.rdb
                         chmod u+w ./db.rdb # libretrodb_tool needs write permissions
-                        { ${lib.getExe pkgs.libretrodb_tool} ./db.rdb list || true; } \
+                        { ${lib.getExe pkgs.libretrodb-tool} ./db.rdb list || true; } \
                           | sed 's/\t/\\t/g' \
                           | ${lib.getExe pkgs.jq} -s 'map(select(.rom_name != null) | { key: .rom_name, value: .sha1 }) | from_entries' > $out
                       ''
@@ -113,7 +113,7 @@
                       lib.genAttrs' config.games (
                         game:
                         lib.nameValuePair game.filename (
-                          withSystem pkgs.stdenvNoCC.hostPlatform.system (
+                          withSystem pkgs.stdenv.hostPlatform.system (
                             { self', ... }:
                             self'.packages.fetchMyrient {
                               inherit (config) group ext;

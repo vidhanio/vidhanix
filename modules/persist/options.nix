@@ -1,7 +1,12 @@
 { inputs, lib, ... }:
 let
-  path = "/persist";
   options = {
+    path = lib.mkOption {
+      type = lib.types.str;
+      default = "/persist";
+      description = "The path where persistent data is stored.";
+      readOnly = true;
+    };
     directories = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
@@ -15,6 +20,10 @@ let
   };
 in
 {
+  # https://github.com/nix-community/impermanence/pull/272
+  # https://github.com/nix-community/impermanence/pull/243
+  flake-file.inputs.impermanence.url = "github:vidhanio/impermanence/hmv2-trash";
+
   flake.modules = {
     nixos.default =
       { config, ... }:
@@ -40,18 +49,18 @@ in
             ];
           };
 
-          environment.persistence.${path} = {
+          environment.persistence.${cfg.path} = {
             hideMounts = true;
             allowTrash = true;
 
             inherit (cfg) directories files;
           };
 
-          fileSystems.${path}.neededForBoot = true;
+          fileSystems.${cfg.path}.neededForBoot = true;
         };
       };
     homeManager.default =
-      { config, osConfig, ... }:
+      { config, ... }:
       let
         cfg = config.persist;
       in
@@ -63,7 +72,7 @@ in
         options.persist = options;
 
         config = {
-          home.persistence.${path} = {
+          home.persistence.${cfg.path} = {
             hideMounts = true;
             allowTrash = true;
 

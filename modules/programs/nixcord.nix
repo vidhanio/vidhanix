@@ -1,5 +1,7 @@
 { lib, inputs, ... }:
 {
+  flake-file.inputs.nixcord.url = "github:FlameFlag/nixcord";
+
   flake.modules.homeManager.default = {
     imports = [ inputs.nixcord.homeModules.default ];
 
@@ -31,6 +33,7 @@
           spotifyCrack.enable = true;
           fakeNitro.enable = true;
           youtubeAdblock.enable = true;
+          ClearURLs.enable = true;
         };
       };
     };

@@ -15,7 +15,7 @@ let
         runHook preInstall
 
         mkdir -p $out/share/fonts/opentype/
-        cp $pname/*.otf $out/share/fonts/opentype/
+        cp berkeley-mono-variable/*.otf $out/share/fonts/opentype/
 
         runHook postInstall
       '';

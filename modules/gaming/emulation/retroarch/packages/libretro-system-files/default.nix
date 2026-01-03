@@ -102,6 +102,38 @@ in
   ...
 }:
 {
+  flake-file.inputs = {
+    libretro-system-files-src = {
+      url = "github:libretro/libretro-system-files";
+      flake = false;
+    };
+
+    cannonball = {
+      url = "github:libretro/cannonball";
+      flake = false;
+    };
+    dinothawr = {
+      url = "github:libretro/dinothawr";
+      flake = false;
+    };
+    dirksimple = {
+      url = "github:icculus/DirkSimple";
+      flake = false;
+    };
+    ecwolf = {
+      url = "github:libretro/ecwolf";
+      flake = false;
+    };
+    qemu-libretro = {
+      url = "github:io12/qemu-libretro";
+      flake = false;
+    };
+    xrick-libretro = {
+      url = "github:libretro/xrick-libretro";
+      flake = false;
+    };
+  };
+
   perSystem =
     { pkgs, ... }:
     {

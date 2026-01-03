@@ -10,7 +10,7 @@
     {
       apps =
         let
-          self' = withSystem pkgs.stdenvNoCC.hostPlatform.system ({ self', ... }: self');
+          self' = withSystem pkgs.stdenv.hostPlatform.system ({ self', ... }: self');
           inherit (config) programs;
           osPrograms = osConfig.programs;
           maybeSpicetify = lib.optional programs.spicetify.enable programs.spicetify.spicedSpotify;

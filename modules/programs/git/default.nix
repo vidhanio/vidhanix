@@ -18,7 +18,7 @@ in
             in
             {
               name = user.fullName;
-              email = user.email;
+              inherit (user) email;
             };
 
           init.defaultBranch = "main";

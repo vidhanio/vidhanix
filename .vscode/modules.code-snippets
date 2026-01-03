@@ -20,7 +20,7 @@
 		"prefix": "nm",
 		"body": [
 			"{",
-			"  flake.modules.nixos.default = {",
+			"  flake.modules.nixos.${1:default} = {",
 			"    $0",
 			"  };",
 			"}"
@@ -32,7 +32,7 @@
 		"prefix": "hm",
 		"body": [
 			"{",
-			"  flake.modules.homeManager.default = {",
+			"  flake.modules.homeManager.${1:default} = {",
 			"    $0",
 			"  };",
 			"}"
@@ -45,10 +45,10 @@
 		"body": [
 			"{",
 			"  flake.modules = {",
-			"    nixos = {",
+			"    nixos.${1:default} = {",
 			"      $0",
 			"    };",
-			"    homeManager = {",
+			"    homeManager.${1:default} = {",
 			"      ",
 			"    };",
 			"  };",
