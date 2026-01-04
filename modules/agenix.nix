@@ -11,7 +11,7 @@
         # agenix runs via an activation script during stage 2,
         # which is before impermanence runs via systemd.
         age.identityPaths = [
-          "${config.persist.path}/etc/ssh/ssh_host_ed25519_key"
+          "${config.persist.persistentStoragePath}/etc/ssh/ssh_host_ed25519_key"
         ];
       };
     homeManager.default = {
