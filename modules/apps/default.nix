@@ -31,10 +31,7 @@
             }
             programs.ghostty.package
             self'.packages.helium-bin
-            {
-              inherit (programs.vscode) package;
-              name = "code-insiders.desktop";
-            }
+            programs.vscode.package
             programs.nixcord.finalPackage.vesktop
             osPrograms.steam.package
           ]

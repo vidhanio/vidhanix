@@ -90,8 +90,8 @@ let
       '';
 
       meta = {
-        description = "Databases used by RetroArch";
-        homepage = "https://github.com/libretro/libretro-database";
+        description = "Auxiliary libretro core system files provided through the online updater";
+        homepage = "https://github.com/libretro/libretro-system-files";
         license = lib.licenses.cc-by-sa-40;
         platforms = lib.platforms.all;
       };
