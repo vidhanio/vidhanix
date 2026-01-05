@@ -53,6 +53,7 @@
       flake = false;
       url = "github:KroneCorylus/ghostty-shader-playground";
     };
+    git-hooks-nix.url = "github:cachix/git-hooks.nix";
     home-manager.url = "github:nix-community/home-manager";
     impermanence.url = "github:vidhanio/impermanence/hmv2-trash";
     import-tree.url = "github:vic/import-tree";

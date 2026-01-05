@@ -36,7 +36,7 @@ in
         fileSystems.${cfg.persistentStoragePath}.neededForBoot = true;
       };
     homeManager.default =
-      { config, ... }:
+      { ... }:
       {
         imports = [
           inputs.impermanence.homeManagerModules.default
