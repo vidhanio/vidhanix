@@ -69,6 +69,7 @@
       flake = false;
       url = "github:libretro/libretro-system-files";
     };
+    nix-index-database.url = "github:nix-community/nix-index-database";
     nixcord.url = "github:FlameFlag/nixcord";
     nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
