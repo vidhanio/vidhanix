@@ -96,11 +96,15 @@ in
                     inherit source;
                   }
                   ''
-                    touch $out
+                    mkdir -p "$(dirname "${name}")"
+                    touch "${name}"
                     if [ -n "$comment" ]; then
-                      echo "$comment" >> $out
+                      echo "$comment" >> "${name}"
                     fi
-                    cat "${source}" >> $out
+                    cat "${source}" >> "${name}"
+                    # ensure that it uses correct exclusion rules by naming the file properly
+                    ${lib.getExe config.treefmt.build.wrapper} --no-cache --tree-root-file "${name}" "${name}"
+                    mv "${name}" $out
                   '';
             }
           ) cfg.file;

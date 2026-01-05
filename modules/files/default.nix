@@ -24,16 +24,15 @@
         enable = true;
         package = self'.packages.generate-files;
         entry = lib.getExe self'.packages.generate-files;
+        pass_filenames = false;
       };
-
-      treefmt.settings.global.excludes = map ({ path_, ... }: path_) config.files.files;
 
       files.readme.content.generated-files.content = ''
         most of the non-nix files in this repository (including this very readme) are generated via [`nix run .#generate-files`](modules/files/default.nix).
         the generated files are:
 
         ${config.files.readme.lib.renderList (
-          map (p: "[`${p}`]") (lib.sortOn (p: p) (map ({ path_, ... }: path_) config.files.files))
+          map (p: "[`${p}`](${p})") (lib.sortOn (p: p) (map ({ path_, ... }: path_) config.files.files))
         )}
       '';
     };
