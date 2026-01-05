@@ -65,6 +65,8 @@ let
       pname = "muvm-${steam.pname}";
       inherit (steam) version;
 
+      src = steam;
+
       buildCommand = wrapMuvm steam;
 
       passthru.run = stdenvNoCC.mkDerivation {
@@ -75,7 +77,10 @@ let
         inherit (steam.run) meta;
       };
 
-      inherit (steam) meta;
+      meta = steam.meta // {
+        description = "The Steam client, wrapped to run in muvm for Apple Silicon support";
+        platforms = [ "aarch64-linux" ];
+      };
     };
 in
 {

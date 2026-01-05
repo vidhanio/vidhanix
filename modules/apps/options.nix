@@ -8,56 +8,42 @@
       ...
     }:
     let
-      inherit (lib) types;
       cfg = config.apps;
-      getApplicationsDir = pkg: "${pkg}/share/applications";
     in
     {
       options.apps =
         let
-          app = types.submodule (
+          app = lib.types.submodule (
             { config, ... }:
             {
               options = {
                 package = lib.mkOption {
                   description = "The package providing the application.";
-                  type = types.package;
+                  type = lib.types.package;
                 };
 
-                name =
-                  let
-                    getApplications = pkg: lib.attrNames (builtins.readDir (getApplicationsDir pkg));
-
-                    applications = getApplications config.package;
-                  in
-                  lib.mkOption {
-                    description = "The name of the application.";
-                    type = types.addCheck types.str (name: lib.elem name applications);
-                    default =
-                      if (builtins.length applications) == 1 then
-                        builtins.head applications
-                      else
-                        throw "apps.dock item \"${lib.getName config.package}\" has multiple applications (${
-                          lib.concatStringsSep ", " (map (app: "\"${app}\"") applications)
-                        }), name must be specified";
-                  };
+                name = lib.mkOption {
+                  description = "The name of the application's .desktop file (without the .desktop extension).";
+                  type = lib.types.str;
+                  default = config.package.meta.mainProgram;
+                };
               };
             }
           );
 
-          coercedApp = types.coercedTo types.package (package: {
+          coercedApp = lib.types.coercedTo lib.types.package (package: {
             inherit package;
           }) app;
         in
         {
           autostart = lib.mkOption {
-            type = types.listOf coercedApp;
+            type = lib.types.listOf coercedApp;
             default = [ ];
             description = "List of applications to autostart.";
           };
 
           dock = lib.mkOption {
-            type = types.listOf coercedApp;
+            type = lib.types.listOf coercedApp;
             default = [ ];
             description = "List of applications to show in the dock.";
           };
@@ -65,29 +51,32 @@
 
       config =
         let
-          getPackages = map ({ package, ... }: package);
           isHomePackage = pkg: lib.elem pkg config.home.packages;
           isSystemPackage = pkg: lib.elem pkg osConfig.environment.systemPackages;
           isInstalledPackage = pkg: isHomePackage pkg || isSystemPackage pkg;
 
-          autostartEntries = map ({ package, name }: "${getApplicationsDir package}/${name}") cfg.autostart;
-
-          favoriteApps = map ({ name, ... }: name) cfg.dock;
+          mkAssertions =
+            option:
+            map (
+              { package, ... }:
+              {
+                assertion = isInstalledPackage package;
+                message = "apps.${option} item \"${lib.getName package}\" is not in home.packages or environment.systemPackages";
+              }
+            ) cfg.${option};
         in
         {
-          assertions = map (pkg: {
-            assertion = isInstalledPackage pkg;
-            message = "apps.autostart item \"${lib.getName pkg}\" is not in home.packages or environment.systemPackages";
-          }) (getPackages cfg.autostart);
+          assertions = (mkAssertions "autostart") ++ (mkAssertions "dock");
 
           xdg.autostart = {
             enable = lib.mkIf (cfg.autostart != [ ]) true;
-            entries = autostartEntries;
+            entries = map ({ package, name }: "${package}/share/applications/${name}.desktop") cfg.autostart;
           };
-
-          dconf.settings."org/gnome/shell".favorite-apps = lib.mkIf (
-            isInstalledPackage pkgs.gnome-shell && cfg.dock != [ ]
-          ) favoriteApps;
+          dconf.settings."org/gnome/shell" =
+            lib.mkIf (isInstalledPackage pkgs.gnome-shell && cfg.dock != [ ])
+              {
+                favorite-apps = map ({ name, ... }: "${name}.desktop") cfg.dock;
+              };
         };
     };
 }

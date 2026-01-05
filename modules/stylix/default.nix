@@ -28,7 +28,7 @@
             teeth = base07;
             eye = base07;
           };
-        base16Scheme = "${pkgs.base16-schemes}/share/themes/horizon-terminal-dark.yaml";
+        base16Scheme = ./scheme.yaml;
         fonts = {
           monospace = {
             package = withSystem pkgs.stdenv.hostPlatform.system (
