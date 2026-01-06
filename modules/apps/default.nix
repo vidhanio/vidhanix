@@ -27,9 +27,12 @@
           dock = [
             {
               package = pkgs.nautilus;
-              name = "org.gnome.Nautilus.desktop";
+              name = "org.gnome.Nautilus";
             }
-            programs.ghostty.package
+            {
+              inherit (programs.ghostty) package;
+              name = "com.mitchellh.ghostty";
+            }
             self'.packages.helium-bin
             programs.vscode.package
             programs.nixcord.finalPackage.vesktop

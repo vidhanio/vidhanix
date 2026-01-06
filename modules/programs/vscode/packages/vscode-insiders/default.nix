@@ -36,6 +36,7 @@ let
         passthru.updateScript = ./update.sh;
 
         meta = prevAttrs.meta // {
+          mainProgram = "code-insiders";
           platforms = lib.attrNames platforms;
         };
       }
