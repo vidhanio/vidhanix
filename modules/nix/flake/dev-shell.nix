@@ -60,7 +60,9 @@
           };
         in
         pkgs.mkShell {
-          packages = [
+          inherit (config.pre-commit) shellHook;
+
+          packages = config.pre-commit.settings.enabledPackages ++ [
             pkgs.git
             pkgs.direnv
 

@@ -2,6 +2,8 @@
 {
   flake-file.inputs.agenix.url = "github:ryantm/agenix";
 
+  perSystem.treefmt.settings.global.excludes = [ "secrets/*.age" ];
+
   flake.modules = {
     nixos.default =
       { config, ... }:

@@ -19,5 +19,6 @@
     { config, ... }:
     {
       nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system ({ pkgs, ... }: pkgs);
+      nix.registry.nixpkgs.flake = inputs.nixpkgs;
     };
 }

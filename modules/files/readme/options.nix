@@ -5,7 +5,7 @@
 }:
 {
   options.perSystem = flake-parts-lib.mkPerSystemOption (
-    { pkgs, config, ... }:
+    { config, ... }:
     let
       cfg = config.files.readme;
     in
@@ -27,7 +27,7 @@
                   title = lib.mkOption {
                     type = lib.types.str;
                     description = "The title of this section.";
-                    default = name;
+                    default = lib.replaceString "-" " " name;
                     apply = lib.trim;
                   };
                   order = lib.mkOption {
@@ -81,21 +81,35 @@
 
       config = {
         files.readme = {
-          lib.renderTable =
-            let
-              renderRow = row: "| " + (lib.concatStringsSep " | " row) + " |";
-            in
-            { header, rows }:
-            assert lib.assertMsg (lib.all (
-              row: lib.length row == lib.length header
-            ) rows) "All rows must have the same number of columns as the header.";
-            lib.concatMapStringsSep "\n" renderRow (
-              [
-                header
-                (lib.lists.replicate (lib.length header) "---")
-              ]
-              ++ rows
-            );
+          lib = {
+            renderTable =
+              { header, rows }:
+              let
+                columnCount = lib.length header;
+                renderRow = row: "| " + (lib.concatStringsSep " | " row) + " |";
+              in
+              assert lib.assertMsg (lib.all (
+                row: lib.length row == columnCount
+              ) rows) "All rows must have the same number of columns as the header.";
+              lib.concatMapStringsSep "\n" renderRow (
+                [
+                  header
+                  (lib.lists.replicate columnCount "---")
+                ]
+                ++ rows
+              );
+            renderList =
+              items:
+              let
+                renderBullet = indent: item: (lib.strings.replicate indent "  ") + "- " + item;
+                toBullets =
+                  indent: items:
+                  lib.concatMap (
+                    item: if lib.isList item then toBullets (indent + 1) item else [ (renderBullet indent item) ]
+                  ) items;
+              in
+              lib.concatStringsSep "\n" (toBullets 0 items);
+          };
         };
 
         files.file."README.md".text = cfg.rendered;

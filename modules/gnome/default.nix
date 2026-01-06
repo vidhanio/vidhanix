@@ -11,9 +11,12 @@
         gnome-tour
         decibels
         epiphany
+        geary
         gnome-text-editor
         gnome-calculator
         gnome-calendar
+        gnome-characters
+        gnome-font-viewer
         gnome-clocks
         gnome-console
         gnome-contacts

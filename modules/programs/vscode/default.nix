@@ -23,7 +23,6 @@
               bradlc.vscode-tailwindcss
               charliermarsh.ruff
               codezombiech.gitignore
-              dev-sam.vscode-disable-generated-files-edit
               github.copilot
               github.copilot-chat
               ibecker.treefmt-vscode

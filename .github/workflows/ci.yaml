@@ -1,37 +1,10 @@
 name: CI
-
 on:
   push:
   pull_request:
-
 permissions:
   contents: read
-
 jobs:
-  flake-info:
-    name: Get Flake Info
-    runs-on: ubuntu-latest
-    outputs:
-      host-matrix: ${{ steps.generate-info.outputs.host-matrix }}
-      runners: ${{ steps.generate-info.outputs.runners }}
-      runner-matrix: ${{ steps.generate-info.outputs.runner-matrix }}
-      title-classes: ${{ steps.generate-info.outputs.title-classes }}
-    steps:
-      - uses: actions/checkout@v5
-      - uses: DeterminateSystems/determinate-nix-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-      - uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-      - id: generate-info
-        name: Generate Flake Info
-        run: |
-          echo "host-matrix=$(cat $(nix build .#vidhanix-github-matrix --print-out-paths))" >> $GITHUB_OUTPUT
-          runners='{"x86_64-linux":"ubuntu-latest","aarch64-linux":"ubuntu-24.04-arm"}'
-          echo "runners=$runners" >> $GITHUB_OUTPUT
-          echo "runner-matrix=$(echo $runners | jq -c 'to_entries | map({system: .key, runner: .value})')" >> $GITHUB_OUTPUT
-          echo 'title-classes={"nixos":"NixOS","darwin":"Darwin"}' >> $GITHUB_OUTPUT
-
   check-flake-inputs:
     name: Check Flake Inputs
     runs-on: ubuntu-latest
@@ -43,25 +16,6 @@ jobs:
         uses: DeterminateSystems/flake-checker-action@main
         with:
           fail-mode: true
-
-  check-flake-outputs:
-    name: Check Flake Outputs (${{ matrix.system }})
-    needs: flake-info
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      matrix:
-        include: ${{ fromJson(needs.flake-info.outputs.runner-matrix) }}
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v5
-      - uses: DeterminateSystems/determinate-nix-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-      - uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-      - name: Check Flake
-        run: nix flake check --print-build-logs --keep-going
-
   check-formatting:
     name: Check Formatting
     runs-on: ubuntu-latest

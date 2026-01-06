@@ -1,5 +1,5 @@
 {
-  perSystem.files.file.".gitignore".text = ''
+  perSystem.files.gitignore = ''
     result
     result-*
     result.*
