@@ -3,15 +3,43 @@ let
     {
       lib,
       stdenvNoCC,
-
-      libretro-database-src,
-      libretro-super,
       libretrodb-tool,
+      fetchFromGitHub,
+      nix-update-script,
+      _experimental-update-script-combinators,
     }:
-    stdenvNoCC.mkDerivation {
-      name = "libretro-database";
+    let
+      libretro-super = stdenvNoCC.mkDerivation {
+        pname = "libretro-super";
+        version = "Latest-unstable-2025-12-27";
 
-      src = libretro-database-src;
+        src = fetchFromGitHub {
+          owner = "libretro";
+          repo = "libretro-super";
+          rev = "25dd1d7addfaa925485c47f4dffaedb7bd4cd3b1";
+          hash = "sha256-pKvHiSKYQNmEkmEe7PFVj7r4PUzEzUSDt4/nO5N50Fs=";
+        };
+
+        phases = [
+          "unpackPhase"
+          "installPhase"
+        ];
+
+        installPhase = ''
+          cp -r . $out
+        '';
+      };
+    in
+    stdenvNoCC.mkDerivation {
+      pname = "libretro-database";
+      version = "1.22.1-unstable-2025-12-30";
+
+      src = fetchFromGitHub {
+        owner = "libretro";
+        repo = "libretro-database";
+        rev = "d123da237a654f7cb6c8986d387bc0358053b2dd";
+        hash = "sha256-YmpsHZGKuOzRRMsnIcrbMlYxQ/oo6i3EW6504BJUt5g=";
+      };
 
       postUnpack = ''
         mkdir -p $sourceRoot/libretro-super
@@ -35,6 +63,26 @@ let
         runHook postBuild
       '';
 
+      passthru = {
+        super = libretro-super;
+
+        updateScript = _experimental-update-script-combinators.sequence [
+          (nix-update-script {
+            extraArgs = [
+              "--flake"
+              "--version=branch"
+            ];
+          })
+          (nix-update-script {
+            extraArgs = [
+              "--flake"
+              "--version=branch"
+              "libretro-database.super"
+            ];
+          })
+        ];
+      };
+
       meta = {
         description = "Databases used by RetroArch";
         homepage = "https://github.com/libretro/libretro-database";
@@ -42,25 +90,11 @@ let
       };
     };
 in
-{ inputs, ... }:
 {
-
-  flake-file.inputs = {
-    libretro-super = {
-      url = "github:libretro/libretro-super";
-      flake = false;
-    };
-    libretro-database-src = {
-      url = "github:libretro/libretro-database";
-      flake = false;
-    };
-  };
-
   perSystem =
     { self', pkgs, ... }:
     {
       packages.libretro-database = pkgs.callPackage pkg {
-        inherit (inputs) libretro-database-src libretro-super;
         inherit (self'.packages) libretrodb-tool;
       };
     };
