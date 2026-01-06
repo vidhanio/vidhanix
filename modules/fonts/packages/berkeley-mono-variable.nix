@@ -3,13 +3,13 @@ let
     {
       lib,
       stdenvNoCC,
-      fonts,
+      vidhan-fonts,
     }:
     stdenvNoCC.mkDerivation {
       pname = "berkeley-mono-variable";
       version = "2.003";
 
-      src = fonts;
+      src = vidhan-fonts;
 
       installPhase = ''
         runHook preInstall
@@ -34,7 +34,7 @@ in
     { pkgs, ... }:
     {
       packages.berkeley-mono-variable = pkgs.callPackage pkg {
-        inherit (inputs) fonts;
+        inherit (inputs) vidhan-fonts;
       };
     };
 }

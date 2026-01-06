@@ -4,7 +4,6 @@
       config,
       inputs',
       pkgs,
-      system,
       ...
     }:
     {
@@ -15,32 +14,6 @@
 
       devShells.default =
         let
-          update = pkgs.writeShellApplication {
-            name = "update";
-
-            runtimeInputs = with pkgs; [
-              nix
-              nix-update
-              jq
-              git
-            ];
-
-            text = ''
-              git add .
-
-              nix flake update
-
-              packages=$(
-                nix eval --json .#packages."${system}" --apply 'builtins.mapAttrs (_: pkg: pkg ? passthru.updateScript)' |
-                  jq -r 'with_entries(select(.value)) | keys | .[]'
-              )
-
-              for package in $packages; do
-                nix-update --flake --use-update-script "$package"
-              done
-            '';
-          };
-
           rebuild = pkgs.writeShellApplication {
             name = "rebuild";
 
@@ -71,7 +44,6 @@
 
             inputs'.agenix.packages.default
 
-            update
             rebuild
 
             config.files.writer.drv

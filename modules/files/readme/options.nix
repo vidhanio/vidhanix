@@ -83,18 +83,30 @@
         files.readme = {
           lib = {
             renderTable =
-              { header, rows }:
+              {
+                header,
+                alignments ? (lib.lists.replicate (lib.length header) "l"),
+                rows,
+              }:
               let
-                columnCount = lib.length header;
                 renderRow = row: "| " + (lib.concatStringsSep " | " row) + " |";
+                getAlignmentText =
+                  char:
+                  {
+                    l = ":---";
+                    c = ":---:";
+                    r = "---:";
+                  }
+                  .${char} or (throw "Invalid alignment character: ${char} (must be one of 'l', 'c', 'r')");
               in
               assert lib.assertMsg (lib.all (
-                row: lib.length row == columnCount
+                row: lib.length row == lib.length header
               ) rows) "All rows must have the same number of columns as the header.";
               lib.concatMapStringsSep "\n" renderRow (
                 [
                   header
-                  (lib.lists.replicate columnCount "---")
+                  # (lib.lists.replicate columnCount "---")
+                  (map getAlignmentText alignments)
                 ]
                 ++ rows
               );

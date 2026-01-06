@@ -9,18 +9,21 @@ a dendritic nix flake for my stuff.
 ## packages
 
 this flake has a couple packages, mostly used internally, but available via `.#<package>`.
+some of these packages provide a `passthru.updateScript`, all of which can be run via `nix run .#update-packages`.
 
-| package                                                                                                  | description                                                                                                                        |
-| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| [`berkeley-mono-variable`](modules/fonts/packages/berkeley-mono-variable.nix)                            | A love letter to the golden era of computing                                                                                       |
-| [`generate-files`](modules/files/default.nix)                                                            | Generate various files for this repository                                                                                         |
-| [`helium-bin`](modules/programs/helium/package.nix)                                                      | Private, fast, and honest web browser based on Chromium                                                                            |
-| [`libretro-database`](modules/gaming/emulation/retroarch/packages/libretro-database.nix)                 | Databases used by RetroArch                                                                                                        |
-| [`libretro-system-files`](modules/gaming/emulation/retroarch/packages/libretro-system-files/default.nix) | Auxiliary libretro core system files provided through the online updater                                                           |
-| [`libretrodb-tool`](modules/gaming/emulation/retroarch/packages/libretrodb-tool.nix)                     | Tools for managing libretro databases                                                                                              |
-| [`muvm-steam`](modules/gaming/steam/packages/muvm-steam.nix)                                             | The Steam client, wrapped to run in muvm for Apple Silicon support                                                                 |
-| [`pragmata-pro-variable`](modules/fonts/packages/pragmata-pro-variable.nix)                              | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |
-| [`vscode-insiders`](modules/programs/vscode/packages/vscode-insiders/default.nix)                        | Code editor developed by Microsoft                                                                                                 |
+| package                                                                                                  | description                                                                                                                        | has update script |
+| :------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :---------------: |
+| [`berkeley-mono-variable`](modules/fonts/packages/berkeley-mono-variable.nix)                            | A love letter to the golden era of computing                                                                                       |                   |
+| [`conventional-pre-commit`](modules/pre-commit/packages/conventional-pre-commit.nix)                     | A pre-commit hook that checks commit messages for Conventional Commits formatting                                                  |         ✓         |
+| [`generate-files`](modules/files/default.nix)                                                            | Generate various files for this repository                                                                                         |                   |
+| [`helium-bin`](modules/programs/helium/package.nix)                                                      | Private, fast, and honest web browser based on Chromium                                                                            |         ✓         |
+| [`libretro-database`](modules/gaming/emulation/retroarch/packages/libretro-database.nix)                 | Databases used by RetroArch                                                                                                        |         ✓         |
+| [`libretro-system-files`](modules/gaming/emulation/retroarch/packages/libretro-system-files/default.nix) | Auxiliary libretro core system files provided through the online updater                                                           |         ✓         |
+| [`libretrodb-tool`](modules/gaming/emulation/retroarch/packages/libretrodb-tool.nix)                     | Tools for managing libretro databases                                                                                              |                   |
+| [`muvm-steam`](modules/gaming/steam/packages/muvm-steam.nix)                                             | The Steam client, wrapped to run in muvm for Apple Silicon support                                                                 |                   |
+| [`pragmata-pro-variable`](modules/fonts/packages/pragmata-pro-variable.nix)                              | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |                   |
+| [`update-packages`](modules/nix/flake/packages.nix)                                                      | Update all packages in this flake that have an update script                                                                       |                   |
+| [`vscode-insiders`](modules/programs/vscode/packages/vscode-insiders/default.nix)                        | Code editor developed by Microsoft                                                                                                 |         ✓         |
 
 ## generated files
 
