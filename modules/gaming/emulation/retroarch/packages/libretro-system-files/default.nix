@@ -2,60 +2,123 @@ let
   pkg =
     {
       lib,
-      libretro,
       stdenvNoCC,
-      bash,
+      fetchFromGitHub,
       which,
+      bash,
+      libretro,
       p7zip,
       zip,
       unzip,
-
-      libretro-system-files-src,
-      cannonball,
-      dinothawr,
-      dirksimple,
-      ecwolf,
-      qemu-libretro,
-      xrick-libretro,
+      _experimental-update-script-combinators,
+      nix-update-script,
     }:
     let
-      packagedRepos = lib.mapAttrs (_: repo: repo.src) (
-        with libretro;
-        {
-          blueMSX-libretro = bluemsx;
-          inherit dolphin;
-          FBNeo = fbneo;
-          mame2003-plus-libretro = mame2003-plus;
-          mame2003-libretro = mame2003;
-          nxengine-libretro = nxengine;
-          ps2 = pcsx2;
-          inherit ppsspp;
-          libretro-prboom = prboom;
-          inherit scummvm;
-        }
-      );
-
-      inputRepos = {
-        inherit cannonball;
-        Dinothawr = dinothawr;
-        DirkSimple = dirksimple;
-        inherit ecwolf;
-        inherit qemu-libretro;
-        inherit xrick-libretro;
+      packagedRepos = with libretro; {
+        blueMSX-libretro = bluemsx;
+        inherit dolphin;
+        FBNeo = fbneo;
+        mame2003-plus-libretro = mame2003-plus;
+        mame2003-libretro = mame2003;
+        nxengine-libretro = nxengine;
+        ps2 = pcsx2;
+        inherit ppsspp;
+        libretro-prboom = prboom;
+        inherit scummvm;
       };
+
+      customRepos =
+        let
+          mkCustomRepo =
+            repo:
+            {
+              owner ? "libretro",
+              version,
+              rev,
+              hash,
+            }:
+            stdenvNoCC.mkDerivation {
+              pname = repo;
+              inherit version;
+
+              src = fetchFromGitHub {
+                inherit
+                  owner
+                  repo
+                  rev
+                  hash
+                  ;
+              };
+
+              phases = [
+                "unpackPhase"
+                "installPhase"
+              ];
+
+              installPhase = ''
+                cp -r . $out
+              '';
+            };
+        in
+        lib.mapAttrs mkCustomRepo {
+          cannonball = {
+            version = "0.3-unstable-2024-10-21";
+
+            rev = "5137a791d229a5b9c7c089cf1edcce4db3c57d64";
+            hash = "sha256-jp58bKr8bisJOXCz9M+bmA06p8bPJw9Bn9eJJy4aGEg=";
+          };
+          Dinothawr = {
+            version = "0-unstable-2025-12-12";
+
+            rev = "d66dde551be8e68e47c05e88838b4f1c6b114c99";
+            hash = "sha256-wJj1wzCnMc1/KIOQ1mi3JyaxWtVIkquYgzgz/W6XOVs=";
+          };
+          DirkSimple = {
+            version = "0-unstable-2024-12-03";
+
+            owner = "icculus";
+            rev = "a5b0ebca483cd10babe930a57e75b0e6094686fb";
+            hash = "sha256-ZaQMWVgKP1D+biJaNrLqqtLqMfRp1FovlI6AEBlCO5Y=";
+          };
+          ecwolf = {
+            version = "0-unstable-2025-04-16";
+
+            rev = "c57ad894d5942740b4896511e8554c9a776b04a6";
+            hash = "sha256-KOZfm1MpLAng9YzydU7YeJfDN1lqkX78gz5tzRe0aOE=";
+          };
+          qemu-libretro = {
+            version = "0-unstable-2025-08-19";
+
+            owner = "io12";
+            rev = "86ea49ba18309ea003bbf212f5eace20bedbb6f9";
+            hash = "sha256-hBEwJE8x0+wsfvMo0ANWs+lItBRBradZ1F6blY1wzQ4=";
+          };
+          xrick-libretro = {
+            version = "0-unstable-2025-12-30";
+
+            rev = "34e4c3fc8a679d0209debc3738dc7264d3112a03";
+            hash = "sha256-IPDb1OTapOJaELmFbz6UoOQ8/hnBF0k0PSFivkJ7KtY=";
+          };
+        };
     in
     stdenvNoCC.mkDerivation {
-      name = "libretro-system-files";
+      pname = "libretro-system-files";
+      version = "0-unstable-2024-12-26";
 
-      src = libretro-system-files-src;
+      src = fetchFromGitHub {
+        owner = "libretro";
+        repo = "libretro-system-files";
+        rev = "c9bd84a44c017f7cdf96dd2ab8a064d425d239c6";
+        hash = "sha256-7dFJ43nzdUypRNTxK4Vif0WFrpMIs6oy+QcU1PDUtOI=";
+      };
 
       patches = [ ./no-git.patch ];
 
       postUnpack = lib.concatLines (
         lib.mapAttrsToList (name: repo: ''
-          cp -r ${repo} $sourceRoot/src_repos/${name}
+          cp -r ${repo.src} $sourceRoot/src_repos/${name}
           chmod -R u+w $sourceRoot/src_repos/${name}
-        '') (packagedRepos // inputRepos)
+        '') (packagedRepos // customRepos)
       );
 
       postPatch = ''
@@ -89,6 +152,31 @@ let
         runHook postInstall
       '';
 
+      passthru = {
+        repos = customRepos;
+
+        updateScript = _experimental-update-script-combinators.sequence (
+          [
+            (nix-update-script {
+              extraArgs = [
+                "--flake"
+                "--version=branch"
+              ];
+            })
+          ]
+          ++ map (
+            name:
+            (nix-update-script {
+              extraArgs = [
+                "--flake"
+                "--version=branch"
+                "libretro-system-files.repos.${name}"
+              ];
+            })
+          ) (lib.attrNames customRepos)
+        );
+      };
+
       meta = {
         description = "Auxiliary libretro core system files provided through the online updater";
         homepage = "https://github.com/libretro/libretro-system-files";
@@ -98,55 +186,9 @@ let
     };
 in
 {
-  inputs,
-  ...
-}:
-{
-  flake-file.inputs = {
-    libretro-system-files-src = {
-      url = "github:libretro/libretro-system-files";
-      flake = false;
-    };
-
-    cannonball = {
-      url = "github:libretro/cannonball";
-      flake = false;
-    };
-    dinothawr = {
-      url = "github:libretro/dinothawr";
-      flake = false;
-    };
-    dirksimple = {
-      url = "github:icculus/DirkSimple";
-      flake = false;
-    };
-    ecwolf = {
-      url = "github:libretro/ecwolf";
-      flake = false;
-    };
-    qemu-libretro = {
-      url = "github:io12/qemu-libretro";
-      flake = false;
-    };
-    xrick-libretro = {
-      url = "github:libretro/xrick-libretro";
-      flake = false;
-    };
-  };
-
   perSystem =
     { pkgs, ... }:
     {
-      packages.libretro-system-files = pkgs.callPackage pkg {
-        inherit (inputs)
-          libretro-system-files-src
-          cannonball
-          dinothawr
-          dirksimple
-          ecwolf
-          qemu-libretro
-          xrick-libretro
-          ;
-      };
+      packages.libretro-system-files = pkgs.callPackage pkg { };
     };
 }

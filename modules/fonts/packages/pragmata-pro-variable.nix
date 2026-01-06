@@ -3,13 +3,13 @@ let
     {
       lib,
       stdenvNoCC,
-      fonts,
+      vidhan-fonts,
     }:
     stdenvNoCC.mkDerivation {
       pname = "pragmata-pro-variable";
       version = "0.9";
 
-      src = fonts;
+      src = vidhan-fonts;
 
       installPhase = ''
         runHook preInstall
@@ -34,7 +34,7 @@ in
     { pkgs, ... }:
     {
       packages.pragmata-pro-variable = pkgs.callPackage pkg {
-        inherit (inputs) fonts;
+        inherit (inputs) vidhan-fonts;
       };
     };
 }

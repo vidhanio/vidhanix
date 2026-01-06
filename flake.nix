@@ -21,33 +21,14 @@
 
   inputs = {
     agenix.url = "github:ryantm/agenix";
-    cannonball = {
-      flake = false;
-      url = "github:libretro/cannonball";
-    };
     determinate.url = "github:DeterminateSystems/determinate";
-    dinothawr = {
-      flake = false;
-      url = "github:libretro/dinothawr";
-    };
-    dirksimple = {
-      flake = false;
-      url = "github:icculus/DirkSimple";
-    };
+    determinate-nix.url = "github:DeterminateSystems/nix-src";
     disko.url = "github:nix-community/disko";
-    ecwolf = {
-      flake = false;
-      url = "github:libretro/ecwolf";
-    };
     files.url = "github:mightyiam/files";
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
       inputs.nixpkgs-lib.follows = "nixpkgs-lib";
       url = "github:hercules-ci/flake-parts";
-    };
-    fonts = {
-      flake = false;
-      url = "git+ssh://git@github.com/vidhanio/fonts";
     };
     ghostty-shader-playground = {
       flake = false;
@@ -57,36 +38,20 @@
     home-manager.url = "github:nix-community/home-manager";
     impermanence.url = "github:vidhanio/impermanence/hmv2-trash";
     import-tree.url = "github:vic/import-tree";
-    libretro-database-src = {
-      flake = false;
-      url = "github:libretro/libretro-database";
-    };
-    libretro-super = {
-      flake = false;
-      url = "github:libretro/libretro-super";
-    };
-    libretro-system-files-src = {
-      flake = false;
-      url = "github:libretro/libretro-system-files";
-    };
     nix-index-database.url = "github:nix-community/nix-index-database";
     nixcord.url = "github:FlameFlag/nixcord";
     nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-lib.follows = "nixpkgs";
-    qemu-libretro = {
-      flake = false;
-      url = "github:io12/qemu-libretro";
-    };
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     stylix.url = "github:nix-community/stylix";
     systems.url = "github:nix-systems/default-linux";
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    xrick-libretro = {
+    vidhan-fonts = {
       flake = false;
-      url = "github:libretro/xrick-libretro";
+      url = "git+ssh://git@github.com/vidhanio/fonts";
     };
+    vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
 }
