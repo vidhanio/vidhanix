@@ -53,6 +53,7 @@
       flake = false;
       url = "github:KroneCorylus/ghostty-shader-playground";
     };
+    git-hooks-nix.url = "github:cachix/git-hooks.nix";
     home-manager.url = "github:nix-community/home-manager";
     impermanence.url = "github:vidhanio/impermanence/hmv2-trash";
     import-tree.url = "github:vic/import-tree";
@@ -68,6 +69,7 @@
       flake = false;
       url = "github:libretro/libretro-system-files";
     };
+    nix-index-database.url = "github:nix-community/nix-index-database";
     nixcord.url = "github:FlameFlag/nixcord";
     nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";

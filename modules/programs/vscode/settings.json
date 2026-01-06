@@ -94,9 +94,7 @@
   "nix.serverSettings": {
     "nil": {
       "formatting": {
-        "command": [
-          "nixfmt"
-        ]
+        "command": ["nixfmt"]
       }
     }
   },
@@ -120,21 +118,13 @@
   "rust-analyzer.diagnostics.experimental.enable": true,
   "rust-analyzer.imports.prefix": "self",
   "rust-analyzer.interpret.tests": true,
-  "rust-analyzer.rustfmt.extraArgs": [
-    "+nightly"
-  ],
+  "rust-analyzer.rustfmt.extraArgs": ["+nightly"],
   "rust-analyzer.rustfmt.rangeFormatting.enable": true,
   "scm.diffDecorations": "none",
   "security.workspace.trust.untrustedFiles": "open",
   "tailwindCSS.experimental.classRegex": [
-    [
-      "\\.\"([^\"]*)\"",
-      "(\\S+)"
-    ],
-    [
-      "(?:class(?:es)?|CLASS(?:ES)?) *(?::.*?)? *= *\"([^\"]*)\"]*?",
-      "(\\S+)"
-    ]
+    ["\\.\"([^\"]*)\"", "(\\S+)"],
+    ["(?:class(?:es)?|CLASS(?:ES)?) *(?::.*?)? *= *\"([^\"]*)\"]*?", "(\\S+)"]
   ],
   "tailwindCSS.includeLanguages": {
     "rust": "html"
