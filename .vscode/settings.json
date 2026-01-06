@@ -1,0 +1,3 @@
+{
+  "treefmt.command": "treefmt --no-cache"
+}

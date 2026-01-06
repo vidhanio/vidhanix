@@ -1,7 +1,4 @@
 {
-  "[nix]": {
-    "editor.defaultFormatter": "jnoortheen.nix-ide"
-  },
   "crates.compatibleDecorator": "",
   "crates.errorDecorator": "!",
   "crates.incompatibleDecorator": "× ${version}",
@@ -13,6 +10,7 @@
   },
   "editor.cursorBlinking": "expand",
   "editor.cursorSmoothCaretAnimation": "on",
+  "editor.defaultFormatter": "ibecker.treefmt-vscode",
   "editor.fontLigatures": true,
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
@@ -140,12 +138,12 @@
     "<C-a>": false,
     "<C-c>": false,
     "<C-f>": false,
+    "<C-p>": false,
     "<C-s>": false,
     "<C-v>": false,
     "<C-w>": false,
     "<C-x>": false,
-    "<C-z>": false,
-    "<C-p>": false
+    "<C-z>": false
   },
   "vim.useSystemClipboard": true,
   "workbench.editor.empty.hint": "hidden",
