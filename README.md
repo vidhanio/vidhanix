@@ -4,7 +4,7 @@
 
 ## introduction
 
-a dendritic nix flake for my stuff.
+a [dendritic](https://github.com/mightyiam/dendritic) nix flake for my stuff.
 
 ## packages
 
