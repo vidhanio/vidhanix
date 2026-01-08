@@ -5,6 +5,10 @@
   imports = [
     inputs.git-hooks-nix.flakeModule
   ];
-
-  perSystem.files.gitignore = ".pre-commit-config.yaml";
+  perSystem =
+    { pkgs, ... }:
+    {
+      pre-commit.settings.package = pkgs.prek;
+      files.gitignore = ".pre-commit-config.yaml";
+    };
 }
