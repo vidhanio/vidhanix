@@ -14,8 +14,7 @@ let
       installPhase = ''
         runHook preInstall
 
-        mkdir -p $out/share/fonts/truetype/
-        cp berkeley-mono-variable/*.ttf $out/share/fonts/truetype/
+        install -Dm644 pragmata-pro-variable/*.ttf -t $out/share/fonts/truetype
 
         runHook postInstall
       '';
