@@ -1,12 +1,9 @@
-{ inputs, withSystem, ... }:
+{ inputs, ... }:
 {
   flake-file.inputs.stylix.url = "github:nix-community/stylix";
 
   flake.modules.nixos.default =
     { pkgs, config, ... }:
-    let
-      cfg = config.stylix;
-    in
     {
       imports = [ inputs.stylix.nixosModules.default ];
 
@@ -29,19 +26,6 @@
             eye = base07;
           };
         base16Scheme = ./scheme.yaml;
-        fonts = {
-          monospace = {
-            package = withSystem pkgs.stdenv.hostPlatform.system (
-              { self', ... }: self'.packages.berkeley-mono-variable
-            );
-            name = "Berkeley Mono Variable";
-          };
-          serif = cfg.fonts.monospace;
-          sansSerif = {
-            package = pkgs.rubik;
-            name = "Rubik";
-          };
-        };
       };
     };
 }

@@ -6,23 +6,22 @@ let
       vidhan-fonts,
     }:
     stdenvNoCC.mkDerivation {
-      pname = "berkeley-mono-variable";
-      version = "2.003";
+      name = "google-sans-flex";
 
       src = vidhan-fonts;
 
       installPhase = ''
         runHook preInstall
 
-        install -Dm644 berkeley-mono-variable/*.otf -t $out/share/fonts/opentype
+        install -Dm644 google-sans-flex/*.ttf -t $out/share/fonts/truetype
 
         runHook postInstall
       '';
 
       meta = {
-        description = "A love letter to the golden era of computing";
-        homepage = "https://usgraphics.com/products/berkeley-mono";
-        license = lib.licenses.unfree;
+        description = "The next generation of Google's brand typeface";
+        homepage = "https://fonts.google.com/specimen/Google+Sans+Flex";
+        license = lib.licenses.ofl;
         platforms = lib.platforms.all;
       };
     };
@@ -32,7 +31,7 @@ in
   perSystem =
     { pkgs, ... }:
     {
-      packages.berkeley-mono-variable = pkgs.callPackage pkg {
+      packages.google-sans-flex = pkgs.callPackage pkg {
         inherit (inputs) vidhan-fonts;
       };
     };
