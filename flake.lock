@@ -640,16 +640,15 @@
         "nixpkgs": "nixpkgs_8"
       },
       "locked": {
-        "lastModified": 1767821011,
-        "narHash": "sha256-MEEhrqJuQvjjYv6qEVFQfcGvf0TJ6g+w3mNTBWq7UKk=",
-        "owner": "vidhanio",
+        "lastModified": 1767822991,
+        "narHash": "sha256-iyrn9AcPZCoyxX4OT8eMkBsjG7SRUQXXS/V1JzxS7rA=",
+        "owner": "nix-community",
         "repo": "impermanence",
-        "rev": "728749a8454a9d80194c2b4d62d8533e46feda55",
+        "rev": "82e5bc4508cab9e8d5a136626276eb5bbce5e9c5",
         "type": "github"
       },
       "original": {
-        "owner": "vidhanio",
-        "ref": "trash",
+        "owner": "nix-community",
         "repo": "impermanence",
         "type": "github"
       }
