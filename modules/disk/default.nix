@@ -35,15 +35,15 @@
                       ];
                     in
                     {
-                      "/nix" = {
+                      nix = {
                         mountpoint = "/nix";
                         inherit mountOptions;
                       };
-                      "/persist" = {
+                      persist = {
                         mountpoint = config.persist.persistentStoragePath;
                         inherit mountOptions;
                       };
-                      "/swap" = {
+                      swap = {
                         mountpoint = "/swap";
                         swap.swapfile.size = "16G";
                       };
