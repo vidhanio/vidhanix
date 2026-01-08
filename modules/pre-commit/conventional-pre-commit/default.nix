@@ -9,6 +9,10 @@
         always_run = true;
         description = "Checks commit message for Conventional Commits formatting";
         stages = [ "commit-msg" ];
+        args = [
+          "--strict"
+          "--force-scope"
+        ];
       };
     };
 }
