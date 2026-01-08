@@ -3,8 +3,7 @@ let
   path = "/persist";
 in
 {
-  # https://github.com/nix-community/impermanence/pull/288
-  flake-file.inputs.impermanence.url = "github:vidhanio/impermanence/trash";
+  flake-file.inputs.impermanence.url = "github:nix-community/impermanence";
 
   flake.modules = {
     nixos.default = {
