@@ -90,11 +90,7 @@
   "nix.enableLanguageServer": true,
   "nix.serverPath": "nil",
   "nix.serverSettings": {
-    "nil": {
-      "formatting": {
-        "command": ["nixfmt"]
-      }
-    }
+    "nil": {}
   },
   "notebook.formatOnCellExecution": true,
   "notebook.formatOnSave.enabled": true,
@@ -133,6 +129,7 @@
   "terminal.integrated.enableMultiLinePasteWarning": "never",
   "terminal.integrated.enableVisualBell": true,
   "terminal.integrated.persistentSessionReviveProcess": "never",
+  "treefmt.command": "treefmt",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "vim.handleKeys": {
     "<C-a>": false,

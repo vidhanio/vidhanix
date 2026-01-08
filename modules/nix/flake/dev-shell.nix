@@ -39,14 +39,11 @@
             pkgs.git
             pkgs.direnv
 
-            pkgs.nixfmt-rfc-style
             pkgs.nil
 
             inputs'.agenix.packages.default
 
             rebuild
-
-            config.files.writer.drv
           ];
         };
     };

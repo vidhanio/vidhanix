@@ -36,7 +36,7 @@
     };
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     home-manager.url = "github:nix-community/home-manager";
-    impermanence.url = "github:vidhanio/impermanence/hmv2-trash";
+    impermanence.url = "github:vidhanio/impermanence/trash";
     import-tree.url = "github:vic/import-tree";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nixcord.url = "github:FlameFlag/nixcord";
