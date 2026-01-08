@@ -25,7 +25,6 @@
       };
 
       settings.on-unmatched = "fatal";
-
     };
 
     pre-commit.settings.hooks.treefmt = {

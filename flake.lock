@@ -640,16 +640,16 @@
         "nixpkgs": "nixpkgs_8"
       },
       "locked": {
-        "lastModified": 1760652842,
-        "narHash": "sha256-VODaybb8j0CRrJONwPwcD4/YH9c7Fv7BOWLDUuEMvS4=",
+        "lastModified": 1767821011,
+        "narHash": "sha256-MEEhrqJuQvjjYv6qEVFQfcGvf0TJ6g+w3mNTBWq7UKk=",
         "owner": "vidhanio",
         "repo": "impermanence",
-        "rev": "d6a2b11c54fd1a37b39f422a6e5d2e675386e1b7",
+        "rev": "728749a8454a9d80194c2b4d62d8533e46feda55",
         "type": "github"
       },
       "original": {
         "owner": "vidhanio",
-        "ref": "hmv2-trash",
+        "ref": "trash",
         "repo": "impermanence",
         "type": "github"
       }
