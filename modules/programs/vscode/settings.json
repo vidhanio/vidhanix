@@ -89,9 +89,6 @@
   },
   "nix.enableLanguageServer": true,
   "nix.serverPath": "nil",
-  "nix.serverSettings": {
-    "nil": {}
-  },
   "notebook.formatOnCellExecution": true,
   "notebook.formatOnSave.enabled": true,
   "notebook.lineNumbers": "on",
