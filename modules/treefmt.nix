@@ -17,9 +17,8 @@
         shellcheck.enable = true;
 
         actionlint.enable = true;
-        yamlfmt.enable = true;
 
-        prettier.enable = true;
+        oxfmt.enable = true;
 
         xmllint.enable = true;
       };
