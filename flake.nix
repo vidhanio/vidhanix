@@ -5,6 +5,10 @@
 
   nixConfig = {
     allow-import-from-derivation = false;
+    extra-experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     extra-substituters = [
       "https://nix-community.cachix.org"
       "https://nixos-apple-silicon.cachix.org"
@@ -21,8 +25,6 @@
 
   inputs = {
     agenix.url = "github:ryantm/agenix";
-    determinate.url = "github:DeterminateSystems/determinate";
-    determinate-nix.url = "github:DeterminateSystems/nix-src";
     disko.url = "github:nix-community/disko";
     files.url = "github:mightyiam/files";
     flake-file.url = "github:vic/flake-file";
