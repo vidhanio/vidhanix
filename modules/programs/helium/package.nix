@@ -6,10 +6,10 @@ let
       _experimental-update-script-combinators,
       nix-update-script,
       fetchurl,
-      stdenvNoCC,
+      stdenv,
     }:
     let
-      inherit (stdenvNoCC.hostPlatform) system;
+      inherit (stdenv.hostPlatform) system;
 
       platforms = {
         x86_64-linux = {
