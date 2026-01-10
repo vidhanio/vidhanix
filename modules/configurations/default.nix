@@ -14,9 +14,9 @@ in
         { name, config, ... }:
         {
           options = {
-            system = lib.mkOption {
-              type = lib.types.str;
-              description = "The system architecture for this configuration.";
+            facterReportPath = lib.mkOption {
+              type = lib.types.path;
+              description = "Path to the Facter JSON report for this configuration.";
             };
             stateVersion = lib.mkOption {
               type = lib.types.str;
@@ -32,7 +32,7 @@ in
           config = {
             module = {
               networking.hostName = name;
-              nixpkgs.hostPlatform = config.system;
+              hardware.facter.reportPath = config.facterReportPath;
               system.stateVersion = config.stateVersion;
             };
           };
