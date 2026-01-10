@@ -34,6 +34,13 @@
               show-directory-item-counts = "always";
               show-image-thumbnails = "always";
             };
+
+            "org/gnome/mutter" = {
+              experimental-features = [
+                "variable-refresh-rate"
+                "scale-monitor-framebuffer"
+              ];
+            };
           };
           gdm = {
             "org/gnome/desktop/peripherals/mouse" = {
