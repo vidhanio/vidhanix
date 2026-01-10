@@ -3,7 +3,7 @@
   flake.modules.nixos.default =
     { config, ... }:
     {
-      age.secrets.networks.file = ../secrets/networks.age;
+      age.secrets.networks.file = ../../secrets/networks.age;
 
       networking.networkmanager = {
         enable = true;
