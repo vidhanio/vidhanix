@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <monitors version="2">
   <configuration>
-    <layoutmode>physical</layoutmode>
+    <layoutmode>logical</layoutmode>
     <logicalmonitor>
       <x>2560</x>
       <y>0</y>
@@ -40,6 +40,7 @@
           <width>2560</width>
           <height>1440</height>
           <rate>300.002</rate>
+          <ratemode>variable</ratemode>
         </mode>
       </monitor>
     </logicalmonitor>
