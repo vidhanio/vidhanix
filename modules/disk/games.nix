@@ -15,8 +15,8 @@
               mountOptions = [
                 "compress=zstd"
                 "noatime"
-                "noauto"
-                "x-systemd.automount"
+
+                "nofail"
               ];
               subvolumes = {
                 steam = { };
