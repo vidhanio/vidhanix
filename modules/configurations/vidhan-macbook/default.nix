@@ -1,7 +1,7 @@
 { config, ... }:
 {
   configurations.vidhan-macbook = {
-    system = "aarch64-linux";
+    facterReportPath = ./facter.json;
     stateVersion = "26.05";
     module = {
       imports = with config.flake.modules.nixos; [ macbook ];
