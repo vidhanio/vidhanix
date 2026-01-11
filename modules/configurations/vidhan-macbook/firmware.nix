@@ -1,5 +1,5 @@
 {
-  perSystem.treefmt.settings.global.excludes = [
+  perSystem.treefmt.settings.excludes = [
     "modules/configurations/vidhan-macbook/firmware/*"
   ];
 
