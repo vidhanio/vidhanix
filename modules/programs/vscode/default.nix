@@ -19,6 +19,7 @@
           extensions =
             with (pkgs.extend inputs.vscode-extensions.overlays.default).vscode-marketplace;
             [
+              # keep-sorted start
               bmalehorn.vscode-fish
               bradlc.vscode-tailwindcss
               charliermarsh.ruff
@@ -42,6 +43,7 @@
               ultram4rine.vscode-choosealicense
               vscodevim.vim
               wakatime.vscode-wakatime
+              # keep-sorted end
             ]
             ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
               # https://github.com/redhat-developer/vscode-xml/pull/1112

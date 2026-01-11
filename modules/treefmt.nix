@@ -21,6 +21,8 @@
         oxfmt.enable = true;
 
         xmllint.enable = true;
+
+        keep-sorted.enable = true;
       };
 
       settings.on-unmatched = "fatal";
