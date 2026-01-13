@@ -68,12 +68,10 @@
         # https://github.com/nix-community/disko/issues/1125#issuecomment-3427875095
         assertions =
           map
-            (p: [
-              {
-                assertion = config.disko.devices.disk.main.content.partitions.${p}.uuid != null;
-                message = "Partition \"${p}\" must have its UUID manually assigned.";
-              }
-            ])
+            (p: {
+              assertion = config.disko.devices.disk.main.content.partitions.${p}.uuid != null;
+              message = "Partition \"${p}\" must have its UUID manually assigned.";
+            })
             [
               "iBootSystemContainer"
               "Container"
