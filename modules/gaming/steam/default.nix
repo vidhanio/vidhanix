@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, withSystem, ... }:
 {
   flake.modules = {
     nixos.default =
@@ -10,7 +10,9 @@
           };
         }
         (lib.mkIf (pkgs.stdenv.hostPlatform.system == "aarch64-linux") {
-          programs.steam.package = pkgs.muvm-steam;
+          programs.steam.package = withSystem pkgs.stdenv.hostPlatform.system (
+            { self', ... }: self'.packages.muvm-steam
+          );
 
           hardware.graphics = {
             enable32Bit = lib.mkForce false;
