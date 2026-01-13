@@ -11,30 +11,16 @@ in
   options.configurations = lib.mkOption {
     type = lib.types.lazyAttrsOf (
       lib.types.submodule (
-        { name, config, ... }:
+        { name, ... }:
         {
-          options = {
-            facterReportPath = lib.mkOption {
-              type = lib.types.path;
-              description = "Path to the Facter JSON report for this configuration.";
-            };
-            stateVersion = lib.mkOption {
-              type = lib.types.str;
-              description = "The NixOS state version for this configuration.";
-            };
-            module = lib.mkOption {
-              type = lib.types.deferredModule;
-              default = { };
-              description = "NixOS configuration module for this configuration.";
-            };
+          options.module = lib.mkOption {
+            type = lib.types.deferredModule;
+            default = { };
+            description = "NixOS configuration module for this configuration.";
           };
 
-          config = {
-            module = {
-              networking.hostName = name;
-              hardware.facter.reportPath = config.facterReportPath;
-              system.stateVersion = config.stateVersion;
-            };
+          config.module = {
+            networking.hostName = name;
           };
         }
       )
