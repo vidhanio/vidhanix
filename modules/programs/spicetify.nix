@@ -11,7 +11,6 @@
 
       programs.spicetify = {
         enable = pkgs.stdenvNoCC.hostPlatform.isx86_64;
-        wayland = false;
       };
 
       persist.directories = [ ".config/spotify" ];

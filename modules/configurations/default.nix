@@ -11,16 +11,24 @@ in
   options.configurations = lib.mkOption {
     type = lib.types.lazyAttrsOf (
       lib.types.submodule (
-        { name, ... }:
+        { name, config, ... }:
         {
-          options.module = lib.mkOption {
-            type = lib.types.deferredModule;
-            default = { };
-            description = "NixOS configuration module for this configuration.";
+          options = {
+            module = lib.mkOption {
+              type = lib.types.deferredModule;
+              default = { };
+              description = "NixOS configuration module for this configuration.";
+            };
+            homeModule = lib.mkOption {
+              type = lib.types.deferredModule;
+              default = { };
+              description = "Home Manager configuration module for this configuration.";
+            };
           };
 
           config.module = {
             networking.hostName = name;
+            home-manager.sharedModules = [ config.homeModule ];
           };
         }
       )
@@ -29,7 +37,7 @@ in
 
   config = {
     flake.nixosConfigurations = lib.mapAttrs (
-      _name:
+      _:
       { module, ... }:
       inputs.nixpkgs.lib.nixosSystem {
         modules = [ module ];
