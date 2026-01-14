@@ -8,7 +8,10 @@
       programs.vscode = {
         enable = true;
         package = withSystem pkgs.stdenv.hostPlatform.system (
-          { self', ... }: self'.packages.vscode-insiders
+          { self', ... }:
+          self'.packages.vscode-insiders.override {
+            commandLineArgs = "--password-store=basic";
+          }
         );
 
         mutableExtensionsDir = false;

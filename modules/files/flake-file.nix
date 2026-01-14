@@ -4,6 +4,7 @@
 
   imports = [
     inputs.flake-file.flakeModules.dendritic
+    # TODO: fix changing mtime of flake.lock if untouched
     # inputs.flake-file.flakeModules.nix-auto-follow
   ];
 

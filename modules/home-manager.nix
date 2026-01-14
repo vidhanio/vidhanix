@@ -18,8 +18,6 @@
     homeManager.default =
       { osConfig, ... }:
       {
-        programs.home-manager.enable = true;
-
         home.stateVersion = osConfig.system.stateVersion;
       };
   };
