@@ -1,15 +1,23 @@
+{ lib, ... }:
 {
   flake.modules = {
-    nixos.default = _: {
-      programs.regreet = {
-        enable = true;
-        # "https://github.com/NixOS/nixpkgs/pull/478883"
-        cageArgs = [
-          "-s"
-          "-d"
-        ];
+    nixos.default =
+      { pkgs, ... }:
+      {
+        programs.regreet = {
+          enable = true;
+          # "https://github.com/NixOS/nixpkgs/pull/478883"
+          cageArgs = [
+            "-s"
+            "-d"
+          ];
+        };
+
+        services.greetd.settings.initial_session = {
+          command = "${lib.getExe pkgs.uwsm} start -e -D Hyprland ${pkgs.hyprland}/share/wayland-sessions/hyprland.desktop";
+          user = "vidhanio";
+        };
       };
-    };
   };
 
   configurations = {
