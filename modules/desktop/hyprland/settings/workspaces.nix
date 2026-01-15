@@ -6,8 +6,11 @@
 
         bind = [
           # Switch workspaces
-          "SUPER, 1, workspace, name:main"
-          "SUPER, 2, workspace, name:games"
+          "SUPER, 1, workspace, 1"
+          "SUPER, 2, workspace, 2"
+
+          "SUPER SHIFT, 1, movetoworkspace, 1"
+          "SUPER SHIFT, 2, movetoworkspace, 2"
 
           # Special workspace (scratchpad)
           "SUPER, S, togglespecialworkspace"

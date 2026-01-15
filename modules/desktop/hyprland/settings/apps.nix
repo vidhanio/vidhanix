@@ -17,16 +17,12 @@
             "1password --silent"
           ];
 
-          workspace = [
-            "name:games, on-created-empty:${uwsmApp "steam"}"
-          ];
-
           windowrule = [
-            "match:class code-insiders, workspace name:main silent"
-            "match:class helium, workspace name:main silent"
+            "match:class code-insiders, workspace 1 silent"
+            "match:class helium, workspace 1 silent"
 
-            "match:class spotify, workspace name:side silent"
-            "match:class vesktop, workspace name:side silent"
+            "match:class spotify, workspace 2 silent"
+            "match:class vesktop, workspace 2 silent"
           ];
 
           bind = [

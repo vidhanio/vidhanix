@@ -6,34 +6,41 @@
         ", preferred, auto, 1"
       ];
 
-      workspace = [
-        "name:main, default:true"
-      ];
-
       misc.vrr = 1;
     };
   };
 
-  configurations.vidhan-pc.homeModule = {
-    wayland.windowManager.hyprland.settings = {
-      monitor = [
-        #          ┌─────┐
-        #          │     │
-        #          │     │
-        # ┌────────┤     │
-        # │        │     │
-        # └────────┴─────┘
-        "DP-1, 2560x1440@300, 0x0, 1"
-        "HDMI-A-1, 2560x1080@60, 2560x-1120, 1, transform, 3"
-      ];
+  configurations = {
+    vidhan-pc.homeModule = {
+      wayland.windowManager.hyprland.settings = {
+        monitor = [
+          #          ┌─────┐
+          #          │     │
+          #          │     │
+          # ┌────────┤     │
+          # │        │     │
+          # └────────┴─────┘
+          "DP-1, 2560x1440@300, 0x0, 1"
+          "HDMI-A-1, 2560x1080@60, 2560x-1120, 1, transform, 3"
+        ];
 
-      workspace = [
-        # workspaces
-        "name:main, monitor:DP-1"
-        "name:games, monitor:DP-1"
+        workspace = [
+          # workspaces
+          "1, monitor:DP-1, default:true"
+          "2, monitor:HDMI-A-1, default:true"
+        ];
+      };
+    };
+    vidhan-macbook.homeModule = {
+      wayland.windowManager.hyprland.settings = {
+        monitor = [
+          "eDP-1, preferred, 0x0, 1.6"
+        ];
 
-        "name:side, monitor:HDMI-A-1, default:true"
-      ];
+        workspace = [
+          "1, monitor:eDP-1, default:true"
+        ];
+      };
     };
   };
 }
