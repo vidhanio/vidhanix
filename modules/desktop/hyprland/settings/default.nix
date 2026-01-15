@@ -56,7 +56,10 @@
 
           input = {
             follow_mouse = 2;
-            touchpad.natural_scroll = true;
+            touchpad = {
+              natural_scroll = true;
+              clickfinger_behavior = true;
+            };
           };
         }
         # smart gaps
