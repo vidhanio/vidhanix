@@ -21,7 +21,7 @@
             "match:class code-insiders, workspace 1 silent"
             "match:class helium, workspace 1 silent"
 
-            "match:class spotify, workspace 2 silent"
+            "match:class Spotify, workspace 2 silent"
             "match:class vesktop, workspace 2 silent"
           ];
 
