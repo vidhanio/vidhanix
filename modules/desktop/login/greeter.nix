@@ -6,7 +6,7 @@
       {
         programs.regreet = {
           enable = true;
-          # "https://github.com/NixOS/nixpkgs/pull/478883"
+          # https://github.com/NixOS/nixpkgs/pull/478883
           cageArgs = [
             "-s"
             "-d"

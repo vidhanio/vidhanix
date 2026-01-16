@@ -5,9 +5,7 @@
       { pkgs, ... }:
       lib.mkMerge [
         {
-          programs.steam = {
-            enable = true;
-          };
+          programs.steam.enable = true;
         }
         (lib.mkIf (pkgs.stdenv.hostPlatform.system == "aarch64-linux") {
           programs.steam.package = withSystem pkgs.stdenv.hostPlatform.system (
