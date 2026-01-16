@@ -1,0 +1,16 @@
+diff --git a/src/lib/render.ts b/src/lib/render.ts
+index f1e9a4d..da3226e 100644
+--- a/src/lib/render.ts
++++ b/src/lib/render.ts
+@@ -131,7 +131,10 @@ const renderPngs = async (
+   out: string,
+   options?: { colors?: Color[] },
+ ) => {
+-  const spinner = ora("Retrieving .svg files").start();
++  const spinner = ora({ 
++    text: "Retrieving .svg files",
++    isEnabled: false,
++  }).start();
+   spinner.spinner = "dots10";
+   const svgs = await getSVGs(dir);
+ 
