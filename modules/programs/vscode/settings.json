@@ -126,6 +126,7 @@
   "terminal.integrated.enableMultiLinePasteWarning": "never",
   "terminal.integrated.enableVisualBell": true,
   "terminal.integrated.persistentSessionReviveProcess": "never",
+  "terminal.integrated.stickyScroll.enabled": false,
   "treefmt.command": "treefmt",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "vim.handleKeys": {
