@@ -13,7 +13,6 @@
             "spotify"
             "vesktop"
 
-            "steam -silent"
             "1password --silent"
           ];
 
