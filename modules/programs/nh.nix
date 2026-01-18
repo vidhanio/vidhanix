@@ -8,7 +8,7 @@
         clean = {
           enable = true;
           dates = "weekly";
-          extraArgs = "--keep ${toString config.boot.loader.systemd-boot.configurationLimit} --keep-since 7d";
+          extraArgs = "--keep 10 --keep-since 7d";
         };
       };
     };
