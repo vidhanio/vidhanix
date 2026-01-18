@@ -2,6 +2,10 @@
   "version": 1,
   "system": "x86_64-linux",
   "virtualisation": "none",
+  "uefi": {
+    "supported": true,
+    "platform_size": 64
+  },
   "hardware": {
     "bios": {
       "apm_info": {
@@ -2691,7 +2695,7 @@
         },
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.18.3 xhci-hcd",
+          "name": "Linux 6.18.4 xhci-hcd",
           "value": 7531
         },
         "device": {
@@ -2705,7 +2709,7 @@
           "value": 0
         },
         "serial": "0000:10:00.4",
-        "model": "Linux 6.18.3 xhci-hcd xHCI Host Controller",
+        "model": "Linux 6.18.4 xhci-hcd xHCI Host Controller",
         "sysfs_id": "/devices/pci0000:00/0000:00:08.1/0000:10:00.4/usb6/6-0:1.0",
         "sysfs_bus_id": "6-0:1.0",
         "detail": {
@@ -2761,7 +2765,7 @@
         },
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.18.3 xhci-hcd",
+          "name": "Linux 6.18.4 xhci-hcd",
           "value": 7531
         },
         "device": {
@@ -2775,7 +2779,7 @@
           "value": 0
         },
         "serial": "0000:10:00.3",
-        "model": "Linux 6.18.3 xhci-hcd xHCI Host Controller",
+        "model": "Linux 6.18.4 xhci-hcd xHCI Host Controller",
         "sysfs_id": "/devices/pci0000:00/0000:00:08.1/0000:10:00.3/usb3/3-0:1.0",
         "sysfs_bus_id": "3-0:1.0",
         "resources": [
@@ -2841,7 +2845,7 @@
         },
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.18.3 xhci-hcd",
+          "name": "Linux 6.18.4 xhci-hcd",
           "value": 7531
         },
         "device": {
@@ -2855,7 +2859,7 @@
           "value": 0
         },
         "serial": "0000:11:00.0",
-        "model": "Linux 6.18.3 xhci-hcd xHCI Host Controller",
+        "model": "Linux 6.18.4 xhci-hcd xHCI Host Controller",
         "sysfs_id": "/devices/pci0000:00/0000:00:08.3/0000:11:00.0/usb7/7-0:1.0",
         "sysfs_bus_id": "7-0:1.0",
         "resources": [
@@ -2999,7 +3003,7 @@
         },
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.18.3 xhci-hcd",
+          "name": "Linux 6.18.4 xhci-hcd",
           "value": 7531
         },
         "device": {
@@ -3013,7 +3017,7 @@
           "value": 0
         },
         "serial": "0000:10:00.3",
-        "model": "Linux 6.18.3 xhci-hcd xHCI Host Controller",
+        "model": "Linux 6.18.4 xhci-hcd xHCI Host Controller",
         "sysfs_id": "/devices/pci0000:00/0000:00:08.1/0000:10:00.3/usb4/4-0:1.0",
         "sysfs_bus_id": "4-0:1.0",
         "detail": {
@@ -3069,7 +3073,7 @@
         },
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.18.3 xhci-hcd",
+          "name": "Linux 6.18.4 xhci-hcd",
           "value": 7531
         },
         "device": {
@@ -3083,7 +3087,7 @@
           "value": 0
         },
         "serial": "0000:0d:00.0",
-        "model": "Linux 6.18.3 xhci-hcd xHCI Host Controller",
+        "model": "Linux 6.18.4 xhci-hcd xHCI Host Controller",
         "sysfs_id": "/devices/pci0000:00/0000:00:02.1/0000:04:00.0/0000:05:0c.0/0000:0d:00.0/usb1/1-0:1.0",
         "sysfs_bus_id": "1-0:1.0",
         "resources": [
@@ -3149,7 +3153,7 @@
         },
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.18.3 xhci-hcd",
+          "name": "Linux 6.18.4 xhci-hcd",
           "value": 7531
         },
         "device": {
@@ -3163,7 +3167,7 @@
           "value": 0
         },
         "serial": "0000:10:00.4",
-        "model": "Linux 6.18.3 xhci-hcd xHCI Host Controller",
+        "model": "Linux 6.18.4 xhci-hcd xHCI Host Controller",
         "sysfs_id": "/devices/pci0000:00/0000:00:08.1/0000:10:00.4/usb5/5-0:1.0",
         "sysfs_bus_id": "5-0:1.0",
         "resources": [
@@ -3229,7 +3233,7 @@
         },
         "vendor": {
           "hex": "1d6b",
-          "name": "Linux 6.18.3 xhci-hcd",
+          "name": "Linux 6.18.4 xhci-hcd",
           "value": 7531
         },
         "device": {
@@ -3243,7 +3247,7 @@
           "value": 0
         },
         "serial": "0000:0d:00.0",
-        "model": "Linux 6.18.3 xhci-hcd xHCI Host Controller",
+        "model": "Linux 6.18.4 xhci-hcd xHCI Host Controller",
         "sysfs_id": "/devices/pci0000:00/0000:00:02.1/0000:04:00.0/0000:05:0c.0/0000:0d:00.0/usb2/2-0:1.0",
         "sysfs_bus_id": "2-0:1.0",
         "detail": {
@@ -3316,7 +3320,7 @@
         },
         "revision": {
           "hex": "0000",
-          "name": "24.01",
+          "name": "24.10",
           "value": 0
         },
         "model": "Logitech USB Receiver",
@@ -3368,7 +3372,7 @@
           "xkb_rules": "xfree86",
           "xkb_model": "pc104"
         },
-        "module_alias": "usb:v046DpC52Bd2401dc00dsc00dp00ic03isc01ip01in00"
+        "module_alias": "usb:v046DpC52Bd2410dc00dsc00dp00ic03isc01ip01in00"
       },
       {
         "index": 84,
@@ -4271,7 +4275,7 @@
         },
         "revision": {
           "hex": "0000",
-          "name": "24.01",
+          "name": "24.10",
           "value": 0
         },
         "compat_vendor": "Unknown",
@@ -4328,7 +4332,7 @@
           "buttons": -1,
           "wheels": -1
         },
-        "module_alias": "usb:v046DpC52Bd2401dc00dsc00dp00ic03isc01ip02in01"
+        "module_alias": "usb:v046DpC52Bd2410dc00dsc00dp00ic03isc01ip02in01"
       }
     ],
     "network_controller": [
@@ -4553,7 +4557,25 @@
     ],
     "network_interface": [
       {
-        "index": 101,
+        "index": 102,
+        "attached_to": 0,
+        "class_list": ["network_interface"],
+        "base_class": {
+          "hex": "0107",
+          "name": "Network Interface",
+          "value": 263
+        },
+        "sub_class": {
+          "hex": "0000",
+          "name": "Loopback",
+          "value": 0
+        },
+        "model": "Loopback network interface",
+        "sysfs_id": "/class/net/lo",
+        "unix_device_names": ["lo"]
+      },
+      {
+        "index": 103,
         "attached_to": 27,
         "class_list": ["network_interface"],
         "base_class": {
@@ -4586,25 +4608,7 @@
         "driver_modules": ["r8169"]
       },
       {
-        "index": 102,
-        "attached_to": 0,
-        "class_list": ["network_interface"],
-        "base_class": {
-          "hex": "0107",
-          "name": "Network Interface",
-          "value": 263
-        },
-        "sub_class": {
-          "hex": "0000",
-          "name": "Loopback",
-          "value": 0
-        },
-        "model": "Loopback network interface",
-        "sysfs_id": "/class/net/lo",
-        "unix_device_names": ["lo"]
-      },
-      {
-        "index": 103,
+        "index": 104,
         "attached_to": 34,
         "class_list": ["network_interface"],
         "base_class": {
@@ -6143,7 +6147,7 @@
         },
         "revision": {
           "hex": "0000",
-          "name": "24.01",
+          "name": "24.10",
           "value": 0
         },
         "model": "Logitech USB Receiver",
@@ -6190,7 +6194,7 @@
         "driver_module": "usbhid",
         "drivers": ["usbhid"],
         "driver_modules": ["usbhid"],
-        "module_alias": "usb:v046DpC52Bd2401dc00dsc00dp00ic03isc00ip00in02"
+        "module_alias": "usb:v046DpC52Bd2410dc00dsc00dp00ic03isc00ip00in02"
       }
     ],
     "usb_controller": [
