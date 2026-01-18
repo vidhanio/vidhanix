@@ -43,18 +43,12 @@
                         mountpoint = config.persist.persistentStoragePath;
                         inherit mountOptions;
                       };
-                      swap = {
-                        mountpoint = "/swap";
-                        swap.swapfile.size = "16G";
-                      };
                     };
                 };
               };
             };
           };
         };
-
-        boot.kernel.sysfs.module.zswap.parameters.enabled = 1;
       };
     desktop = {
       disko.devices.disk.main.content.partitions.ESP = {
