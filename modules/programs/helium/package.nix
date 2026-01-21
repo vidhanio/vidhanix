@@ -14,11 +14,11 @@ let
       platforms = {
         x86_64-linux = {
           os = "x86_64";
-          hash = "sha256-n1wn80h9O7GpZz4AygNSKMcilX8lr6fJkiQBBPPQXok=";
+          hash = "sha256-abNHp4WaR2MqidG42TErJZBR1PcUVtRpBYFiKCmadW8=";
         };
         aarch64-linux = {
           os = "arm64";
-          hash = "sha256-jdqM0nTt9ZuBaN677lYcbZ2UkfKyINi/B9JjfTzrP00=";
+          hash = "sha256-IRaoQf7vFEP+pFTvdt+okIcsGtAQlEowuO3KwRyC2bQ=";
         };
       };
 
@@ -26,7 +26,7 @@ let
     in
     appimageTools.wrapType2 rec {
       pname = "helium";
-      version = "0.8.1.1";
+      version = "0.8.2.1";
 
       src = fetchurl {
         url = "https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-${os}.AppImage";

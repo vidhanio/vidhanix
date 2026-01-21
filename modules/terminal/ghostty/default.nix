@@ -11,5 +11,9 @@
           window-padding-y = padding;
         };
     };
+
+    wayland.windowManager.hyprland.settings.bind = [
+      "SUPER, T, exec, uwsm app -- ghostty"
+    ];
   };
 }
