@@ -1,4 +1,4 @@
-{ lib, inputs, ... }:
+{ inputs, ... }:
 {
   flake-file.inputs.nixcord.url = "github:FlameFlag/nixcord";
 
@@ -7,7 +7,7 @@
 
     programs.nixcord = {
       enable = true;
-      discord.enable = lib.mkDefault false;
+      discord.enable = false;
       vesktop = {
         enable = true;
         settings = {
