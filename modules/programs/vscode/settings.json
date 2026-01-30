@@ -13,7 +13,6 @@
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.defaultFormatter": "ibecker.treefmt-vscode",
   "editor.fontLigatures": true,
-  "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": "active",
   "editor.hideCursorInOverviewRuler": true,
@@ -73,6 +72,12 @@
     }
   ],
   "github.copilot.editor.enableCodeActions": false,
+  "github.copilot.enable": {
+    "*": true,
+    "markdown": true,
+    "plaintext": false,
+    "scminput": false
+  },
   "github.copilot.nextEditSuggestions.enabled": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "license.default": "MIT",
@@ -99,7 +104,6 @@
   "python.analysis.inlayHints.pytestParameters": true,
   "python.analysis.inlayHints.variableTypes": true,
   "python.analysis.typeCheckingMode": "strict",
-  "python.languageServer": "Pylance",
   "redhat.telemetry.enabled": false,
   "rust-analyzer.cargo.features": "all",
   "rust-analyzer.cargo.targetDir": true,
@@ -126,6 +130,7 @@
   "terminal.integrated.cursorStyle": "line",
   "terminal.integrated.enableMultiLinePasteWarning": "never",
   "terminal.integrated.enableVisualBell": true,
+  "terminal.integrated.initialHint": false,
   "terminal.integrated.persistentSessionReviveProcess": "never",
   "terminal.integrated.stickyScroll.enabled": false,
   "treefmt.command": "treefmt",
