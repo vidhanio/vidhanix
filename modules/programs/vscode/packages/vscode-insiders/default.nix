@@ -13,11 +13,11 @@ let
       platforms = {
         "x86_64-linux" = {
           os = "linux-x64";
-          hash = "sha256-g1ZLw+OyNcJIcjhWZth5gaUUQ8umeMJTLxM7anCiqkU=";
+          hash = "sha256-cGCVXQUg17aMrO3ZqGKP3zPQJLERgXMfD4lkTzBRxWw=";
         };
         "aarch64-linux" = {
           os = "linux-arm64";
-          hash = "sha256-4OfG+Wf3HHv2pGHf+I/hJxxyUqpwRZzK4BvLwRpgR8E=";
+          hash = "sha256-eYviZ0grTZKiB2h2QO/KKIACTb8V0VWlAoyYAoCbnZk=";
         };
       };
 
@@ -36,8 +36,8 @@ let
     )).overrideAttrs
       (
         finalAttrs: prevAttrs: {
-          version = "1.109.0-insider-2026-01-28";
-          commit = "7722bb2e963d79be06993622fd2a115e7c98c576";
+          version = "1.109.0-insider-2026-01-30";
+          commit = "ea084045c1ea954f98f53a5a7c31a85a1877b100";
 
           src = fetchurl {
             name = "vscode-insiders-${finalAttrs.commit}-${os}.tar.gz";
