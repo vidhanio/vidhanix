@@ -35,10 +35,6 @@
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     home-manager.url = "github:nix-community/home-manager";
     hyprland.url = "github:hyprwm/Hyprland";
-    hyprland-plugins = {
-      inputs.hyprland.follows = "hyprland";
-      url = "github:hyprwm/hyprland-plugins";
-    };
     impermanence.url = "github:nix-community/impermanence";
     import-tree.url = "github:vic/import-tree";
     llm-agents.url = "github:numtide/llm-agents.nix";
