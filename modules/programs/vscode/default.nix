@@ -5,6 +5,8 @@
   flake.modules.homeManager.default =
     { pkgs, lib, ... }:
     {
+      home.shellAliases.code = "code-insiders";
+
       programs.vscode = {
         enable = true;
         package = withSystem pkgs.stdenv.hostPlatform.system (
@@ -23,6 +25,8 @@
             with (pkgs.extend inputs.vscode-extensions.overlays.default).vscode-marketplace;
             [
               # keep-sorted start
+              anthropic.claude-code
+              astral-sh.ty
               bmalehorn.vscode-fish
               bradlc.vscode-tailwindcss
               charliermarsh.ruff
@@ -34,7 +38,7 @@
               mkhl.direnv
               mkhl.shfmt
               ms-python.python
-              ms-python.vscode-pylance
+              ms-toolsai.jupyter
               myriad-dreamin.tinymist
               pkief.material-icon-theme
               pkief.material-product-icons
