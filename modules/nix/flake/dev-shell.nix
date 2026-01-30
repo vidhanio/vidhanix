@@ -4,6 +4,7 @@
       config,
       inputs',
       pkgs,
+      self',
       ...
     }:
     {
@@ -20,15 +21,15 @@
             runtimeInputs = with pkgs; [
               git
               nh
-              direnv
+              self'.packages.generate-files
             ];
 
             text = ''
               git add .
 
-              nh os "''${@:-switch}"
+              generate-files
 
-              direnv reload
+              nh os "''${@:-switch}"
             '';
           };
         in
