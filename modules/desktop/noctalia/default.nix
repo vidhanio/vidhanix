@@ -14,29 +14,75 @@
       imports = [
         inputs.noctalia.homeModules.default
       ];
+      programs.noctalia-shell = {
+        enable = true;
+        settings = {
+          bar = {
+            widgets = {
+              left = [
+                {
+                  id = "Clock";
+                  formatHorizontal = "yyyy-MM-dd";
+                }
+                {
+                  id = "Clock";
+                  formatHorizontal = "HH:mm";
+                }
+                { id = "Battery"; }
+                { id = "Volume"; }
+                { id = "Brightness"; }
+              ];
+              center = [
+                { id = "Workspace"; }
+              ];
+              right = [
+                { id = "Tray"; }
+                { id = "MediaMini"; }
+                { id = "NotificationHistory"; }
+              ];
+            };
+          };
+          general.enableShadows = false;
+          wallpaper.enabled = false;
+          appLauncher = {
+            enableShadows = true;
+            enableClipboardHistory = true;
 
-      programs.noctalia-shell.enable = true;
+            terminalCommand = "ghostty -e";
+
+            customLaunchPrefixEnabled = true;
+            customLaunchPrefix = "uwsm app --";
+          };
+          controlCenter = {
+            left = [
+              { id = "Network"; }
+              { id = "Bluetooth"; }
+            ];
+            right = [
+              { id = "KeepAwake"; }
+              { id = "NightLight"; }
+            ];
+            cards = [
+              {
+                enabled = true;
+                id = "profile-card";
+              }
+              {
+                enabled = true;
+                id = "shortcuts-card";
+              }
+            ];
+          };
+          dock.enabled = false;
+          location.name = "Mississauga, Canada";
+        };
+      };
     };
   };
 
   configurations.vidhan-pc.homeModule = {
     programs.noctalia-shell.settings = {
-      bar.screenOverrides = [
-        {
-          enabled = true;
-          name = "HDMI-A-1";
-          position = "bottom";
-        }
-      ];
-      appLauncher = {
-        enableClipboardHistory = true;
-
-        terminalCommand = "ghostty -e";
-
-        customLaunchPrefixEnabled = true;
-        customLaunchPrefix = "uwsm app --";
-      };
-      location.name = "Mississauga, Canada";
+      bar.monitors = [ "DP-1" ];
     };
   };
 }

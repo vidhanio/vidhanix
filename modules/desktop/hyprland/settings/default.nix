@@ -6,16 +6,6 @@
         {
           windowrule = [
             {
-              name = "pip-keep-aspect-ratio";
-
-              match = {
-                title = "^Picture-in-picture$";
-                float = true;
-              };
-
-              keep_aspect_ratio = true;
-            }
-            {
               name = "suppress-maximize-events";
 
               match.class = ".*";
