@@ -1,19 +1,11 @@
 {
-  withSystem,
-  ...
-}:
-{
-  flake.modules.homeManager.default =
-    { pkgs, ... }:
-    {
-      home.packages = withSystem pkgs.stdenv.hostPlatform.system (
-        { self', ... }: [ self'.packages.helium-bin ]
-      );
+  flake.modules.homeManager.default = {
+    programs.helium.enable = true;
 
-      wayland.windowManager.hyprland.settings.bind = [
-        "SUPER, B, exec, uwsm app -- helium"
-      ];
+    wayland.windowManager.hyprland.settings.bind = [
+      "SUPER, B, exec, uwsm app -- helium"
+    ];
 
-      persist.directories = [ ".config/net.imput.helium" ];
-    };
+    persist.directories = [ ".config/net.imput.helium" ];
+  };
 }

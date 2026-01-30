@@ -24,7 +24,7 @@
           enable = true;
 
           services.wipe-root = {
-            description = "Wipe BTRFS root subvolume on boot";
+            description = "Wipe BTRFS tmproot subvolume";
             wantedBy = [ "initrd.target" ];
 
             after = [ "initrd-root-device.target" ];
