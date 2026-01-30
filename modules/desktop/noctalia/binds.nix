@@ -22,8 +22,7 @@
             # playback
             ", XF86AudioPrev, exec, ${noctalia} media previous"
             ", XF86AudioNext, exec, ${noctalia} media next"
-            ", XF86AudioPause, exec, ${noctalia} media pause"
-            ", XF86AudioPlay, exec, ${noctalia} media play"
+            ", XF86AudioPlay, exec, ${noctalia} media playPause"
           ];
         };
       };
