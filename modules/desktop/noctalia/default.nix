@@ -77,6 +77,7 @@
           };
           dock.enabled = false;
           location.name = "Mississauga, Canada";
+          brightness.enableDdcSupport = true;
         };
       };
     };
