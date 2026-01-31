@@ -14,15 +14,13 @@
       imports = [
         inputs.noctalia.homeModules.default
       ];
+
       programs.noctalia-shell = {
         enable = true;
         settings = {
           bar = {
-            barType = "floating";
-            floating = true;
             density = "comfortable";
-            marginVertical = 10;
-            marginHorizontal = 10;
+            outerCorners = false;
             widgets = {
               left = [
                 {
@@ -33,7 +31,12 @@
                   id = "Clock";
                   formatHorizontal = "HH:mm";
                 }
-                { id = "Battery"; }
+                {
+                  id = "Battery";
+                  showPowerProfiles = true;
+                }
+                { id = "Network"; }
+                { id = "Bluetooth"; }
                 { id = "Volume"; }
                 { id = "Brightness"; }
               ];
@@ -47,10 +50,16 @@
               ];
             };
           };
-          general.enableShadows = false;
+          general = {
+            showChangelogOnStartup = false;
+            telemetryEnabled = false;
+            enableShadows = false;
+            radiusRatio = 0.5;
+            iRadiusRatio = 0.5;
+            compactLockScreen = true;
+          };
           wallpaper.enabled = false;
           appLauncher = {
-            enableShadows = true;
             enableClipboardHistory = true;
 
             terminalCommand = "ghostty -e";
@@ -59,22 +68,10 @@
             customLaunchPrefix = "uwsm app --";
           };
           controlCenter = {
-            left = [
-              { id = "Network"; }
-              { id = "Bluetooth"; }
-            ];
-            right = [
-              { id = "KeepAwake"; }
-              { id = "NightLight"; }
-            ];
             cards = [
               {
                 enabled = true;
                 id = "profile-card";
-              }
-              {
-                enabled = true;
-                id = "shortcuts-card";
               }
             ];
           };
