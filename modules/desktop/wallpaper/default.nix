@@ -10,7 +10,7 @@
               svg = pkgs.replaceVars ./wallpaper.svg (
                 with config.lib.stylix.colors.withHashtag;
                 {
-                  bg = base00;
+                  bg = base01;
 
                   purple = base0E;
                   black = base01;

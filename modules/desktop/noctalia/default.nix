@@ -18,6 +18,11 @@
         enable = true;
         settings = {
           bar = {
+            barType = "floating";
+            floating = true;
+            density = "comfortable";
+            marginVertical = 10;
+            marginHorizontal = 10;
             widgets = {
               left = [
                 {
