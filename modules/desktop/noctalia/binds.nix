@@ -11,6 +11,10 @@
           ];
 
           bindel = [
+            # brightness
+            ", XF86MonBrightnessUp, exec, ${noctalia} brightness increase"
+            ", XF86MonBrightnessDown, exec, ${noctalia} brightness decrease"
+
             # volume
             ", XF86AudioRaiseVolume, exec, ${noctalia} volume increase"
             ", XF86AudioLowerVolume, exec, ${noctalia} volume decrease"

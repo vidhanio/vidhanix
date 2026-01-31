@@ -43,22 +43,22 @@ let
       wrapMuvm =
         pkg:
         let
-          name = pkg.meta.mainProgram;
+          program = pkg.meta.mainProgram;
         in
         ''
           mkdir -p $out
           cp -r ${pkg}/* $out/
           chmod -R u+w $out
-          mv $out/bin/${name} $out/bin/.${name}-wrapped
+          mv $out/bin/${program} $out/bin/.${program}-wrapped
 
-          echo "#! ${stdenvNoCC.shell} -e" > $out/bin/${name}
+          echo "#! ${stdenvNoCC.shell} -e" > $out/bin/${program}
           echo \
             ${lib.getExe muvm} \
               -x ${initScript} \
               -e PULSE_CLIENTCONFIG=${pulse-conf} \
-              \""$out/bin/.${name}-wrapped"\" '"$@"' \
-            >> $out/bin/${name}
-          chmod +x $out/bin/${name}
+              \""$out/bin/.${program}-wrapped"\" '"$@"' \
+            >> $out/bin/${program}
+          chmod +x $out/bin/${program}
         '';
     in
     stdenvNoCC.mkDerivation {
@@ -87,6 +87,37 @@ in
   perSystem =
     { pkgs, ... }:
     {
-      packages.muvm-steam = pkgs.callPackage pkg { };
+      packages.muvm-steam =
+        let
+          # FIXME: https://github.com/NixOS/nixpkgs/pull/485411
+          libkrunOverlay = final: prev: {
+            libkrun = prev.libkrun.overrideAttrs (
+              finalAttrs: prevAttrs: {
+                version = "1.17.0";
+
+                src = prevAttrs.src.override {
+                  hash = "sha256-6HBSL5Zu29sDoEbZeQ6AsNIXUcqXVVGMk0AR2X6v1yU=";
+                };
+
+                cargoDeps = final.rustPlatform.fetchCargoVendor {
+                  inherit (finalAttrs) src;
+                  hash = "sha256-UIzbtBJH6aivoIxko1Wxdod/jUN44pERX9Hd+v7TC3Q=";
+                };
+              }
+            );
+
+            libkrunfw = prev.libkrunfw.overrideAttrs (old: {
+              version = "5.1.0";
+              src = old.src.override {
+                hash = "sha256-x9HQP+EqCteoCq2Sl/TQcfdzQC5iuE4gaSKe7tN5dAA=";
+              };
+              kernelSrc = final.fetchurl {
+                url = "mirror://kernel/linux/kernel/v6.x/linux-6.12.62.tar.xz";
+                hash = "sha256-E+LGhayPq13Zkt0QVzJVTa5RSu81DCqMdBjnt062LBM=";
+              };
+            });
+          };
+        in
+        (pkgs.extend libkrunOverlay).callPackage pkg { };
     };
 }
