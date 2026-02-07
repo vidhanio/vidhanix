@@ -25,7 +25,6 @@
           ];
           text = ''
             wlr-randr --output DP-1 --mode 2560x1440@300.002014Hz --adaptive-sync enabled
-            wlr-randr --output HDMI-A-1 --off
             regreet "$@"
           '';
         };
