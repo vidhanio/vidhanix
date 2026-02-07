@@ -44,8 +44,11 @@
                 { id = "Workspace"; }
               ];
               right = [
+                {
+                  id = "MediaMini";
+                  maxWidth = 1000;
+                }
                 { id = "Tray"; }
-                { id = "MediaMini"; }
                 { id = "NotificationHistory"; }
               ];
             };
@@ -80,12 +83,6 @@
           brightness.enableDdcSupport = true;
         };
       };
-    };
-  };
-
-  configurations.vidhan-pc.homeModule = {
-    programs.noctalia-shell.settings = {
-      bar.monitors = [ "DP-1" ];
     };
   };
 }
