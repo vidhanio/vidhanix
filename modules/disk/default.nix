@@ -114,9 +114,9 @@
 
         content.partitions = {
           iBootSystemContainer.uuid = "62132ea7-731c-44eb-848a-80a899f51311";
-          Container.uuid = "18fa4f40-f0b2-407f-9eea-a1491cefeaa4";
-          NixOSContainer.uuid = "4238759e-8d52-4fd7-a67f-c1476fce03f9";
-          ESP.uuid = "ff9579f2-e598-4e95-b8be-91f66eaba3a4";
+          Container.uuid = "b45447e2-9e71-469e-9601-d4364bdfb492";
+          NixOSContainer.uuid = "37fe6b82-8e1a-4271-9192-d267ce78602c";
+          ESP.uuid = "42dd4099-5e91-4a89-9c26-f07119130d4a";
           RecoveryOSContainer.uuid = "37b1fd46-dc1b-4342-887c-f533d6ca1de2";
         };
       };
