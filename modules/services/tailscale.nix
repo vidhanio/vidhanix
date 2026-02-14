@@ -12,6 +12,7 @@
           extraSetFlags = [
             "--advertise-exit-node"
             "--operator=vidhanio"
+            "--ssh"
           ];
           extraUpFlags = config.services.tailscale.extraSetFlags;
         };

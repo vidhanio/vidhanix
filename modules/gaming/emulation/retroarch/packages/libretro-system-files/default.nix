@@ -74,17 +74,17 @@ let
             hash = "sha256-wJj1wzCnMc1/KIOQ1mi3JyaxWtVIkquYgzgz/W6XOVs=";
           };
           DirkSimple = {
-            version = "0-unstable-2024-12-03";
+            version = "0-unstable-2026-02-09";
 
             owner = "icculus";
-            rev = "a5b0ebca483cd10babe930a57e75b0e6094686fb";
-            hash = "sha256-ZaQMWVgKP1D+biJaNrLqqtLqMfRp1FovlI6AEBlCO5Y=";
+            rev = "5aea3e2951ed641908a7bd2ca09019614003b5e3";
+            hash = "sha256-jVARf0qOtNiCPhAqj4debgJ9Bnl9A7Zmc+bjZNGdcBY=";
           };
           ecwolf = {
-            version = "0-unstable-2025-04-16";
+            version = "0-unstable-2026-02-11";
 
-            rev = "c57ad894d5942740b4896511e8554c9a776b04a6";
-            hash = "sha256-KOZfm1MpLAng9YzydU7YeJfDN1lqkX78gz5tzRe0aOE=";
+            rev = "15c1aa3114b2b9cdb1baec0a6467b2b868371446";
+            hash = "sha256-zOrZ3zBylhgucOvB9RgIlRFdiiwk3zMkHC7AvVJwiWI=";
           };
           qemu-libretro = {
             version = "0-unstable-2025-08-19";
