@@ -1,5 +1,5 @@
 {
   flake.modules.homeManager.default = {
-    services.cliphist.enable = true;
+    programs.tmux.enable = true;
   };
 }

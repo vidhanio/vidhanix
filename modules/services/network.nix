@@ -30,5 +30,7 @@
             };
         };
       };
+
+      services.resolved.enable = true;
     };
 }

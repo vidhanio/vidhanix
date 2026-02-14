@@ -1,14 +1,12 @@
 { inputs, ... }:
 {
-  flake-file.inputs.noctalia.url = "github:noctalia-dev/noctalia-shell";
-
   flake.modules = {
     nixos.default = {
       imports = [
         inputs.noctalia.nixosModules.default
       ];
 
-      services.noctalia-shell.enable = true;
+      services.noctalia-shell.enable = false;
     };
     homeManager.default = {
       imports = [
@@ -16,7 +14,7 @@
       ];
 
       programs.noctalia-shell = {
-        enable = true;
+        enable = false;
         settings = {
           bar = {
             density = "comfortable";
