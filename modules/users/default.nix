@@ -1,7 +1,4 @@
-{ lib, config, ... }:
-let
-  cfg = config.users;
-in
+{ lib, ... }:
 {
   options.users = lib.mkOption {
     type = lib.types.attrsOf (
@@ -15,6 +12,10 @@ in
             type = lib.types.str;
             description = "The email address of the user.";
           };
+          publicKeys = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            description = "A list of public SSH keys for the user.";
+          };
           module = lib.mkOption {
             type = lib.types.deferredModule;
             default = { };
@@ -24,29 +25,4 @@ in
       }
     );
   };
-
-  config.flake.modules.nixos.default =
-    { config, ... }:
-    {
-      age.secrets.password.file = ../../secrets/password.age;
-
-      users.users = lib.mapAttrs (_: user: {
-        enable = lib.mkDefault false;
-        isNormalUser = true;
-        description = user.fullName;
-        # TODO: handle seperate passwords per user?
-        hashedPasswordFile = config.age.secrets.password.path;
-        extraGroups = [ "wheel" ];
-        useDefaultShell = true;
-      }) cfg;
-
-      home-manager.users =
-        let
-          activeUserNames = lib.attrNames (
-            lib.filterAttrs (_: user: user.enable && user.isNormalUser) config.users.users
-          );
-          activeUsers = lib.getAttrs activeUserNames cfg;
-        in
-        lib.mapAttrs (_: user: user.module) activeUsers;
-    };
 }

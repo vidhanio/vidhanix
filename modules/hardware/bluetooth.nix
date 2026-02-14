@@ -1,9 +1,16 @@
 {
-  flake.modules.nixos.default = {
-    hardware.bluetooth.enable = true;
+  flake.modules = {
+    nixos.default = {
+      hardware.bluetooth.enable = true;
 
-    persist.directories = [
-      "/var/lib/bluetooth"
-    ];
+      services.blueman.enable = true;
+
+      persist.directories = [
+        "/var/lib/bluetooth"
+      ];
+    };
+    homeManager.default = {
+      services.blueman-applet.enable = true;
+    };
   };
 }
