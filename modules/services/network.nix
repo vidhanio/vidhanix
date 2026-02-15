@@ -27,6 +27,7 @@
               EMC2-5G = "$EMC2";
               "Vidhan's iPhone" = "$IPHONE";
               Spongebob = "$SPONGEBOB";
+              Big388 = "$BIG388";
             };
         };
       };

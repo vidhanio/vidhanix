@@ -32,13 +32,13 @@ let
     in
     stdenvNoCC.mkDerivation {
       pname = "libretro-database";
-      version = "1.22.1-unstable-2026-02-10";
+      version = "1.22.1-unstable-2026-02-14";
 
       src = fetchFromGitHub {
         owner = "libretro";
         repo = "libretro-database";
-        rev = "50bc11aa01d81cbf890335f847457b0008a4bb25";
-        hash = "sha256-vsYnpwGlD8aWENZ1qToaKf/4UIcYLi5x3gvy4G2vIas=";
+        rev = "bd6e5edc2a4ff24c4d10cd47d9f5a65e3805a688";
+        hash = "sha256-dgt/z0VkoSkg9vQirMdWuhuOENZr8viLGoZJMAIAAXI=";
       };
 
       postUnpack = ''
