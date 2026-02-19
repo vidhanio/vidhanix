@@ -1,4 +1,3 @@
-{ lib, ... }:
 {
   flake.modules = {
     nixos.default = {
@@ -38,22 +37,19 @@
         };
       };
     };
-    homeManager.default =
-      { osConfig, ... }:
-      {
-        wayland.windowManager.hyprland.settings.bindel =
-          let
-            wpctl = lib.getExe' osConfig.services.pipewire.wireplumber.package "wpctl";
-            mkSetVolume =
-              sign:
-              "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ 0 && ${wpctl} set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%${sign}";
-          in
-          [
-            ", XF86AudioLowerVolume, exec, ${mkSetVolume "-"}"
-            ", XF86AudioRaiseVolume, exec, ${mkSetVolume "+"}"
-            ", XF86AudioMute, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle"
-            ", XF86AudioMicMute, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-          ];
-      };
+    homeManager.default = {
+      wayland.windowManager.hyprland.settings.bindel =
+        let
+          mkSetVolume =
+            sign:
+            "wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 && wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%${sign}";
+        in
+        [
+          ", XF86AudioLowerVolume, exec, ${mkSetVolume "-"}"
+          ", XF86AudioRaiseVolume, exec, ${mkSetVolume "+"}"
+          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+        ];
+    };
   };
 }

@@ -30,8 +30,8 @@
 
           general = {
             border_size = 2;
-            gaps_in = 8;
-            gaps_out = 16;
+            gaps_in = 4;
+            gaps_out = 8;
           };
 
           decoration = {
@@ -63,8 +63,8 @@
         }
         # smart gaps
         {
-          workspace = [ "w[tv1], gapsout:0" ];
-          windowrule = [ "match:workspace w[tv1], match:float false, rounding false, border_size 0" ];
+          workspace = [ "f[1], gapsout:0" ];
+          windowrule = [ "match:workspace f[1], match:float false, rounding false, border_size 0" ];
         }
       ];
     };
