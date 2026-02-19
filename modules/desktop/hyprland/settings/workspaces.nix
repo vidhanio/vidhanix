@@ -14,9 +14,9 @@
               in
               [
                 # Switch to workspace i
-                "SUPER, ${istr}, workspace, ${istr}"
+                "SUPER, ${istr}, focusworkspaceoncurrentmonitor, ${istr}"
                 # Move focused window to workspace i
-                "SUPER SHIFT, ${istr}, movetoworkspace, ${istr}"
+                "SUPER SHIFT, ${istr}, movetoworkspacesilent, ${istr}"
               ];
           in
 
