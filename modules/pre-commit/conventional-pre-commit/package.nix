@@ -8,13 +8,13 @@ let
     }:
     python3Packages.buildPythonPackage rec {
       pname = "conventional-pre-commit";
-      version = "4.3.0";
+      version = "4.4.0";
 
       src = fetchFromGitHub {
         owner = "compilerla";
         repo = "conventional-pre-commit";
         tag = "v${version}";
-        hash = "sha256-QtkHgSfAI8ukdPi7Qz7gO6WGnmHOBgR+J2oEekMbV3w=";
+        hash = "sha256-8wpsdrTv2N2FFMZzRzJ3ufFtTehoZTaiHvXxNbV6vIQ=";
       };
 
       pyproject = true;
