@@ -14,11 +14,11 @@ let
       platforms = {
         x86_64-linux = {
           os = "x86_64";
-          hash = "sha256-jFSLLDsHB/NiJqFmn8S+JpdM8iCy3Zgyq+8l4RkBecM=";
+          hash = "sha256-guDBIr8NOD0GtjWznsVXlvb6llvdWHxREfDvXeP4m/w=";
         };
         aarch64-linux = {
           os = "arm64";
-          hash = "sha256-UUyC19Np3IqVX3NJVLBRg7YXpw0Qzou4pxJURYFLzZ4=";
+          hash = "sha256-XRLnTF3CjUOVQL94dTIuBzrH6BIOENEr0/vXLcke614=";
         };
       };
 
@@ -26,7 +26,7 @@ let
     in
     appimageTools.wrapType2 rec {
       pname = "helium";
-      version = "0.8.5.1";
+      version = "0.9.2.1";
 
       src = fetchurl {
         url = "https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-${os}.AppImage";
@@ -59,7 +59,6 @@ let
           cp -r ${contents}/opt/helium/locales "$out/share/lib/helium"
           cp -r ${contents}/usr/share/* "$out/share"
           cp "${contents}/${pname}.desktop" "$out/share/applications/"
-          substituteInPlace $out/share/applications/${pname}.desktop --replace-fail 'Exec=AppRun' 'Exec=${meta.mainProgram}'
         '';
 
       meta = {
