@@ -3,7 +3,7 @@
     nixos.default =
       { config, ... }:
       {
-        age.secrets.tailscale.file = ../../secrets/tailscale.age;
+        age.secrets.tailscale.file = ../../../secrets/tailscale.age;
 
         services.tailscale = {
           enable = true;

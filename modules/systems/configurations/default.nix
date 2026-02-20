@@ -51,7 +51,7 @@ in
               config = {
                 networking.hostName = name;
 
-                age.secrets.password.file = ../../secrets/password.age;
+                age.secrets.password.file = ../../../secrets/password.age;
 
                 users.users = lib.mapAttrs (_: user: {
                   isNormalUser = true;
