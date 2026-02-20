@@ -15,6 +15,7 @@
     };
     nixvim.default = {
       enable = true;
+      defaultEditor = true;
       viAlias = true;
       clipboard = {
         register = "unnamedplus";
