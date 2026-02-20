@@ -12,19 +12,9 @@
         name = "generate-files";
         meta.description = "Generate various files for this repository";
         text = ''
-          # files
           ${lib.getExe config.files.writer.drv}
 
-
-          lock_bck=$(mktemp)
-          cp -p flake.lock "$lock_bck"
-
           ${lib.getExe config.packages.write-flake}
-
-          # if flake.lock unchanged, restore mtime
-          if cmp -s flake.lock "$lock_bck"; then
-            touch -r "$lock_bck" flake.lock
-          fi
         '';
       };
 
