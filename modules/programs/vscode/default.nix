@@ -25,7 +25,6 @@
             with (pkgs.extend inputs.vscode-extensions.overlays.default).vscode-marketplace;
             [
               # keep-sorted start
-              anthropic.claude-code
               astral-sh.ty
               bmalehorn.vscode-fish
               bradlc.vscode-tailwindcss
