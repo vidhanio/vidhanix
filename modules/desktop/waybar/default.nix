@@ -34,6 +34,11 @@
           format = "{:%F %R}";
         };
 
+        "hyprland/workspaces" = {
+          all-outputs = true;
+          move-to-monitor = true;
+        };
+
         # "custom/hello-from-waybar" = {
         #   format = "hello {}";
         #   max-length = 40;
@@ -54,18 +59,18 @@
           background-color: transparent;
         }
 
+        #workspaces {
+          padding: 4px;
+        }
+
         #workspaces button {
           padding: 0 4px;
         }
 
         .module {
           background: @base00;
-          padding: 4px;
+          padding: 8px;
           border-radius: 12px;
-        }
-
-        .module:not(#workspaces) {
-          padding: 4px 8px;
         }
       '';
     };
