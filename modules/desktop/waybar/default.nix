@@ -63,6 +63,10 @@
           padding: 4px;
           border-radius: 12px;
         }
+
+        .module:not(#workspaces) {
+          padding: 4px 8px;
+        }
       '';
     };
   };
