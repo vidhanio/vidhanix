@@ -48,15 +48,21 @@ configurations.<hostname> = {
 
 ### Module Categories
 
-- **bases/** - Desktop/macbook base configs
-- **desktop/hyprland/** - Hyprland compositor, hyprlock, hypridle
-- **disk/impermanence/** - Ephemeral root with impermanence
-- **files/** - Generated file infrastructure
-- **fonts/** - Custom font packages
-- **nix/flake/** - Dev shell, package updates, substituters
-- **programs/** - Application configs
-- **services/** - System services
-- **users/** - User definitions
+- **flake/** - Meta/repo infrastructure: dev shell, package updates, substituters, treefmt, generated files, agenix, pre-commit
+- **programs/** - All application configs (both NixOS and Home Manager)
+- **services/** - High-level user-facing services (printing, wakatime, sunshine)
+- **systems/bases/** - Desktop/macbook base NixOS modules (`nixos.desktop`, `nixos.macbook`)
+- **systems/boot/** - Boot loader and binfmt config
+- **systems/configurations/** - Per-host NixOS configurations (`vidhan-pc`, `vidhan-macbook`)
+- **systems/disk/** - Disk layout, impermanence, swap
+- **systems/gui/** - GUI stack: Hyprland, Waybar, Stylix, fonts, audio, cursor, greeter, lock
+- **systems/hardware/** - Hardware-specific config (Bluetooth, fwupd, Logitech, Xbox controller)
+- **systems/locale/** - Timezone and i18n settings
+- **systems/nix/** - All `nix.settings` config plus flake registry
+- **systems/services/** - Low-level system services (network, tailscale, tuned, udisks, upower)
+- **systems/ssh/** - SSH server config and key persistence
+- **systems/sudo/** - sudo policy
+- **systems/users/** - User definitions
 
 ### Generated Files
 
@@ -71,6 +77,9 @@ configurations.<hostname> = {
 - **deadnix** - Dead code detection
 - **shfmt** - Shell formatting
 - **shellcheck** - Shell linting
+- **actionlint** - GitHub Actions linting
+- **oxfmt** - Ox formatting
+- **xmllint** - XML formatting
 - **keep-sorted** - List sorting
 
 Pre-commit hooks run `treefmt --fail-on-change` and `generate-files` automatically.
