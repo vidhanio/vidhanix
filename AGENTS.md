@@ -140,9 +140,28 @@ config = lib.mkIf cfg.enable {
 
 ```nix
 flake.modules = {
-  nixos.default = { config, ... }: { /* NixOS config */ };
-  homeManager.default = { config, ... }: { /* Home Manager config */ };
+  nixos.default = { pkgs, config, ... }: { /* NixOS config */ };
+  homeManager.default = { pkgs, config, ... }: { /* Home Manager config */ };
 };
+```
+
+IMPORTANT: `pkgs` is available at the module function level, NOT the top-level flake function. The top-level args are for flake-level things like `inputs`, `lib`, `withSystem`. Module-level args like `pkgs` and `config` go on the inner function:
+
+```nix
+# CORRECT
+{
+  flake.modules.nixos.default = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.some-package ];
+  };
+}
+
+# WRONG - pkgs is not available at top level
+{ pkgs, ... }:
+{
+  flake.modules.nixos.default = { ... }: {
+    environment.systemPackages = [ pkgs.some-package ];
+  };
+}
 ```
 
 **Package definitions** - Define in `perSystem.packages`:
