@@ -11,8 +11,8 @@
               ${lib.getExe' pkgs.imagemagick "magick"} \
                 ${./nokia.png} \
                 -colorspace sRGB \
-                -fuzz 50% -fill "${base01}" -opaque black \
-                -fuzz 50% -fill "${base07}" -opaque white \
+                -fuzz 50% -fill "${base00}" -opaque black \
+                -fuzz 50% -fill "${base02}" -opaque white \
                 $out
             '';
         };
