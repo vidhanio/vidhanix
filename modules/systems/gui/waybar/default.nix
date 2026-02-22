@@ -26,8 +26,8 @@
         ];
 
         margin-top = 8;
-        margin-left = 12;
-        margin-right = 12;
+        margin-left = 8;
+        margin-right = 8;
         spacing = 8;
 
         clock = {
@@ -65,12 +65,13 @@
 
         #workspaces button {
           padding: 0 4px;
+          border-radius: 0;
         }
 
         .module {
           background: @base00;
           padding: 8px;
-          border-radius: 12px;
+          border: 2px solid @base05;
         }
       '';
     };

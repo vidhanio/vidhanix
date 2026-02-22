@@ -35,7 +35,6 @@
           };
 
           decoration = {
-            rounding = 8;
             shadow.enabled = false;
           };
 
@@ -50,6 +49,8 @@
 
           input = {
             follow_mouse = 2;
+            repeat_rate = 50;
+            repeat_delay = 500;
             touchpad = {
               natural_scroll = true;
               clickfinger_behavior = true;
