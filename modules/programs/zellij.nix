@@ -33,6 +33,7 @@
                         {
                           pane = {
                             command = "opencode";
+                            args = "--port";
                             size = "40%";
                           };
                         }
