@@ -19,15 +19,19 @@
           ];
 
           buildPhase = ''
-            runHook preInstall
+            runHook preBuild
 
-            find -name \*.ttf -o -name \*.otf | parallel nerd-font-patcher -c {}
+            find -name \*.ttf -o -name \*.otf | parallel --will-cite nerd-font-patcher -c
 
-            runHook postInstall
+            runHook postBuild
           '';
 
           installPhase = ''
+            runHook preInstall
+
             cp -a . $out
+
+            runHook postInstall
           '';
         };
 
