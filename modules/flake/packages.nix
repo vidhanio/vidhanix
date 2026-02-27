@@ -18,6 +18,7 @@
 
         runtimeInputs = with pkgs; [
           nix-update
+          parallel
         ];
 
         text =
@@ -32,9 +33,7 @@
               pkgs=(${allpkgsEscaped})
             fi
 
-            for pkg in "''${pkgs[@]}"; do
-              nix-update --flake --use-update-script --quiet "$pkg"
-            done
+            printf '%s\n' "''${pkgs[@]}" | parallel --will-cite nix-update --flake --use-update-script --quiet
           '';
 
         meta.description = "Update all packages in this flake that have an update script";
