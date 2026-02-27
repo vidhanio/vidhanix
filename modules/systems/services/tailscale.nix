@@ -10,9 +10,7 @@
           authKeyFile = config.age.secrets.tailscale.path;
           useRoutingFeatures = "both";
           extraSetFlags = [
-            "--advertise-exit-node"
-            "--operator=vidhanio"
-            "--ssh"
+            "--operator=${config.users.primaryUser}"
           ];
           extraUpFlags = config.services.tailscale.extraSetFlags;
         };

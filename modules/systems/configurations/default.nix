@@ -15,10 +15,13 @@ in
         { name, config, ... }:
         {
           options = {
-            users = lib.mkOption {
-              type = lib.types.listOf (lib.types.enum (lib.attrNames usersCfg));
-              description = "A list of users that should be created on the system.";
-            };
+            users = lib.mapAttrs (username: _: {
+              enable = lib.mkEnableOption "${username}'s account";
+              publicKey = lib.mkOption {
+                type = lib.types.str;
+                description = "The user's SSH public key for this host.";
+              };
+            }) usersCfg;
             publicKey = lib.mkOption {
               type = lib.types.str;
               description = "The public SSH key for this system, which will be added to the authorized keys of all users.";
@@ -37,13 +40,13 @@ in
 
           config.module =
             let
-              activeUsers = lib.getAttrs config.users usersCfg;
+              activeUsers = lib.filterAttrs (username: _: config.users.${username}.enable) usersCfg;
               inherit (config) homeModule publicKey;
             in
             { config, ... }:
             {
               options.users.primaryUser = lib.mkOption {
-                type = lib.types.enum config.users;
+                type = lib.types.enum (lib.attrNames activeUsers);
                 default = "vidhanio";
                 description = "The primary user of this system.";
               };
@@ -83,5 +86,16 @@ in
         modules = [ module ];
       }
     ) cfg;
+
+    flake.modules.nixos.default = {
+      programs.ssh.knownHosts = lib.mapAttrs (
+        hostname:
+        { publicKey, ... }:
+        {
+          inherit publicKey;
+          extraHostNames = [ "${hostname}.local" ];
+        }
+      ) cfg;
+    };
   };
 }
