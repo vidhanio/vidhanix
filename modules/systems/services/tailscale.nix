@@ -11,8 +11,9 @@
           useRoutingFeatures = "both";
           extraSetFlags = [
             "--operator=${config.users.primaryUser}"
+            "--ssh"
           ];
-          extraUpFlags = config.services.tailscale.extraSetFlags;
+          extraUpFlags = [ "--reset" ] ++ config.services.tailscale.extraSetFlags;
         };
 
         networking = {

@@ -1,10 +1,10 @@
 {
   flake.modules.nixos.desktop =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       boot = {
         loader.efi.canTouchEfiVariables = true;
-        kernelPackages = pkgs.linuxPackages_latest;
+        kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
       };
     };
 }
