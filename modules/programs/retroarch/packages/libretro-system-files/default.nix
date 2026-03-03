@@ -16,7 +16,6 @@ let
     let
       packagedRepos = with libretro; {
         blueMSX-libretro = bluemsx;
-        inherit dolphin;
         FBNeo = fbneo;
         mame2003-plus-libretro = mame2003-plus;
         mame2003-libretro = mame2003;
@@ -80,6 +79,12 @@ let
             rev = "5aea3e2951ed641908a7bd2ca09019614003b5e3";
             hash = "sha256-jVARf0qOtNiCPhAqj4debgJ9Bnl9A7Zmc+bjZNGdcBY=";
           };
+          dolphin = {
+            version = "5.0-unstable-2026-02-26";
+
+            rev = "1802842b4a6b2dfeef497e3346b3d536f1d9a152";
+            hash = "sha256-tqPV11tvVW5hregsvowidbtaYPgS1ksT+d54TyVSYiU=";
+          };
           ecwolf = {
             version = "0-unstable-2026-02-11";
 
@@ -103,13 +108,13 @@ let
     in
     stdenvNoCC.mkDerivation {
       pname = "libretro-system-files";
-      version = "0-unstable-2024-12-26";
+      version = "0-unstable-2026-02-27";
 
       src = fetchFromGitHub {
         owner = "libretro";
         repo = "libretro-system-files";
-        rev = "c9bd84a44c017f7cdf96dd2ab8a064d425d239c6";
-        hash = "sha256-7dFJ43nzdUypRNTxK4Vif0WFrpMIs6oy+QcU1PDUtOI=";
+        rev = "c38fc01dd08fdb2278d8e549028b9b2d3afbf032";
+        hash = "sha256-pSCpObE9vnUbMqllNM8OViJILjJwzO+7csjFXBNQhDk=";
       };
 
       patches = [ ./no-git.patch ];

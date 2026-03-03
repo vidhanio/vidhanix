@@ -4,7 +4,6 @@
       config,
       inputs',
       pkgs,
-      self',
       ...
     }:
     {
@@ -21,13 +20,13 @@
             runtimeInputs = with pkgs; [
               git
               nh
-              self'.packages.generate-files
+              nix
             ];
 
             text = ''
               git add .
 
-              generate-files
+              nix run .#generate-files
 
               nh os "''${@:-switch}"
             '';

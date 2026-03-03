@@ -33,7 +33,7 @@
               pkgs=(${allpkgsEscaped})
             fi
 
-            printf '%s\n' "''${pkgs[@]}" | parallel --will-cite nix-update --flake --use-update-script --quiet
+            printf '%s\n' "''${pkgs[@]}" | parallel --will-cite nix-update --flake --use-update-script
           '';
 
         meta.description = "Update all packages in this flake that have an update script";
