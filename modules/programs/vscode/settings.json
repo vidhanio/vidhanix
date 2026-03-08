@@ -1,4 +1,5 @@
 {
+  "rust-analyzer.server.path": "rust-analyzer",
   "chat.tools.terminal.outputLocation": "chat",
   "crates.compatibleDecorator": "",
   "crates.errorDecorator": "!",
