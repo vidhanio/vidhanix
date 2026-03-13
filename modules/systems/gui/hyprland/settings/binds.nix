@@ -9,7 +9,7 @@
             "SUPER, Q, killactive,"
             "SUPER, M, exec, uwsm stop"
             "SUPER, V, togglefloating,"
-            "SUPER, J, togglesplit,"
+            "SUPER, J, layoutmsg, togglesplit"
             "SUPER, F, fullscreen,"
 
             # screenshot

@@ -17,10 +17,10 @@
           rebuild = pkgs.writeShellApplication {
             name = "rebuild";
 
-            runtimeInputs = with pkgs; [
+            runtimeInputs = with pkgs.extend (_: _: { nix = inputs'.determinate-nix.packages.default; }); [
               git
-              nh
               nix
+              nh
             ];
 
             text = ''
