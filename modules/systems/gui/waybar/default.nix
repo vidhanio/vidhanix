@@ -12,6 +12,7 @@
 
         modules-left = [
           "clock"
+          "tray"
         ];
 
         modules-center = [
@@ -37,6 +38,10 @@
         "hyprland/workspaces" = {
           all-outputs = true;
           move-to-monitor = true;
+        };
+
+        tray = {
+          spacing = 4;
         };
 
         # "custom/hello-from-waybar" = {

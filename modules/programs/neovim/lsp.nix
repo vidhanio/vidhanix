@@ -7,6 +7,7 @@
         nil_ls.enable = true;
         ruff.enable = true;
         rust-analyzer.enable = true;
+        statix.enable = true;
         tailwindcss.enable = true;
         tinymist.enable = true;
         tombi.enable = true;
