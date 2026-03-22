@@ -24,6 +24,8 @@ nix run .#generate-files             # Generate flake.nix, README.md, .gitignore
 agenix -e secrets/<secret>.age       # Edit encrypted secrets
 ```
 
+**Git staging for Nix flakes**: Nix flake evaluation only sees file paths known to Git. For new files, stage paths first with `git add -AN` (repo-wide) or `git add -N <path>` (path-specific) so they are recognized.
+
 ## Architecture
 
 ### Module System
