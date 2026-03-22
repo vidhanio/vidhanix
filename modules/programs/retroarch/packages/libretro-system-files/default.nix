@@ -80,10 +80,10 @@ let
             hash = "sha256-jVARf0qOtNiCPhAqj4debgJ9Bnl9A7Zmc+bjZNGdcBY=";
           };
           dolphin = {
-            version = "5.0-unstable-2026-03-12";
+            version = "5.0-unstable-2026-03-19";
 
-            rev = "0bd59770735c8728983e5087025b52d496004edd";
-            hash = "sha256-QYm2YHU65oWY+TdZuWdz2PH2rg2U+K7FbZVOMV+Tso8=";
+            rev = "ae95d31ea8ee49c92fcfbda84a8c6c43fa0df2ad";
+            hash = "sha256-ip+5pgWYPCjdbpQVcDL/tMGhbu+Z7ACz+06uavZVm88=";
           };
           ecwolf = {
             version = "0-unstable-2026-02-11";
