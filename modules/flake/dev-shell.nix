@@ -24,7 +24,7 @@
             ];
 
             text = ''
-              git add .
+              git add -AN
 
               nix run .#generate-files
 

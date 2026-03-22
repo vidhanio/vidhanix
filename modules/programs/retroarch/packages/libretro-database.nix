@@ -11,13 +11,13 @@ let
     let
       libretro-super = stdenvNoCC.mkDerivation {
         pname = "libretro-super";
-        version = "Latest-unstable-2026-02-23";
+        version = "Latest-unstable-2026-03-17";
 
         src = fetchFromGitHub {
           owner = "libretro";
           repo = "libretro-super";
-          rev = "132afcff7fc2c4be9f08cfa1ed3be24d10992aa5";
-          hash = "sha256-EiyILEXiHknQZqLLL7M2GRukeEYM/3Z+I9KKVhQv+d8=";
+          rev = "05b4112c061021d073629b94ff224d5f2acf1832";
+          hash = "sha256-4Enrc1tYPR0LvN+U03xRv3mvuNrC0R9AF79fprvrdj4=";
         };
 
         phases = [
@@ -32,13 +32,13 @@ let
     in
     stdenvNoCC.mkDerivation {
       pname = "libretro-database";
-      version = "1.22.1-unstable-2026-03-13";
+      version = "1.22.1-unstable-2026-03-21";
 
       src = fetchFromGitHub {
         owner = "libretro";
         repo = "libretro-database";
-        rev = "9dcafd3867084e5df92ca44bcd69d1cb48d97c05";
-        hash = "sha256-gQ+H1ECYhagp1Kh2pctDbDzD1QlR8JIzs3g/9MU5InQ=";
+        rev = "f33aa5641fb52d4e8aa7eff44dbb2f825e73c4a9";
+        hash = "sha256-gDw1LYZCHHQaxkp76OteTLSamfNgoXoJWRt7nIDdnHc=";
       };
 
       postUnpack = ''

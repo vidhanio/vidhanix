@@ -11,13 +11,13 @@ After making changes to any `.nix` files in this repository, run `nh os build` t
 ## How to run
 
 ```bash
-git add .
+git add -AN
 nh os build
 ```
 
 Run from the repo root (`/home/vidhanio/Projects/vidhanix`). The build typically takes 10–60 seconds.
 
-**Important**: Always stage relevant files with `git add` before running `nh os build`. The build uses staged files, so unstaged changes won't be included. Usually `git add .` is appropriate, but you can stage specific files/directories if needed (e.g., `git add modules/programs/neovim/`).
+**Important**: Always stage relevant files with `git add` before running `nh os build`. The build uses staged files, so unstaged changes won't be included. Usually `git add -AN` is appropriate, but you can stage specific files/directories with intent-to-add if needed (e.g., `git add -N modules/programs/neovim/`).
 
 ## Interpreting output
 
