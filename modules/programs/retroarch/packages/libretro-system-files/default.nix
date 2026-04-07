@@ -61,16 +61,16 @@ let
         in
         lib.mapAttrs mkCustomRepo {
           cannonball = {
-            version = "0.3-unstable-2024-10-21";
+            version = "0.3-unstable-2026-03-31";
 
-            rev = "5137a791d229a5b9c7c089cf1edcce4db3c57d64";
-            hash = "sha256-jp58bKr8bisJOXCz9M+bmA06p8bPJw9Bn9eJJy4aGEg=";
+            rev = "9785958a9ba919e1af8864a69ccda81a4b321f4c";
+            hash = "sha256-mrzTzV57goq4pml92D2JcLvcE+63pWQzTTidEYfecaM=";
           };
           Dinothawr = {
-            version = "0-unstable-2025-12-12";
+            version = "0-unstable-2026-03-31";
 
-            rev = "d66dde551be8e68e47c05e88838b4f1c6b114c99";
-            hash = "sha256-wJj1wzCnMc1/KIOQ1mi3JyaxWtVIkquYgzgz/W6XOVs=";
+            rev = "121968c0341c573ab6e5715466c017d22ebd904c";
+            hash = "sha256-KujDt2XxDl9+fuPkyHvtw5p7cDyWrwe4GKbA9Ez2yCw=";
           };
           DirkSimple = {
             version = "0-unstable-2026-02-09";
@@ -80,16 +80,16 @@ let
             hash = "sha256-jVARf0qOtNiCPhAqj4debgJ9Bnl9A7Zmc+bjZNGdcBY=";
           };
           dolphin = {
-            version = "5.0-unstable-2026-03-19";
+            version = "5.0-unstable-2026-04-06";
 
-            rev = "ae95d31ea8ee49c92fcfbda84a8c6c43fa0df2ad";
-            hash = "sha256-ip+5pgWYPCjdbpQVcDL/tMGhbu+Z7ACz+06uavZVm88=";
+            rev = "5d9864074c9dc413fc43db151d19b508da86374d";
+            hash = "sha256-X7PPVF2NJ/z1RGwk/542Xf/VHll6T3ECfe5PgHPwG0k=";
           };
           ecwolf = {
-            version = "0-unstable-2026-02-11";
+            version = "0-unstable-2026-03-31";
 
-            rev = "15c1aa3114b2b9cdb1baec0a6467b2b868371446";
-            hash = "sha256-zOrZ3zBylhgucOvB9RgIlRFdiiwk3zMkHC7AvVJwiWI=";
+            rev = "c6ab4475bd86eb5ed1782b08a951d547ff631c51";
+            hash = "sha256-NLW5hNUGXFie8sC77gxAW/j3UpIJubkZm8IuQzLRH00=";
           };
           qemu-libretro = {
             version = "0-unstable-2025-08-19";

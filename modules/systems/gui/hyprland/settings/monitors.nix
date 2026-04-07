@@ -14,8 +14,8 @@
     vidhan-pc.homeModule = {
       wayland.windowManager.hyprland.settings = {
         monitor = [
-          "DP-1, 2560x1440@300, 0x0, 1"
-          "HDMI-A-1, 2560x1080@60, auto, 1"
+          "HDMI-A-1, 2560x1080@60, 0x0, 1"
+          "DP-1, 2560x1440@300, 0x1080, 1"
         ];
       };
     };

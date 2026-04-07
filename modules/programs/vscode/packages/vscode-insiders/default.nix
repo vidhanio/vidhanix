@@ -11,13 +11,13 @@ let
       inherit (stdenv.hostPlatform) system;
 
       platforms = {
-        "x86_64-linux" = {
+        x86_64-linux = {
           os = "linux-x64";
-          hash = "sha256-Ja6DqS4bMF+T/lz46UdUXtpWJExDBD5HPVNLXENkGjU=";
+          hash = "sha256-rN6BczWuoKPgwtvmov2jMDhyIajwTb3s1bbhRc5mV+8=";
         };
-        "aarch64-linux" = {
+        aarch64-linux = {
           os = "linux-arm64";
-          hash = "sha256-2nLRk4V1IFOa5JpM7B7OW0liqpPONWeQsfnIRD6piWU=";
+          hash = "sha256-57U0LpJs21/RQ02LkshRDgO5z6HXU+ExC6UnsCUUnMM=";
         };
       };
 
@@ -36,8 +36,8 @@ let
     )).overrideAttrs
       (
         finalAttrs: prevAttrs: {
-          version = "1.113.0-insider-2026-03-20";
-          commit = "c99f8109a67528cd9ccb6de2d513bd5a7d52aa1f";
+          version = "1.115.0-insider-2026-04-07";
+          commit = "53fb310ae033b6fc8f6a3599a168028cb08ad37d";
 
           src = fetchurl {
             name = "vscode-insiders-${finalAttrs.commit}-${os}.tar.gz";

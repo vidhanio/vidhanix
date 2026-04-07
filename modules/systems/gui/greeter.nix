@@ -1,16 +1,9 @@
 { lib, ... }:
 {
   flake.modules = {
-    nixos.default =
-      { pkgs, ... }:
-      {
-        programs.regreet.enable = true;
-
-        services.greetd.settings.initial_session = {
-          command = "uwsm start -e -D Hyprland ${pkgs.hyprland}/share/wayland-sessions/hyprland.desktop";
-          user = "vidhanio";
-        };
-      };
+    nixos.default = _: {
+      programs.regreet.enable = true;
+    };
   };
 
   configurations =

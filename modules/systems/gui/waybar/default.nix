@@ -8,6 +8,8 @@
       enable = true;
       systemd.enable = true;
       settings.main = {
+        layer = "top";
+
         modules-left = [
           "clock"
           "tray"
@@ -179,7 +181,12 @@
 
         #workspaces button.visible.hosting-monitor,
         #workspaces button.active.hosting-monitor {
-          color: @base0D;
+          border-bottom-color: @base0D;
+        }
+
+        #workspaces button.visible:not(.hosting-monitor),
+        #workspaces button.active:not(.hosting-monitor) {
+          border-top-color: @base0D;
         }
 
         #workspaces button.urgent {
@@ -221,5 +228,9 @@
         }
       '';
     };
+  };
+
+  configurations.vidhan-pc.homeModule = {
+    programs.waybar.settings.main.output = "DP-1";
   };
 }
