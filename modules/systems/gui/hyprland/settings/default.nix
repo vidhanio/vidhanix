@@ -39,7 +39,7 @@
           };
 
           animations.animation = [
-            "windows, 1, 3, default, slide"
+            "windows, 1, 3, default, popin"
             "workspaces, 1, 3, default, slide"
           ];
 
