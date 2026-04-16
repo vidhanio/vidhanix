@@ -14,7 +14,7 @@
         text = ''
           ${lib.getExe config.files.writer.drv}
 
-          ${config.apps.write-flake.program}
+          ${lib.getExe config.packages.write-flake}
         '';
       };
 

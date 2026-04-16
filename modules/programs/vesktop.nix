@@ -30,10 +30,13 @@
       config = {
         useQuickCss = true;
         plugins = {
-          spotifyCrack.enable = true;
-          fakeNitro.enable = true;
-          youtubeAdblock.enable = true;
+          # keep-sorted start
           ClearURLs.enable = true;
+          fakeNitro.enable = true;
+          spotifyCrack.enable = true;
+          volumeBooster.enable = true;
+          youtubeAdblock.enable = true;
+          # keep-sorted end
         };
       };
     };
