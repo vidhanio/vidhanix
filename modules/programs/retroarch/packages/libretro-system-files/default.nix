@@ -67,7 +67,7 @@ let
             hash = "sha256-mrzTzV57goq4pml92D2JcLvcE+63pWQzTTidEYfecaM=";
           };
           Dinothawr = {
-            version = "0-unstable-2026-03-31";
+            version = "0-unstable-2026-04-10";
 
             rev = "121968c0341c573ab6e5715466c017d22ebd904c";
             hash = "sha256-KujDt2XxDl9+fuPkyHvtw5p7cDyWrwe4GKbA9Ez2yCw=";
@@ -80,16 +80,16 @@ let
             hash = "sha256-jVARf0qOtNiCPhAqj4debgJ9Bnl9A7Zmc+bjZNGdcBY=";
           };
           dolphin = {
-            version = "5.0-unstable-2026-04-06";
+            version = "5.0-unstable-2026-04-08";
 
-            rev = "5d9864074c9dc413fc43db151d19b508da86374d";
-            hash = "sha256-X7PPVF2NJ/z1RGwk/542Xf/VHll6T3ECfe5PgHPwG0k=";
+            rev = "0cd3bb89c29535db9b7552fc86871867ccf5b471";
+            hash = "sha256-nL1btOCav0HetOXWiLjdJU5aL7/j/9lvWucE5Rxjmp0=";
           };
           ecwolf = {
-            version = "0-unstable-2026-03-31";
+            version = "0-unstable-2026-04-10";
 
-            rev = "c6ab4475bd86eb5ed1782b08a951d547ff631c51";
-            hash = "sha256-NLW5hNUGXFie8sC77gxAW/j3UpIJubkZm8IuQzLRH00=";
+            rev = "d0a914fb6db525325560a69c14591358b791ddae";
+            hash = "sha256-7A5ruzG5GK3jqlH0cR4YXGwlJfTr2XNNaeBU2ueZRZ4=";
           };
           qemu-libretro = {
             version = "0-unstable-2025-08-19";
