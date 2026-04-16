@@ -16,8 +16,8 @@ let
         src = fetchFromGitHub {
           owner = "libretro";
           repo = "libretro-super";
-          rev = "ec220b84e58df355678d66e77723bf9ee42225e9";
-          hash = "sha256-vqkoJek/DXwt2tFEmtClYavK9N0schSBTW001mCGciI=";
+          rev = "de9b276a4dc4adce0e7dd716ed857d84d6354980";
+          hash = "sha256-FUj9JXktLfLa2wzLQC/8BwFyMDORMKqZbG4GOuhO8Bo=";
         };
 
         phases = [
