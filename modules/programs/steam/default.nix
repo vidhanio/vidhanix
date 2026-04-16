@@ -23,4 +23,12 @@
       persist.directories = [ ".local/share/Steam" ];
     };
   };
+
+  configurations.vidhan-pc.homeModule =
+    { osConfig, ... }:
+    {
+      xdg.autostart.entries = [ "${osConfig.programs.steam.package}/share/applications/steam.desktop" ];
+
+      hyprland.autostartWorkspaces.steam = 3;
+    };
 }
