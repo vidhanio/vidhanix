@@ -137,8 +137,8 @@
           tooltip-format = ''
             Battery: {capacity}%
             Power: {power:.1f}W
-            Remaining: {time}
-            Status: {status}'';
+            Remaining: {timeTo}
+            Health: {health}%'';
         };
       };
       style = ''

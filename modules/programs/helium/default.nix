@@ -1,11 +1,17 @@
 {
-  flake.modules.homeManager.default = {
-    programs.helium.enable = true;
+  flake.modules.homeManager.default =
+    { config, ... }:
+    {
+      programs.helium.enable = true;
 
-    wayland.windowManager.hyprland.settings.bind = [
-      "SUPER, B, exec, uwsm app -- helium"
-    ];
+      xdg.autostart.entries = [ "${config.programs.helium.package}/share/applications/helium.desktop" ];
 
-    persist.directories = [ ".config/net.imput.helium" ];
-  };
+      hyprland.autostartWorkspaces.helium = 1;
+
+      wayland.windowManager.hyprland.settings.bind = [
+        "SUPER, B, exec, uwsm app -- helium"
+      ];
+
+      persist.directories = [ ".config/net.imput.helium" ];
+    };
 }
