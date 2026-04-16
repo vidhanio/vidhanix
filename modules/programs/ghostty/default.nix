@@ -1,4 +1,8 @@
 {
+  config,
+  ...
+}:
+{
   flake.modules.homeManager.default = {
     programs.ghostty = {
       enable = true;
@@ -11,6 +15,12 @@
           window-padding-y = padding;
         };
     };
+
+    xdg.autostart.entries = [
+      "${config.programs.ghostty.package}/share/applications/com.mitchellh.ghostty.desktop"
+    ];
+
+    hyprland.autostartWorkspaces.ghostty = 1;
 
     wayland.windowManager.hyprland.settings.bind = [
       "SUPER, T, exec, uwsm app -- ghostty"
