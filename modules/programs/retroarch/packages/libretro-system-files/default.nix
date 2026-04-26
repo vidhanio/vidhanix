@@ -61,16 +61,16 @@ let
         in
         lib.mapAttrs mkCustomRepo {
           cannonball = {
-            version = "0.3-unstable-2026-03-31";
+            version = "0.3-unstable-2026-04-20";
 
-            rev = "9785958a9ba919e1af8864a69ccda81a4b321f4c";
-            hash = "sha256-mrzTzV57goq4pml92D2JcLvcE+63pWQzTTidEYfecaM=";
+            rev = "98cb31638e00f7fb073ed12421dc7358755f47fb";
+            hash = "sha256-u7hsFB3OYG3SKgv8R8+cpMd4mVDOVO+KOLldkcuh/m4=";
           };
           Dinothawr = {
-            version = "0-unstable-2026-04-10";
+            version = "0-unstable-2026-04-20";
 
-            rev = "121968c0341c573ab6e5715466c017d22ebd904c";
-            hash = "sha256-KujDt2XxDl9+fuPkyHvtw5p7cDyWrwe4GKbA9Ez2yCw=";
+            rev = "fbf022d21ce3b226225e434c8686944cf4ac0f82";
+            hash = "sha256-zUet6xkxxRn5wOjg33DTXSIJ33raMCgAd0E946HzXI4=";
           };
           DirkSimple = {
             version = "0-unstable-2026-02-09";
@@ -86,10 +86,10 @@ let
             hash = "sha256-nL1btOCav0HetOXWiLjdJU5aL7/j/9lvWucE5Rxjmp0=";
           };
           ecwolf = {
-            version = "0-unstable-2026-04-10";
+            version = "0-unstable-2026-04-20";
 
-            rev = "d0a914fb6db525325560a69c14591358b791ddae";
-            hash = "sha256-7A5ruzG5GK3jqlH0cR4YXGwlJfTr2XNNaeBU2ueZRZ4=";
+            rev = "cdba5cd4889ff219bae341dbfdcd1f08b560e96b";
+            hash = "sha256-xP/xd1c6rJ0XTwjmWW1XdgNbgx/ZwNAGjoNEv007A04=";
           };
           qemu-libretro = {
             version = "0-unstable-2025-08-19";
@@ -99,10 +99,10 @@ let
             hash = "sha256-hBEwJE8x0+wsfvMo0ANWs+lItBRBradZ1F6blY1wzQ4=";
           };
           xrick-libretro = {
-            version = "0-unstable-2025-12-30";
+            version = "0-unstable-2026-04-20";
 
-            rev = "34e4c3fc8a679d0209debc3738dc7264d3112a03";
-            hash = "sha256-IPDb1OTapOJaELmFbz6UoOQ8/hnBF0k0PSFivkJ7KtY=";
+            rev = "9fcdd91d1835a2bb66f87af9a3986b6f19aa2390";
+            hash = "sha256-gxmP/WKLeN3mSw91B52oqx2xWvMPHdyDvNd6ffuYmag=";
           };
         };
     in

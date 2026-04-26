@@ -12,16 +12,16 @@ let
 
       platforms = {
         x86_64-linux = {
-          os = "linux-x64";
-          hash = "sha256-db7T2RdPje+6fV1GZNkdLE2mtWR3wLq5KyY/0ml6eZo=";
+          arch = "x64";
+          hash = "sha256-pscQd/52dvaJE4/p+sj99OnF3RN1UdDVByp3efeOZps=";
         };
         aarch64-linux = {
-          os = "linux-arm64";
-          hash = "sha256-48O8fCzz06G4XZJE4ZhidM+7BmYElv1Xy1+qqTtLCHs=";
+          arch = "arm64";
+          hash = "sha256-6vQZAShQgfyJzCFvpG6mWCwB8w3i8EqR0EvfYNcnK+M=";
         };
       };
 
-      inherit (platforms.${system} or (throw "Unsupported system: ${system}")) os hash;
+      inherit (platforms.${system} or (throw "Unsupported system: ${system}")) arch hash;
     in
     (vscode.override (
       {
@@ -36,12 +36,12 @@ let
     )).overrideAttrs
       (
         finalAttrs: prevAttrs: {
-          version = "1.117.0-insider-2026-04-16";
-          commit = "4ab3ca5546cf2df8c15361f1ebda6444f1e0c7a1";
+          version = "1.118.0-insider-2026-04-24";
+          commit = "f2b51f3f64f0a781a7633c2243cfdde589030e34";
 
           src = fetchurl {
-            name = "vscode-insiders-${finalAttrs.commit}-${os}.tar.gz";
-            url = "https://update.code.visualstudio.com/commit:${finalAttrs.commit}/${os}/insider";
+            name = "vscode-insiders-${finalAttrs.commit}-linux-${arch}.tar.gz";
+            url = "https://update.code.visualstudio.com/commit:${finalAttrs.commit}/linux-${arch}/insider";
             inherit hash;
           };
 
