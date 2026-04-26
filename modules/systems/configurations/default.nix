@@ -41,7 +41,8 @@ in
           config.module =
             let
               activeUsers = lib.filterAttrs (username: _: config.users.${username}.enable) usersCfg;
-              inherit (config) homeModule publicKey;
+              rootPublicKeys = lib.mapAttrsToList (_: c: c.publicKey) cfg;
+              inherit (config) homeModule;
             in
             { config, ... }:
             {
@@ -64,7 +65,7 @@ in
                   extraGroups = [ "wheel" ];
                   useDefaultShell = true;
 
-                  openssh.authorizedKeys.keys = user.publicKeys ++ [ publicKey ];
+                  openssh.authorizedKeys.keys = user.publicKeys ++ rootPublicKeys;
                 }) activeUsers;
 
                 home-manager = {
