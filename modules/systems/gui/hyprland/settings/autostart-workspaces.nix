@@ -4,9 +4,6 @@
     { config, ... }:
     let
       cfg = config.hyprland.autostartWorkspaces;
-
-      workspaceRule = class: workspace: "match:class ${class}, workspace ${toString workspace} silent";
-      unsetRule = class: "match:class ${class}, workspace unset";
     in
     {
       options.hyprland.autostartWorkspaces = lib.mkOption {
@@ -19,10 +16,12 @@
 
       config = lib.mkIf (cfg != { }) {
         wayland.windowManager.hyprland.settings = {
-          windowrule = lib.mkBefore (lib.mapAttrsToList workspaceRule cfg);
-          exec-once = lib.mkAfter (
-            lib.mapAttrsToList (class: _: "sleep 5 && hyprctl keyword windowrule \"${unsetRule class}\"") cfg
-          );
+          windowrule = lib.mapAttrsToList (
+            class: workspace: "match:class ${class}, workspace ${toString workspace} silent"
+          ) cfg;
+          exec-once = lib.mapAttrsToList (
+            class: _: "sleep 10 && hyprctl keyword windowrule \"match:class ${class}, workspace unset\""
+          ) cfg;
         };
       };
     };

@@ -31,13 +31,14 @@
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs-lib";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     ghostty-shader-playground = {
       url = "github:KroneCorylus/ghostty-shader-playground";
       flake = false;
     };
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
+    helium.url = "gitlab:ntgn/helium-flake";
     home-manager.url = "github:nix-community/home-manager";
     hyprland.url = "github:hyprwm/Hyprland";
     impermanence.url = "github:nix-community/impermanence";
@@ -48,7 +49,6 @@
     nixcord.url = "github:FlameFlag/nixcord";
     nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-lib.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     stylix.url = "github:nix-community/stylix";
