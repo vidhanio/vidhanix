@@ -7,7 +7,7 @@
       ...
     }:
     {
-      files.file.".envrc".text = ''
+      files.commentedFile.".envrc".text = ''
         # shellcheck shell=bash
         use flake
       '';

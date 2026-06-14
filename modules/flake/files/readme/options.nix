@@ -124,7 +124,7 @@
           };
         };
 
-        files.file."README.md".text = cfg.rendered;
+        files.commentedFile."README.md".text = cfg.rendered;
       };
     }
   );

@@ -1,5 +1,5 @@
 {
-  perSystem.files.file."LICENSE".text = ''
+  perSystem.files.commentedFile."LICENSE".text = ''
     MIT License
 
     Copyright (c) 2026 Vidhan Bhatt

@@ -9,7 +9,7 @@ let
   outerCfg = config.files;
 in
 {
-  imports = [ inputs.files.flakeModules.default ];
+  imports = [ (inputs.files + "/flake-module.nix") ];
 
   options = {
     files.generatedMessage = {
@@ -44,7 +44,7 @@ in
       in
       {
         options.files = {
-          file = lib.mkOption {
+          commentedFile = lib.mkOption {
             type = lib.types.attrsOf (
               lib.types.submodule (
                 {
@@ -80,12 +80,11 @@ in
         };
 
         config = {
-          files.files = lib.mapAttrsToList (
+          files.file = lib.mapAttrs (
             name:
             { fileType, source, ... }:
             {
-              path_ = name;
-              drv =
+              source =
                 pkgs.runCommandLocal "files-${name}"
                   {
                     comment =
@@ -107,13 +106,16 @@ in
                     mv "${name}" $out
                   '';
             }
-          ) cfg.file;
+          ) cfg.commentedFile;
         };
       }
     );
   };
 
   config = {
-    flake-file.inputs.files.url = "github:mightyiam/files";
+    flake-file.inputs.files = {
+      url = "github:mightyiam/files";
+      flake = false;
+    };
   };
 }

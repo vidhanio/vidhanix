@@ -85,11 +85,11 @@ let
       platforms = {
         x86_64-linux = {
           arch = "x86_64";
-          hash = "sha256-wz9nqa0oU+M0Y0z8kWMCV7JCXhT4fHxhgCZB5yl78no=";
+          hash = "sha256-MXV5LVknmxhYPq5+W6O2QYz3bemw1nxLs4kI+pS3Mgs=";
         };
         aarch64-linux = {
           arch = "arm64";
-          hash = "sha256-CNE22dGonvgmV2BuIJfFfCNebDLtJ9Ie40kDlbt+e7M=";
+          hash = "sha256-Sq7Iae93/t98uyLyDgRtEX+7n+Hc4MssZqg9n5bzNC8=";
         };
       };
 
@@ -97,7 +97,7 @@ let
     in
     stdenv.mkDerivation (finalAttrs: {
       pname = "helium-bin";
-      version = "0.11.5.1";
+      version = "0.13.1.1";
 
       src = fetchurl {
         url = "https://github.com/imputnet/helium-linux/releases/download/${finalAttrs.version}/helium-${finalAttrs.version}-${arch}_linux.tar.xz";
@@ -186,13 +186,6 @@ let
         cp -a ${widevine-cdm}/share/google/chrome/WidevineCdm/* $out/opt/helium/WidevineCdm/
 
         runHook postInstall
-      '';
-
-      # Helper utility for getting extensions
-      postInstall = ''
-        mkdir -p $out/bin
-        cp ${./prefetch-nix-extension.sh} $out/bin/prefetch-nix
-        chmod +x $out/bin/prefetch-nix
       '';
 
       desktopItems = [

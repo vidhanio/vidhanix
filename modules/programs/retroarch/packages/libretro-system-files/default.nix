@@ -61,7 +61,7 @@ let
         in
         lib.mapAttrs mkCustomRepo {
           cannonball = {
-            version = "0.3-unstable-2026-04-20";
+            version = "0-unstable-2026-04-20";
 
             rev = "98cb31638e00f7fb073ed12421dc7358755f47fb";
             hash = "sha256-u7hsFB3OYG3SKgv8R8+cpMd4mVDOVO+KOLldkcuh/m4=";
@@ -80,7 +80,7 @@ let
             hash = "sha256-jVARf0qOtNiCPhAqj4debgJ9Bnl9A7Zmc+bjZNGdcBY=";
           };
           dolphin = {
-            version = "5.0-unstable-2026-04-08";
+            version = "nJoy-unstable-2026-04-08";
 
             rev = "0cd3bb89c29535db9b7552fc86871867ccf5b471";
             hash = "sha256-nL1btOCav0HetOXWiLjdJU5aL7/j/9lvWucE5Rxjmp0=";
@@ -88,8 +88,8 @@ let
           ecwolf = {
             version = "0-unstable-2026-04-20";
 
-            rev = "cdba5cd4889ff219bae341dbfdcd1f08b560e96b";
-            hash = "sha256-xP/xd1c6rJ0XTwjmWW1XdgNbgx/ZwNAGjoNEv007A04=";
+            rev = "a9dabfa1367f041a42ed5828664d97ebd447e7ce";
+            hash = "sha256-0Dfv8JGh+/qi3052/s5Wsz8o4JVLQyUszrZBkUcnwXw=";
           };
           qemu-libretro = {
             version = "0-unstable-2025-08-19";
