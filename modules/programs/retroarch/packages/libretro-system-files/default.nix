@@ -73,11 +73,11 @@ let
             hash = "sha256-zUet6xkxxRn5wOjg33DTXSIJ33raMCgAd0E946HzXI4=";
           };
           DirkSimple = {
-            version = "0-unstable-2026-02-09";
+            version = "0-unstable-2026-06-11";
 
             owner = "icculus";
-            rev = "5aea3e2951ed641908a7bd2ca09019614003b5e3";
-            hash = "sha256-jVARf0qOtNiCPhAqj4debgJ9Bnl9A7Zmc+bjZNGdcBY=";
+            rev = "e13ee21dfcc3b68a23a8104ae8862281e0f548ff";
+            hash = "sha256-yjCmKerjzt+TTMRfvsqpfwuNz8Jz3tyaOyKwzYnM0VQ=";
           };
           dolphin = {
             version = "nJoy-unstable-2026-04-08";

@@ -1,20 +1,17 @@
 {
   flake.modules.nixvim.default = {
-    lsp = {
-      enable = true;
-      servers = {
-        # keep-sorted start block=yes
-        nil_ls.enable = true;
-        ruff.enable = true;
-        rust-analyzer.enable = true;
-        statix.enable = true;
-        tailwindcss.enable = true;
-        tinymist.enable = true;
-        tombi.enable = true;
-        ty.enable = true;
-        yamlls.enable = true;
-        # keep-sorted end
-      };
+    lsp.servers = {
+      # keep-sorted start
+      nil_ls.enable = true;
+      ruff.enable = true;
+      rust-analyzer.enable = true;
+      statix.enable = true;
+      tailwindcss.enable = true;
+      tinymist.enable = true;
+      tombi.enable = true;
+      ty.enable = true;
+      yamlls.enable = true;
+      # keep-sorted end
     };
 
     plugins = {

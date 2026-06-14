@@ -5,7 +5,7 @@
     flake = false;
   };
 
-  flake.modules.homeManager.default = {
+  configurations.vidhan-pc.homeModule = {
     programs.ghostty.settings.custom-shader = [
       "${inputs.ghostty-shader-playground}/public/shaders/cursor_smear.glsl"
     ];
