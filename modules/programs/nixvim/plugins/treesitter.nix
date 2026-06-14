@@ -5,7 +5,6 @@
       highlight.enable = true;
       indent.enable = true;
       folding.enable = true;
-      statuscolumn.enable = true;
     };
   };
 }

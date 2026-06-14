@@ -85,11 +85,11 @@ let
       platforms = {
         x86_64-linux = {
           arch = "x86_64";
-          hash = "sha256-MXV5LVknmxhYPq5+W6O2QYz3bemw1nxLs4kI+pS3Mgs=";
+          hash = "sha256-R/cGyWuBrLeFhucrpkRpQN9k/MWN3JlnwSufEsqVkmY=";
         };
         aarch64-linux = {
           arch = "arm64";
-          hash = "sha256-Sq7Iae93/t98uyLyDgRtEX+7n+Hc4MssZqg9n5bzNC8=";
+          hash = "sha256-DSlJxzRAFhTkTyYFyUrypf+leU+Sip2pkLtOuyIduzU=";
         };
       };
 
@@ -97,7 +97,7 @@ let
     in
     stdenv.mkDerivation (finalAttrs: {
       pname = "helium-bin";
-      version = "0.13.1.1";
+      version = "0.13.3.1";
 
       src = fetchurl {
         url = "https://github.com/imputnet/helium-linux/releases/download/${finalAttrs.version}/helium-${finalAttrs.version}-${arch}_linux.tar.xz";

@@ -10,7 +10,7 @@
       programs.nixcord = {
         enable = true;
         discord.enable = false;
-        vesktop = {
+        equibop = {
           enable = true;
           settings = {
             discordBranch = "canary";
@@ -33,7 +33,7 @@
           useQuickCss = true;
           plugins = {
             # keep-sorted start
-            ClearURLs.enable = true;
+            clearUrls.enable = true;
             fakeNitro.enable = true;
             spotifyCrack.enable = true;
             volumeBooster.enable = true;
@@ -44,11 +44,11 @@
       };
 
       xdg.autostart.entries = [
-        "${config.programs.nixcord.vesktop.package}/share/applications/vesktop.desktop"
+        "${config.programs.nixcord.equibop.package}/share/applications/Equibop.desktop"
       ];
 
-      hyprland.autostartWorkspaces.vesktop = 2;
+      hyprland.autostartWorkspaces.equibop = 2;
 
-      persist.directories = [ ".config/vesktop/sessionData/Local Storage" ];
+      persist.directories = [ ".config/equibop/sessionData/Local Storage" ];
     };
 }
