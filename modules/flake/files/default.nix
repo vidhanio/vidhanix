@@ -30,7 +30,7 @@
         the generated files are:
 
         ${config.files.readme.lib.renderList (
-          map (p: "[`${p}`](${p})") (lib.sortOn (p: p) (map ({ path_, ... }: path_) config.files.files))
+          map (p: "[`${p}`](${p})") (lib.sortOn (p: p) (lib.mapAttrsToList (path: _: path) config.files.file))
         )}
       '';
     };

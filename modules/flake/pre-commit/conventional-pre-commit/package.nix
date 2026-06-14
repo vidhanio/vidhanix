@@ -8,7 +8,7 @@ let
     }:
     python3Packages.buildPythonPackage rec {
       pname = "conventional-pre-commit";
-      version = "4.4.0";
+      version = "4.4.0-pre1";
 
       src = fetchFromGitHub {
         owner = "compilerla";

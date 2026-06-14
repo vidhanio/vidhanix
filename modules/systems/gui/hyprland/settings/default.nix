@@ -2,72 +2,75 @@
 {
   flake.modules = {
     homeManager.default = {
-      wayland.windowManager.hyprland.settings = lib.mkMerge [
-        {
-          windowrule = [
-            {
-              name = "suppress-maximize-events";
+      wayland.windowManager.hyprland = {
+        configType = "hyprlang";
+        settings = lib.mkMerge [
+          {
+            windowrule = [
+              {
+                name = "suppress-maximize-events";
 
-              match.class = ".*";
+                match.class = ".*";
 
-              suppress_event = "maximize";
-            }
-            {
-              name = "fix-xwayland-drags";
+                suppress_event = "maximize";
+              }
+              {
+                name = "fix-xwayland-drags";
 
-              match = {
-                class = "^$";
-                title = "^$";
-                xwayland = true;
-                float = true;
-                fullscreen = false;
-                pin = false;
-              };
+                match = {
+                  class = "^$";
+                  title = "^$";
+                  xwayland = true;
+                  float = true;
+                  fullscreen = false;
+                  pin = false;
+                };
 
-              no_focus = true;
-            }
-          ];
+                no_focus = true;
+              }
+            ];
 
-          general = {
-            border_size = 2;
-            gaps_in = 4;
-            gaps_out = 8;
-          };
-
-          decoration = {
-            shadow.enabled = false;
-          };
-
-          animations.animation = [
-            "windows, 1, 3, default, popin"
-            "workspaces, 1, 3, default, slide"
-          ];
-
-          dwindle = {
-            preserve_split = true;
-          };
-
-          input = {
-            follow_mouse = 2;
-            repeat_rate = 50;
-            repeat_delay = 500;
-            touchpad = {
-              natural_scroll = true;
-              clickfinger_behavior = true;
+            general = {
+              border_size = 2;
+              gaps_in = 4;
+              gaps_out = 8;
             };
-          };
 
-          ecosystem = {
-            no_update_news = true;
-            no_donation_nag = true;
-          };
-        }
-        # smart gaps
-        {
-          workspace = [ "f[1], gapsout:0" ];
-          windowrule = [ "match:workspace f[1], match:float false, rounding false, border_size 0" ];
-        }
-      ];
+            decoration = {
+              shadow.enabled = false;
+            };
+
+            animations.animation = [
+              "windows, 1, 3, default, popin"
+              "workspaces, 1, 3, default, slide"
+            ];
+
+            dwindle = {
+              preserve_split = true;
+            };
+
+            input = {
+              follow_mouse = 2;
+              repeat_rate = 50;
+              repeat_delay = 500;
+              touchpad = {
+                natural_scroll = true;
+                clickfinger_behavior = true;
+              };
+            };
+
+            ecosystem = {
+              no_update_news = true;
+              no_donation_nag = true;
+            };
+          }
+          # smart gaps
+          {
+            workspace = [ "f[1], gapsout:0" ];
+            windowrule = [ "match:workspace f[1], match:float false, rounding 0, border_size 0" ];
+          }
+        ];
+      };
     };
   };
 }

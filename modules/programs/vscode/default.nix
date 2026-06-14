@@ -8,7 +8,7 @@
       home.shellAliases.code = "code-insiders";
 
       programs.vscode = {
-        enable = true;
+        enable = false;
         package = withSystem pkgs.stdenv.hostPlatform.system (
           { self', ... }:
           self'.packages.vscode-insiders.override {

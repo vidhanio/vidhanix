@@ -27,7 +27,10 @@
     determinate.url = "github:DeterminateSystems/determinate";
     determinate-nix.url = "github:DeterminateSystems/nix-src";
     disko.url = "github:nix-community/disko";
-    files.url = "github:mightyiam/files";
+    files = {
+      url = "github:mightyiam/files";
+      flake = false;
+    };
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";

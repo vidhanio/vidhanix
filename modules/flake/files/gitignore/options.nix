@@ -17,7 +17,7 @@
       };
 
       config = {
-        files.file.".gitignore".text = cfg;
+        files.commentedFile.".gitignore".text = cfg;
       };
     }
   );

@@ -12,16 +12,16 @@ let
       inherit (stdenv.hostPlatform) system;
 
       pname = "xtool";
-      version = "1.16.1";
+      version = "1.17.0";
 
       platforms = {
         x86_64-linux = {
           url = "https://github.com/xtool-org/xtool/releases/download/${version}/xtool-x86_64.AppImage";
-          hash = "sha256-VqrJE3KYDSw3/eslzbfm+C2V3qQ51aama5dNpIBNLQk=";
+          hash = "sha256-dWbWK4KaTerbAbU4nJT0V2PYUfIExdIvo26fnRyI1Xs=";
         };
         aarch64-linux = {
           url = "https://github.com/xtool-org/xtool/releases/download/${version}/xtool-aarch64.AppImage";
-          hash = "sha256-RGG1zmoAw7Otmd/cMRkYy7AgIGmHkNSdLs7T7282a5s=";
+          hash = "sha256-moxH97Lum0UrzO585yPA/IdGrFDUpSWjbaA1hIa8N14=";
         };
       };
 
