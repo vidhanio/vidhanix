@@ -44,7 +44,7 @@
       };
 
       xdg.autostart.entries = [
-        "${config.programs.nixcord.equibop.package}/share/applications/Equibop.desktop"
+        "${config.programs.nixcord.equibop.package}/share/applications/equibop.desktop"
       ];
 
       hyprland.autostartWorkspaces.equibop = 2;
