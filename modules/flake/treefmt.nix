@@ -16,6 +16,8 @@
         shfmt.enable = true;
         shellcheck.enable = true;
 
+        stylua.enable = true;
+
         actionlint.enable = true;
 
         oxfmt.enable = true;

@@ -19,7 +19,6 @@
             hardwareAcceleration = true;
             hardwareVideoAcceleration = true;
             customTitleBar = false;
-            disableMinSize = true;
           };
           state = {
             firstLaunch = false;
@@ -31,6 +30,7 @@
         '';
         config = {
           useQuickCss = true;
+          disableMinSize = true;
           plugins = {
             # keep-sorted start
             clearUrls.enable = true;
