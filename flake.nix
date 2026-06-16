@@ -41,7 +41,6 @@
       flake = false;
     };
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
-    helium.url = "gitlab:ntgn/helium-flake";
     home-manager.url = "github:nix-community/home-manager";
     hyprland.url = "github:hyprwm/Hyprland";
     impermanence.url = "github:nix-community/impermanence";
