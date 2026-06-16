@@ -1,30 +1,24 @@
 { lib, ... }:
+let
+  renderRefreshRate = refreshRate: lib.strings.floatToString refreshRate;
+  renderScale = scale: lib.strings.floatToString scale;
+  renderMode =
+    monitor:
+    if monitor.mode == null then
+      "preferred"
+    else
+      "${toString monitor.mode.width}x${toString monitor.mode.height}@${renderRefreshRate monitor.mode.refreshRate}";
+  renderMonitor =
+    monitor:
+    "${monitor.name}, ${renderMode monitor}, ${toString monitor.position.x}x${toString monitor.position.y}, ${renderScale monitor.scale}";
+  renderMonitors = monitors: map renderMonitor ([ monitors.main ] ++ monitors.others);
+in
 {
-  flake.modules.homeManager.default = {
+  flake.modules.homeManager.default = { osConfig, ... }: {
     wayland.windowManager.hyprland.settings = {
-      monitor = lib.mkDefault [
-        ", preferred, auto, 1"
-      ];
+      monitor = renderMonitors osConfig.hardware.monitors;
 
       misc.vrr = 1;
-    };
-  };
-
-  configurations = {
-    vidhan-pc.homeModule = {
-      wayland.windowManager.hyprland.settings = {
-        monitor = [
-          "HDMI-A-1, 2560x1080@60, 0x0, 1"
-          "DP-1, 2560x1440@300, 0x1080, 1"
-        ];
-      };
-    };
-    vidhan-macbook.homeModule = {
-      wayland.windowManager.hyprland.settings = {
-        monitor = [
-          "eDP-1, preferred, 0x0, 1.6"
-        ];
-      };
     };
   };
 }
