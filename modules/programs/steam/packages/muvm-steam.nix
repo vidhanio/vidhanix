@@ -1,14 +1,14 @@
 let
   pkg =
     {
-      stdenvNoCC,
       config,
       lib,
       muvm,
       path,
       writeShellScript,
-      writeText,
       symlinkJoin,
+      writeText,
+      makeWrapper,
       ...
     }@args:
     let
@@ -29,6 +29,7 @@ let
           "writeShellScript"
           "writeText"
           "symlinkJoin"
+          "makeWrapper"
 
           "extraLibraries"
         ]
@@ -53,12 +54,15 @@ let
             inherit (pkg) pname version;
 
             paths = [ pkg ];
+
+            nativeBuildInputs = [ makeWrapper ];
+
             postBuild = ''
               mv $out/bin/${program} $out/bin/.${program}-wrapped
 
-              echo "#! ${stdenvNoCC.shell} -e" > $out/bin/${program}
-              echo ${lib.escapeShellArg "${lib.getExe muvm} -x ${initScript} -e PULSE_CLIENTCONFIG=${pulse-conf}"} '"$out/bin/.${program}-wrapped" "$@"' >> $out/bin/${program}
-              chmod +x $out/bin/${program}
+              makeWrapper ${lib.getExe muvm} $out/bin/${program} \
+                --argv0 steam \
+                --add-flags "-x ${initScript} -e PULSE_CLIENTCONFIG=${pulse-conf} $out/bin/.${program}-wrapped"
             '';
             inherit (pkg) meta;
           }
