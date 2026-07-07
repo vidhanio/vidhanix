@@ -8,22 +8,31 @@ let
       };
       mode = lib.mkOption {
         type = lib.types.nullOr (
-          lib.types.submodule {
-            options = {
-              width = lib.mkOption {
-                type = lib.types.int;
-                description = "The monitor width in pixels.";
+          lib.types.submodule (
+            { config, ... }:
+            {
+              options = {
+                width = lib.mkOption {
+                  type = lib.types.int;
+                  description = "The monitor width in pixels.";
+                };
+                height = lib.mkOption {
+                  type = lib.types.int;
+                  description = "The monitor height in pixels.";
+                };
+                refreshRate = lib.mkOption {
+                  type = lib.types.float;
+                  description = "The monitor refresh rate in hertz.";
+                };
+                refreshRateInt = lib.mkOption {
+                  type = lib.types.int;
+                  readOnly = true;
+                  default = builtins.floor config.refreshRate;
+                  description = "The monitor refresh rate in hertz, rounded down to an integer.";
+                };
               };
-              height = lib.mkOption {
-                type = lib.types.int;
-                description = "The monitor height in pixels.";
-              };
-              refreshRate = lib.mkOption {
-                type = lib.types.float;
-                description = "The monitor refresh rate in hertz.";
-              };
-            };
-          }
+            }
+          )
         );
         default = null;
         description = "The monitor mode, or null to use the preferred mode.";

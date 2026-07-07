@@ -36,9 +36,7 @@
               gaps_out = 8;
             };
 
-            decoration = {
-              shadow.enabled = false;
-            };
+            decoration.shadow.enabled = false;
 
             animations.animation = [
               "windows, 1, 3, default, popin"

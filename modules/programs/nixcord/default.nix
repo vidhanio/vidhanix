@@ -3,14 +3,18 @@
   flake-file.inputs.nixcord.url = "github:FlameFlag/nixcord";
 
   flake.modules.homeManager.default =
-    { config, ... }:
+    { config, pkgs, ... }:
     {
       imports = [ inputs.nixcord.homeModules.default ];
+
+      programs.nixcord.vesktop.package = pkgs.vesktop.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ./vesktop-webrtc-policy.patch ];
+      });
 
       programs.nixcord = {
         enable = true;
         discord.enable = false;
-        equibop = {
+        vesktop = {
           enable = true;
           settings = {
             discordBranch = "canary";
@@ -44,11 +48,11 @@
       };
 
       xdg.autostart.entries = [
-        "${config.programs.nixcord.equibop.package}/share/applications/equibop.desktop"
+        "${config.programs.nixcord.vesktop.package}/share/applications/vesktop.desktop"
       ];
 
-      hyprland.autostartWorkspaces.equibop = 2;
+      hyprland.autostartWorkspaces.vesktop = 2;
 
-      persist.directories = [ ".config/equibop/sessionData/Local Storage" ];
+      persist.directories = [ ".config/vesktop/sessionData/Local Storage" ];
     };
 }

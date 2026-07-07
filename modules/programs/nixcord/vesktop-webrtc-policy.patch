@@ -1,0 +1,14 @@
+diff --git a/src/main/mainWindow.ts b/src/main/mainWindow.ts
+index 072d4ca37..d603d853 100644
+--- a/src/main/mainWindow.ts
++++ b/src/main/mainWindow.ts
+@@ -409,6 +409,9 @@ function createMainWindow() {
+ 
+     win.webContents.setUserAgent(BrowserUserAgent);
+ 
++    // Fixes calls hanging at DTLS Connecting when VPN interfaces like Tailscale are active.
++    win.webContents.setWebRTCIPHandlingPolicy("default_public_and_private_interfaces");
++
+     // if the open-url event is fired (in index.ts) while starting up, darwinURL will be set. If not fall back to checking the process args (which Windows and Linux use for URI calling.)
+     // win.webContents.session.clearCache().then(() => {
+     loadUrl(darwinURL || process.argv.find(arg => arg.startsWith("discord://")));

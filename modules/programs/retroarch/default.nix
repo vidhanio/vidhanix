@@ -4,7 +4,7 @@
     { pkgs, ... }:
     {
       programs.retroarch = {
-        enable = true;
+        enable = false;
         settings =
           let
             self' = withSystem pkgs.stdenv.hostPlatform.system ({ self', ... }: self');

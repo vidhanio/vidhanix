@@ -17,5 +17,8 @@
 
       programs.nixvim.imports = [ config.flake.modules.nixvim.default ];
     };
+    nixvim.default = {
+      nixpkgs.useGlobalPackages = true;
+    };
   };
 }

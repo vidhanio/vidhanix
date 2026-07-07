@@ -26,6 +26,12 @@
         xdg.configFile."uwsm/env".source =
           "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
 
+        xdg.configFile."hypr/xdph.conf".text = ''
+          screencopy {
+            allow_token_by_default = true
+          }
+        '';
+
         wayland.windowManager.hyprland = {
           enable = true;
           systemd.enable = false;

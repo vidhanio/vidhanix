@@ -21,7 +21,7 @@
         home.packages = [ cfg.package ];
 
         xdg.configFile."VacuumTube/config.json" = lib.mkIf (cfg.settings != { }) {
-          source = json.generate "vacuumtube-config" cfg.settings;
+          source = json.generate "vacuum-tube-config" cfg.settings;
         };
       };
     };

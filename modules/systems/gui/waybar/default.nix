@@ -2,6 +2,7 @@
   flake.modules.homeManager.default = {
     stylix.targets.waybar = {
       addCss = false;
+      font = "sansSerif";
     };
 
     programs.waybar = {

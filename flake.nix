@@ -24,6 +24,10 @@
 
   inputs = {
     agenix.url = "github:ryantm/agenix";
+    apple-fonts = {
+      url = "github:Lyndeno/apple-fonts.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     determinate.url = "github:DeterminateSystems/determinate";
     determinate-nix.url = "github:DeterminateSystems/nix-src";
     disko.url = "github:nix-community/disko";
@@ -46,6 +50,10 @@
     impermanence.url = "github:nix-community/impermanence";
     import-tree.url = "github:vic/import-tree";
     librepods.url = "github:kavishdevar/librepods/linux/rust";
+    mcsr = {
+      url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nixcord.url = "github:FlameFlag/nixcord";

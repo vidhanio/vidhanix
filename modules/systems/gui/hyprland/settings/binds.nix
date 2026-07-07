@@ -13,7 +13,8 @@
             "SUPER, F, fullscreen,"
 
             # screenshot
-            ", Print, exec, ${lib.getExe pkgs.grimblast} copy area"
+            ", Print, exec, ${lib.getExe pkgs.grimblast} --freeze copy area"
+            "SHIFT, Print, exec, ${lib.getExe pkgs.hyprpicker} -a"
           ];
 
           bindm = [

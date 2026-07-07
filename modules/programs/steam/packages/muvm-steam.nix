@@ -61,7 +61,6 @@ let
               mv $out/bin/${program} $out/bin/.${program}-wrapped
 
               makeWrapper ${lib.getExe muvm} $out/bin/${program} \
-                --argv0 steam \
                 --add-flags "-x ${initScript} -e PULSE_CLIENTCONFIG=${pulse-conf} $out/bin/.${program}-wrapped"
             '';
             inherit (pkg) meta;
