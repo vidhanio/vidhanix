@@ -63,14 +63,14 @@ let
           cannonball = {
             version = "0-unstable-2026-04-20";
 
-            rev = "98cb31638e00f7fb073ed12421dc7358755f47fb";
-            hash = "sha256-u7hsFB3OYG3SKgv8R8+cpMd4mVDOVO+KOLldkcuh/m4=";
+            rev = "ae1bba5bb842a234e0233824e118fe39a89505a0";
+            hash = "sha256-4GCZeKJ8s6DPz3ALz7BU6PsO1yHQvsCjbY9m3OknLzM=";
           };
           Dinothawr = {
             version = "0-unstable-2026-04-20";
 
-            rev = "fbf022d21ce3b226225e434c8686944cf4ac0f82";
-            hash = "sha256-zUet6xkxxRn5wOjg33DTXSIJ33raMCgAd0E946HzXI4=";
+            rev = "e608bc507d4e76940be4af3d74b5fecb2dfa26a6";
+            hash = "sha256-RJJtiNwHEACqtCgagxRYtYP9WtV+3Fl5hCs1Mdink+A=";
           };
           DirkSimple = {
             version = "0-unstable-2026-06-11";
@@ -80,16 +80,16 @@ let
             hash = "sha256-yjCmKerjzt+TTMRfvsqpfwuNz8Jz3tyaOyKwzYnM0VQ=";
           };
           dolphin = {
-            version = "2606-unstable-2026-06-26";
+            version = "2606-unstable-2026-07-19";
 
-            rev = "fec5e8e106489e0d00e69dd4afaabc3d95688047";
-            hash = "sha256-aNUfRr5eJzU5xNhfgiYewgTdi2GWWJoog641kNWH5sA=";
+            rev = "c546e92fae92877f7f60b74d56c68b46cc0b596e";
+            hash = "sha256-93CHOpR/bxF3p+t5qhFRTbT/RyZOmnHjEoxsF/ozenY=";
           };
           ecwolf = {
             version = "0-unstable-2026-04-20";
 
-            rev = "a9dabfa1367f041a42ed5828664d97ebd447e7ce";
-            hash = "sha256-0Dfv8JGh+/qi3052/s5Wsz8o4JVLQyUszrZBkUcnwXw=";
+            rev = "4731f0075d6c225921b40b341b23971e73dd9dfc";
+            hash = "sha256-Ex78/SAFbn4ZH6+57hyJl0jPAwAmNSflKLvi72Yj6do=";
           };
           qemu-libretro = {
             version = "0-unstable-2025-08-19";

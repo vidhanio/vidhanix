@@ -8,6 +8,10 @@ local Processes = require("waywork.processes")
 local config = {
 	input = {
 		sensitivity = sens.base,
+		remaps = {
+			["MB5"] = "F3",
+			["MB4"] = "F5",
+		},
 	},
 	theme = {
 		ninb_anchor = "topright",

@@ -9,8 +9,6 @@
 
     programs.nix-index-database.comma.enable = true;
 
-    home.shellAliases.",," = "uwsm app -- ,";
-
     persist.files = [ ".local/state/comma/choices" ];
   };
 }

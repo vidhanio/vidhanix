@@ -29,7 +29,10 @@
         };
       };
     homeManager.default = {
-      home.pointerCursor.hyprcursor.enable = true;
+      home.pointerCursor = {
+        enable = true;
+        hyprcursor.enable = true;
+      };
 
       wayland.windowManager.hyprland.settings.cursor.no_hardware_cursors = true;
     };

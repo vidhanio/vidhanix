@@ -17,7 +17,7 @@
           rebuild = pkgs.writeShellApplication {
             name = "rebuild";
 
-            runtimeInputs = with pkgs.extend (_: _: { nix = inputs'.determinate-nix.packages.default; }); [
+            runtimeInputs = with pkgs; [
               git
               nix
               nh

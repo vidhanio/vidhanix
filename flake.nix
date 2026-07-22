@@ -4,8 +4,11 @@
 
   nixConfig = {
     allow-import-from-derivation = false;
+    extra-experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     extra-substituters = [
-      "https://install.determinate.systems"
       "https://hyprland.cachix.org"
       "https://attic.xuyh0120.win/lantian"
       "https://cache.garnix.io"
@@ -13,7 +16,6 @@
       "https://nix-community.cachix.org"
     ];
     extra-trusted-public-keys = [
-      "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
@@ -28,8 +30,6 @@
       url = "github:Lyndeno/apple-fonts.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    determinate.url = "github:DeterminateSystems/determinate";
-    determinate-nix.url = "github:DeterminateSystems/nix-src";
     disko.url = "github:nix-community/disko";
     files = {
       url = "github:mightyiam/files";

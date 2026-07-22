@@ -32,8 +32,7 @@
                       _children = [
                         {
                           pane = {
-                            command = "opencode";
-                            args = "--port";
+                            command = "claude";
                             size = "40%";
                           };
                         }

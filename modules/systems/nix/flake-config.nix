@@ -3,7 +3,11 @@
   flake.modules.nixos.default = {
     nix.settings = {
       accept-flake-config = true;
-      inherit (config.flake-file.nixConfig) extra-substituters extra-trusted-public-keys;
+      inherit (config.flake-file.nixConfig)
+        extra-substituters
+        extra-trusted-public-keys
+        extra-experimental-features
+        ;
     };
   };
 }
