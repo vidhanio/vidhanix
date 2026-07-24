@@ -7,6 +7,11 @@
         cycleWorkspace = pkgs.writeShellApplication {
           name = "cycle-workspace";
 
+          derivationArgs = {
+            preferLocalBuild = true;
+            allowSubstitutes = false;
+          };
+
           runtimeInputs = with pkgs; [
             hyprland
             jq

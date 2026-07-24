@@ -26,6 +26,22 @@ agenix -e secrets/<secret>.age       # Edit encrypted secrets
 
 **Git staging for Nix flakes**: Nix flake evaluation only sees file paths known to Git. For new files, stage paths first with `git add -AN` (repo-wide) or `git add -N <path>` (path-specific) so they are recognized.
 
+### Iterating on a change
+
+`rebuild`/`rebuild test` pays the full cost of building `config.system.build.toplevel` (activation scripts, systemd units, every package), which is slow feedback for checking whether a module even evaluates. While iterating on a module, check it with a fast, eval-only lookup instead:
+
+```bash
+nix eval .#nixosConfigurations.<host>.config.<option-path>   # ~sub-second, catches eval errors and lets you inspect a value
+```
+
+Only fall back to `rebuild test`/`rebuild` once the eval-only check looks right. Once the change is finished, do one full build so the result lands in the local store and the user's next `rebuild` is fast:
+
+```bash
+nix build .#nixosConfigurations.<host>.config.system.build.toplevel --no-link
+```
+
+Don't run `rebuild`/`nh os switch` yourself — that switches the live system. Building (not switching) is enough to warm the cache.
+
 ## Architecture
 
 ### Module System
@@ -104,6 +120,26 @@ Pre-commit hooks run `treefmt --fail-on-change` and `generate-files` automatical
 { /* ... */ }
 ```
 
+**`withSystem`** - From a context that only has `pkgs` (a NixOS/Home Manager module, or a flake-level function like `flake-file.prune-lock.program`), use `withSystem` to reach a specific system's `self'`/`inputs'`/`config` instead of hand-rolling `inputs.foo.packages.${pkgs.stdenv.hostPlatform.system}`:
+
+```nix
+{ withSystem, ... }:
+{
+  flake.modules.nixos.default =
+    { pkgs, ... }:
+    let
+      pkg = withSystem pkgs.stdenv.hostPlatform.system (
+        { inputs', ... }: inputs'.some-flake.packages.default
+      );
+      # or, for this flake's own perSystem-defined packages:
+      # { self', ... }: self'.packages.my-package
+    in
+    { environment.systemPackages = [ pkg ]; };
+}
+```
+
+Used throughout `modules/programs/` (e.g. `helium/default.nix`, `librepods.nix`, `xtool/options.nix`) and `modules/systems/` (e.g. `nix/nixpkgs.nix`, `gui/fonts/default.nix`).
+
 **Let bindings** - Place at top of module/function:
 
 ```nix
@@ -179,6 +215,23 @@ perSystem = { pkgs, ... }: {
 ```nix
 passthru.updateScript = nix-update-script { };
 ```
+
+**Local-only derivations** - `runCommandLocal`, `symlinkJoin`, `writeText*`/`writeScript*`/`writeShellScript*`, and `writeCBin` already default to `preferLocalBuild = true; allowSubstitutes = false;` in nixpkgs, so nothing to add there. `writeShellApplication` is the one exception — it explicitly opts back into substituter-first behavior — so override it back for anything that will never be on a cache (repo-local scripts, wrappers):
+
+```nix
+pkgs.writeShellApplication {
+  name = "my-script";
+  derivationArgs = {
+    preferLocalBuild = true;
+    allowSubstitutes = false;
+  };
+  text = ''
+    ...
+  '';
+}
+```
+
+Don't add this to real package builds (`stdenv.mkDerivation`/plain `runCommand` fetching sources or compiling something) - those should keep trying substituters first.
 
 ### Import Patterns
 

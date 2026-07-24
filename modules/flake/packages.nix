@@ -16,6 +16,13 @@
       packages.update-packages = pkgs.writeShellApplication {
         name = "update-packages";
 
+        # writeShellApplication opts out of writeTextFile's default
+        # preferLocalBuild; this will never be substitutable, so opt back in.
+        derivationArgs = {
+          preferLocalBuild = true;
+          allowSubstitutes = false;
+        };
+
         runtimeInputs = with pkgs; [
           nix-update
           parallel

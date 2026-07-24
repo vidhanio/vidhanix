@@ -11,6 +11,10 @@
       packages.generate-files = pkgs.writeShellApplication {
         name = "generate-files";
         meta.description = "Generate various files for this repository";
+        derivationArgs = {
+          preferLocalBuild = true;
+          allowSubstitutes = false;
+        };
         text = ''
           ${lib.getExe config.files.writer.drv}
 

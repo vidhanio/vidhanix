@@ -1,6 +1,13 @@
-{
-  flake.modules.homeManager.default = _: {
-    programs.prismlauncher.enable = true;
+{ withSystem, ... }: {
+  flake-file.inputs.prismlauncher.url = "github:vidhanio/PrismLauncher";
+
+  flake.modules.homeManager.default = { pkgs, ... }: {
+    programs.prismlauncher = {
+      enable = true;
+      package = withSystem pkgs.stdenv.hostPlatform.system (
+        { inputs', ... }: inputs'.prismlauncher.packages.default
+      );
+    };
 
     persist.directories = [ ".local/share/PrismLauncher" ];
   };

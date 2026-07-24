@@ -17,6 +17,11 @@
           rebuild = pkgs.writeShellApplication {
             name = "rebuild";
 
+            derivationArgs = {
+              preferLocalBuild = true;
+              allowSubstitutes = false;
+            };
+
             runtimeInputs = with pkgs; [
               git
               nix

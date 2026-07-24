@@ -35,7 +35,7 @@
       url = "github:mightyiam/files";
       flake = false;
     };
-    flake-file.url = "github:vic/flake-file";
+    flake-file.url = "github:vidhanio/flake-file/fix/write-flake-mtime-churn";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
@@ -54,12 +54,17 @@
       url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-auto-follow = {
+      url = "github:vidhanio/nix-auto-follow/merge-fix-inputs-references";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nixcord.url = "github:FlameFlag/nixcord";
     nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
+    prismlauncher.url = "github:vidhanio/PrismLauncher";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     stylix.url = "github:nix-community/stylix";
     systems.url = "github:nix-systems/default-linux";
