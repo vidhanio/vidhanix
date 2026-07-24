@@ -50,6 +50,7 @@
     impermanence.url = "github:nix-community/impermanence";
     import-tree.url = "github:vic/import-tree";
     librepods.url = "github:kavishdevar/librepods/linux/rust";
+    make-shell.url = "github:nicknovitski/make-shell";
     mcsr = {
       url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";

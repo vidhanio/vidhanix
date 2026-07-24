@@ -1,4 +1,11 @@
+{ inputs, ... }:
 {
+  imports = [
+    inputs.make-shell.flakeModules.default
+  ];
+
+  flake-file.inputs.make-shell.url = "github:nicknovitski/make-shell";
+
   perSystem =
     {
       config,
@@ -12,7 +19,7 @@
         use flake
       '';
 
-      devShells.default =
+      make-shells.default =
         let
           rebuild = pkgs.writeShellApplication {
             name = "rebuild";
@@ -37,7 +44,7 @@
             '';
           };
         in
-        pkgs.mkShell {
+        {
           inherit (config.pre-commit) shellHook;
 
           packages = config.pre-commit.settings.enabledPackages ++ [
