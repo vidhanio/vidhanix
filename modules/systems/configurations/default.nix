@@ -55,13 +55,18 @@ in
               config = {
                 networking.hostName = name;
 
-                age.secrets.password.file = ../../../secrets/password.age;
+                # neededForUsers decrypts to /run/secrets-for-users before
+                # NixOS creates users, since hashedPasswordFile can't
+                # reference a secret decrypted by the normal (later)
+                # sops-nix activation step.
+                sops.secrets = lib.mapAttrs' (
+                  username: _: lib.nameValuePair "passwords/${username}" { neededForUsers = true; }
+                ) activeUsers;
 
-                users.users = lib.mapAttrs (_: user: {
+                users.users = lib.mapAttrs (username: user: {
                   isNormalUser = true;
                   description = user.fullName;
-                  # TODO: handle seperate passwords per user?
-                  hashedPasswordFile = config.age.secrets.password.path;
+                  hashedPasswordFile = config.sops.secrets."passwords/${username}".path;
                   extraGroups = [ "wheel" ];
                   useDefaultShell = true;
 

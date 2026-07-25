@@ -9,7 +9,6 @@
   perSystem =
     {
       config,
-      inputs',
       pkgs,
       ...
     }:
@@ -53,7 +52,8 @@
 
             pkgs.nil
 
-            inputs'.agenix.packages.default
+            pkgs.sops
+            pkgs.ssh-to-age
 
             rebuild
           ];

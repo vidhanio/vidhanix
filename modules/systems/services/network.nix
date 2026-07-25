@@ -2,33 +2,39 @@
 {
   flake.modules.nixos.default =
     { config, ... }:
+    let
+      ssids = [
+        "EMC2-5G"
+        "Vidhan's iPhone"
+        "Spongebob"
+        "Big388"
+      ];
+
+      mkWifiProfile = ssid: {
+        connection = {
+          id = ssid;
+          type = "wifi";
+        };
+        wifi.ssid = ssid;
+        wifi-security.key-mgmt = "wpa-psk";
+      };
+
+      mkWifiSecret = ssid: {
+        matchId = ssid;
+        matchType = "802-11-wireless";
+        matchSetting = "802-11-wireless-security";
+        key = "psk";
+        file = config.sops.secrets."networks/${ssid}".path;
+      };
+    in
     {
-      age.secrets.networks.file = ../../../secrets/networks.age;
+      sops.secrets = lib.listToAttrs (map (ssid: lib.nameValuePair "networks/${ssid}" { }) ssids);
 
       networking.networkmanager = {
         enable = true;
         ensureProfiles = {
-          environmentFiles = [ config.age.secrets.networks.path ];
-          profiles =
-            let
-              mkWifiProfile = id: psk: {
-                connection = {
-                  inherit id;
-                  type = "wifi";
-                };
-                wifi.ssid = id;
-                wifi-security = {
-                  key-mgmt = "wpa-psk";
-                  inherit psk;
-                };
-              };
-            in
-            lib.mapAttrs mkWifiProfile {
-              EMC2-5G = "$EMC2";
-              "Vidhan's iPhone" = "$IPHONE";
-              Spongebob = "$SPONGEBOB";
-              Big388 = "$BIG388";
-            };
+          profiles = lib.listToAttrs (map (ssid: lib.nameValuePair ssid (mkWifiProfile ssid)) ssids);
+          secrets.entries = map mkWifiSecret ssids;
         };
       };
 

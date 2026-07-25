@@ -3,11 +3,11 @@
     nixos.default =
       { config, ... }:
       {
-        age.secrets.tailscale.file = ../../../secrets/tailscale.age;
+        sops.secrets.tailscale = { };
 
         services.tailscale = {
           enable = true;
-          authKeyFile = config.age.secrets.tailscale.path;
+          authKeyFile = config.sops.secrets.tailscale.path;
           useRoutingFeatures = "both";
           extraSetFlags = [
             "--operator=${config.users.primaryUser}"
