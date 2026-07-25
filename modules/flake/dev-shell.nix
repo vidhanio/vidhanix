@@ -53,7 +53,6 @@
             pkgs.nil
 
             pkgs.sops
-            pkgs.ssh-to-age
 
             rebuild
           ];
