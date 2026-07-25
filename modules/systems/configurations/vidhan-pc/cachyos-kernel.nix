@@ -13,6 +13,8 @@
     ];
   };
 
+  flake-file.prune-lock.ignore = [ "nix-cachyos-kernel" ];
+
   configurations.vidhan-pc.module =
     { pkgs, ... }:
     {

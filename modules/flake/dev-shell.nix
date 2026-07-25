@@ -1,10 +1,10 @@
 { inputs, ... }:
 {
   imports = [
-    inputs.make-shell.flakeModules.default
+    inputs.devshell.flakeModule
   ];
 
-  flake-file.inputs.make-shell.url = "github:nicknovitski/make-shell";
+  flake-file.inputs.devshell.url = "github:numtide/devshell";
 
   perSystem =
     {
@@ -18,44 +18,34 @@
         use flake
       '';
 
-      make-shells.default =
-        let
-          rebuild = pkgs.writeShellApplication {
-            name = "rebuild";
+      devshells.default = {
+        devshell.startup.pre-commit-hooks.text = config.pre-commit.shellHook;
+        devshell.motd = "";
 
-            derivationArgs = {
-              preferLocalBuild = true;
-              allowSubstitutes = false;
-            };
+        packages = config.pre-commit.settings.enabledPackages ++ [
+          pkgs.git
+          pkgs.direnv
 
-            runtimeInputs = with pkgs; [
-              git
-              nix
-              nh
-            ];
+          pkgs.nil
 
-            text = ''
+          pkgs.sops
+
+          pkgs.nh
+        ];
+
+        commands = [
+          {
+            name = "n";
+            help = "regenerate generated files and apply the system configuration";
+            command = ''
               git add -AN
 
               nix run .#generate-files
 
               nh os "''${@:-switch}"
             '';
-          };
-        in
-        {
-          inherit (config.pre-commit) shellHook;
-
-          packages = config.pre-commit.settings.enabledPackages ++ [
-            pkgs.git
-            pkgs.direnv
-
-            pkgs.nil
-
-            pkgs.sops
-
-            rebuild
-          ];
-        };
+          }
+        ];
+      };
     };
 }

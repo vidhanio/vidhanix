@@ -12,6 +12,7 @@
         "nixos-apple-silicon.cachix.org-1:8psDu5SA5dAD7qA0zMy5UT292TxeEPzIz8VVEr2Js20="
       ];
     };
+    prune-lock.ignore = [ "nixos-apple-silicon" ];
   };
 
   flake.modules.nixos.macbook = {

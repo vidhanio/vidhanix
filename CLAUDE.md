@@ -9,13 +9,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Common commands
 
 - **Validate a change** (evaluate + build, do not activate): `git add -AN && nh os build`
-  - The build reads **staged** files, so you must `git add -AN` (intent-to-add) first — unstaged changes are invisible to the build. This is the primary check to run after editing any `.nix` file (see the `nixos-build` agent skill in `.agents/skills/`).
-- **Apply the config** (regenerate files + activate): `rebuild` (provided by the dev shell). Equivalent to `git add -AN && nix run .#generate-files && nh os switch`. Pass a different `nh os` subcommand as an argument, e.g. `rebuild boot`.
+  - The build reads **staged** files, so you must `git add -AN` (intent-to-add) first — unstaged changes are invisible to the build. This is the primary check to run after editing any `.nix` file.
+- **Apply the config** (regenerate files + activate): `n` (provided by the dev shell). Equivalent to `git add -AN && nix run .#generate-files && nh os switch`. Pass a different `nh os` subcommand as an argument, e.g. `n boot`.
 - **Format**: handled by `treefmt` and enforced as a pre-commit hook. Formatters: nixfmt, statix, deadnix, shfmt, shellcheck, stylua, actionlint, oxfmt, xmllint, keep-sorted. `on-unmatched = "fatal"`, so every non-ignored file must be claimed by some formatter.
 - **Update packages**: `nix run .#update-packages` (all packages with an `updateScript`), or `nix run .#update-packages <name>...` for specific ones.
 - **Regenerate generated files**: `nix run .#generate-files`.
 
-The dev shell (auto-loaded via direnv / `.envrc`) provides `rebuild`, `nil`, `sops`, and the pre-commit hooks.
+The dev shell (auto-loaded via direnv / `.envrc`) provides `n`, `nil`, `sops`, and the pre-commit hooks.
 
 ## Architecture
 

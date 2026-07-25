@@ -25,10 +25,8 @@
   };
 
   inputs = {
-    apple-fonts = {
-      url = "github:Lyndeno/apple-fonts.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
+    devshell.url = "github:numtide/devshell";
     disko.url = "github:nix-community/disko";
     files = {
       url = "github:mightyiam/files";
@@ -49,7 +47,6 @@
     impermanence.url = "github:nix-community/impermanence";
     import-tree.url = "github:vic/import-tree";
     librepods.url = "github:kavishdevar/librepods/linux/rust";
-    make-shell.url = "github:nicknovitski/make-shell";
     mcsr = {
       url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";

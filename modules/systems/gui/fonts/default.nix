@@ -1,9 +1,6 @@
 { withSystem, ... }:
 {
-  flake-file.inputs.apple-fonts = {
-    url = "github:Lyndeno/apple-fonts.nix";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
+  flake-file.inputs.apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
 
   flake.modules.nixos.default =
     { pkgs, ... }:
