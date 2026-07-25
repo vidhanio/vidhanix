@@ -4,32 +4,30 @@
 
   perSystem.treefmt.settings.excludes = [ "secrets/secrets.yaml" ];
 
-  flake.modules = {
-    nixos.default =
-      { config, ... }:
-      {
-        imports = [ inputs.sops-nix.nixosModules.default ];
-
-        sops.defaultSopsFile = ../../secrets/secrets.yaml;
-
-        # sops-nix runs via an activation script during stage 2, which is
-        # before impermanence runs via systemd -- same reasoning as agenix's
-        # age.identityPaths before it.
-        sops.age.sshKeyPaths = [
-          "${config.persist.persistentStoragePath}/etc/ssh/ssh_host_ed25519_key"
-        ];
+  flake.modules =
+    let
+      mkSopsConfig = key: {
+        defaultSopsFile = ../../secrets/secrets.yaml;
+        # TODO: https://github.com/Mic92/sops-nix/pull/779
+        environment.SOPS_AGE_SSH_PRIVATE_KEY_FILE = key;
+        age.sshKeyPaths = [ key ];
       };
+    in
+    {
+      nixos.default =
+        { config, ... }:
+        {
+          imports = [ inputs.sops-nix.nixosModules.default ];
 
-    homeManager.default =
-      { osConfig, ... }:
-      {
-        imports = [ inputs.sops-nix.homeManagerModules.default ];
+          sops = mkSopsConfig "${config.persist.persistentStoragePath}/etc/ssh/ssh_host_ed25519_key";
+        };
 
-        sops.defaultSopsFile = ../../secrets/secrets.yaml;
+      homeManager.default =
+        { config, ... }:
+        {
+          imports = [ inputs.sops-nix.homeManagerModules.default ];
 
-        sops.age.sshKeyPaths = [
-          "${osConfig.persist.persistentStoragePath}/etc/ssh/ssh_host_ed25519_key"
-        ];
-      };
-  };
+          sops = mkSopsConfig "${config.home.homeDirectory}/.ssh/id_ed25519";
+        };
+    };
 }
