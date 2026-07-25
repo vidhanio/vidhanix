@@ -1,24 +1,27 @@
 { lib, ... }:
 let
-  renderRefreshRate = refreshRate: lib.strings.floatToString refreshRate;
-  renderScale = scale: lib.strings.floatToString scale;
   renderMode =
     monitor:
     if monitor.mode == null then
       "preferred"
     else
-      "${toString monitor.mode.width}x${toString monitor.mode.height}@${renderRefreshRate monitor.mode.refreshRate}";
-  renderMonitor =
-    monitor:
-    "${monitor.name}, ${renderMode monitor}, ${toString monitor.position.x}x${toString monitor.position.y}, ${renderScale monitor.scale}";
+      "${toString monitor.mode.width}x${toString monitor.mode.height}@${lib.strings.floatToString monitor.mode.refreshRate}";
+  renderMonitor = monitor: {
+    output = monitor.name;
+    mode = renderMode monitor;
+    position = "${toString monitor.position.x}x${toString monitor.position.y}";
+    scale = lib.strings.floatToString monitor.scale;
+  };
   renderMonitors = monitors: map renderMonitor ([ monitors.main ] ++ monitors.others);
 in
 {
-  flake.modules.homeManager.default = { osConfig, ... }: {
-    wayland.windowManager.hyprland.settings = {
-      monitor = renderMonitors osConfig.hardware.monitors;
+  flake.modules.homeManager.default =
+    { osConfig, ... }:
+    {
+      wayland.windowManager.hyprland.settings = {
+        monitor = renderMonitors osConfig.hardware.monitors;
 
-      misc.vrr = 1;
+        config.misc.vrr = 1;
+      };
     };
-  };
 }

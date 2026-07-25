@@ -15,14 +15,24 @@
       };
 
       config = lib.mkIf (cfg != { }) {
-        wayland.windowManager.hyprland.settings = {
-          windowrule = lib.mapAttrsToList (
-            class: workspace: "match:class ${class}, workspace ${toString workspace} silent"
-          ) cfg;
-          exec-once = lib.mapAttrsToList (
-            class: _: "sleep 10 && hyprctl keyword windowrule \"match:class ${class}, workspace unset\""
-          ) cfg;
-        };
+        wayland.windowManager.hyprland.extraConfig = ''
+          local autostartWorkspaceRules = {}
+
+          ${lib.concatStringsSep "\n" (
+            lib.mapAttrsToList (class: workspace: ''
+              autostartWorkspaceRules[#autostartWorkspaceRules + 1] = hl.window_rule({
+                match = { class = "${class}" },
+                workspace = "${toString workspace} silent",
+              })
+            '') cfg
+          )}
+          -- Only redirect each app's startup launch; let later manual launches behave normally.
+          hl.timer(function()
+            for _, rule in ipairs(autostartWorkspaceRules) do
+              rule:set_enabled(false)
+            end
+          end, { timeout = 10000, type = "oneshot" })
+        '';
       };
     };
 }

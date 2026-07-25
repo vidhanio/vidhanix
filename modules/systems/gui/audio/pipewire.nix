@@ -37,19 +37,30 @@
         };
       };
     };
-    homeManager.default = {
-      wayland.windowManager.hyprland.settings.bindel =
-        let
-          mkSetVolume =
-            sign:
-            "wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 && wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%${sign}";
-        in
-        [
-          ", XF86AudioLowerVolume, exec, ${mkSetVolume "-"}"
-          ", XF86AudioRaiseVolume, exec, ${mkSetVolume "+"}"
-          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-          ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+    homeManager.default =
+      { lib, ... }:
+      let
+        bind = keys: dispatcher: {
+          _args = [
+            keys
+            (lib.generators.mkLuaInline dispatcher)
+            {
+              repeating = true;
+              locked = true;
+            }
+          ];
+        };
+        mkSetVolume =
+          sign:
+          "wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 && wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%${sign}";
+      in
+      {
+        wayland.windowManager.hyprland.settings.bind = [
+          (bind "XF86AudioLowerVolume" ''hl.dsp.exec_cmd("${mkSetVolume "-"}")'')
+          (bind "XF86AudioRaiseVolume" ''hl.dsp.exec_cmd("${mkSetVolume "+"}")'')
+          (bind "XF86AudioMute" ''hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")'')
+          (bind "XF86AudioMicMute" ''hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle")'')
         ];
-    };
+      };
   };
 }

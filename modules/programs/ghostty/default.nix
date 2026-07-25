@@ -1,3 +1,4 @@
+{ lib, ... }:
 {
   flake.modules.homeManager.default =
     { config, ... }:
@@ -21,7 +22,12 @@
       hyprland.autostartWorkspaces.ghostty = 1;
 
       wayland.windowManager.hyprland.settings.bind = [
-        "SUPER, T, exec, uwsm app -- ghostty"
+        {
+          _args = [
+            "SUPER + T"
+            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("uwsm app -- ghostty")'')
+          ];
+        }
       ];
     };
 }
