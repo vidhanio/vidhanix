@@ -2,7 +2,7 @@
 {
   flake-file.inputs.nix-index-database.url = "github:nix-community/nix-index-database";
 
-  flake.modules.homeManager.default = {
+  den.default.homeManager = {
     imports = [
       inputs.nix-index-database.homeModules.default
     ];

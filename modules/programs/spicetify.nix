@@ -2,7 +2,7 @@
 {
   flake-file.inputs.spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
-  flake.modules.homeManager.default =
+  den.default.homeManager =
     {
       config,
       pkgs,

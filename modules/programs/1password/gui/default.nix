@@ -1,9 +1,9 @@
 {
-  flake.modules = {
-    nixos.default = {
+  den.default = {
+    nixos = {
       programs._1password-gui.enable = true;
     };
-    homeManager.default = {
+    homeManager = {
       persist.directories = [ ".config/1Password" ];
     };
   };

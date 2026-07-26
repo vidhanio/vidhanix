@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.homeManager.default =
+  den.default.homeManager =
     { config, ... }:
     let
       cfg = config.programs.gh;

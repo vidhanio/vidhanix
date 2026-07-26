@@ -3,6 +3,7 @@
   lib,
   flake-parts-lib,
   config,
+  den,
   ...
 }:
 let
@@ -117,5 +118,18 @@ in
       url = "github:mightyiam/files";
       flake = false;
     };
+
+    den.classes.files = { };
+
+    den.policies.files-to-flake-parts = _: [
+      (den.lib.policy.route {
+        fromClass = "files";
+        intoClass = "flake-parts";
+        path = [ "files" ];
+        adaptArgs = { config, ... }: config.allModuleArgs;
+      })
+    ];
+
+    den.schema.flake-parts.includes = [ den.policies.files-to-flake-parts ];
   };
 }

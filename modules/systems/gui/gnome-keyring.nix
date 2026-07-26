@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.default = {
+  den.default = {
+    nixos = {
       services.gnome.gnome-keyring.enable = true;
       programs.seahorse.enable = true;
 
@@ -10,7 +10,7 @@
       };
     };
 
-    homeManager.default = {
+    homeManager = {
       persist.directories = [ ".local/share/keyrings" ];
     };
   };

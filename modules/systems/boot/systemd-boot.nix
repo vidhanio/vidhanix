@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.default = {
+  den.default.nixos = {
     boot.loader.systemd-boot = {
       enable = true;
       consoleMode = "max";

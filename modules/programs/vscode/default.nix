@@ -2,7 +2,7 @@
 {
   flake-file.inputs.vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
-  flake.modules.homeManager.default =
+  den.default.homeManager =
     { pkgs, lib, ... }:
     {
       home.shellAliases.code = "code-insiders";

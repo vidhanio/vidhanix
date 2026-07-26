@@ -1,7 +1,7 @@
 {
-  flake.modules = {
-    nixos.default =
-      { config, ... }:
+  den.default = {
+    nixos =
+      { config, host, ... }:
       {
         sops.secrets.tailscale = { };
 
@@ -10,7 +10,7 @@
           authKeyFile = config.sops.secrets.tailscale.path;
           useRoutingFeatures = "both";
           extraSetFlags = [
-            "--operator=${config.users.primaryUser}"
+            "--operator=${host.primaryUser}"
             "--ssh"
           ];
           extraUpFlags = [ "--reset" ] ++ config.services.tailscale.extraSetFlags;
@@ -33,7 +33,7 @@
 
         persist.directories = [ "/var/lib/tailscale" ];
       };
-    homeManager.default = {
+    homeManager = {
       services.tailscale-systray.enable = true;
     };
   };

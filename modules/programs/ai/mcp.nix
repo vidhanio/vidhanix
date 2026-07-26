@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.default = {
+  den.default.homeManager = {
     programs.mcp = {
       enable = true;
       servers.minecraft = {

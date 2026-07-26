@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.default = {
+  den.default.nixos = {
     programs._1password.enable = true;
   };
 }

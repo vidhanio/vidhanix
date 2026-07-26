@@ -2,8 +2,8 @@
 {
   flake-file.inputs.librepods.url = "github:kavishdevar/librepods/linux/rust";
 
-  flake.modules = {
-    nixos.default =
+  den.default = {
+    nixos =
       { pkgs, ... }:
       let
         pkg = withSystem pkgs.stdenv.hostPlatform.system (

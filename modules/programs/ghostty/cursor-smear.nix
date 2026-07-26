@@ -5,7 +5,7 @@
     flake = false;
   };
 
-  configurations.vidhan-pc.homeModule = {
+  den.aspects.vidhan-pc.provides.to-users.homeManager = {
     programs.ghostty.settings.custom-shader = [
       "${inputs.ghostty-shader-playground}/public/shaders/cursor_smear.glsl"
     ];

@@ -1,7 +1,7 @@
 { lib, ... }:
 {
-  flake.modules = {
-    nixos.default =
+  den.default = {
+    nixos =
       { config, ... }:
       let
         ssids = [
@@ -41,7 +41,7 @@
 
         services.resolved.enable = true;
       };
-    homeManager.default = {
+    homeManager = {
       services.network-manager-applet.enable = true;
     };
   };

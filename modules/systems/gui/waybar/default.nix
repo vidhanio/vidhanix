@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.default = {
+  den.default.homeManager = {
     stylix.targets.waybar = {
       addCss = false;
       font = "sansSerif";
@@ -231,7 +231,7 @@
     };
   };
 
-  configurations.vidhan-pc.homeModule = {
+  den.aspects.vidhan-pc.provides.to-users.homeManager = {
     programs.waybar.settings.main.output = "DP-1";
   };
 }

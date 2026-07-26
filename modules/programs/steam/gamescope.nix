@@ -1,7 +1,7 @@
 { lib, ... }:
 
 {
-  flake.modules.nixos.default =
+  den.default.nixos =
     { config, pkgs, ... }:
     let
       gamescopeFullscreen = pkgs.symlinkJoin {

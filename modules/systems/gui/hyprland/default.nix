@@ -11,15 +11,15 @@
     prune-lock.ignore = [ "hyprland" ];
   };
 
-  flake.modules = {
-    nixos.default = {
+  den.default = {
+    nixos = {
       imports = [ inputs.hyprland.nixosModules.default ];
       programs.hyprland = {
         enable = true;
         withUWSM = true;
       };
     };
-    homeManager.default =
+    homeManager =
       { config, ... }:
       {
         imports = [ inputs.hyprland.homeManagerModules.default ];

@@ -1,13 +1,16 @@
-{ config, ... }:
+{ den, ... }:
 {
-  configurations.vidhan-pc = {
-    users.vidhanio = {
-      enable = true;
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxMGko3NUtTtMB7pfDE1VYnTy1OR1fsLaGpVp9FaKtv vidhanio@vidhan-pc";
-    };
-    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICfS/WsqGHJYgJFWe+bf1SSKjyvFP0pISi30W/cvar/D root@vidhan-pc";
-    module = {
-      imports = with config.flake.modules.nixos; [ desktop ];
+  den.hosts.x86_64-linux.vidhan-pc = {
+    primaryUser = "vidhanio";
+    sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICfS/WsqGHJYgJFWe+bf1SSKjyvFP0pISi30W/cvar/D root@vidhan-pc";
+
+    users.vidhanio.sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxMGko3NUtTtMB7pfDE1VYnTy1OR1fsLaGpVp9FaKtv vidhanio@vidhan-pc";
+  };
+
+  den.aspects.vidhan-pc = {
+    includes = [ den.aspects.desktop ];
+
+    nixos = {
       hardware.monitors = {
         main = {
           name = "DP-1";

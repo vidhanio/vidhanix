@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.nixos.default =
+  den.default.nixos =
     { pkgs, ... }:
     {
       # make binfmt available for non-native architectures

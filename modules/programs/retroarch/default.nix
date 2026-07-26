@@ -1,6 +1,6 @@
 { withSystem, ... }:
 {
-  flake.modules.homeManager.default =
+  den.default.homeManager =
     { pkgs, ... }:
     {
       programs.retroarch = {

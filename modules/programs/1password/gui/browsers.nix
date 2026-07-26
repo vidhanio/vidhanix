@@ -1,7 +1,7 @@
 { lib, ... }:
 {
-  flake.modules = {
-    nixos.default = {
+  den.default = {
+    nixos = {
       environment.etc = {
         "1password/custom_allowed_browsers" = {
           text = ''
@@ -11,7 +11,7 @@
         };
       };
     };
-    homeManager.default =
+    homeManager =
       { osConfig, ... }:
       {
         xdg.configFile."net.imput.helium/NativeMessagingHosts/com.1password.1password.json".text =

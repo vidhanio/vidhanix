@@ -1,9 +1,15 @@
 {
-  perSystem.files.gitignore = ''
-    result
-    result-*
-    result.*
+  den.schema.flake-parts.includes = [
+    {
+      files.gitignore = ''
+        result
+        result-*
+        result.*
 
-    .direnv
-  '';
+        .direnv
+
+        .pre-commit-config.yaml
+      '';
+    }
+  ];
 }

@@ -2,7 +2,7 @@
 {
   flake-file.inputs.apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
 
-  flake.modules.nixos.default =
+  den.default.nixos =
     { pkgs, ... }:
     {
       stylix = {

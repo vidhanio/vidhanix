@@ -1,10 +1,10 @@
 { lib, ... }:
 {
-  flake.modules = {
-    nixos.default = {
+  den.default = {
+    nixos = {
       services.udisks2.enable = true;
     };
-    homeManager.default =
+    homeManager =
       { pkgs, ... }:
       {
         services.udiskie = {

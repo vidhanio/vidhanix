@@ -1,6 +1,6 @@
 { withSystem, ... }:
 {
-  flake.modules.nixos.default =
+  den.default.nixos =
     { config, ... }:
     {
       nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system ({ pkgs, ... }: pkgs);

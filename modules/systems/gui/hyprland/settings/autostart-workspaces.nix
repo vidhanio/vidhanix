@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.homeManager.default =
+  den.default.homeManager =
     { config, ... }:
     let
       cfg = config.hyprland.autostartWorkspaces;
@@ -31,7 +31,7 @@
             for _, rule in ipairs(autostartWorkspaceRules) do
               rule:set_enabled(false)
             end
-          end, { timeout = 10000, type = "oneshot" })
+          end, { timeout = 15000, type = "oneshot" })
         '';
       };
     };

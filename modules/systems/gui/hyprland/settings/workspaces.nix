@@ -8,8 +8,8 @@ let
   };
 in
 {
-  flake.modules = {
-    homeManager.default = {
+  den.default = {
+    homeManager = {
       wayland.windowManager.hyprland.extraLuaFiles."cycle-workspace" = {
         content = ./cycle-workspace.lua;
         autoLoad = true;
@@ -47,7 +47,7 @@ in
     };
   };
 
-  configurations.vidhan-pc.homeModule = {
+  den.aspects.vidhan-pc.provides.to-users.homeManager = {
     wayland.windowManager.hyprland.settings.bind = lib.mkAfter [
       (bind "SUPER + grave" ''hl.dsp.workspace.swap_monitors({ monitor1 = "current", monitor2 = "+1" })'')
       (bind "SUPER + SHIFT + grave" ''hl.dsp.focus({ monitor = "+1" })'')

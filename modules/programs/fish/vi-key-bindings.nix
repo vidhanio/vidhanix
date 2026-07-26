@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.default = {
+  den.default.nixos = {
     programs.fish.shellInit = ''
       fish_vi_key_bindings
     '';

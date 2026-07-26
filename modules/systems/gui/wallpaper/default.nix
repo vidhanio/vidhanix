@@ -1,7 +1,7 @@
 { lib, ... }:
 {
-  flake.modules = {
-    nixos.default =
+  den.default = {
+    nixos =
       { pkgs, config, ... }:
       {
         stylix = {
@@ -17,7 +17,7 @@
             '';
         };
       };
-    homeManager.default = {
+    homeManager = {
       services.hyprpaper = {
         enable = true;
         settings.splash = false;

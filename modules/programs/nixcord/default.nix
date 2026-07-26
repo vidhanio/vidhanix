@@ -2,7 +2,7 @@
 {
   flake-file.inputs.nixcord.url = "github:FlameFlag/nixcord";
 
-  flake.modules.homeManager.default =
+  den.default.homeManager =
     { config, pkgs, ... }:
     {
       imports = [ inputs.nixcord.homeModules.default ];

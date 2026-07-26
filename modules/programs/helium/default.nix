@@ -1,6 +1,6 @@
 { withSystem, lib, ... }:
 {
-  flake.modules.homeManager.default =
+  den.default.homeManager =
     { pkgs, ... }:
     let
       pkg = withSystem pkgs.stdenv.hostPlatform.system ({ self', ... }: self'.packages.helium-bin);

@@ -1,7 +1,12 @@
 { lib, ... }:
 {
-  flake.modules.nixos.default =
-    { config, pkgs, ... }:
+  den.default.nixos =
+    {
+      config,
+      pkgs,
+      host,
+      ...
+    }:
 
     let
       renderMainArgs =
@@ -56,7 +61,7 @@
 
       services.greetd.settings.initial_session = {
         command = "uwsm start hyprland.desktop";
-        user = config.users.primaryUser;
+        user = host.primaryUser;
       };
     };
 }

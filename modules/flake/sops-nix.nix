@@ -4,7 +4,7 @@
 
   perSystem.treefmt.settings.excludes = [ "secrets/secrets.yaml" ];
 
-  flake.modules =
+  den.default =
     let
       mkSopsConfig = key: {
         defaultSopsFile = ../../secrets/secrets.yaml;
@@ -14,7 +14,7 @@
       };
     in
     {
-      nixos.default =
+      nixos =
         { config, ... }:
         {
           imports = [ inputs.sops-nix.nixosModules.default ];
@@ -22,7 +22,7 @@
           sops = mkSopsConfig "${config.persist.persistentStoragePath}/etc/ssh/ssh_host_ed25519_key";
         };
 
-      homeManager.default =
+      homeManager =
         { config, ... }:
         {
           imports = [ inputs.sops-nix.homeManagerModules.default ];

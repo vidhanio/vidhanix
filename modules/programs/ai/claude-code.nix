@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.default = {
+  den.default.homeManager = {
     programs.claude-code = {
       enable = true;
       enableMcpIntegration = true;

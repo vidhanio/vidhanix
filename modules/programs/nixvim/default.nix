@@ -6,13 +6,13 @@
 {
   flake-file.inputs.nixvim.url = "github:nix-community/nixvim";
 
-  flake.modules = {
-    nixos.default = {
+  den.default = {
+    nixos = {
       imports = [ inputs.nixvim.nixosModules.default ];
 
       programs.nixvim.imports = [ config.flake.modules.nixvim.default ];
     };
-    homeManager.default = {
+    homeManager = {
       imports = [ inputs.nixvim.homeModules.default ];
 
       programs.nixvim.imports = [ config.flake.modules.nixvim.default ];

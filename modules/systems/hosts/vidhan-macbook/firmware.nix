@@ -1,9 +1,9 @@
 {
   perSystem.treefmt.settings.excludes = [
-    "modules/configurations/vidhan-macbook/firmware/*"
+    "modules/systems/hosts/vidhan-macbook/firmware/*"
   ];
 
-  configurations.vidhan-macbook.module = {
+  den.aspects.vidhan-macbook.nixos = {
     hardware.asahi.peripheralFirmwareDirectory = ./firmware;
   };
 }

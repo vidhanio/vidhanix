@@ -15,8 +15,8 @@ let
   };
 in
 {
-  flake.modules = {
-    homeManager.default =
+  den.default = {
+    homeManager =
       { pkgs, ... }:
       {
         wayland.windowManager.hyprland.settings.bind = [

@@ -15,7 +15,7 @@ let
   renderMonitors = monitors: map renderMonitor ([ monitors.main ] ++ monitors.others);
 in
 {
-  flake.modules.homeManager.default =
+  den.default.homeManager =
     { osConfig, ... }:
     {
       wayland.windowManager.hyprland.settings = {

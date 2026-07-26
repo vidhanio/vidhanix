@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.default = {
+  den.default.homeManager = {
     services.hyprpolkitagent.enable = true;
   };
 }

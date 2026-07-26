@@ -223,6 +223,21 @@
         "type": "github"
       }
     },
+    "den": {
+      "locked": {
+        "lastModified": 1784335044,
+        "narHash": "sha256-6+aoPFBvCP1DY/8viR+s34T5rTu5UBo8Iv0jghAcUac=",
+        "owner": "denful",
+        "repo": "den",
+        "rev": "99cc0c5a1cc846cb1be681344b10d2731d430e13",
+        "type": "github"
+      },
+      "original": {
+        "owner": "denful",
+        "repo": "den",
+        "type": "github"
+      }
+    },
     "devshell": {
       "inputs": {
         "nixpkgs": "nixpkgs_2"
@@ -1656,6 +1671,7 @@
     "root": {
       "inputs": {
         "apple-fonts": "apple-fonts",
+        "den": "den",
         "devshell": "devshell",
         "disko": "disko",
         "files": "files",

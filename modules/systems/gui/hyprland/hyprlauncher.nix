@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.homeManager.default = {
+  den.default.homeManager = {
     services.hyprlauncher.enable = true;
 
     wayland.windowManager.hyprland.settings.bind = [

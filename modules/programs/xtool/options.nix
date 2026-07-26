@@ -1,6 +1,6 @@
 { lib, withSystem, ... }:
 {
-  flake.modules.homeManager.default =
+  den.default.homeManager =
     { pkgs, config, ... }:
     let
       cfg = config.programs.xtool;

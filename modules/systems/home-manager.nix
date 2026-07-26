@@ -1,21 +1,15 @@
-{
-  inputs,
-  config,
-  ...
-}:
+{ lib, ... }:
 {
   flake-file.inputs.home-manager.url = "github:nix-community/home-manager";
 
-  flake.modules = {
-    nixos.default = {
-      imports = [ inputs.home-manager.nixosModules.default ];
+  den.schema.user.classes = lib.mkDefault [ "homeManager" ];
 
-      home-manager = {
-        sharedModules = with config.flake.modules.homeManager; [ default ];
-        useGlobalPkgs = true;
-      };
+  den.default = {
+    nixos = {
+      home-manager.useGlobalPkgs = true;
     };
-    homeManager.default =
+
+    homeManager =
       { osConfig, ... }:
       {
         home.stateVersion = osConfig.system.stateVersion;

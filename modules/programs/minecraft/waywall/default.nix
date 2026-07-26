@@ -9,11 +9,11 @@
     url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
     inputs.nixpkgs.follows = "nixpkgs";
   };
-  flake.modules = {
-    nixos.default = { pkgs, ... }: {
+  den.default = {
+    nixos = { pkgs, ... }: {
       programs.steam.extraPackages = with pkgs; [ waywall ];
     };
-    homeManager.default =
+    homeManager =
       { config, pkgs, ... }:
       let
         cfg = config.programs.waywall;

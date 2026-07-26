@@ -1,49 +1,48 @@
 {
-  flake.modules.nixos = {
-    desktop = {
-      disko.devices.nodev."/" = {
-        fsType = "tmpfs";
+  den.aspects.desktop.nixos = {
+    disko.devices.nodev."/" = {
+      fsType = "tmpfs";
+      mountOptions = [
+        "mode=755"
+        "size=8G"
+      ];
+    };
+  };
+
+  den.aspects.macbook.nixos =
+    { config, ... }:
+    {
+      disko.devices.disk.main.content.partitions.root.content.subvolumes.tmproot = {
+        mountpoint = "/";
         mountOptions = [
-          "mode=755"
-          "size=8G"
+          "compress=zstd"
+          "noatime"
         ];
       };
-    };
-    macbook =
-      { config, ... }:
-      {
-        disko.devices.disk.main.content.partitions.root.content.subvolumes.tmproot = {
-          mountpoint = "/";
-          mountOptions = [
-            "compress=zstd"
-            "noatime"
-          ];
-        };
 
-        boot.initrd.systemd = {
-          enable = true;
+      boot.initrd.systemd = {
+        enable = true;
 
-          services.wipe-root = {
-            description = "Wipe BTRFS tmproot subvolume";
-            wantedBy = [ "initrd.target" ];
+        services.wipe-root = {
+          description = "Wipe BTRFS tmproot subvolume";
+          wantedBy = [ "initrd.target" ];
 
-            after = [ "initrd-root-device.target" ];
-            before = [ "sysroot.mount" ];
+          after = [ "initrd-root-device.target" ];
+          before = [ "sysroot.mount" ];
 
-            unitConfig.DefaultDependencies = "no";
-            serviceConfig.Type = "oneshot";
+          unitConfig.DefaultDependencies = "no";
+          serviceConfig.Type = "oneshot";
 
-            script = ''
-              mkdir -p /mnt
+          script = ''
+            mkdir -p /mnt
 
-              mount "${config.disko.devices.disk.main.content.partitions.root.device}" /mnt
-              trap "umount /mnt" EXIT
+            mount "${config.disko.devices.disk.main.content.partitions.root.device}" /mnt
+            trap "umount /mnt" EXIT
 
-              btrfs subvolume delete -R /mnt/tmproot || true
-              btrfs subvolume create /mnt/tmproot
-            '';
-          };
+            btrfs subvolume delete -R /mnt/tmproot || true
+            btrfs subvolume create /mnt/tmproot
+          '';
         };
       };
-  };
+    };
 }

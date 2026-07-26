@@ -2,8 +2,8 @@
 {
   flake-file.inputs.impermanence.url = "github:nix-community/impermanence";
 
-  flake.modules = {
-    nixos.default =
+  den.default = {
+    nixos =
       { config, ... }:
       {
         imports = [
@@ -26,7 +26,7 @@
 
         fileSystems.${config.persist.persistentStoragePath}.neededForBoot = true;
       };
-    homeManager.default =
+    homeManager =
       { osConfig, ... }:
       {
         imports = [

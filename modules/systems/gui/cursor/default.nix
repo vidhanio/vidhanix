@@ -3,8 +3,8 @@
   ...
 }:
 {
-  flake.modules = {
-    nixos.default =
+  den.default = {
+    nixos =
       {
         pkgs,
         config,
@@ -28,7 +28,7 @@
           };
         };
       };
-    homeManager.default = {
+    homeManager = {
       home.pointerCursor = {
         enable = true;
         hyprcursor.enable = true;

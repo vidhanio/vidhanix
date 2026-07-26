@@ -1,7 +1,7 @@
 { withSystem, ... }: {
   flake-file.inputs.prismlauncher.url = "github:vidhanio/PrismLauncher";
 
-  flake.modules.homeManager.default = { pkgs, ... }: {
+  den.default.homeManager = { pkgs, ... }: {
     programs.prismlauncher = {
       enable = true;
       package = withSystem pkgs.stdenv.hostPlatform.system (

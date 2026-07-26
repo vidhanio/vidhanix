@@ -1,6 +1,5 @@
 {
   inputs,
-  config,
   ...
 }:
 {
@@ -15,10 +14,7 @@
     prune-lock.ignore = [ "nixos-apple-silicon" ];
   };
 
-  flake.modules.nixos.macbook = {
-    imports = [
-      config.flake.modules.nixos.default
-      inputs.nixos-apple-silicon.nixosModules.default
-    ];
+  den.aspects.macbook.nixos = {
+    imports = [ inputs.nixos-apple-silicon.nixosModules.default ];
   };
 }

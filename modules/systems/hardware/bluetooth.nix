@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.default = {
+  den.default = {
+    nixos = {
       hardware.bluetooth.enable = true;
 
       services.blueman.enable = true;
@@ -9,7 +9,7 @@
         "/var/lib/bluetooth"
       ];
     };
-    homeManager.default = {
+    homeManager = {
       services.blueman-applet.enable = true;
     };
   };

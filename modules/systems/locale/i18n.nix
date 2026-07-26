@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.default = {
+  den.default.nixos = {
     i18n.defaultLocale = "en_CA.UTF-8";
   };
 }

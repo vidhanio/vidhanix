@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.default = {
+  den.default = {
+    nixos = {
       services.pipewire = {
         enable = true;
         wireplumber.extraConfig = {
@@ -37,7 +37,7 @@
         };
       };
     };
-    homeManager.default =
+    homeManager =
       { lib, ... }:
       let
         bind = keys: dispatcher: {

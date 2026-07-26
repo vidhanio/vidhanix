@@ -9,6 +9,5 @@
     { pkgs, ... }:
     {
       pre-commit.settings.package = pkgs.prek;
-      files.gitignore = ".pre-commit-config.yaml";
     };
 }

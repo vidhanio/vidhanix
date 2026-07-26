@@ -1,7 +1,7 @@
 { lib, withSystem, ... }:
 {
-  flake.modules = {
-    nixos.default =
+  den.default = {
+    nixos =
       { pkgs, ... }:
       lib.mkMerge [
         {
@@ -19,12 +19,12 @@
           };
         })
       ];
-    homeManager.default = {
+    homeManager = {
       persist.directories = [ ".local/share/Steam" ];
     };
   };
 
-  configurations.vidhan-pc.homeModule =
+  den.aspects.vidhan-pc.provides.to-users.homeManager =
     { osConfig, ... }:
     {
       xdg.autostart.entries = [ "${osConfig.programs.steam.package}/share/applications/steam.desktop" ];

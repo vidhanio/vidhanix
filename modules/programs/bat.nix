@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.default = {
+  den.default.homeManager = {
     programs.bat.enable = true;
     home.shellAliases.cat = "bat";
   };

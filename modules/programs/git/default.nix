@@ -3,10 +3,10 @@
   ...
 }:
 let
-  flakeUsers = config.users;
+  inherit (config) people;
 in
 {
-  flake.modules.homeManager.default =
+  den.default.homeManager =
     { config, ... }:
     {
       programs.git = {
@@ -14,11 +14,11 @@ in
         settings = {
           user =
             let
-              user = flakeUsers.${config.home.username};
+              person = people.${config.home.username};
             in
             {
-              name = user.fullName;
-              inherit (user) email;
+              name = person.fullName;
+              inherit (person) email;
             };
 
           init.defaultBranch = "main";
