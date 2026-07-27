@@ -1,19 +1,6 @@
-{ inputs, ... }:
 {
-  flake-file = {
-    inputs.hyprland.url = "github:hyprwm/Hyprland";
-    nixConfig = {
-      extra-substituters = [ "https://hyprland.cachix.org" ];
-      extra-trusted-public-keys = [
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      ];
-    };
-    prune-lock.ignore = [ "hyprland" ];
-  };
-
   flake.modules = {
     nixos.default = {
-      imports = [ inputs.hyprland.nixosModules.default ];
       programs.hyprland = {
         enable = true;
         withUWSM = true;
@@ -22,11 +9,11 @@
     homeManager.default =
       { config, ... }:
       {
-        imports = [ inputs.hyprland.homeManagerModules.default ];
-
+        # https://wiki.hypr.land/Nix/Hyprland-on-Home-Manager/#nixos-uwsm
         xdg.configFile."uwsm/env".source =
           "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
 
+        # make screenshare dialog not pop up multiple times
         xdg.configFile."hypr/xdph.conf".text = ''
           screencopy {
             allow_token_by_default = true
@@ -35,6 +22,7 @@
 
         wayland.windowManager.hyprland = {
           enable = true;
+          # conflicts with UWSM
           systemd.enable = false;
         };
       };
