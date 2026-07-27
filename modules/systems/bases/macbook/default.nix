@@ -20,5 +20,7 @@
       config.flake.modules.nixos.default
       inputs.nixos-apple-silicon.nixosModules.default
     ];
+
+    hardware.asahi.enable = true;
   };
 }

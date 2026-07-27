@@ -1081,11 +1081,11 @@
         "nixpkgs": "nixpkgs_13"
       },
       "locked": {
-        "lastModified": 1784856870,
-        "narHash": "sha256-i8CAl78pTcizC+tzdcXoe/fCnIcYtHdRZugygDJMxfI=",
+        "lastModified": 1785185667,
+        "narHash": "sha256-F9oKAvTEtJROZh0a8FaFBoxzHVqRo7yfi9yRhakj7ag=",
         "owner": "vidhanio",
         "repo": "PrismLauncher",
-        "rev": "f7640d090e737728f00f823b75e2d6779d1efbb2",
+        "rev": "e1e8963d671c3488dd804f8195c7a29f23bbfb31",
         "type": "github"
       },
       "original": {
