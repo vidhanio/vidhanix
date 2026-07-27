@@ -25,8 +25,6 @@
   };
 
   inputs = {
-    apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
-    devshell.url = "github:numtide/devshell";
     disko.url = "github:nix-community/disko";
     files = {
       url = "github:mightyiam/files";

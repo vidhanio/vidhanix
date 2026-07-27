@@ -1,29 +1,56 @@
 { withSystem, ... }:
 {
-  flake-file.inputs.apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
-
   flake.modules.nixos.default =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
+    let
+      cfg = config.stylix;
+
+      patchNerdFont =
+        font:
+        pkgs.stdenv.mkDerivation {
+          pname = "${font.pname}-nerd-font";
+          inherit (font) version;
+
+          src = font;
+
+          nativeBuildInputs = [
+            pkgs.nerd-font-patcher
+            pkgs.parallel
+          ];
+
+          buildPhase = ''
+            runHook preBuild
+
+            find -name \*.ttf -o -name \*.otf | parallel --will-cite nerd-font-patcher -c
+
+            runHook postBuild
+          '';
+
+          installPhase = ''
+            runHook preInstall
+
+            cp -a . $out
+
+            runHook postInstall
+          '';
+        };
+
+    in
     {
       stylix = {
         fonts = {
           monospace = {
             package = withSystem pkgs.stdenv.hostPlatform.system (
-              { inputs', ... }: inputs'.apple-fonts.packages.sf-mono-nerd
+              { self', ... }: patchNerdFont self'.packages.berkeley-mono
             );
-            name = "SFMono Nerd Font";
+            name = "BerkeleyMono Nerd Font";
           };
-          serif = {
-            package = withSystem pkgs.stdenv.hostPlatform.system (
-              { inputs', ... }: inputs'.apple-fonts.packages.ny-nerd
-            );
-            name = "NY Nerd Font";
-          };
+          serif = cfg.fonts.monospace;
           sansSerif = {
             package = withSystem pkgs.stdenv.hostPlatform.system (
-              { inputs', ... }: inputs'.apple-fonts.packages.sf-pro-nerd
+              { self', ... }: self'.packages.google-sans-flex
             );
-            name = "SFProDisplay Nerd Font";
+            name = "Google Sans Flex";
           };
         };
       };
