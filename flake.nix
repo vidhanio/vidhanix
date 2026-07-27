@@ -71,6 +71,5 @@
       url = "git+ssh://git@github.com/vidhanio/fonts";
       flake = false;
     };
-    vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 }

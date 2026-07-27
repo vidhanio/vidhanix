@@ -28,8 +28,6 @@ some of these packages provide a `passthru.updateScript`, all of which can be ru
 | [`muvm-steam`](modules/programs/steam/packages/muvm-steam.nix)                                   | The Steam client, wrapped to run in muvm for Apple Silicon support                                                                 |                   |
 | [`pragmata-pro-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)                            | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |                   |
 | [`update-packages`](modules/flake/packages.nix)                                                  | Update all packages in this flake that have an update script                                                                       |                   |
-| [`vscode-insiders`](modules/programs/vscode/packages/vscode-insiders/default.nix)                | Code editor developed by Microsoft                                                                                                 |         ✓         |
-| [`xtool-bin`](modules/programs/xtool/package.nix)                                                | Cross-platform Xcode replacement                                                                                                   |         ✓         |
 
 ## generated files
 

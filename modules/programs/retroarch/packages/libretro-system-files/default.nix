@@ -61,13 +61,13 @@ let
         in
         lib.mapAttrs mkCustomRepo {
           cannonball = {
-            version = "0-unstable-2026-04-20";
+            version = "0-unstable-2026-07-21";
 
-            rev = "ae1bba5bb842a234e0233824e118fe39a89505a0";
-            hash = "sha256-4GCZeKJ8s6DPz3ALz7BU6PsO1yHQvsCjbY9m3OknLzM=";
+            rev = "65cb1f5f227db45abcd9d2006efe7687a0d9cb72";
+            hash = "sha256-MlF6DLkHe2KC+rHHOx6FZTjLMdA3lR/qcSsYqJ3P+tA=";
           };
           Dinothawr = {
-            version = "0-unstable-2026-04-20";
+            version = "0-unstable-2026-07-21";
 
             rev = "e608bc507d4e76940be4af3d74b5fecb2dfa26a6";
             hash = "sha256-RJJtiNwHEACqtCgagxRYtYP9WtV+3Fl5hCs1Mdink+A=";
@@ -80,13 +80,13 @@ let
             hash = "sha256-yjCmKerjzt+TTMRfvsqpfwuNz8Jz3tyaOyKwzYnM0VQ=";
           };
           dolphin = {
-            version = "2606-unstable-2026-07-19";
+            version = "2606-unstable-2026-07-26";
 
-            rev = "c546e92fae92877f7f60b74d56c68b46cc0b596e";
-            hash = "sha256-93CHOpR/bxF3p+t5qhFRTbT/RyZOmnHjEoxsF/ozenY=";
+            rev = "f76197ad8aeb87f9bb7a19d4d17edfced92aa251";
+            hash = "sha256-lu8fEPJTIWPG/WYUc/biYH2RfzgLSd7v0LLZeEsggoY=";
           };
           ecwolf = {
-            version = "0-unstable-2026-04-20";
+            version = "0-unstable-2026-07-21";
 
             rev = "4731f0075d6c225921b40b341b23971e73dd9dfc";
             hash = "sha256-Ex78/SAFbn4ZH6+57hyJl0jPAwAmNSflKLvi72Yj6do=";
@@ -99,10 +99,10 @@ let
             hash = "sha256-hBEwJE8x0+wsfvMo0ANWs+lItBRBradZ1F6blY1wzQ4=";
           };
           xrick-libretro = {
-            version = "0-unstable-2026-04-20";
+            version = "0-unstable-2026-07-21";
 
-            rev = "9fcdd91d1835a2bb66f87af9a3986b6f19aa2390";
-            hash = "sha256-gxmP/WKLeN3mSw91B52oqx2xWvMPHdyDvNd6ffuYmag=";
+            rev = "35de6ac478c9998bcf79b6de2aca8dc371cd5ab1";
+            hash = "sha256-NCgDcLZ5pYDn6msFk5wnjtf5MWd5Fq+gePUb0W9ponI=";
           };
         };
     in
