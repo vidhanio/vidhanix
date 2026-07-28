@@ -1,12 +1,10 @@
 { inputs, ... }:
 {
-  # TODO: switch back to github:hgaiser/moonshine once
-  # https://github.com/hgaiser/moonshine/pull/141 is merged.
-  flake-file.inputs.moonshine.url = "github:scottjab/moonshine/scottjab/fix-polkit-extra-policies";
+  flake-file.inputs.moonshine.url = "github:hgaiser/moonshine";
 
-  flake.modules = {
-    nixos.default =
-      { config, ... }:
+  configurations.vidhan-pc = {
+    module =
+      { config, pkgs, ... }:
       {
         imports = [ inputs.moonshine.nixosModules.default ];
 
@@ -18,9 +16,29 @@
           # user's actual allocated uid (verified with `id -u`).
           uid = 1000;
           openFirewall = true;
+
+          settings = {
+            application = [
+              {
+                title = "Steam";
+                command = [
+                  "${config.programs.steam.package}/bin/steam"
+                  "steam://open/bigpicture"
+                ];
+                # https://github.com/hgaiser/moonshine/blob/main/TIPS.md#close-a-desktop-steam-before-streaming-steam
+                pre_command = [
+                  [
+                    "${pkgs.bash}/bin/bash"
+                    "-c"
+                    "if pgrep -x steam >/dev/null; then ${config.programs.steam.package}/bin/steam -shutdown &>/dev/null; for i in $(seq 1 30); do ! pgrep -x steam >/dev/null && break; sleep 1; done; fi"
+                  ]
+                ];
+              }
+            ];
+          };
         };
       };
-    homeManager.default = {
+    homeModule = {
       persist.directories = [
         ".config/moonshine"
         ".local/share/moonshine"

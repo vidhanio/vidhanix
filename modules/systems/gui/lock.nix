@@ -1,40 +1,46 @@
 { lib, ... }:
 {
-  flake.modules.homeManager.default = {
-    wayland.windowManager.hyprland.settings = {
-      bind = [
-        {
-          _args = [
-            "SUPER + L"
-            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("loginctl lock-session")'')
-          ];
-        }
-      ];
+  flake.modules = {
+    nixos.default = {
+      security.pam.services.hyprlock = { };
     };
 
-    programs.hyprlock.enable = true;
-
-    services.hypridle = {
-      enable = true;
-      settings = {
-        general = {
-          lock_cmd = "pidof hyprlock || hyprlock";
-          before_sleep_cmd = "loginctl lock-session";
-          after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
-        };
-
-        listener = [
+    homeManager.default = {
+      wayland.windowManager.hyprland.settings = {
+        bind = [
           {
-            timeout = 300;
-            on-timeout = "loginctl lock-session";
-          }
-          {
-            # turn off screen in 30 seconds after locking
-            timeout = 5;
-            on-timeout = "pidof hyprlock && hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'";
-            on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
+            _args = [
+              "SUPER + L"
+              (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("loginctl lock-session")'')
+            ];
           }
         ];
+      };
+
+      programs.hyprlock.enable = true;
+
+      services.hypridle = {
+        enable = true;
+        settings = {
+          general = {
+            lock_cmd = "pidof hyprlock || hyprlock";
+            before_sleep_cmd = "loginctl lock-session";
+            after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
+          };
+
+          listener = [
+            {
+              timeout = 300;
+              on-timeout = "loginctl lock-session";
+            }
+            {
+              # turn off screen in 30 seconds after locking
+              timeout = 5;
+              on-timeout = "pidof hyprlock && hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'";
+              on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
+            }
+          ];
+        };
       };
     };
   };

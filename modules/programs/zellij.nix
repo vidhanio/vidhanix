@@ -2,6 +2,7 @@
   flake.modules.homeManager.default = {
     programs.zellij = {
       enable = true;
+      settings.pane_frames = false;
       layouts = {
         default.layout = {
           _children = [

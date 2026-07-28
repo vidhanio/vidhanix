@@ -3,6 +3,8 @@
     programs.claude-code = {
       enable = true;
       enableMcpIntegration = true;
+
+      settings.permissions.defaultMode = "auto";
     };
 
     persist = {
