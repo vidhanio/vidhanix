@@ -9,6 +9,12 @@ let
       symlinkJoin,
       writeText,
       makeWrapper,
+
+      # ceiling for the microVM's memory, in MiB. not reserved up front: pages
+      # are handed out as the guest demands them and returned to the host via
+      # virtio-balloon free page reporting. null uses muvm's default of 80% of
+      # total RAM, which leaves the host compositor no headroom on 8GB.
+      memoryMiB ? null,
       ...
     }@args:
     let
@@ -30,8 +36,18 @@ let
           "writeText"
           "symlinkJoin"
           "makeWrapper"
+          "memoryMiB"
 
+          # `programs.steam.package` composes both of these out of the *host*
+          # config, so everything they carry is aarch64 and has no business in
+          # an x86_64 FHS env: `extraLibraries` gets
+          # `hardware.graphics.package{,32}` (the guest takes its drivers from
+          # the /run/opengl-driver symlinks below instead), and `extraPkgs`
+          # gets `programs.steam.extraPackages`, i.e. gamescope and the system
+          # fonts. fonts are already readable in the FHS env, which binds the
+          # host's /etc/fonts and /nix.
           "extraLibraries"
+          "extraPkgs"
         ]
       );
 
@@ -43,6 +59,12 @@ let
       pulse-conf = writeText "pulse.conf" ''
         enable-shm=no
       '';
+
+      muvmFlags = [
+        "-x ${initScript}"
+        "-e PULSE_CLIENTCONFIG=${pulse-conf}"
+      ]
+      ++ lib.optional (memoryMiB != null) "--mem=${toString memoryMiB}";
 
       wrapMuvm =
         pkg: extraAttrs:
@@ -61,7 +83,7 @@ let
               mv $out/bin/${program} $out/bin/.${program}-wrapped
 
               makeWrapper ${lib.getExe muvm} $out/bin/${program} \
-                --add-flags "-x ${initScript} -e PULSE_CLIENTCONFIG=${pulse-conf} $out/bin/.${program}-wrapped"
+                --add-flags "${lib.concatStringsSep " " muvmFlags} $out/bin/.${program}-wrapped"
             '';
             inherit (pkg) meta;
           }

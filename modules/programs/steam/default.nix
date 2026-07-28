@@ -1,24 +1,27 @@
 { lib, withSystem, ... }:
 {
   flake.modules = {
-    nixos.default =
-      { pkgs, ... }:
-      lib.mkMerge [
-        {
-          programs.steam.enable = true;
+    nixos = {
+      default = {
+        hardware.steam-hardware.enable = true;
 
-          hardware.steam-hardware.enable = true;
-        }
-        (lib.mkIf (pkgs.stdenv.hostPlatform.system == "aarch64-linux") {
+        programs.steam.enable = true;
+      };
+
+      macbook =
+        { pkgs, ... }:
+        {
           programs.steam.package = withSystem pkgs.stdenv.hostPlatform.system (
-            { self', ... }: self'.packages.muvm-steam
+            { self', ... }: self'.packages.muvm-steam.override { memoryMiB = 6144; }
           );
 
-          hardware.graphics = {
-            enable32Bit = lib.mkForce false;
-          };
-        })
-      ];
+          # `programs.steam` sets this unconditionally, but it asserts
+          # `isx86_64`. the guest gets its 32-bit drivers from the
+          # /run/opengl-driver-32 symlink muvm-steam makes instead.
+          hardware.graphics.enable32Bit = lib.mkForce false;
+        };
+    };
+
     homeManager.default = {
       persist.directories = [ ".local/share/Steam" ];
     };
