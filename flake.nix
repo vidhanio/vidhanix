@@ -44,6 +44,7 @@
       url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    moonshine.url = "github:scottjab/moonshine/scottjab/fix-polkit-extra-policies";
     nix-auto-follow = {
       url = "github:vidhanio/nix-auto-follow/merge-fix-inputs-references";
       inputs.nixpkgs.follows = "nixpkgs";
