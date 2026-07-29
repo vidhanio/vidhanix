@@ -1,9 +1,16 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  ...
+}:
+let
+  configurationsCfg = config.configurations;
+in
 {
   options.users = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule (
-        { name, ... }:
+        { name, config, ... }:
         {
           options = {
             fullName = lib.mkOption {
@@ -23,12 +30,21 @@
               default = { };
               description = "Home Manager configuration for the user.";
             };
+            face = lib.mkOption {
+              type = lib.types.nullOr lib.types.path;
+              default = null;
+              description = "Path to a PNG image to use as the user's face, linked to ~/.face.";
+            };
           };
 
           config = {
             publicKeys = lib.mapAttrsToList (_: c: c.users.${name}.publicKey) (
-              lib.filterAttrs (_: c: c.users.${name}.enable) config.configurations
+              lib.filterAttrs (_: c: c.users.${name}.enable) configurationsCfg
             );
+
+            module = lib.mkIf (config.face != null) {
+              home.file.".face".source = config.face;
+            };
           };
         }
       )

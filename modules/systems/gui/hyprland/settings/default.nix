@@ -46,6 +46,7 @@
         }
       ];
 
+      # https://docs.noctalia.dev/v5/compositor-settings/hyprland/
       config = {
         general = {
           border_size = 2;
@@ -53,7 +54,12 @@
           gaps_out = 8;
         };
 
-        decoration.shadow.enabled = false;
+        decoration = {
+          rounding = 8;
+
+          shadow.enabled = false;
+          blur.enabled = false;
+        };
 
         dwindle.preserve_split = true;
 
@@ -76,23 +82,6 @@
           force_zero_scaling = true;
         };
       };
-
-      animation = [
-        {
-          leaf = "windows";
-          enabled = true;
-          speed = 3;
-          bezier = "default";
-          style = "popin";
-        }
-        {
-          leaf = "workspaces";
-          enabled = true;
-          speed = 3;
-          bezier = "default";
-          style = "slide";
-        }
-      ];
     };
   };
 }

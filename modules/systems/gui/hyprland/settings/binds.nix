@@ -22,7 +22,7 @@ in
         wayland.windowManager.hyprland.settings.bind = [
           (bind "SUPER + Q" "hl.dsp.window.close()")
           (bind "SUPER + M" ''hl.dsp.exec_cmd("uwsm stop")'')
-          (bind "SUPER + V" ''hl.dsp.window.float({ action = "toggle" })'')
+          (bind "SUPER + V" ''hl.dsp.exec_cmd("noctalia msg panel-toggle clipboard")'')
           (bind "SUPER + J" ''hl.dsp.layout("togglesplit")'')
           (bind "SUPER + F" "hl.dsp.window.fullscreen()")
 
