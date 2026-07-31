@@ -34,26 +34,30 @@
 
         services.hypridle = {
           enable = true;
-          settings = {
-            general = {
-              lock_cmd = "pidof hyprlock || hyprlock";
-              before_sleep_cmd = "loginctl lock-session";
-              after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
+          settings =
+            let
+              dpms = action: "hyprctl dispatch 'hl.dsp.dpms({ action = \"${action}\" })'";
+            in
+            {
+              general = {
+                lock_cmd = "pidof hyprlock || hyprlock";
+                before_sleep_cmd = "loginctl lock-session";
+                after_sleep_cmd = dpms "enable";
+              };
+              listener = [
+                {
+                  timeout = 300;
+                  on-timeout = "loginctl lock-session";
+                }
+                {
+                  # turn off screen 5 seconds after lock
+                  timeout = 5;
+                  condition_cmd = "pidof hyprlock";
+                  on-timeout = dpms "disable";
+                  on-resume = dpms "enable";
+                }
+              ];
             };
-
-            listener = [
-              {
-                timeout = 300;
-                on-timeout = "loginctl lock-session";
-              }
-              {
-                # turn off screen in 30 seconds after locking
-                timeout = 5;
-                on-timeout = "pidof hyprlock && hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'";
-                on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
-              }
-            ];
-          };
         };
       };
   };

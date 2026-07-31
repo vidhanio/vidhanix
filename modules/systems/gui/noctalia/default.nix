@@ -1,21 +1,25 @@
-{ inputs, ... }:
+{ inputs, withSystem, ... }:
 {
-  flake-file.inputs.noctalia.url = "github:noctalia-dev/noctalia/cachix";
-
-  # https://docs.noctalia.dev/v5/getting-started/nixos/?section=binary-cache#binary-cache
-  flake-file.nixConfig = {
-    extra-substituters = [ "https://noctalia.cachix.org" ];
-    extra-trusted-public-keys = [
-      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-    ];
+  flake-file = {
+    inputs = {
+      noctalia.url = "github:noctalia-dev/noctalia/cachix";
+    };
+    nixConfig = {
+      extra-substituters = [ "https://noctalia.cachix.org" ];
+      extra-trusted-public-keys = [
+        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+      ];
+    };
+    prune-lock.ignore = [ "noctalia" ];
   };
 
   flake.modules = {
-    nixos.default = {
-      imports = [ inputs.noctalia.nixosModules.default ];
-
+    nixos.default = { pkgs, ... }: {
       programs.noctalia = {
         enable = true;
+        package = withSystem pkgs.stdenv.hostPlatform.system (
+          { inputs', ... }: inputs'.noctalia.packages.default
+        );
         recommendedServices.enable = true;
       };
     };

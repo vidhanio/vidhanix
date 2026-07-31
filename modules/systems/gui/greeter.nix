@@ -49,7 +49,7 @@
         };
     in
     {
-      programs.regreet = {
+      services.displayManager.regreet = {
         enable = true;
         package = mkRegreetWrapper (renderCommands config.hardware.monitors);
       };
