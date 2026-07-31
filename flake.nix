@@ -23,6 +23,10 @@
   };
 
   inputs = {
+    andrej-karpathy-skills = {
+      url = "github:multica-ai/andrej-karpathy-skills";
+      flake = false;
+    };
     disko.url = "github:nix-community/disko";
     files = {
       url = "github:mightyiam/files";
@@ -54,7 +58,7 @@
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nixcord.url = "github:FlameFlag/nixcord";
-    nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon/3902c801519264191a7c3dfec8dd1f9faeb38fd5";
+    nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     noctalia.url = "github:noctalia-dev/noctalia/cachix";

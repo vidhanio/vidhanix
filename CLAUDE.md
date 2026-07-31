@@ -8,8 +8,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Common commands
 
-- **Validate a change** (evaluate + build, do not activate): `git add -AN && nh os build`
-  - The build reads **staged** files, so you must `git add -AN` (intent-to-add) first — unstaged changes are invisible to the build. This is the primary check to run after editing any `.nix` file.
+- **Validate a change** (default — fast, no full system build): `git add -AN && nix eval .#nixosConfigurations.<host>.config.<option.path>` (or `nix build` if the option is a derivation, e.g. a package or generated file).
+  - `git add -AN` (intent-to-add) is required first — eval/build only sees **staged** files.
+  - Eval the larger module the change belongs to (e.g. `.hyprland`), not a narrow subsection (e.g. `.hyprland.binds`) — the whole module catches option-merge errors a subsection wouldn't.
+  - For a home-manager option, go through `home-manager.users.<username>`, e.g. `nix eval .#nixosConfigurations.vidhan-macbook.config.home-manager.users.vidhanio.wayland.windowManager.hyprland`.
+  - Hosts are `vidhan-pc` and `vidhan-macbook`. Don't run a full `nh os build` (builds the entire system closure) unless explicitly asked.
 - **Apply the config** (regenerate files + activate): `n` (provided by the dev shell). Equivalent to `git add -AN && nix run .#generate-files && nh os switch`. Pass a different `nh os` subcommand as an argument, e.g. `n boot`.
 - **Format**: handled by `treefmt` and enforced as a pre-commit hook. Formatters: nixfmt, statix, deadnix, shfmt, shellcheck, stylua, actionlint, oxfmt, xmllint, keep-sorted. `on-unmatched = "fatal"`, so every non-ignored file must be claimed by some formatter.
 - **Update packages**: `nix run .#update-packages` (all packages with an `updateScript`), or `nix run .#update-packages <name>...` for specific ones.

@@ -3,7 +3,7 @@
   flake-file.inputs.nix-index-database.url = "github:nix-community/nix-index-database";
 
   flake.modules.homeManager.default =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     let
       binNames =
         pkgs.runCommand "comma-fish-bin-names"
@@ -53,14 +53,7 @@
           exec = "comma --picker ${picker} -- {query}";
         };
 
-      wayland.windowManager.hyprland.settings.bind = [
-        {
-          _args = [
-            "SUPER + comma"
-            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("noctalia msg panel-toggle launcher '/, '")'')
-          ];
-        }
-      ];
+      hyprland.binds."SUPER + comma".exec_cmd = "noctalia msg panel-toggle launcher '/, '";
 
       persist.files = [ ".local/state/comma/choices" ];
     };

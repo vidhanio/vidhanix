@@ -21,32 +21,18 @@
     };
 
     homeManager.default =
-      { lib, ... }:
       let
-        bind = keys: dispatcher: {
-          _args = [
-            keys
-            (lib.generators.mkLuaInline dispatcher)
-          ];
-        };
-        repeatBind = keys: dispatcher: {
-          _args = [
-            keys
-            (lib.generators.mkLuaInline dispatcher)
-            {
+        msg = command: { exec_cmd = "noctalia msg ${command}"; };
+        repeating =
+          bind:
+          bind
+          // {
+            _flags = {
               repeating = true;
               locked = true;
-            }
-          ];
-        };
-        lockedBind = keys: dispatcher: {
-          _args = [
-            keys
-            (lib.generators.mkLuaInline dispatcher)
-            { locked = true; }
-          ];
-        };
-        msg = command: ''hl.dsp.exec_cmd("noctalia msg ${command}")'';
+            };
+          };
+        locked = bind: bind // { _flags.locked = true; };
       in
       {
         imports = [ inputs.noctalia.homeModules.default ];
@@ -63,6 +49,7 @@
               launch_apps_custom_command = "uwsm app -- $CMD";
               popup_shadows = false;
               panel.shadow = false;
+              setup_wizard_enabled = false;
             };
 
             dock.shadow = false;
@@ -84,9 +71,9 @@
                 "clock"
                 "spacer"
                 "battery"
-                "volume"
                 "network"
                 "bluetooth"
+                "volume"
               ];
               center = [
                 "workspaces"
@@ -101,30 +88,35 @@
           };
         };
 
-        # https://docs.noctalia.dev/v5/compositor-settings/hyprland/
+        persist.directories = [ ".local/state/noctalia" ];
+        systemd.user.tmpfiles.rules = [
+          "r %h/.local/state/noctalia/settings.toml" # get rid of imperative settings
+        ];
+
+        hyprland.binds = {
+          # core binds
+          "SUPER + e" = msg "panel-toggle launcher";
+
+          # volume / mic
+          "XF86AudioRaiseVolume" = repeating (msg "volume-up");
+          "XF86AudioLowerVolume" = repeating (msg "volume-down");
+          "XF86AudioMute" = repeating (msg "volume-mute");
+          "XF86AudioMicMute" = repeating (msg "mic-mute");
+
+          # brightness
+          "XF86MonBrightnessUp" = repeating (msg "brightness-up");
+          "XF86MonBrightnessDown" = repeating (msg "brightness-down");
+          "SHIFT + XF86MonBrightnessUp" = repeating (msg "keyboard-backlight-up");
+          "SHIFT + XF86MonBrightnessDown" = repeating (msg "keyboard-backlight-down");
+
+          # media playback
+          "XF86AudioPlay" = locked (msg "media toggle");
+          "XF86AudioPause" = locked (msg "media toggle");
+          "XF86AudioNext" = locked (msg "media next");
+          "XF86AudioPrev" = locked (msg "media previous");
+        };
+
         wayland.windowManager.hyprland.settings = {
-          bind = [
-            # core binds
-            (bind "SUPER + e" (msg "panel-toggle launcher"))
-            (bind "ALT + Tab" (msg "window-switcher"))
-
-            # volume / mic
-            (repeatBind "XF86AudioRaiseVolume" (msg "volume-up"))
-            (repeatBind "XF86AudioLowerVolume" (msg "volume-down"))
-            (repeatBind "XF86AudioMute" (msg "volume-mute"))
-            (repeatBind "XF86AudioMicMute" (msg "mic-mute"))
-
-            # brightness
-            (repeatBind "XF86MonBrightnessUp" (msg "brightness-up"))
-            (repeatBind "XF86MonBrightnessDown" (msg "brightness-down"))
-
-            # media playback
-            (lockedBind "XF86AudioPlay" (msg "media toggle"))
-            (lockedBind "XF86AudioPause" (msg "media toggle"))
-            (lockedBind "XF86AudioNext" (msg "media next"))
-            (lockedBind "XF86AudioPrev" (msg "media previous"))
-          ];
-
           window_rule = [
             {
               match.class = "dev.noctalia.Noctalia";
@@ -142,8 +134,6 @@
               name = "noctalia";
 
               match.namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd|window-switcher)$";
-
-              no_anim = true;
             }
           ];
         };

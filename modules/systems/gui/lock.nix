@@ -1,47 +1,60 @@
-{ lib, ... }:
 {
   flake.modules = {
     nixos.default = {
       security.pam.services.hyprlock = { };
     };
 
-    homeManager.default = {
-      wayland.windowManager.hyprland.settings = {
-        bind = [
-          {
-            _args = [
-              "SUPER + L"
-              (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("loginctl lock-session")'')
-            ];
-          }
-        ];
-      };
+    homeManager.default =
+      { osConfig, ... }:
+      {
+        hyprland.binds."SUPER + L".exec_cmd = "loginctl lock-session";
 
-      programs.hyprlock.enable = true;
+        programs.hyprlock = {
+          enable = true;
 
-      services.hypridle = {
-        enable = true;
-        settings = {
-          general = {
-            lock_cmd = "pidof hyprlock || hyprlock";
-            before_sleep_cmd = "loginctl lock-session";
-            after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
+          settings = {
+            input-field = {
+              monitor = osConfig.hardware.monitors.main.name;
+
+              size = "20%, 5%";
+
+              # match hyprland/noctalia
+              rounding = 8;
+              outline_thickness = 4;
+
+              fade_on_empty = false;
+              dots_spacing = 0.3;
+
+              position = "0, 0";
+              halign = "center";
+              valign = "center";
+            };
           };
+        };
 
-          listener = [
-            {
-              timeout = 300;
-              on-timeout = "loginctl lock-session";
-            }
-            {
-              # turn off screen in 30 seconds after locking
-              timeout = 5;
-              on-timeout = "pidof hyprlock && hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'";
-              on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
-            }
-          ];
+        services.hypridle = {
+          enable = true;
+          settings = {
+            general = {
+              lock_cmd = "pidof hyprlock || hyprlock";
+              before_sleep_cmd = "loginctl lock-session";
+              after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
+            };
+
+            listener = [
+              {
+                timeout = 300;
+                on-timeout = "loginctl lock-session";
+              }
+              {
+                # turn off screen in 30 seconds after locking
+                timeout = 5;
+                on-timeout = "pidof hyprlock && hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'";
+                on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
+              }
+            ];
+          };
         };
       };
-    };
   };
 }
