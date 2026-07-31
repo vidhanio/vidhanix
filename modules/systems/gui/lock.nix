@@ -47,10 +47,11 @@
               listener = [
                 {
                   timeout = 300;
-                  on-timeout = "loginctl lock-session";
+                  on-timeout = "loginctl lock-session && ${dpms "disable"}";
+                  on-resume = dpms "enable";
                 }
                 {
-                  # turn off screen 5 seconds after lock
+                  # turn off screen 5 seconds after manual lock
                   timeout = 5;
                   condition_cmd = "pidof hyprlock";
                   on-timeout = dpms "disable";
