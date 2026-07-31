@@ -11,6 +11,7 @@
           {
             window-padding-x = padding;
             window-padding-y = padding;
+            background-opacity-cells = true;
           };
       };
 

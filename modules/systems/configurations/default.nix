@@ -67,7 +67,10 @@ in
                   isNormalUser = true;
                   description = user.fullName;
                   hashedPasswordFile = config.sops.secrets."passwords/${username}".path;
-                  extraGroups = [ "wheel" ];
+                  extraGroups = [
+                    "networkmanager"
+                    "wheel"
+                  ];
                   useDefaultShell = true;
 
                   openssh.authorizedKeys.keys = user.publicKeys ++ rootPublicKeys;

@@ -17,17 +17,11 @@
               monitor = osConfig.hardware.monitors.main.name;
 
               size = "20%, 5%";
+              placeholder_text = "";
 
               # match hyprland/noctalia
               rounding = 8;
-              outline_thickness = 4;
-
-              fade_on_empty = false;
-              dots_spacing = 0.3;
-
-              position = "0, 0";
-              halign = "center";
-              valign = "center";
+              outline_thickness = 4; # needs to be doubled for some reason
             };
           };
         };

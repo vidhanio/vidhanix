@@ -1,6 +1,5 @@
 {
   inputs,
-  withSystem,
   lib,
   ...
 }:
@@ -11,7 +10,12 @@
   };
 
   flake.modules.homeManager.default =
-    { config, pkgs, ... }:
+    {
+      inputs',
+      config,
+      pkgs,
+      ...
+    }:
     let
       cfg = config.programs.waywall;
       lua = pkgs.formats.lua { };
@@ -125,9 +129,7 @@
           enable = true;
           config = {
             enableWaywork = true;
-            programs = withSystem pkgs.stdenv.hostPlatform.system (
-              { inputs', ... }: [ inputs'.mcsr.packages.ninjabrain-bot ]
-            );
+            programs = [ inputs'.mcsr.packages.ninjabrain-bot ];
             files = {
               eye_overlay = ./eye_overlay.png;
             };
@@ -166,5 +168,4 @@
         };
       };
     };
-
 }

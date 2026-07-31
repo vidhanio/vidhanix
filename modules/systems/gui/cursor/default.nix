@@ -1,27 +1,16 @@
 {
-  withSystem,
-  ...
-}:
-{
   flake.modules = {
     nixos.default =
-      {
-        pkgs,
-        config,
-        ...
-      }:
+      { self', config, ... }:
       {
         stylix = {
           cursor = {
-            package = withSystem pkgs.stdenv.hostPlatform.system (
-              { self', ... }:
-              self'.packages.breezex-combined.override (
-                with config.lib.stylix.colors.withHashtag;
-                {
-                  baseColor = base01;
-                  outlineColor = base07;
-                }
-              )
+            package = self'.packages.breezex-combined.override (
+              with config.lib.stylix.colors.withHashtag;
+              {
+                baseColor = base01;
+                outlineColor = base07;
+              }
             );
             name = "BreezeX Cursor";
             size = 32;

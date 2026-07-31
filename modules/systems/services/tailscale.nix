@@ -19,7 +19,7 @@
         networking = {
           nftables.enable = true;
           firewall = {
-            trustedInterfaces = [ "tailscale0" ];
+            trustedInterfaces = [ config.services.tailscale.interfaceName ];
             allowedUDPPorts = [ config.services.tailscale.port ];
           };
         };

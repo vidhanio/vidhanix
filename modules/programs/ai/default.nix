@@ -1,6 +1,20 @@
 {
-  flake-file.inputs.andrej-karpathy-skills = {
-    url = "github:multica-ai/andrej-karpathy-skills";
-    flake = false;
+  flake-file = {
+    inputs = {
+      andrej-karpathy-skills = {
+        url = "github:multica-ai/andrej-karpathy-skills";
+        flake = false;
+      };
+      llm-agents.url = "github:numtide/llm-agents.nix";
+    };
+
+    nixConfig = {
+      extra-substituters = [ "https://cache.numtide.com" ];
+      extra-trusted-public-keys = [
+        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+      ];
+    };
+
+    prune-lock.ignore = [ "llm-agents" ];
   };
 }

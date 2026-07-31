@@ -1,4 +1,4 @@
-{ inputs, withSystem, ... }:
+{ inputs, ... }:
 {
   flake-file = {
     inputs = {
@@ -14,17 +14,18 @@
   };
 
   flake.modules = {
-    nixos.default = { pkgs, ... }: {
-      programs.noctalia = {
-        enable = true;
-        package = withSystem pkgs.stdenv.hostPlatform.system (
-          { inputs', ... }: inputs'.noctalia.packages.default
-        );
-        recommendedServices.enable = true;
+    nixos.default =
+      { inputs', ... }:
+      {
+        programs.noctalia = {
+          enable = true;
+          package = inputs'.noctalia.packages.default;
+          recommendedServices.enable = true;
+        };
       };
-    };
 
     homeManager.default =
+      { config, ... }:
       let
         msg = command: { exec_cmd = "noctalia msg ${command}"; };
         repeating =
@@ -46,22 +47,20 @@
           systemd.enable = true;
 
           settings = {
+            lockscreen.enabled = false; # handled by hyprlock
             wallpaper.enabled = false; # handled by hyprpaper
             weather.enabled = false;
 
             shell = {
               launch_apps_custom_command = "uwsm app -- $CMD";
-              popup_shadows = false;
-              panel.shadow = false;
               setup_wizard_enabled = false;
+              external_ip_enabled = true;
+              panel.transparency_mode = "glass";
             };
 
-            dock.shadow = false;
-
             bar.main = {
-              background_opacity = 1.0;
+              background_opacity = config.stylix.opacity.desktop;
               border_width = 2;
-              shadow = false;
 
               # match hyprland's gaps_out
               margin_edge = 8;
@@ -136,8 +135,12 @@
           layer_rule = [
             {
               name = "noctalia";
-
               match.namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd|window-switcher)$";
+
+              no_anim = true;
+              ignore_alpha = 0.5;
+              blur = true;
+              blur_popups = true;
             }
           ];
         };

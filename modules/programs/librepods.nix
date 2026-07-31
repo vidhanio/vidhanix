@@ -1,14 +1,12 @@
-{ lib, withSystem, ... }:
+{ lib, ... }:
 {
   flake-file.inputs.librepods.url = "github:kavishdevar/librepods/linux/rust";
 
   flake.modules = {
     nixos.default =
-      { pkgs, ... }:
+      { inputs', ... }:
       let
-        pkg = withSystem pkgs.stdenv.hostPlatform.system (
-          { inputs', ... }: inputs'.librepods.packages.default
-        );
+        pkg = inputs'.librepods.packages.default;
       in
       {
         environment.systemPackages = [ pkg ];

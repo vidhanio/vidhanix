@@ -1,17 +1,15 @@
-{ inputs, withSystem, ... }:
+{ inputs, ... }:
 {
   flake-file.inputs.nix-index-database.url = "github:nix-community/nix-index-database";
 
   flake.modules.homeManager.default =
-    { pkgs, ... }:
+    { inputs', pkgs, ... }:
     let
       binNames =
         pkgs.runCommand "comma-fish-bin-names"
           {
             nativeBuildInputs = [
-              (withSystem pkgs.stdenv.hostPlatform.system (
-                { inputs', ... }: inputs'.nix-index-database.packages.nix-index-with-db
-              ))
+              inputs'.nix-index-database.packages.nix-index-with-db
             ];
           }
           ''

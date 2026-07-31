@@ -53,12 +53,12 @@
           gaps_in = 4;
           gaps_out = 8;
         };
-
         decoration = {
           rounding = 8;
-
-          shadow.enabled = false;
-          blur.enabled = false;
+          blur = {
+            size = 3;
+            passes = 2;
+          };
         };
 
         dwindle.preserve_split = true;
@@ -76,6 +76,10 @@
         ecosystem = {
           no_update_news = true;
           no_donation_nag = true;
+        };
+
+        misc = {
+          disable_splash_rendering = true;
         };
 
         xwayland = {

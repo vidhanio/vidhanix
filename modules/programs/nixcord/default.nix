@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake-file.inputs.nixcord.url = "github:FlameFlag/nixcord";
+  flake-file.inputs.nixcord.url = "github:4evy/nixcord";
 
   flake.modules.homeManager.default =
     { config, pkgs, ... }:
@@ -22,11 +22,10 @@
             arRPC = true;
             hardwareAcceleration = true;
             hardwareVideoAcceleration = true;
-            customTitleBar = false;
+            # customTitleBar = false;
           };
           state = {
             firstLaunch = false;
-            maximized = true;
           };
         };
         quickCss = ''
@@ -35,6 +34,7 @@
         config = {
           useQuickCss = true;
           disableMinSize = true;
+          transparent = true;
           plugins = {
             # keep-sorted start
             clearUrls.enable = true;
@@ -45,6 +45,12 @@
             # keep-sorted end
           };
         };
+      };
+
+      stylix.targets.nixcord.colors.override = with config.lib.stylix.colors; {
+        base00 = "${base00}80";
+        base01 = "${base01}80";
+        base02 = "${base02}80";
       };
 
       xdg.autostart.entries = [

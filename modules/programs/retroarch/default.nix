@@ -1,13 +1,11 @@
-{ withSystem, ... }:
 {
   flake.modules.homeManager.default =
-    { pkgs, ... }:
+    { self', ... }:
     {
       programs.retroarch = {
         enable = false;
         settings =
           let
-            self' = withSystem pkgs.stdenv.hostPlatform.system ({ self', ... }: self');
             database = "${self'.packages.libretro-database}/share/libretro/database";
           in
           {

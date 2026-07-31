@@ -1,4 +1,4 @@
-{ lib, withSystem, ... }:
+{ lib, ... }:
 {
   flake.modules = {
     nixos = {
@@ -9,11 +9,9 @@
       };
 
       macbook =
-        { pkgs, ... }:
+        { self', ... }:
         {
-          programs.steam.package = withSystem pkgs.stdenv.hostPlatform.system (
-            { self', ... }: self'.packages.muvm-steam.override { memoryMiB = 6144; }
-          );
+          programs.steam.package = self'.packages.muvm-steam.override { memoryMiB = 6144; };
 
           # `programs.steam` sets this unconditionally, but it asserts
           # `isx86_64`. the guest gets its 32-bit drivers from the

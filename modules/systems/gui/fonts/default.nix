@@ -1,7 +1,11 @@
-{ withSystem, ... }:
 {
   flake.modules.nixos.default =
-    { pkgs, config, ... }:
+    {
+      self',
+      pkgs,
+      config,
+      ...
+    }:
     let
       cfg = config.stylix;
 
@@ -40,16 +44,12 @@
       stylix = {
         fonts = {
           monospace = {
-            package = withSystem pkgs.stdenv.hostPlatform.system (
-              { self', ... }: patchNerdFont self'.packages.berkeley-mono
-            );
+            package = patchNerdFont self'.packages.berkeley-mono;
             name = "BerkeleyMono Nerd Font";
           };
           serif = cfg.fonts.monospace;
           sansSerif = {
-            package = withSystem pkgs.stdenv.hostPlatform.system (
-              { self', ... }: self'.packages.google-sans-flex
-            );
+            package = self'.packages.google-sans-flex;
             name = "Google Sans Flex";
           };
         };
