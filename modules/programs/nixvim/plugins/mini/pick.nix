@@ -1,22 +1,20 @@
 {
   flake.modules.nixvim.default = {
-    plugins.snacks.settings.picker = {
-      enabled = true;
-    };
+    plugins.mini.modules.pick = { };
 
     keymaps = [
       {
         key = "<leader><space>";
-        action.__raw = "function() Snacks.picker.smart() end";
+        action.__raw = "function() require('mini.pick').builtin.files() end";
         mode = "n";
         options = {
           silent = true;
-          desc = "Smart Find Files";
+          desc = "Find Files";
         };
       }
       {
         key = "<leader>,";
-        action.__raw = "function() Snacks.picker.buffers() end";
+        action.__raw = "function() require('mini.pick').builtin.buffers() end";
         mode = "n";
         options = {
           silent = true;
@@ -25,7 +23,7 @@
       }
       {
         key = "<leader>/";
-        action.__raw = "function() Snacks.picker.grep() end";
+        action.__raw = "function() require('mini.pick').builtin.grep_live() end";
         mode = "n";
         options = {
           silent = true;
@@ -34,7 +32,7 @@
       }
       {
         key = "<leader>:";
-        action.__raw = "function() Snacks.picker.command_history() end";
+        action.__raw = "function() require('mini.extra').pickers.history({ scope = ':' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -42,17 +40,8 @@
         };
       }
       {
-        key = "<leader>n";
-        action.__raw = "function() Snacks.picker.notifications() end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Notification History";
-        };
-      }
-      {
         key = "<leader>fb";
-        action.__raw = "function() Snacks.picker.buffers() end";
+        action.__raw = "function() require('mini.pick').builtin.buffers() end";
         mode = "n";
         options = {
           silent = true;
@@ -61,7 +50,7 @@
       }
       {
         key = "<leader>ff";
-        action.__raw = "function() Snacks.picker.files() end";
+        action.__raw = "function() require('mini.pick').builtin.files() end";
         mode = "n";
         options = {
           silent = true;
@@ -70,7 +59,7 @@
       }
       {
         key = "<leader>fg";
-        action.__raw = "function() Snacks.picker.git_files() end";
+        action.__raw = "function() require('mini.extra').pickers.git_files() end";
         mode = "n";
         options = {
           silent = true;
@@ -78,17 +67,8 @@
         };
       }
       {
-        key = "<leader>fp";
-        action.__raw = "function() Snacks.picker.projects() end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Projects";
-        };
-      }
-      {
         key = "<leader>fr";
-        action.__raw = "function() Snacks.picker.recent() end";
+        action.__raw = "function() require('mini.extra').pickers.oldfiles() end";
         mode = "n";
         options = {
           silent = true;
@@ -97,7 +77,7 @@
       }
       {
         key = "<leader>gb";
-        action.__raw = "function() Snacks.picker.git_branches() end";
+        action.__raw = "function() require('mini.extra').pickers.git_branches() end";
         mode = "n";
         options = {
           silent = true;
@@ -106,7 +86,7 @@
       }
       {
         key = "<leader>gl";
-        action.__raw = "function() Snacks.picker.git_log() end";
+        action.__raw = "function() require('mini.extra').pickers.git_commits() end";
         mode = "n";
         options = {
           silent = true;
@@ -114,35 +94,17 @@
         };
       }
       {
-        key = "<leader>gL";
-        action.__raw = "function() Snacks.picker.git_log_line() end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Git Log Line";
-        };
-      }
-      {
         key = "<leader>gs";
-        action.__raw = "function() Snacks.picker.git_status() end";
+        action.__raw = "function() require('mini.extra').pickers.git_files({ scope = 'modified' }) end";
         mode = "n";
         options = {
           silent = true;
-          desc = "Git Status";
-        };
-      }
-      {
-        key = "<leader>gS";
-        action.__raw = "function() Snacks.picker.git_stash() end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Git Stash";
+          desc = "Git Status (Modified Files)";
         };
       }
       {
         key = "<leader>gd";
-        action.__raw = "function() Snacks.picker.git_diff() end";
+        action.__raw = "function() require('mini.extra').pickers.git_hunks({ scope = 'unstaged' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -151,7 +113,7 @@
       }
       {
         key = "<leader>gf";
-        action.__raw = "function() Snacks.picker.git_log_file() end";
+        action.__raw = "function() require('mini.extra').pickers.git_commits({ path = '%' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -159,44 +121,8 @@
         };
       }
       {
-        key = "<leader>gi";
-        action.__raw = "function() Snacks.picker.gh_issue() end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "GitHub Issues (open)";
-        };
-      }
-      {
-        key = "<leader>gI";
-        action.__raw = "function() Snacks.picker.gh_issue({ state = 'all' }) end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "GitHub Issues (all)";
-        };
-      }
-      {
-        key = "<leader>gp";
-        action.__raw = "function() Snacks.picker.gh_pr() end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "GitHub Pull Requests (open)";
-        };
-      }
-      {
-        key = "<leader>gP";
-        action.__raw = "function() Snacks.picker.gh_pr({ state = 'all' }) end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "GitHub Pull Requests (all)";
-        };
-      }
-      {
         key = "<leader>sb";
-        action.__raw = "function() Snacks.picker.lines() end";
+        action.__raw = "function() require('mini.extra').pickers.buf_lines({ scope = 'current' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -205,7 +131,7 @@
       }
       {
         key = "<leader>sB";
-        action.__raw = "function() Snacks.picker.grep_buffers() end";
+        action.__raw = "function() require('mini.extra').pickers.buf_lines({ scope = 'all' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -214,7 +140,7 @@
       }
       {
         key = "<leader>sg";
-        action.__raw = "function() Snacks.picker.grep() end";
+        action.__raw = "function() require('mini.pick').builtin.grep_live() end";
         mode = "n";
         options = {
           silent = true;
@@ -223,7 +149,19 @@
       }
       {
         key = "<leader>sw";
-        action.__raw = "function() Snacks.picker.grep_word() end";
+        action.__raw = ''
+          function()
+            local mode = vim.fn.mode()
+            local pattern
+            if mode == "v" or mode == "V" then
+              vim.cmd("normal! \"vy")
+              pattern = vim.fn.getreg("v")
+            else
+              pattern = vim.fn.expand("<cword>")
+            end
+            require("mini.pick").builtin.grep({ pattern = pattern })
+          end
+        '';
         mode = [
           "n"
           "x"
@@ -235,7 +173,7 @@
       }
       {
         key = "<leader>s\"";
-        action.__raw = "function() Snacks.picker.registers() end";
+        action.__raw = "function() require('mini.extra').pickers.registers() end";
         mode = "n";
         options = {
           silent = true;
@@ -244,7 +182,7 @@
       }
       {
         key = "<leader>s/";
-        action.__raw = "function() Snacks.picker.search_history() end";
+        action.__raw = "function() require('mini.extra').pickers.history({ scope = '/' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -252,17 +190,8 @@
         };
       }
       {
-        key = "<leader>sa";
-        action.__raw = "function() Snacks.picker.autocmds() end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Autocmds";
-        };
-      }
-      {
         key = "<leader>sc";
-        action.__raw = "function() Snacks.picker.command_history() end";
+        action.__raw = "function() require('mini.extra').pickers.history({ scope = ':' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -271,7 +200,7 @@
       }
       {
         key = "<leader>sC";
-        action.__raw = "function() Snacks.picker.commands() end";
+        action.__raw = "function() require('mini.extra').pickers.commands() end";
         mode = "n";
         options = {
           silent = true;
@@ -280,7 +209,7 @@
       }
       {
         key = "<leader>sd";
-        action.__raw = "function() Snacks.picker.diagnostics() end";
+        action.__raw = "function() require('mini.extra').pickers.diagnostic({ scope = 'all' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -289,7 +218,7 @@
       }
       {
         key = "<leader>sD";
-        action.__raw = "function() Snacks.picker.diagnostics_buffer() end";
+        action.__raw = "function() require('mini.extra').pickers.diagnostic({ scope = 'current' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -298,7 +227,7 @@
       }
       {
         key = "<leader>sh";
-        action.__raw = "function() Snacks.picker.help() end";
+        action.__raw = "function() require('mini.pick').builtin.help() end";
         mode = "n";
         options = {
           silent = true;
@@ -307,7 +236,7 @@
       }
       {
         key = "<leader>sH";
-        action.__raw = "function() Snacks.picker.highlights() end";
+        action.__raw = "function() require('mini.extra').pickers.hl_groups() end";
         mode = "n";
         options = {
           silent = true;
@@ -315,17 +244,8 @@
         };
       }
       {
-        key = "<leader>si";
-        action.__raw = "function() Snacks.picker.icons() end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Icons";
-        };
-      }
-      {
         key = "<leader>sj";
-        action.__raw = "function() Snacks.picker.jumps() end";
+        action.__raw = "function() require('mini.extra').pickers.list({ scope = 'jump' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -334,7 +254,7 @@
       }
       {
         key = "<leader>sk";
-        action.__raw = "function() Snacks.picker.keymaps() end";
+        action.__raw = "function() require('mini.extra').pickers.keymaps() end";
         mode = "n";
         options = {
           silent = true;
@@ -343,7 +263,7 @@
       }
       {
         key = "<leader>sl";
-        action.__raw = "function() Snacks.picker.loclist() end";
+        action.__raw = "function() require('mini.extra').pickers.list({ scope = 'location' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -352,7 +272,7 @@
       }
       {
         key = "<leader>sm";
-        action.__raw = "function() Snacks.picker.marks() end";
+        action.__raw = "function() require('mini.extra').pickers.marks() end";
         mode = "n";
         options = {
           silent = true;
@@ -361,7 +281,7 @@
       }
       {
         key = "<leader>sM";
-        action.__raw = "function() Snacks.picker.man() end";
+        action.__raw = "function() require('mini.extra').pickers.manpages() end";
         mode = "n";
         options = {
           silent = true;
@@ -370,7 +290,7 @@
       }
       {
         key = "<leader>sq";
-        action.__raw = "function() Snacks.picker.qflist() end";
+        action.__raw = "function() require('mini.extra').pickers.list({ scope = 'quickfix' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -379,7 +299,7 @@
       }
       {
         key = "<leader>sR";
-        action.__raw = "function() Snacks.picker.resume() end";
+        action.__raw = "function() require('mini.pick').builtin.resume() end";
         mode = "n";
         options = {
           silent = true;
@@ -387,17 +307,8 @@
         };
       }
       {
-        key = "<leader>su";
-        action.__raw = "function() Snacks.picker.undo() end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Undo History";
-        };
-      }
-      {
         key = "gd";
-        action.__raw = "function() Snacks.picker.lsp_definitions() end";
+        action.__raw = "function() require('mini.extra').pickers.lsp({ scope = 'definition' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -406,7 +317,7 @@
       }
       {
         key = "gD";
-        action.__raw = "function() Snacks.picker.lsp_declarations() end";
+        action.__raw = "function() require('mini.extra').pickers.lsp({ scope = 'declaration' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -415,7 +326,7 @@
       }
       {
         key = "gr";
-        action.__raw = "function() Snacks.picker.lsp_references() end";
+        action.__raw = "function() require('mini.extra').pickers.lsp({ scope = 'references' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -425,7 +336,7 @@
       }
       {
         key = "gI";
-        action.__raw = "function() Snacks.picker.lsp_implementations() end";
+        action.__raw = "function() require('mini.extra').pickers.lsp({ scope = 'implementation' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -434,7 +345,7 @@
       }
       {
         key = "gy";
-        action.__raw = "function() Snacks.picker.lsp_type_definitions() end";
+        action.__raw = "function() require('mini.extra').pickers.lsp({ scope = 'type_definition' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -442,26 +353,8 @@
         };
       }
       {
-        key = "gai";
-        action.__raw = "function() Snacks.picker.lsp_incoming_calls() end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "C[a]lls Incoming";
-        };
-      }
-      {
-        key = "gao";
-        action.__raw = "function() Snacks.picker.lsp_outgoing_calls() end";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "C[a]lls Outgoing";
-        };
-      }
-      {
         key = "<leader>ss";
-        action.__raw = "function() Snacks.picker.lsp_symbols() end";
+        action.__raw = "function() require('mini.extra').pickers.lsp({ scope = 'document_symbol' }) end";
         mode = "n";
         options = {
           silent = true;
@@ -470,7 +363,7 @@
       }
       {
         key = "<leader>sS";
-        action.__raw = "function() Snacks.picker.lsp_workspace_symbols() end";
+        action.__raw = "function() require('mini.extra').pickers.lsp({ scope = 'workspace_symbol' }) end";
         mode = "n";
         options = {
           silent = true;

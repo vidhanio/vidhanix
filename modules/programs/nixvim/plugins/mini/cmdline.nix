@@ -1,5 +1,5 @@
 {
   flake.modules.nixvim.default = {
-    plugins.nvim-surround.enable = true;
+    plugins.mini.modules.cmdline = { };
   };
 }

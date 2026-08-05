@@ -1,5 +1,5 @@
 {
   flake.modules.nixos.default = {
-    time.timeZone = "America/Toronto";
+    services.tzupdate.enable = true;
   };
 }

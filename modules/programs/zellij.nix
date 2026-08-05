@@ -1,50 +1,54 @@
 {
   flake.modules.homeManager.default = {
+    home.shellAliases.z = "zellij";
+
     programs.zellij = {
       enable = true;
-      settings.pane_frames = false;
+      settings = {
+        simplified_ui = true;
+        ui.pane_frames.hide_session_name = true;
+      };
       layouts = {
         default.layout = {
           _children = [
             {
               default_tab_template = {
                 _children = [
-                  { children = { }; }
                   {
                     pane = {
                       size = 1;
                       borderless = true;
-                      plugin.location = "zellij:compact-bar";
+                      plugin.location = "zellij:tab-bar";
                     };
                   }
+                  { children = { }; }
                 ];
               };
             }
             {
               tab = {
                 _props = {
-                  name = "Vibe";
+                  name = "AI";
                   focus = true;
                 };
                 _children = [
                   {
                     pane = {
-                      _props.split_direction = "vertical";
-                      _children = [
-                        {
-                          pane = {
-                            command = "claude";
-                            size = "40%";
-                          };
-                        }
-                        {
-                          pane = {
-                            command = "lazygit";
-                            size = "60%";
-                          };
-                        }
-                      ];
+                      command = "claude";
                     };
+                  }
+                  {
+                    pane.size = "30%";
+                  }
+                ];
+              };
+            }
+            {
+              tab = {
+                _props.name = "Git";
+                _children = [
+                  {
+                    pane.command = "lazygit";
                   }
                 ];
               };
@@ -54,10 +58,7 @@
                 _props.name = "Editor";
                 _children = [
                   {
-                    pane = {
-                      command = "nvim";
-                      args = ".";
-                    };
+                    pane.edit = ".";
                   }
                 ];
               };

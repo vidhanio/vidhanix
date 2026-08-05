@@ -49,7 +49,6 @@
           settings = {
             lockscreen.enabled = false; # handled by hyprlock
             wallpaper.enabled = false; # handled by hyprpaper
-            weather.enabled = false;
 
             shell = {
               launch_apps_custom_command = "uwsm app -- $CMD";
@@ -57,6 +56,8 @@
               external_ip_enabled = true;
               panel.transparency_mode = "glass";
             };
+
+            location.auto_locate = true;
 
             bar.main = {
               background_opacity = config.stylix.opacity.desktop;
@@ -71,7 +72,8 @@
               padding = 8;
 
               start = [
-                "clock"
+                "date"
+                "time"
                 "spacer"
                 "battery"
                 "network"
@@ -85,9 +87,18 @@
                 "tray"
               ];
             };
-
-            widget.clock.format = "{:%a %d %b  %H:%M}";
-            widget.network.show_label = false; # hide ssid
+            widget = {
+              date = {
+                type = "clock";
+                format = "{:%B %-d, %Y}";
+              };
+              time = {
+                type = "clock";
+                format = "{:%H:%M:%S}";
+              };
+              network.show_label = false;
+              workspaces.style = "minimal";
+            };
           };
         };
 

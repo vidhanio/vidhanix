@@ -23,10 +23,6 @@
   };
 
   inputs = {
-    andrej-karpathy-skills = {
-      url = "github:multica-ai/andrej-karpathy-skills";
-      flake = false;
-    };
     disko.url = "github:nix-community/disko";
     files = {
       url = "github:mightyiam/files";
@@ -66,7 +62,7 @@
     prismlauncher.url = "github:vidhanio/PrismLauncher";
     sops-nix.url = "github:Mic92/sops-nix";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-    stylix.url = "github:nix-community/stylix";
+    stylix.url = "github:vidhanio/stylix/herdr";
     systems.url = "github:nix-systems/default-linux";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     vidhan-fonts = {

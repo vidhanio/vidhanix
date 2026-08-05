@@ -34,7 +34,14 @@
         persist.directories = [ "/var/lib/tailscale" ];
       };
     homeManager.default = {
-      services.tailscale-systray.enable = true;
+      services.tailscale-systray = {
+        enable = true;
+        theme = "dark:nobg";
+      };
     };
+  };
+
+  configurations.vidhan-pc.module = {
+    services.tailscale.extraSetFlags = [ "--advertise-exit-node" ];
   };
 }

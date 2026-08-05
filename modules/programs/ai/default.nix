@@ -1,10 +1,6 @@
 {
   flake-file = {
     inputs = {
-      andrej-karpathy-skills = {
-        url = "github:multica-ai/andrej-karpathy-skills";
-        flake = false;
-      };
       llm-agents.url = "github:numtide/llm-agents.nix";
     };
 

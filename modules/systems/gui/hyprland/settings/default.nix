@@ -3,15 +3,11 @@
     wayland.windowManager.hyprland.settings = {
       window_rule = [
         {
-          name = "suppress-maximize-events";
-
           match.class = ".*";
 
           suppress_event = "maximize";
         }
         {
-          name = "fix-xwayland-drags";
-
           match = {
             class = "^$";
             title = "^$";
@@ -25,8 +21,6 @@
         }
         # smart gaps
         {
-          name = "no-gaps-f1";
-
           match = {
             workspace = "f[1]";
             float = false;
@@ -46,9 +40,9 @@
         }
       ];
 
-      # https://docs.noctalia.dev/v5/compositor-settings/hyprland/
       config = {
         general = {
+          layout = "master";
           border_size = 2;
           gaps_in = 4;
           gaps_out = 8;
@@ -60,8 +54,6 @@
             passes = 2;
           };
         };
-
-        dwindle.preserve_split = true;
 
         input = {
           follow_mouse = 2;
