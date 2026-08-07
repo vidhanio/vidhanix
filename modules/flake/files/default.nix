@@ -30,7 +30,7 @@
       };
 
       files.readme.content.generated-files.content = ''
-        most of the non-nix files in this repository (including this very readme) are generated via [`nix run .#generate-files`](modules/files/default.nix).
+        most of the non-nix files in this repository (including this very readme) are generated via [`just generate`](justfile).
         the generated files are:
 
         ${config.files.readme.lib.renderList (

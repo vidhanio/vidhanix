@@ -11,49 +11,24 @@
         use flake
       '';
 
-      devShells.default =
-        let
-          n = pkgs.writeShellApplication {
-            name = "n";
+      devShells.default = pkgs.mkShell {
+        preferLocalBuild = true;
+        allowSubstitutes = false;
 
-            derivationArgs = {
-              preferLocalBuild = true;
-              allowSubstitutes = false;
-            };
+        inherit (config.pre-commit) shellHook;
 
-            runtimeInputs = with pkgs; [
-              git
-              nix
-              nh
-            ];
+        packages = config.pre-commit.settings.enabledPackages ++ [
+          pkgs.git
+          pkgs.direnv
 
-            text = ''
-              git add -AN
+          pkgs.nil
 
-              nix run .#generate-files
+          pkgs.sops
 
-              nh os "''${@:-switch}"
-            '';
-          };
-        in
-        pkgs.mkShell {
-          preferLocalBuild = true;
-          allowSubstitutes = false;
+          pkgs.nh
 
-          inherit (config.pre-commit) shellHook;
-
-          packages = config.pre-commit.settings.enabledPackages ++ [
-            pkgs.git
-            pkgs.direnv
-
-            pkgs.nil
-
-            pkgs.sops
-
-            pkgs.nh
-
-            n
-          ];
-        };
+          pkgs.just
+        ];
+      };
     };
 }

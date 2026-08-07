@@ -34,7 +34,7 @@
                 _children = [
                   {
                     pane = {
-                      command = "claude";
+                      command = "opencode";
                     };
                   }
                   {

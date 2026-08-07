@@ -32,6 +32,7 @@
           plugins = {
             # keep-sorted start
             clearUrls.enable = true;
+            collapsibleUi.enable = true;
             equibopStreamFixes.enable = true;
             fakeNitro.enable = true;
             spotifyCrack.enable = true;

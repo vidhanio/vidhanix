@@ -23,7 +23,7 @@
 
       programs.nix-index-database.comma.enable = true;
 
-      programs.claude-code.skills.comma = ./SKILL.md;
+      programs.opencode.skills.comma = ./SKILL.md;
 
       programs.fish.completions = {
         comma = ''

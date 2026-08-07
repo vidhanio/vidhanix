@@ -20,6 +20,11 @@
 
         actionlint.enable = true;
 
+        just.enable = true;
+
+        ruff-format.enable = true;
+        ruff-check.enable = true;
+
         oxfmt.enable = true;
 
         xmllint.enable = true;

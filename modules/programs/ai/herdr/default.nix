@@ -1,6 +1,6 @@
 {
   flake.modules.homeManager.default =
-    { inputs', config, ... }:
+    { inputs', ... }:
     {
       home.shellAliases.h = "herdr";
 
@@ -30,24 +30,9 @@
         };
       };
 
-      programs.claude-code = {
-        skills.herdr = ./skills/herdr.md;
+      programs.opencode.skills.herdr = ./skills/herdr.md;
 
-        hooks."herdr-agent-state.sh" = ./hooks/herdr-agent-state.sh;
-
-        settings.hooks.SessionStart = [
-          {
-            matcher = "*";
-            hooks = [
-              {
-                type = "command";
-                command = "bash '${config.programs.claude-code.configDir}/hooks/herdr-agent-state.sh' session";
-                timeout = 10;
-              }
-            ];
-          }
-        ];
-      };
+      xdg.configFile."opencode/plugins/herdr-agent-state.js".source = ./plugins/herdr-agent-state.js;
 
       persist.files =
         map

@@ -63,8 +63,8 @@ let
           cannonball = {
             version = "0-unstable-2026-07-28";
 
-            rev = "65cb1f5f227db45abcd9d2006efe7687a0d9cb72";
-            hash = "sha256-MlF6DLkHe2KC+rHHOx6FZTjLMdA3lR/qcSsYqJ3P+tA=";
+            rev = "0d83575d920ea4c0a280847a19d7802f673e6a68";
+            hash = "sha256-V5rbSBe5sCM3wnKFYBsaZ0obDqQkwGRO5zD6TjTvO6E=";
           };
           Dinothawr = {
             version = "0-unstable-2026-07-28";
@@ -80,19 +80,19 @@ let
             hash = "sha256-W2ljoqPyc2VSjY62BDBcAOwwBJr2zoH60ewPOHMlRJ8=";
           };
           dolphin = {
-            version = "2606-unstable-2026-07-31";
+            version = "2606-unstable-2026-08-06";
 
-            rev = "b78e3b607c22f45719263bd1e001e47589d1c83e";
-            hash = "sha256-Hs2Y4fTpPhPH+N+xBXwgoRLlYgo+ZgeWcvYEniGvgi4=";
+            rev = "0ff12a5a2835762e0665afe6a161a648b433f996";
+            hash = "sha256-keynsxVfr2DwLg1peVzT7Ok3+5al7XF7583qXFCJBpA=";
           };
           ecwolf = {
             version = "0-unstable-2026-07-28";
 
-            rev = "4731f0075d6c225921b40b341b23971e73dd9dfc";
-            hash = "sha256-Ex78/SAFbn4ZH6+57hyJl0jPAwAmNSflKLvi72Yj6do=";
+            rev = "f5a68634244c8719645626ef714387b268a5ae32";
+            hash = "sha256-MbbtkIdSkeVn5uWKbRC0kW5RN+4Hv0GtWGp/rGosPNg=";
           };
           qemu-libretro = {
-            version = "0-unstable-2026-07-27";
+            version = "0-unstable-2026-07-28";
 
             owner = "io12";
             rev = "486f2d58930f7f0bea5717b6fc06e7fa3dd109ed";

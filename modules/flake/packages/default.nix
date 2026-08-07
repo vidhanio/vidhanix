@@ -7,45 +7,10 @@
   perSystem =
     {
       options,
-      self',
       config,
-      pkgs,
       ...
     }:
     {
-      packages.update-packages = pkgs.writeShellApplication {
-        name = "update-packages";
-
-        # writeShellApplication opts out of writeTextFile's default
-        # preferLocalBuild; this will never be substitutable, so opt back in.
-        derivationArgs = {
-          preferLocalBuild = true;
-          allowSubstitutes = false;
-        };
-
-        runtimeInputs = with pkgs; [
-          nix-update
-          parallel
-        ];
-
-        text =
-          let
-            allpkgs = lib.attrNames (lib.filterAttrs (_: p: p ? passthru.updateScript) self'.packages);
-            allpkgsEscaped = lib.escapeShellArgs allpkgs;
-          in
-          ''
-            if [ $# -gt 0 ]; then
-              pkgs=("$@")
-            else
-              pkgs=(${allpkgsEscaped})
-            fi
-
-            printf '%s\n' "''${pkgs[@]}" | parallel --will-cite nix-update --flake --use-update-script
-          '';
-
-        meta.description = "Update all packages in this flake that have an update script";
-      };
-
       files.readme.content.packages.content =
         let
           packageDefinitions = lib.sortOn (p: p.name) (
@@ -64,7 +29,7 @@
         in
         ''
           this flake has a couple packages, mostly used internally, but available via `.#<package>`.
-          some of these packages provide a `passthru.updateScript`, all of which can be run via `nix run .#update-packages`.
+          some of these packages provide a `passthru.updateScript`, all of which can be run via `just update-packages`.
 
           ${config.files.readme.lib.renderTable {
             header = [
