@@ -54,7 +54,6 @@
               launch_apps_custom_command = "uwsm app -- $CMD";
               setup_wizard_enabled = false;
               external_ip_enabled = true;
-              panel.transparency_mode = "glass";
             };
 
             location.auto_locate = true;

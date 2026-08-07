@@ -1,13 +1,17 @@
+{ inputs, ... }:
 {
+  flake-file.inputs.mattpocock-skills = {
+    url = "github:mattpocock/skills";
+    flake = false;
+  };
+
   flake.modules.homeManager.default =
     { inputs', ... }:
     {
       programs.claude-code = {
         enable = true;
         package = inputs'.llm-agents.packages.claude-code;
-        rules = {
-          karpathy-guidelines = ./rules/karpathy-guidelines.md;
-        };
+        plugins.mattpocock-skills = inputs.mattpocock-skills;
         outputStyles = {
           asd-ste100 = ./output-styles/asd-ste100.md;
         };

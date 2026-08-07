@@ -33,7 +33,7 @@
       programs.claude-code = {
         skills.herdr = ./skills/herdr.md;
 
-        hooks."herdr-agent-state.sh" = builtins.readFile ./hooks/herdr-agent-state.sh;
+        hooks."herdr-agent-state.sh" = ./hooks/herdr-agent-state.sh;
 
         settings.hooks.SessionStart = [
           {

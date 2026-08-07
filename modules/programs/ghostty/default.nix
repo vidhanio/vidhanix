@@ -1,20 +1,28 @@
 {
-  flake.modules.homeManager.default = {
+  flake.modules.homeManager.default = { config, ... }: {
     programs.ghostty = {
       enable = true;
       settings =
         let
-          padding = 10;
+          padding = 8;
         in
         {
           window-padding-x = padding;
           window-padding-y = padding;
           background-opacity-cells = true;
+
+          # Keep the systemd service running with no windows open, so every new
+          # window stays on the fast path.
+          quit-after-last-window-closed = false;
         };
     };
 
+    xdg.autostart.entries = [
+      "${config.programs.ghostty.package}/share/applications/com.mitchellh.ghostty.desktop"
+    ];
+
     hyprland.autostartWorkspaces.ghostty = 1;
 
-    hyprland.binds."SUPER + T".exec_cmd = "uwsm app -- ghostty";
+    hyprland.binds."SUPER + T".exec_cmd = "ghostty +new-window";
   };
 }

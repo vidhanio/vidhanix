@@ -3,18 +3,14 @@
   flake-file.inputs.nixcord.url = "github:4evy/nixcord";
 
   flake.modules.homeManager.default =
-    { config, pkgs, ... }:
+    { config, ... }:
     {
       imports = [ inputs.nixcord.homeModules.default ];
-
-      programs.nixcord.vesktop.package = pkgs.vesktop.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [ ./vesktop-webrtc-policy.patch ];
-      });
 
       programs.nixcord = {
         enable = true;
         discord.enable = false;
-        vesktop = {
+        equibop = {
           enable = true;
           settings = {
             discordBranch = "canary";
@@ -22,7 +18,6 @@
             arRPC = true;
             hardwareAcceleration = true;
             hardwareVideoAcceleration = true;
-            # customTitleBar = false;
           };
           state = {
             firstLaunch = false;
@@ -34,12 +29,13 @@
         config = {
           useQuickCss = true;
           disableMinSize = true;
-          transparent = true;
           plugins = {
             # keep-sorted start
             clearUrls.enable = true;
+            equibopStreamFixes.enable = true;
             fakeNitro.enable = true;
             spotifyCrack.enable = true;
+            timezones.enable = true;
             volumeBooster.enable = true;
             youtubeAdblock.enable = true;
             # keep-sorted end

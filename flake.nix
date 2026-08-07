@@ -43,6 +43,10 @@
     import-tree.url = "github:vic/import-tree";
     librepods.url = "github:kavishdevar/librepods/linux/rust";
     llm-agents.url = "github:numtide/llm-agents.nix";
+    mattpocock-skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
     mcsr = {
       url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -62,7 +66,7 @@
     prismlauncher.url = "github:vidhanio/PrismLauncher";
     sops-nix.url = "github:Mic92/sops-nix";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-    stylix.url = "github:vidhanio/stylix/herdr";
+    stylix.url = "github:vidhanio/stylix/vidhanio";
     systems.url = "github:nix-systems/default-linux";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     vidhan-fonts = {
