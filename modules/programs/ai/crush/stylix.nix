@@ -1,12 +1,5 @@
 {
-  # Vendored from `modules/crush/hm.nix` on
-  # `github:vidhanio/stylix/vidhanio`, pending a crush theme upstream.
-  #
-  # Crush does not yet expose structured theme options in Home Manager, so
-  # the palette is written directly into `settings`, following the schema
-  # proposed in https://github.com/charmbracelet/crush/pull/2731. The
-  # theme-switching support it relies on is applied by the package override
-  # in default.nix.
+  # Vendored from github:vidhanio/stylix (vidhanio) modules/crush/hm.nix.
   flake.modules.homeManager.default =
     { config, ... }:
     {

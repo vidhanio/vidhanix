@@ -1,22 +1,4 @@
 {
-  # Stylix theme for Oh My Pi (omp), written to
-  # ~/.omp/agent/themes/stylix.json and selected via the `theme.dark`
-  # setting.
-  #
-  # The color roles follow the built-in "titanium" theme
-  # (packages/coding-agent/src/modes/theme/defaults/titanium.json
-  # upstream), with the fixed palette replaced by the stylix base16 scheme:
-  #   - accent/links/functions/status model = the base16 blue,
-  #   - headings/keywords/subagents = the base16 purple,
-  #   - success/diff-added/git-clean = base16 green,
-  #   - errors/diff-removed/untracked = base16 red,
-  #   - warnings/dirty = base16 yellow,
-  #   - chrome (borders, muted, dim) from the base16 surface ramp,
-  #   - text = "" (terminal default) where titanium leaves it empty.
-  #
-  # Only `theme.dark` is set: the repo's stylix scheme
-  # (modules/systems/gui/stylix) is dark-only, so light terminals keep the
-  # built-in "light" theme instead of a forced dark palette.
   flake.modules.homeManager.default =
     { config, ... }:
     let

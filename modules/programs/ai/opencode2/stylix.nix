@@ -1,32 +1,4 @@
 {
-  # Stylix theme for OpenCode 2, written in the native V2 theme format
-  # (`version` = 2, hue scales + semantic tokens).
-  #
-  # Named "stylix-v2" because OpenCode 1 and 2 share the themes directory
-  # (`~/.config/opencode/themes/`) and stylix's own opencode module already
-  # writes a V1-format "stylix" theme for `programs.opencode` (V1); the two
-  # formats cannot share one filename. OpenCode 2 migrates the V1 "stylix"
-  # theme at runtime, and reads this native-V2 theme by name.
-  #
-  # The color roles mirror the built-in "opencode" theme
-  # (packages/tui/src/theme/assets/opencode.json upstream), following the
-  # runtime's v1 -> v2 migration (packages/theme/src/tui/v1-migrate.ts):
-  #   - a neutral gray ramp for the chrome (background -> text),
-  #   - primary/links/function = the base16 orange (the original's peach
-  #     `#fab283`); the migration maps the v1 primary onto the `interactive`
-  #     hue, so `interactive` = orange and `accent` = purple,
-  #   - the v1 secondary blue survives as the first categorical color and as
-  #     the `hue.blue` scale used by components for accents,
-  #   - red/green/yellow/cyan for feedback, syntax and markdown.
-  # The original's fixed palette is replaced by the stylix base16 scheme,
-  # deriving the 9-step hue scales from each base16 color in pure Nix.
-  #
-  # Action/formfield states follow the runtime's v1 migration
-  # (packages/theme/src/tui/v1-migrate.ts): formfields keep the plain
-  # background in every state — focus is expressed through the text tint, not
-  # a colored field background. The v1 theme has no formfield tokens of its
-  # own, so copying the v2 default theme's `background.formfield.$focused` (a
-  # solid interactive-colored field) would diverge from the original look.
   flake.modules.homeManager.default =
     { config, lib, ... }:
     let
@@ -90,9 +62,6 @@
         }:
         0.299 * r + 0.587 * g + 0.114 * b;
 
-      # Map the stylix polarity onto the V2 theme mode. `either` (the default)
-      # means the palette generator picked the scheme itself, so derive the
-      # mode from the scheme's actual background color instead.
       isLightBackground = luminance (hexToRgb colors.base00) > 127.5;
       mode =
         if config.stylix.polarity == "light" then
@@ -104,13 +73,6 @@
         else
           "dark";
 
-      # A 9-step hue scale (100 = lightest, 900 = darkest). The base16 color
-      # sits at step 200, matching the runtime's dark-mode `hueScale`
-      # (packages/theme/src/tui/v1-migrate.ts), because the TUI components
-      # hardcode `hue.<accent|interactive>[200]` for their accent colors —
-      # step 200 must therefore be the token itself, not a tint of it. The
-      # darken curve is gentle so the low steps keep some chroma, like the
-      # runtime's OKLCH lightness ramp.
       mkScale = c: {
         "100" = lighten c 0.10;
         "200" = c;
@@ -123,9 +85,6 @@
         "900" = darken c 0.86;
       };
 
-      # The neutral ramp follows the base16 scheme itself: base00 is the
-      # background and base05..base07 the foregrounds, with interpolated
-      # steps in between (mirrors the original theme's 12-step gray ramp).
       gray = {
         "100" = colors.base07;
         "200" = colors.base06;
@@ -162,10 +121,6 @@
         neutral = "$hue.gray";
       };
 
-      # Dark mode. Token roles follow the built-in opencode theme:
-      # text/background from the gray ramp, markdown links & syntax functions
-      # in the peach orange, syntax keywords in the purple accent, and the
-      # base16 feedback colors for the rest.
       dark = {
         inherit hue;
         categorical = [
@@ -267,7 +222,6 @@
             context = "$hue.neutral.800";
           };
           highlight = {
-            # The original pairs teal added-text with a light green highlight.
             added = "$hue.green.100";
             removed = "$hue.red.200";
           };
@@ -308,13 +262,8 @@
         };
       };
 
-      # Light mode inherits the dark definitions (mergeMode) and only flips
-      # the chrome and foregrounds. The system prefers dark
-      # (stylix.polarity = "dark"), so this is a best-effort counterpart.
       light = {
         mergeMode = true;
-        # The v1 asset inverts roles in light mode: primary becomes the blue
-        # and accent the orange, so the light mode swaps the hue aliases.
         hue = {
           accent = "$hue.orange";
           interactive = "$hue.blue";
@@ -409,8 +358,6 @@
             };
           };
         };
-        # Light mode swaps the syntax/markdown roles with the palette
-        # inversion: keyword = accent (orange), function = primary (blue).
         syntax = {
           comment = "$hue.neutral.600";
           keyword = "$hue.orange.800";
@@ -442,10 +389,6 @@
     in
     {
       programs.opencode2 = {
-        # Native V2 CLI config: `theme` is `{ name, mode }`. `mode` follows the
-        # stylix polarity (dark/light), or the scheme's background when
-        # polarity is `either`, instead of the terminal's light/dark
-        # detection.
         cli.theme = {
           name = theme;
           inherit mode;

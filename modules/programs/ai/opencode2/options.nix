@@ -10,9 +10,57 @@
       cfg = config.programs.opencode2;
       jsonFormat = pkgs.formats.json { };
 
-      # A resource option accepts either an attribute set (name -> inline content,
-      # file, or directory) or a path to a directory containing one folder per
-      # resource. Mirrors programs.prime-agent.
+      # HM server -> V2 shape (`command` array, `environment`, `{file:}` refs).
+      toOpencode2Server =
+        server:
+        let
+          isRemote = (server.url or null) != null;
+          renderedEnv = lib.hm.mcp.renderEnv (path: "{file:${path}}") (server.env or { });
+        in
+        {
+          type = if isRemote then "remote" else "local";
+        }
+        // (
+          if isRemote then
+            {
+              inherit (server) url;
+            }
+            // lib.optionalAttrs ((server.headers or { }) != { }) { inherit (server) headers; }
+          else
+            {
+              command = [ server.command ] ++ (server.args or [ ]);
+            }
+            // lib.optionalAttrs (renderedEnv != { }) { environment = renderedEnv; }
+        );
+
+      transformedMcpServers = lib.optionalAttrs (cfg.enableMcpIntegration && config.programs.mcp.enable) (
+        lib.mapAttrs (
+          _: server:
+          lib.hm.mcp.transformMcpServer {
+            inherit server;
+            exclude = [
+              "enabled"
+              "args"
+              "env"
+            ];
+            extraTransforms = [ toOpencode2Server ];
+          }
+          // lib.optionalAttrs ((server.enabled or null) == false || (server.disabled or false)) {
+            disabled = true;
+          }
+        ) config.programs.mcp.servers
+      );
+
+      mcpServers = transformedMcpServers // (cfg.settings.mcp.servers or { });
+
+      settings =
+        cfg.settings
+        // lib.optionalAttrs (mcpServers != { }) {
+          mcp = (cfg.settings.mcp or { }) // {
+            servers = mcpServers;
+          };
+        };
+
       mkResourceOption =
         { dir, description }:
         lib.mkOption {
@@ -43,7 +91,6 @@
           '';
         };
 
-      # Symlink each resource into `~/.config/opencode/<dir>/<name><suffix>`.
       resourceFiles =
         dir: suffix: resources:
         let
@@ -82,6 +129,22 @@
         package = lib.mkPackageOption pkgs "opencode2" {
           nullable = true;
           default = null;
+        };
+
+        enableMcpIntegration = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = ''
+            Whether to integrate the MCP servers config from
+            {option}`programs.mcp.servers` into
+            {option}`programs.opencode2.settings.mcp.servers`.
+
+            Servers from {option}`programs.mcp.servers` are transformed into
+            the V2 MCP server shape (see
+            <https://opencode.ai/v2/docs/mcp-servers/>) and merged with
+            {option}`programs.opencode2.settings.mcp.servers`, with OpenCode 2
+            settings taking precedence.
+          '';
         };
 
         settings = lib.mkOption {
@@ -275,25 +338,21 @@
         home.packages = lib.mkIf (cfg.package != null) [ cfg.package ];
 
         xdg.configFile = {
-          # OpenCode 1 and 2 share `opencode.json`, and OpenCode 2 normalizes
-          # supported V1 fields in memory. When `programs.opencode` (V1) is
-          # enabled it owns the shared file, because V1 cannot read V2-shaped
-          # keys; this definition is then deferred to it.
-          "opencode/opencode.json" = lib.mkIf (cfg.settings != { } && !config.programs.opencode.enable) {
-            source = jsonFormat.generate "opencode2-settings.json" (
+          "opencode/opencode.json" =
+            lib.mkIf ((cfg.settings != { } || transformedMcpServers != { }) && !config.programs.opencode.enable)
               {
-                "$schema" = "https://opencode.ai/config.json";
-              }
-              // cfg.settings
-            );
-          };
+                source = jsonFormat.generate "opencode2-settings.json" (
+                  {
+                    "$schema" = "https://opencode.ai/config.json";
+                  }
+                  // settings
+                );
+              };
 
           "opencode/cli.json" = lib.mkIf (cfg.cli != { }) {
             source = jsonFormat.generate "opencode2-cli.json" cfg.cli;
           };
 
-          # Same sharing rule as opencode.json: the V1 module writes the
-          # shared AGENTS.md when it is enabled.
           "opencode/AGENTS.md" = lib.mkIf (!config.programs.opencode.enable) (
             if lib.isPath cfg.context then
               { source = cfg.context; }
@@ -355,8 +414,6 @@
 
         warnings =
           let
-            # Generated theme files must carry either a `version` (native V2) or a
-            # `theme` key (V1, runtime-migrated), or the TUI silently drops them.
             invalidThemes = lib.filterAttrs (
               _name: content: lib.isAttrs content && !(content ? version) && !(content ? theme)
             ) (if lib.isAttrs cfg.themes then cfg.themes else { });
@@ -371,19 +428,26 @@
               set for the V1 format.
             ''
           ]
-          ++ lib.optionals (config.programs.opencode.enable && (cfg.settings != { } || cfg.context != "")) [
-            ''
-              `programs.opencode` (V1) is enabled, so OpenCode 2 defers the shared
-              {file}`$XDG_CONFIG_HOME/opencode/opencode.json` and {file}`AGENTS.md`
-              to it, and the current `programs.opencode2.settings`/`context`
-              values are not written.
+          ++
+            lib.optionals
+              (
+                config.programs.opencode.enable
+                && (cfg.settings != { } || cfg.context != "" || transformedMcpServers != { })
+              )
+              [
+                ''
+                  `programs.opencode` (V1) is enabled, so OpenCode 2 defers the shared
+                  {file}`$XDG_CONFIG_HOME/opencode/opencode.json` and {file}`AGENTS.md`
+                  to it, and the current `programs.opencode2.settings`/`context`
+                  values — and any MCP servers from `programs.mcp.servers` — are not
+                  written.
 
-              Move shared settings into `programs.opencode.settings` in the V1
-              shape — OpenCode 2 normalizes supported V1 fields in memory.
-              V2-only keys have no V1 equivalent; drop them or disable the
-              opencode module.
-            ''
-          ];
+                  Move shared settings into `programs.opencode.settings` in the V1
+                  shape — OpenCode 2 normalizes supported V1 fields in memory.
+                  V2-only keys have no V1 equivalent; drop them or disable the
+                  opencode module.
+                ''
+              ];
       };
     };
 }

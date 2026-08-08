@@ -14,16 +14,12 @@
       options.programs.t3-code = {
         enable = lib.mkEnableOption "T3 Code";
 
-        # The T3 Code server CLI (`t3`). Installs the `t3` binary, which
-        # launches the server and the local web app.
         package = lib.mkPackageOption pkgs "t3-code" {
           nullable = true;
           default = null;
         };
 
         desktop = {
-          # The Electron desktop app ("T3 Code (Alpha)"). It embeds the same
-          # server and shares the same data directory (`~/.t3`) as the CLI.
           enable = lib.mkEnableOption "the T3 Code desktop app";
 
           package = lib.mkPackageOption pkgs "t3-code-desktop" {

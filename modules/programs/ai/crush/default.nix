@@ -8,9 +8,38 @@
       programs.crush = {
         enable = true;
 
-        # Add the theme-switching support from crush#2731, rebased onto the
-        # commit it was opened against, since it does not apply cleanly onto
-        # the v0.88.0 release.
+        # Overrides catwalk's reasoning_levels for deepseek-v4 (xhigh maps to
+        # high; max is the real max, per DeepSeek's thinking-mode docs).
+        settings = {
+          providers.opencode-go.models = [
+            {
+              id = "deepseek-v4-flash";
+              name = "DeepSeek V4 Flash (2x usage)";
+              cost_per_1m_in = 0.07;
+              cost_per_1m_out = 0.14;
+              cost_per_1m_in_cached = 0;
+              cost_per_1m_out_cached = 0;
+              context_window = 1000000;
+              default_max_tokens = 384000;
+              can_reason = true;
+              reasoning_levels = [
+                "low"
+                "high"
+                "max"
+              ];
+              default_reasoning_effort = "max";
+              supports_attachments = false;
+            }
+          ];
+
+          models.large = {
+            model = "deepseek-v4-flash";
+            provider = "opencode-go";
+            reasoning_effort = "max";
+          };
+        };
+
+        # Rebases crush#2731 theme-switching onto the pinned rev.
         package = inputs'.llm-agents.packages.crush.overrideAttrs (old: {
           inherit version;
 

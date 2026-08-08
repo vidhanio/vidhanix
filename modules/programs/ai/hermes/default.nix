@@ -2,16 +2,16 @@
   flake.modules.homeManager.default =
     { inputs', ... }:
     {
-      programs.opencode = {
+      programs.hermes = {
         enable = true;
-        package = inputs'.llm-agents.packages.opencode;
+        package = inputs'.llm-agents.packages.hermes-agent;
 
         settings = {
           model = "opencode-go/deepseek-v4-flash";
-          autoupdate = false;
+          agent.reasoning_effort = "max";
         };
       };
 
-      # No persist: shares XDG dirs already persisted by opencode2.
+      persist.directories = [ ".hermes" ];
     };
 }

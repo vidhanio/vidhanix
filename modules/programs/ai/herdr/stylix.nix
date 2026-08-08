@@ -1,6 +1,5 @@
 {
-  # Vendored from `modules/herdr/hm.nix` on
-  # `github:vidhanio/stylix/vidhanio`, pending a herdr theme upstream.
+  # Vendored from github:vidhanio/stylix (vidhanio) modules/herdr/hm.nix.
   flake.modules.homeManager.default =
     { config, ... }:
     {

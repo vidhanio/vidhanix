@@ -11,10 +11,6 @@
       yamlFormat = pkgs.formats.yaml { };
       jsonFormat = pkgs.formats.json { };
 
-      # A resource option accepts either an attribute set (name -> inline
-      # content, file, or directory) or a path to a directory containing one
-      # folder per resource. Mirrors programs.prime-agent and
-      # programs.opencode2.
       mkResourceOption =
         { dir, description }:
         lib.mkOption {
@@ -45,7 +41,6 @@
           '';
         };
 
-      # Symlink each resource into `~/.omp/agent/<dir>/<name><suffix>`.
       resourceFiles =
         dir: suffix: resources:
         let

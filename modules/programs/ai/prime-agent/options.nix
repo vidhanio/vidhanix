@@ -40,7 +40,6 @@
           '';
         };
 
-      # Symlink each resource into `~/.prime/agent/<dir>/<name><suffix>`.
       resourceFiles =
         dir: suffix: resources:
         let
@@ -71,12 +70,53 @@
           assertion = !lib.hm.strings.isPathLike resources || lib.pathIsDirectory resources;
           message = "`programs.prime-agent.${dir}` must be a directory when set to a path";
         };
+
+      # No config expansion; file refs in `env` use wrapEnvFilesCommand.
+      toPrimeAgentServer =
+        name: server:
+        lib.hm.mcp.transformMcpServer {
+          inherit server;
+          exclude = [ "enabled" ];
+          extraTransforms = [
+            lib.hm.mcp.addType
+            (lib.hm.mcp.wrapEnvFilesCommand { inherit pkgs name; })
+          ];
+        }
+        // lib.optionalAttrs ((server.enabled or null) == false || (server.disabled or false)) {
+          enabled = false;
+        };
+
+      transformedMcpServers = lib.optionalAttrs (cfg.enableMcpIntegration && config.programs.mcp.enable) (
+        lib.mapAttrs toPrimeAgentServer config.programs.mcp.servers
+      );
+
+      mcpServers = transformedMcpServers // (cfg.settings.mcpServers or { });
+
+      settings =
+        cfg.settings
+        // lib.optionalAttrs (mcpServers != { }) {
+          inherit mcpServers;
+        };
     in
     {
       options.programs.prime-agent = {
         enable = lib.mkEnableOption "Prime Agent";
 
         package = lib.mkPackageOption pkgs "prime-agent" { nullable = true; };
+
+        enableMcpIntegration = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = ''
+            Whether to integrate the MCP servers config from
+            {option}`programs.mcp.servers` into
+            {option}`programs.prime-agent.settings.mcpServers`.
+
+            Note: Servers defined in {option}`programs.mcp.servers` are merged
+            with {option}`programs.prime-agent.settings.mcpServers`, with
+            prime-agent settings taking precedence.
+          '';
+        };
 
         settings = lib.mkOption {
           inherit (jsonFormat) type;
@@ -153,8 +193,8 @@
         home.packages = lib.mkIf (cfg.package != null) [ cfg.package ];
 
         home.file = {
-          ".prime/agent/settings.json" = lib.mkIf (cfg.settings != { }) {
-            source = jsonFormat.generate "prime-agent-settings.json" cfg.settings;
+          ".prime/agent/settings.json" = lib.mkIf (settings != { }) {
+            source = jsonFormat.generate "prime-agent-settings.json" settings;
           };
         }
         // (lib.optionalAttrs (lib.hm.strings.isPathLike cfg.themes) {
