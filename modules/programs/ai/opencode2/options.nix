@@ -10,7 +10,6 @@
       cfg = config.programs.opencode2;
       jsonFormat = pkgs.formats.json { };
 
-      # HM server -> V2 shape (`command` array, `environment`, `{file:}` refs).
       toOpencode2Server =
         server:
         let
@@ -75,19 +74,8 @@
           description = ''
             ${description}
 
-            This option can either be:
-            - An attribute set defining resources
-            - A path to a directory containing resource folders
-
-            If an attribute set is used, the attribute name becomes the resource
-            name, and the value is either:
-            - Inline content as a string
-            - A path to a file
-            - A path to a directory
-
-            If a path is used, it is expected to contain one folder per resource
-            name. The directory is symlinked to
-            {file}`$XDG_CONFIG_HOME/opencode/${dir}/`.
+            Either an attribute set of resources or a path to a directory,
+            symlinked to {file}`$XDG_CONFIG_HOME/opencode/${dir}/`.
           '';
         };
 
@@ -139,11 +127,10 @@
             {option}`programs.mcp.servers` into
             {option}`programs.opencode2.settings.mcp.servers`.
 
-            Servers from {option}`programs.mcp.servers` are transformed into
-            the V2 MCP server shape (see
-            <https://opencode.ai/v2/docs/mcp-servers/>) and merged with
+            Note: Servers defined in {option}`programs.mcp.servers` are transformed
+            into the V2 MCP server shape and merged with
             {option}`programs.opencode2.settings.mcp.servers`, with OpenCode 2
-            settings taking precedence.
+            settings taking precedence. See <https://opencode.ai/v2/docs/mcp-servers/>.
           '';
         };
 
@@ -170,23 +157,8 @@
             Configuration written to {file}`$XDG_CONFIG_HOME/opencode/opencode.json`.
             See <https://opencode.ai/v2/docs/config/> for the documentation.
 
-            OpenCode 2 reads the same file as OpenCode 1 and normalizes supported
-            V1 fields in memory, so both V1- and V2-shaped keys are accepted. The
-            V2 shape is recommended; the big differences from V1 are:
-            - `agent` → `agents`, `command` → `commands`, `provider` → `providers`,
-              `snapshot` → `snapshots`, `attachment` → `media`, `plugin` → `plugins`
-            - `permission` (grouped by tool) → one ordered `permissions` array with
-              `{ action, resource, effect }` rules
-            - `autoshare` → `share`, `reference` → `references`
-            - MCP servers live under `mcp.servers`, `enabled` is now `disabled`
-            - skills are one ordered array of paths/URLs instead of
-              `{ paths, urls }`
-
-            While {option}`programs.opencode` (V1) is enabled, this option is
-            deferred: the V1 module owns the shared file, because V1 cannot
-            read V2-shaped keys. Write shared settings there in the V1 shape
-            (supported V1 fields are normalized by V2 in memory); V2-only keys
-            have no V1 equivalent.
+            Deferred while {option}`programs.opencode` (V1) is enabled: the V1
+            module owns the shared file, and V2 normalizes V1 fields in memory.
           '';
         };
 
@@ -206,17 +178,9 @@
             CLI/TUI configuration written to
             {file}`$XDG_CONFIG_HOME/opencode/cli.json`.
 
-            OpenCode 2 owns this file (the background service does not read it) and
-            replaces the V1 `tui.json`; it is auto-migrated from `tui.json` once on
-            first start, after which `cli.json` is the source of truth. Declarative
-            setups should write `cli.json` directly, which this option does.
-
-            `theme` is `{ name, mode }`: `name` is a built-in theme or a custom
-            theme written by {option}`programs.opencode2.themes` (the filename
-            becomes the name), and `mode` is `"system"`, `"dark"` or `"light"`.
-            See <https://opencode.ai/v2/docs/themes/> for the token reference and
-            <https://opencode.ai/v2/docs/migrate-v1/#tui-configuration> for the
-            field mapping from the V1 `tui.json`.
+            This includes theme, keybinds, scroll settings, and other CLI-only
+            options. `theme` is `{ name, mode }`; see
+            <https://opencode.ai/v2/docs/themes/> for the documentation.
           '';
         };
 
@@ -224,12 +188,14 @@
           type = lib.types.either lib.types.lines lib.types.path;
           default = "";
           description = ''
-            Global context for OpenCode 2, written to
-            {file}`$XDG_CONFIG_HOME/opencode/AGENTS.md`.
+            Global context for OpenCode 2.
 
             The value is either:
             - Inline content as a string
             - A path to a file containing the content
+
+            The configured content is written to
+            {file}`$XDG_CONFIG_HOME/opencode/AGENTS.md`.
           '';
           example = "Read @docs/guidelines.md before editing TypeScript code.";
         };
@@ -237,47 +203,62 @@
         agents = mkResourceOption {
           dir = "agents";
           description = ''
-            Custom agents for OpenCode 2, written to
-            {file}`$XDG_CONFIG_HOME/opencode/agents/`.
+            Custom agent for OpenCode 2.
 
-            Markdown files use YAML frontmatter (`description`, `mode`, `model`,
-            `permissions`, ...) and the body becomes the agent system prompt. The
-            path below `agents/` becomes the agent ID. See
-            <https://opencode.ai/v2/docs/agents/> for the documentation.
+            This option can either be:
+            - An attribute set defining agents
+            - A path to a directory containing multiple agents files
 
-            Note that the native V2 `agents` map can also be declared directly in
-            {option}`programs.opencode2.settings`.
+            If an attribute set is used, the attribute name becomes the agent filename,
+            and the value is either:
+            - Inline content as a string (creates `opencode/agents/<name>.md`)
+            - A path to a file (creates `opencode/agents/<name>.md`)
+
+            If a path is used, it is expected to contain agents files.
+            The directory is symlinked to {file}`$XDG_CONFIG_HOME/opencode/agents/`.
           '';
         };
 
         commands = mkResourceOption {
           dir = "commands";
           description = ''
-            Custom slash commands for OpenCode 2, written to
-            {file}`$XDG_CONFIG_HOME/opencode/commands/`.
+            Custom command for OpenCode 2.
 
-            The Markdown body is the command template; frontmatter supports
-            `description`, `agent`, `subtask`, and `model`. See
-            <https://opencode.ai/v2/docs/commands/> for the documentation.
+            This option can either be:
+            - An attribute set defining commands
+            - A path to a directory containing multiple commands files
 
-            Note that the native V2 `commands` map can also be declared directly in
-            {option}`programs.opencode2.settings`.
+            If an attribute set is used, the attribute name becomes the command filename,
+            and the value is either:
+            - Inline content as a string (creates `opencode/commands/<name>.md`)
+            - A path to a file (creates `opencode/commands/<name>.md`)
+
+            If a path is used, it is expected to contain commands files.
+            The directory is symlinked to {file}`$XDG_CONFIG_HOME/opencode/commands/`.
           '';
         };
 
         skills = mkResourceOption {
           dir = "skills";
           description = ''
-            Custom skills for OpenCode 2, written to
+            Custom skills for OpenCode 2.
+
+            This option can be either:
+            - An attribute set defining skills
+            - A path to a directory containing skill folders
+
+            If an attribute set is used, the attribute name becomes the
+            skill directory name, and the value is either:
+            - Inline content as a string (creates `$XDG_CONFIG_HOME/opencode/skills/<name>/SKILL.md`)
+            - A path to a file (creates `$XDG_CONFIG_HOME/opencode/skills/<name>/SKILL.md`)
+            - A path to a directory (creates `$XDG_CONFIG_HOME/opencode/skills/<name>/` with all files)
+
+            This also accepts Nix store paths, for example a skill directory from
+            a package.
+
+            If a path is used, it is expected to contain one folder per skill name,
+            each containing a {file}`SKILL.md`. The directory is symlinked to
             {file}`$XDG_CONFIG_HOME/opencode/skills/`.
-
-            The directory name becomes the skill ID; each skill may carry
-            supporting scripts and references next to its {file}`SKILL.md`. See
-            <https://opencode.ai/v2/docs/skills/> for the documentation.
-
-            OpenCode 2 also discovers `~/.claude/skills` and `~/.agents/skills`
-            automatically, so skills installed there (e.g. through
-            `programs.agent-skills`) are picked up without this option.
           '';
         };
 
@@ -292,44 +273,45 @@
             };
           };
           description = ''
-            Custom themes for OpenCode 2, written to
-            {file}`$XDG_CONFIG_HOME/opencode/themes/`.
+            Custom themes for OpenCode 2.
 
             This option can either be:
             - An attribute set defining themes
-            - A path to a directory containing theme files
+            - A path to a directory containing multiple theme files
 
-            If an attribute set is used, the attribute name becomes the theme
-            filename (and therefore the theme name), and the value is either:
+            If an attribute set is used, the attribute name becomes the theme filename,
+            and the value is either:
             - An attribute set that is converted to a JSON file
             - A path to a file
 
-            If a path is used, it is expected to contain theme files. The
-            directory is symlinked to {file}`$XDG_CONFIG_HOME/opencode/themes/`.
+            If a path is used, it is expected to contain theme files.
+            The directory is symlinked to {file}`$XDG_CONFIG_HOME/opencode/themes/`.
 
             Theme files are either the native V2 format (`version` = 2, with
-            `light`/`dark` modes of hue scales and semantic tokens) or the V1
-            format (a `theme` key), which OpenCode 2 migrates at runtime. A
-            `$schema` key pointing at `https://opencode.ai/theme.json` is added
-            automatically to generated theme files; values given here take
-            precedence.
+            `light`/`dark` modes of hue scales and semantic tokens) or the V1 format
+            (a `theme` key), which OpenCode 2 migrates at runtime. A `$schema` key
+            is added automatically to generated theme files.
 
             Set {option}`programs.opencode2.cli.theme` to enable a theme.
-            See <https://opencode.ai/v2/docs/themes/> for the documentation.
           '';
         };
 
         plugins = mkResourceOption {
           dir = "plugins";
           description = ''
-            Custom OpenCode 2 plugins, written to
-            {file}`$XDG_CONFIG_HOME/opencode/plugins/`.
+            Custom plugin for OpenCode 2.
 
-            OpenCode 2 discovers `{plugin,plugins}/*.{ts,js,...}` from the global
-            configuration directory and from project `.opencode` directories. The
-            plugin API is new in V2 and still being finalized; V1 plugin code does
-            not work. See <https://opencode.ai/v2/docs/config/#plugins> for the
-            configuration entries and the plugins guide for development.
+            This option can either be:
+            - An attribute set defining plugins
+            - A path to a directory containing multiple plugins files
+
+            If an attribute set is used, the attribute name becomes the plugin filename,
+            and the value is either:
+            - Inline content as a string (creates `opencode/plugins/<name>.ts`)
+            - A path to a file (creates `opencode/plugins/<name>.ts`)
+
+            If a path is used, it is expected to contain plugins files.
+            The directory is symlinked to {file}`$XDG_CONFIG_HOME/opencode/plugins/`.
           '';
         };
       };
@@ -427,27 +409,7 @@
               `version = 2` to use the native V2 format, or a `theme` attribute
               set for the V1 format.
             ''
-          ]
-          ++
-            lib.optionals
-              (
-                config.programs.opencode.enable
-                && (cfg.settings != { } || cfg.context != "" || transformedMcpServers != { })
-              )
-              [
-                ''
-                  `programs.opencode` (V1) is enabled, so OpenCode 2 defers the shared
-                  {file}`$XDG_CONFIG_HOME/opencode/opencode.json` and {file}`AGENTS.md`
-                  to it, and the current `programs.opencode2.settings`/`context`
-                  values — and any MCP servers from `programs.mcp.servers` — are not
-                  written.
-
-                  Move shared settings into `programs.opencode.settings` in the V1
-                  shape — OpenCode 2 normalizes supported V1 fields in memory.
-                  V2-only keys have no V1 equivalent; drop them or disable the
-                  opencode module.
-                ''
-              ];
+          ];
       };
     };
 }

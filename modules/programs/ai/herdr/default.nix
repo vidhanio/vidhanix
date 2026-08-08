@@ -30,7 +30,7 @@
         };
       };
 
-      programs.agent-skills.sources.herdr = {
+      programs.agents.skills.sources.herdr = {
         path = ./skills;
       };
 

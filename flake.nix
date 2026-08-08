@@ -23,7 +23,6 @@
   };
 
   inputs = {
-    agent-skills.url = "github:Kyure-A/agent-skills-nix";
     disko.url = "github:nix-community/disko";
     files = {
       url = "github:mightyiam/files";

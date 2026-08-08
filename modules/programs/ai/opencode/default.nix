@@ -12,6 +12,8 @@
         };
       };
 
+      home.sessionVariables.OPENCODE_WEBSEARCH_PROVIDER = "exa";
+
       # No persist: shares XDG dirs already persisted by opencode2.
     };
 }

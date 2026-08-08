@@ -25,19 +25,8 @@
           description = ''
             ${description}
 
-            This option can either be:
-            - An attribute set defining resources
-            - A path to a directory containing resource folders
-
-            If an attribute set is used, the attribute name becomes the
-            resource name, and the value is either:
-            - Inline content as a string
-            - A path to a file
-            - A path to a directory
-
-            If a path is used, it is expected to contain one folder per
-            resource name. The directory is symlinked to
-            {file}`~/.omp/agent/${dir}/`.
+            Either an attribute set of resources or a path to a directory,
+            symlinked to {file}`~/.omp/agent/${dir}/`.
           '';
         };
 
@@ -91,11 +80,6 @@
           description = ''
             Configuration written to {file}`~/.omp/agent/config.yml`.
             See <https://omp.sh/docs/settings> for the documentation.
-
-            Settings are namespaced dotted keys (`theme.dark`,
-            `tools.approvalMode`, `memory.backend`, ...); each becomes a
-            nested mapping in the YAML file. The binary is Nix-managed, so
-            consider setting `startup.checkUpdate = false`.
           '';
         };
 
@@ -108,11 +92,7 @@
           };
           description = ''
             Keybinding remaps written to {file}`~/.omp/agent/keybindings.yml`.
-
-            Keys are keybinding action IDs; values are either one chord string
-            or an array of chord strings. An empty array disables the action.
-            See <https://omp.sh/docs/keybindings> for the documentation and
-            the action ID reference.
+            See <https://omp.sh/docs/keybindings> for the documentation.
           '';
         };
 
@@ -120,12 +100,13 @@
           type = lib.types.either lib.types.lines lib.types.path;
           default = "";
           description = ''
-            Global context for Oh My Pi, written to
-            {file}`~/.omp/agent/AGENTS.md`.
+            Global context for Oh My Pi.
 
             The value is either:
             - Inline content as a string
             - A path to a file containing the content
+
+            The configured content is written to {file}`~/.omp/agent/AGENTS.md`.
           '';
           example = "Prefer the project-local AGENTS.md; escalate to the user before editing system files.";
         };
@@ -140,74 +121,104 @@
             };
           };
           description = ''
-            Custom themes for Oh My Pi, written to
-            {file}`~/.omp/agent/themes/`.
+            Custom themes for Oh My Pi.
 
             This option can either be:
             - An attribute set defining themes
-            - A path to a directory containing theme files
+            - A path to a directory containing multiple theme files
 
-            If an attribute set is used, the attribute name becomes the theme
-            filename (and therefore the theme name), and the value is either:
+            If an attribute set is used, the attribute name becomes the theme filename,
+            and the value is either:
             - An attribute set that is converted to a JSON file
             - A path to a file
 
-            If a path is used, it is expected to contain theme files. The
-            directory is symlinked to {file}`~/.omp/agent/themes/`.
+            If a path is used, it is expected to contain theme files.
+            The directory is symlinked to {file}`~/.omp/agent/themes/`.
 
-            A `$schema` key and the theme `name` are added automatically to
-            generated theme files; values given here take precedence. The
-            theme JSON must provide every key of `colors` (see
-            <https://omp.sh/docs/themes> for the token reference); the
-            built-in themes under
-            <https://github.com/can1357/oh-my-pi/tree/main/packages/coding-agent/src/modes/theme>
-            are good starting points.
+            A `$schema` key and the theme `name` are added automatically.
 
-            Set {option}`programs.omp.settings.theme.dark` (or
-            {option}`programs.omp.settings.theme.light`) to enable a theme.
+            Set {option}`programs.omp.settings.theme.dark` to enable a theme.
           '';
         };
 
         commands = mkResourceOption {
           dir = "commands";
           description = ''
-            Custom slash commands for Oh My Pi, written to
-            {file}`~/.omp/agent/commands/`.
+            Custom command for Oh My Pi.
 
-            The Markdown body is the command template. See
-            <https://omp.sh/docs/slash> for the documentation.
+            This option can either be:
+            - An attribute set defining commands
+            - A path to a directory containing multiple commands files
+
+            If an attribute set is used, the attribute name becomes the command filename,
+            and the value is either:
+            - Inline content as a string (creates `opencode/commands/<name>.md`)
+            - A path to a file (creates `opencode/commands/<name>.md`)
+
+            If a path is used, it is expected to contain commands files.
+            The directory is symlinked to {file}`~/.omp/agent/commands/`.
           '';
         };
 
         skills = mkResourceOption {
           dir = "skills";
           description = ''
-            Custom skills for Oh My Pi, written to
-            {file}`~/.omp/agent/skills/`.
+            Custom skills for Oh My Pi.
 
-            The directory name becomes the skill ID; each skill may carry
-            supporting scripts and references next to its {file}`SKILL.md`.
-            See <https://omp.sh/docs/skills> for the documentation.
+            This option can be either:
+            - An attribute set defining skills
+            - A path to a directory containing skill folders
+
+            If an attribute set is used, the attribute name becomes the
+            skill directory name, and the value is either:
+            - Inline content as a string (creates `~/.omp/agent/skills/<name>/SKILL.md`)
+            - A path to a file (creates `~/.omp/agent/skills/<name>/SKILL.md`)
+            - A path to a directory (creates `~/.omp/agent/skills/<name>/` with all files)
+
+            This also accepts Nix store paths, for example a skill directory from
+            a package.
+
+            If a path is used, it is expected to contain one folder per skill name,
+            each containing a {file}`SKILL.md`. The directory is symlinked to
+            {file}`~/.omp/agent/skills/`.
           '';
         };
 
         prompts = mkResourceOption {
           dir = "prompts";
           description = ''
-            Custom prompt templates for Oh My Pi, written to
-            {file}`~/.omp/agent/prompts/`.
+            Custom prompt template for Oh My Pi.
 
-            See <https://omp.sh/docs/prompt-templates> for the documentation.
+            This option can either be:
+            - An attribute set defining prompt templates
+            - A path to a directory containing multiple prompt templates files
+
+            If an attribute set is used, the attribute name becomes the prompt template filename,
+            and the value is either:
+            - Inline content as a string (creates `opencode/prompts/<name>.md`)
+            - A path to a file (creates `opencode/prompts/<name>.md`)
+
+            If a path is used, it is expected to contain prompt templates files.
+            The directory is symlinked to {file}`~/.omp/agent/prompts/`.
           '';
         };
 
         tools = mkResourceOption {
           dir = "tools";
           description = ''
-            Custom tools for Oh My Pi, written to
-            {file}`~/.omp/agent/tools/`.
+            Custom tool for Oh My Pi.
 
-            See <https://omp.sh/docs/custom-tools> for the documentation.
+            This option can either be:
+            - An attribute set defining tools
+            - A path to a directory containing multiple tools files
+
+            If an attribute set is used, the attribute name becomes the tool filename,
+            and the value is either:
+            - Inline content as a string (creates `opencode/tools/<name>.ts`)
+            - A path to a file (creates `opencode/tools/<name>.ts`)
+
+            If a path is used, it is expected to contain tools files.
+            The directory is symlinked to {file}`~/.omp/agent/tools/`.
           '';
         };
       };

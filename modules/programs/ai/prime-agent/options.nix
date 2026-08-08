@@ -24,19 +24,8 @@
           description = ''
             ${description}
 
-            This option can either be:
-            - An attribute set defining resources
-            - A path to a directory containing resource folders
-
-            If an attribute set is used, the attribute name becomes the resource
-            name, and the value is either:
-            - Inline content as a string
-            - A path to a file
-            - A path to a directory
-
-            If a path is used, it is expected to contain one folder per resource
-            name. The directory is symlinked to
-            {file}`~/.prime/agent/${dir}/`.
+            Either an attribute set of resources or a path to a directory,
+            symlinked to {file}`~/.prime/agent/${dir}/`.
           '';
         };
 
@@ -71,7 +60,6 @@
           message = "`programs.prime-agent.${dir}` must be a directory when set to a path";
         };
 
-      # No config expansion; file refs in `env` use wrapEnvFilesCommand.
       toPrimeAgentServer =
         name: server:
         lib.hm.mcp.transformMcpServer {
@@ -135,7 +123,23 @@
         skills = mkResourceOption {
           dir = "skills";
           description = ''
-            Custom skills for Prime Agent, written to
+            Custom skills for Prime Agent.
+
+            This option can be either:
+            - An attribute set defining skills
+            - A path to a directory containing skill folders
+
+            If an attribute set is used, the attribute name becomes the
+            skill directory name, and the value is either:
+            - Inline content as a string (creates `~/.prime/agent/skills/<name>/SKILL.md`)
+            - A path to a file (creates `~/.prime/agent/skills/<name>/SKILL.md`)
+            - A path to a directory (creates `~/.prime/agent/skills/<name>/` with all files)
+
+            This also accepts Nix store paths, for example a skill directory from
+            a package.
+
+            If a path is used, it is expected to contain one folder per skill name,
+            each containing a {file}`SKILL.md`. The directory is symlinked to
             {file}`~/.prime/agent/skills/`.
           '';
         };
@@ -143,16 +147,38 @@
         extensions = mkResourceOption {
           dir = "extensions";
           description = ''
-            Custom TypeScript extensions for Prime Agent, written to
-            {file}`~/.prime/agent/extensions/`.
+            Custom extension for Prime Agent.
+
+            This option can either be:
+            - An attribute set defining extensions
+            - A path to a directory containing multiple extensions files
+
+            If an attribute set is used, the attribute name becomes the extension filename,
+            and the value is either:
+            - Inline content as a string (creates `prime/agent/extensions/<name>.ts`)
+            - A path to a file (creates `prime/agent/extensions/<name>.ts`)
+
+            If a path is used, it is expected to contain extensions files.
+            The directory is symlinked to {file}`~/.prime/agent/extensions/`.
           '';
         };
 
         prompts = mkResourceOption {
           dir = "prompts";
           description = ''
-            Custom prompt templates for Prime Agent, written to
-            {file}`~/.prime/agent/prompts/`.
+            Custom prompt template for Prime Agent.
+
+            This option can either be:
+            - An attribute set defining prompt templates
+            - A path to a directory containing multiple prompt templates files
+
+            If an attribute set is used, the attribute name becomes the prompt template filename,
+            and the value is either:
+            - Inline content as a string (creates `prime/agent/prompts/<name>.md`)
+            - A path to a file (creates `prime/agent/prompts/<name>.md`)
+
+            If a path is used, it is expected to contain prompt templates files.
+            The directory is symlinked to {file}`~/.prime/agent/prompts/`.
           '';
         };
 
@@ -166,23 +192,21 @@
             };
           };
           description = ''
-                Custom themes for Prime Agent, written to
-                {file}`~/.prime/agent/themes/`.
+            Custom themes for Prime Agent.
 
-                This option can either be:
-                - An attribute set defining themes
-                - A path to a directory containing theme files
+            This option can either be:
+            - An attribute set defining themes
+            - A path to a directory containing multiple theme files
 
-                If an attribute set is used, the attribute name becomes the theme
-                filename, and the value is either:
-                - An attribute set that is converted to a JSON file
-                - A path to a file
+            If an attribute set is used, the attribute name becomes the theme filename,
+            and the value is either:
+            - An attribute set that is converted to a JSON file
+            - A path to a file
 
-            If a path is used, it is expected to contain theme files. The
-            directory is symlinked to {file}`~/.prime/agent/themes/`.
+            If a path is used, it is expected to contain theme files.
+            The directory is symlinked to {file}`~/.prime/agent/themes/`.
 
-            A `$schema` key and the theme `name` are added automatically to
-            generated theme files; values given here take precedence.
+            A `$schema` key and the theme `name` are added automatically.
 
             Set {option}`programs.prime-agent.settings.theme` to enable a theme.
           '';

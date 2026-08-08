@@ -39,7 +39,6 @@
           };
         };
 
-        # Rebases crush#2731 theme-switching onto the pinned rev.
         package = inputs'.llm-agents.packages.crush.overrideAttrs (old: {
           inherit version;
 

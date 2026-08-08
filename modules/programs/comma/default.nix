@@ -23,7 +23,7 @@
 
       programs.nix-index-database.comma.enable = true;
 
-      programs.agent-skills.sources.comma = {
+      programs.agents.skills.sources.comma = {
         path = ./skill;
       };
 
