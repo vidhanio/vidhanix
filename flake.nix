@@ -23,6 +23,7 @@
   };
 
   inputs = {
+    agent-skills.url = "github:Kyure-A/agent-skills-nix";
     disko.url = "github:nix-community/disko";
     files = {
       url = "github:mightyiam/files";
@@ -63,10 +64,13 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
-    prismlauncher.url = "github:vidhanio/PrismLauncher";
+    prime-agent = {
+      url = "github:PrimeIntellect-ai/prime-agent";
+      flake = false;
+    };
     sops-nix.url = "github:Mic92/sops-nix";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-    stylix.url = "github:vidhanio/stylix/vidhanio";
+    stylix.url = "github:nix-community/stylix";
     systems.url = "github:nix-systems/default-linux";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     vidhan-fonts = {

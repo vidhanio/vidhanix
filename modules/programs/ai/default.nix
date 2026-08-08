@@ -1,8 +1,6 @@
 {
   flake-file = {
-    inputs = {
-      llm-agents.url = "github:numtide/llm-agents.nix";
-    };
+    inputs.llm-agents.url = "github:numtide/llm-agents.nix";
 
     nixConfig = {
       extra-substituters = [ "https://cache.numtide.com" ];

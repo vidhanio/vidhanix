@@ -18,16 +18,17 @@
         inherit (config.pre-commit) shellHook;
 
         packages = config.pre-commit.settings.enabledPackages ++ [
+          pkgs.coreutils
+          pkgs.findutils
           pkgs.git
           pkgs.direnv
-
-          pkgs.nil
-
-          pkgs.sops
-
-          pkgs.nh
-
+          pkgs.hostname
           pkgs.just
+          pkgs.nh
+          pkgs.nil
+          pkgs.nix
+          pkgs.nix-output-monitor
+          pkgs.sops
         ];
       };
     };

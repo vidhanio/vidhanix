@@ -18,12 +18,10 @@
       hyprland.binds =
         lib.mergeAttrsList (
           map (i: {
-            # Switch to workspace i
             "SUPER + ${toString i}".focus = {
               workspace = i;
               on_current_monitor = true;
             };
-            # Move focused window to workspace i
             "SUPER + SHIFT + ${toString i}"."window.move" = {
               workspace = i;
               follow = false;

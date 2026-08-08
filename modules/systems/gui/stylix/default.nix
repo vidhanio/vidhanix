@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake-file.inputs.stylix.url = "github:vidhanio/stylix/vidhanio";
+  flake-file.inputs.stylix.url = "github:nix-community/stylix";
   flake-file.prune-lock.ignore = [ "stylix" ];
 
   flake.modules.nixos.default = {

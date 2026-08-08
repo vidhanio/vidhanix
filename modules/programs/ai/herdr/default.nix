@@ -30,9 +30,9 @@
         };
       };
 
-      programs.opencode.skills.herdr = ./skills/herdr.md;
-
-      xdg.configFile."opencode/plugins/herdr-agent-state.js".source = ./plugins/herdr-agent-state.js;
+      programs.agent-skills.sources.herdr = {
+        path = ./skills;
+      };
 
       persist.files =
         map

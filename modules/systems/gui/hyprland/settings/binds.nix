@@ -11,7 +11,6 @@
           "SUPER + J".layout = "togglesplit";
           "SUPER + F"."window.fullscreen" = { };
 
-          # screenshot
           "Print".exec_cmd = "${lib.getExe pkgs.grimblast} --freeze copy area";
           "SHIFT + Print".exec_cmd = "${lib.getExe pkgs.hyprpicker} -a";
 

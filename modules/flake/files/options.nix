@@ -30,6 +30,8 @@ in
             sh = hashtag;
             envrc = hashtag;
             gitignore = hashtag;
+            just = hashtag;
+            justfile = hashtag;
             toml = hashtag;
             license = _: "";
           };
@@ -45,6 +47,10 @@ in
       {
         options.files = {
           commentedFile = lib.mkOption {
+            description = ''
+              Files to generate with a generated comment prepended.
+              The comment style is determined by each file's `fileType`.
+            '';
             type = lib.types.attrsOf (
               lib.types.submodule (
                 {

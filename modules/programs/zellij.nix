@@ -34,7 +34,7 @@
                 _children = [
                   {
                     pane = {
-                      command = "opencode";
+                      command = "prime-agent";
                     };
                   }
                   {

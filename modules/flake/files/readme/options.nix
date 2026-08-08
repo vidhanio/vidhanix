@@ -7,10 +7,10 @@
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
-      cfg = config.files.readme;
+      cfg = config.readme;
     in
     {
-      options.files.readme =
+      options.readme =
         let
           section =
             level:
@@ -80,7 +80,7 @@
         };
 
       config = {
-        files.readme = {
+        readme = {
           lib = {
             renderTable =
               {
@@ -105,7 +105,6 @@
               lib.concatMapStringsSep "\n" renderRow (
                 [
                   header
-                  # (lib.lists.replicate columnCount "---")
                   (map getAlignmentText alignments)
                 ]
                 ++ rows

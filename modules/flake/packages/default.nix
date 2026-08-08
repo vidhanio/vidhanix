@@ -11,7 +11,7 @@
       ...
     }:
     {
-      files.readme.content.packages.content =
+      readme.content.packages.content =
         let
           packageDefinitions = lib.sortOn (p: p.name) (
             lib.concatMap (
@@ -31,7 +31,7 @@
           this flake has a couple packages, mostly used internally, but available via `.#<package>`.
           some of these packages provide a `passthru.updateScript`, all of which can be run via `just update-packages`.
 
-          ${config.files.readme.lib.renderTable {
+          ${config.readme.lib.renderTable {
             header = [
               "package"
               "description"

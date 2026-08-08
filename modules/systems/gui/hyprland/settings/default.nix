@@ -19,7 +19,6 @@
 
           no_focus = true;
         }
-        # smart gaps
         {
           match = {
             workspace = "f[1]";
@@ -31,7 +30,6 @@
         }
       ];
 
-      # smart gaps
       workspace_rule = [
         {
           workspace = "f[1]";
@@ -46,14 +44,13 @@
           border_size = 2;
           gaps_in = 4;
           gaps_out = 8;
-        };
-        decoration = {
-          rounding = 8;
-          blur = {
-            size = 3;
-            passes = 2;
+
+          snap = {
+            enabled = true;
+            respect_gaps = true;
           };
         };
+        decoration.rounding = 8;
 
         input = {
           follow_mouse = 2;

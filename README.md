@@ -27,7 +27,7 @@ some of these packages provide a `passthru.updateScript`, all of which can be ru
 | [`libretrodb-tool`](modules/programs/retroarch/packages/libretrodb-tool.nix)                     | Tools for managing libretro databases                                                                                              |                   |
 | [`muvm-steam`](modules/programs/steam/packages/muvm-steam.nix)                                   | The Steam client, wrapped to run in muvm for Apple Silicon support                                                                 |                   |
 | [`pragmata-pro-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)                            | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |                   |
-| [`update-packages`](modules/flake/packages.nix)                                                  | Update all packages in this flake that have an update script                                                                       |                   |
+| [`update-packages`](modules/flake/packages/update-packages/default.nix)                          | Update all packages in this flake that have an update script                                                                       |                   |
 
 ## generated files
 
@@ -38,3 +38,8 @@ the generated files are:
 - [`.gitignore`](.gitignore)
 - [`LICENSE`](LICENSE)
 - [`README.md`](README.md)
+- [`build.just`](build.just)
+- [`docs.just`](docs.just)
+- [`eval.just`](eval.just)
+- [`inspect.just`](inspect.just)
+- [`justfile`](justfile)

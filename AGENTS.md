@@ -8,7 +8,9 @@ A [dendritic](https://github.com/mightyiam/dendritic) Nix flake. It holds the Ni
 
 ## Commands
 
-direnv loads the dev shell automatically. The dev shell provides `just`, which runs the recipes in @justfile. `just --list` prints all of them. Read @justfile before running anything — each recipe documents itself.
+direnv loads the dev shell automatically. The dev shell provides `just`, which runs the recipes in @justfile and its `*.just` modules (`eval`, `build`, `inspect`, `docs`).
+
+Run `just` first — its default recipe lists every recipe in every justfile — and `just --list <module>` to inspect one module. Prefer `just` recipes over raw `nix` commands wherever a recipe exists — the recipes fill in the host name, the user name, and the generated files, and each one documents itself.
 
 - `just switch` — regenerate the files, then run `nh os switch`. This is the normal way to apply a change. `just boot` and `just test` run the other `nh os` actions.
 - `just add` — run `git add -AN`. Each recipe that reads the flake depends on this one, because Nix ignores an untracked file.
@@ -19,11 +21,11 @@ direnv loads the dev shell automatically. The dev shell provides `just`, which r
 
 To check an edit, evaluate the whole program or service, not the single option that you changed. `nix eval` forces each option under the attribute, so it catches an error anywhere in the module. Evaluation is fast, and it builds nothing. Keep the rebuild for the end of the work.
 
-Two recipes take an option path. Each one fills in the host name, and `just eval-hm` also fills in the user name:
+The `eval` module takes an option path. Each recipe fills in the host name, and `eval hm` also fills in the user name:
 
 ```sh
-just eval-nixos services.printing
-just eval-hm programs.git
+just eval nixos services.printing
+just eval hm programs.git
 ```
 
 Read the output text to judge the result:
@@ -34,17 +36,28 @@ Read the output text to judge the result:
 An argument after the option path goes to `nix eval`:
 
 - `--raw` prints the content of one text option, such as a generated configuration file.
-- `--json` stops at the first broken option. Keep it for a narrow leaf, as in `just eval-hm programs.git.settings.user --json`.
+- `--json` stops at the first broken option. Keep it for a narrow leaf, as in `just eval hm programs.git.settings.user --json`.
 
-To build a path and look inside its output instead of evaluating it, use `just inspect`. The three variants take the same flake path shapes as the `eval` recipes, and the trailing arguments are a command run in the output directory:
+To read an option's documentation instead of its value, use the `docs` module — it renders the markdown docs for an option in any tree:
 
 ```sh
-just inspect .#muvm-steam ls -la
-just inspect-nixos system.build.toplevel ls -la
-just inspect-hm home.path ls -la
+just docs nixos services.printing
+just docs hm programs.git
+just docs flake perSystem.readme
+just docs perSystem files.commentedFile
 ```
 
-Run `just eval-system` before a rebuild. It evaluates the full configuration, it builds nothing, and it takes about 35 seconds.
+To build a path and look inside its output instead of evaluating it, use the `inspect` module. The trailing arguments are a command run in the output directory:
+
+```sh
+just inspect flake .#muvm-steam ls -la
+just inspect nixos system.build.toplevel ls -la
+just inspect hm home.path ls -la
+```
+
+`just build flake <path>` builds a flake path (or a nix build expression) and prints the output store paths.
+
+Run `just eval system` before a rebuild. It evaluates the full configuration, it builds nothing, and it takes about 35 seconds.
 
 ## Architecture
 
@@ -60,7 +73,9 @@ Run `just eval-system` before a rebuild. It evaluates the full configuration, it
 flake-file.inputs.<name>.url = "github:owner/repo";
 ```
 
-`README.md` is generated the same way. A module adds a README section with `files.readme.content.<section>.content`. A module adds a `.gitignore` line with `perSystem.files.gitignore`.
+`README.md` is generated the same way. A module adds a README section with `readme.content.<section>.content`. A module adds a `.gitignore` line with `perSystem.files.gitignore`.
+
+`justfile` and its `*.just` modules are generated the same way. A module declares variables with `justfile.vars.<name>`, recipes with `justfile.recipes.<name>` (in `justfile.order`), and submodules with `justfile.modules.<name>`, each rendered to `<name>.just`.
 
 ### Module aggregates
 
