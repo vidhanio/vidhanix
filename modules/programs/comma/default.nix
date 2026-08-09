@@ -23,7 +23,7 @@
 
       programs.nix-index-database.comma.enable = true;
 
-      programs.agent-skills.skills.comma = ./skill;
+      programs.agents.skills.skills.comma = ./SKILL.md;
 
       programs.fish.completions = {
         comma = ''

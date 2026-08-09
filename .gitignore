@@ -6,4 +6,5 @@ result.*
 .direnv
 
 .pre-commit-config.yaml
+.crush
 Session.vim

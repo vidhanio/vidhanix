@@ -8,6 +8,7 @@ systemPackage := nixosConfig + ".system.build.toplevel"
 user := `whoami`
 
 # record the intent to add each new file, so that the flake sees it
+[private]
 @add:
     git add -AN
 

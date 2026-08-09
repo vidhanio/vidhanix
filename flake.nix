@@ -23,6 +23,10 @@
   };
 
   inputs = {
+    crush = {
+      url = "github:gurnben/crush/feat/theme-support";
+      flake = false;
+    };
     disko.url = "github:nix-community/disko";
     files = {
       url = "github:mightyiam/files";

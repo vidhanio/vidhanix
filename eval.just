@@ -8,8 +8,14 @@ systemPackage := nixosConfig + ".system.build.toplevel"
 user := `whoami`
 
 # record the intent to add each new file, so that the flake sees it
+[private]
 @add:
     git add -AN
+
+# format the tree with treefmt, e.g. `just fmt --ci`
+[private]
+@fmt *flags: add
+    nix fmt -- {{ flags }}
 
 # evaluate a path under the current host's nixos config, e.g. `just eval nixos services.printing`
 @nixos option *flags: add
@@ -28,5 +34,5 @@ user := `whoami`
     nix eval {{ flags }} {{ perSystemConfig }}.{{ option }}
 
 # evaluate the whole configuration, and build nothing
-@system: add
+@system: fmt
     nix eval --raw {{ systemPackage }}.drvPath
