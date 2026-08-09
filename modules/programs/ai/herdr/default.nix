@@ -30,9 +30,7 @@
         };
       };
 
-      programs.agents.skills.sources.herdr = {
-        path = ./skills;
-      };
+      programs.agent-skills.skills.herdr = ./skills;
 
       persist.files =
         map

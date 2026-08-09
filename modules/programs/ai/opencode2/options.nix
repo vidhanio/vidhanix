@@ -156,9 +156,6 @@
           description = ''
             Configuration written to {file}`$XDG_CONFIG_HOME/opencode/opencode.json`.
             See <https://opencode.ai/v2/docs/config/> for the documentation.
-
-            Deferred while {option}`programs.opencode` (V1) is enabled: the V1
-            module owns the shared file, and V2 normalizes V1 fields in memory.
           '';
         };
 
@@ -320,29 +317,26 @@
         home.packages = lib.mkIf (cfg.package != null) [ cfg.package ];
 
         xdg.configFile = {
-          "opencode/opencode.json" =
-            lib.mkIf ((cfg.settings != { } || transformedMcpServers != { }) && !config.programs.opencode.enable)
+          "opencode/opencode.json" = lib.mkIf (cfg.settings != { } || transformedMcpServers != { }) {
+            source = jsonFormat.generate "opencode2-settings.json" (
               {
-                source = jsonFormat.generate "opencode2-settings.json" (
-                  {
-                    "$schema" = "https://opencode.ai/config.json";
-                  }
-                  // settings
-                );
-              };
+                "$schema" = "https://opencode.ai/config.json";
+              }
+              // settings
+            );
+          };
 
           "opencode/cli.json" = lib.mkIf (cfg.cli != { }) {
             source = jsonFormat.generate "opencode2-cli.json" cfg.cli;
           };
 
-          "opencode/AGENTS.md" = lib.mkIf (!config.programs.opencode.enable) (
+          "opencode/AGENTS.md" =
             if lib.isPath cfg.context then
               { source = cfg.context; }
             else
               lib.mkIf (cfg.context != "") {
                 text = cfg.context;
-              }
-          );
+              };
         }
         // (lib.optionalAttrs (lib.hm.strings.isPathLike cfg.themes) {
           "opencode/themes" = {

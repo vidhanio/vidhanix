@@ -18,6 +18,18 @@
         body = "git add -AN";
       };
 
+      fmt = {
+        doc = "format the tree with treefmt, e.g. `just fmt --ci`";
+        silent = true;
+        args = [ "*flags" ];
+        dependencies = [ "add" ];
+        body = "nix fmt -- {{ flags }}";
+      };
+
+      # Submodule copy of a shared recipe marked `[private]`, e.g.
+      # `add = mkPrivate add;`. The root justfile keeps the original.
+      mkPrivate = recipe: recipe // { attrs = [ "private" ]; };
+
       # Tree-recipe builders: each takes the tree-specific part and returns a
       # complete recipe. `prefix` is the installable before `.<option>`;
       # `path` is a just expression evaluating to the installable.
@@ -118,13 +130,7 @@
             silent = true;
             dependencies = [ ''(os "test")'' ];
           };
-          fmt = {
-            doc = "format the tree with treefmt, e.g. `just fmt --ci`";
-            silent = true;
-            args = [ "*flags" ];
-            dependencies = [ "add" ];
-            body = "nix fmt -- {{ flags }}";
-          };
+          inherit fmt;
           update-packages = {
             doc = "run the update script of each package that has one";
             silent = true;
@@ -147,6 +153,7 @@
             inherit vars;
             order = [
               "add"
+              "fmt"
               "nixos"
               "hm"
               "flake"
@@ -154,7 +161,8 @@
               "system"
             ];
             recipes = {
-              inherit add;
+              add = mkPrivate add;
+              fmt = mkPrivate fmt;
               nixos = mkEvalTree "evaluate a path under the current host's nixos config, e.g. `just eval nixos services.printing`" "{{ nixosConfig }}";
               hm = mkEvalTree "evaluate a home manager option, e.g. `just eval hm programs.git`" "{{ hmConfig }}";
               flake = mkEvalTree "evaluate a flake option's value, e.g. `just eval flake files.generatedMessage.text`" ".#debug.config";
@@ -162,7 +170,7 @@
               system = {
                 doc = "evaluate the whole configuration, and build nothing";
                 silent = true;
-                dependencies = [ "add" ];
+                dependencies = [ "fmt" ];
                 body = "nix eval --raw {{ systemPackage }}.drvPath";
               };
             };
@@ -179,7 +187,7 @@
               "system"
             ];
             recipes = {
-              inherit add;
+              add = mkPrivate add;
               flake = {
                 doc = "build a flake path (or a nix build expression) and print its output store paths, without linking `result`";
                 silent = true;
@@ -208,7 +216,7 @@
               "perSystem"
             ];
             recipes = {
-              inherit add;
+              add = mkPrivate add;
               flake = {
                 doc = "build a flake path and run a command in its output directory, e.g. `just inspect flake .#muvm-steam ls -la`";
                 silent = true;
@@ -236,7 +244,7 @@
               "hm"
             ];
             recipes = {
-              inherit add;
+              add = mkPrivate add;
               flake = mkDocsTree "render a flake option's markdown docs, e.g. `just docs flake perSystem.readme`" "(flake: flake.debug.options)";
               perSystem = mkDocsTree "render a per-system option's markdown docs, e.g. `just docs perSystem files.commentedFile`" ''(flake: flake.allSystems."{{ system }}".options)'';
               nixos = mkDocsTree "render a nixos option's markdown docs, e.g. `just docs nixos services.printing`" ''(flake: flake.nixosConfigurations."{{ host }}".options)'';

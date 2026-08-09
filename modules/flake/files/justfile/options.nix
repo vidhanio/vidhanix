@@ -8,6 +8,7 @@ let
     name: recipe:
     let
       doc = lib.optionalString (recipe.doc != "") "# ${recipe.doc}\n";
+      attrs = lib.concatMapStringsSep "" (attr: "[${attr}]\n") recipe.attrs;
       args = lib.optionalString (recipe.args != [ ]) " ${lib.concatStringsSep " " recipe.args}";
       deps = lib.optionalString (
         recipe.dependencies != [ ]
@@ -19,7 +20,7 @@ let
         )
       );
     in
-    doc + lib.optionalString recipe.silent "@" + name + args + ":" + deps + body;
+    doc + attrs + lib.optionalString recipe.silent "@" + name + args + ":" + deps + body;
 
   renderJustfile =
     {
@@ -68,6 +69,17 @@ let
                 type = lib.types.str;
                 description = "Documentation comment shown by `just --list`.";
                 default = "";
+              };
+              attrs = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                description = ''
+                  Attributes to apply to the recipe, rendered as `[attr]`
+                  lines above it. For example, `attrs = [ "private" ]`
+                  hides the recipe from `just --list` and prevents direct
+                  invocation; it remains usable as a dependency. See
+                  <https://just.systems/man/en/attributes.html>.
+                '';
+                default = [ ];
               };
               args = lib.mkOption {
                 type = lib.types.listOf lib.types.str;

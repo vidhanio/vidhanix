@@ -6,8 +6,13 @@ _: {
         enable = true;
         package = inputs'.llm-agents.packages.opencode2;
 
-        # Shared with OpenCode 1 (programs.opencode); it owns opencode.json.
+        settings = {
+          model = "opencode-go/deepseek-v4-flash";
+          autoupdate = false;
+        };
       };
+
+      home.sessionVariables.OPENCODE_WEBSEARCH_PROVIDER = "exa";
 
       persist.directories = [
         ".config/opencode"
