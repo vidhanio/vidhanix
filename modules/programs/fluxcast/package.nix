@@ -21,14 +21,14 @@ let
       dlnaSupport ? true,
       castSupport ? true,
     }:
-    python3Packages.buildPythonApplication rec {
+    python3Packages.buildPythonApplication (finalAttrs: {
       pname = "fluxcast";
       version = "0.2.2";
 
       src = fetchFromGitHub {
         owner = "IlyaP358";
         repo = "fluxcast";
-        tag = "v${version}";
+        tag = "v${finalAttrs.version}";
         hash = "sha256-VRzJPO5F+LAyNp9KtO1MC7nnqhHbOpN+p464waGTjAk=";
       };
 
@@ -67,8 +67,8 @@ let
       makeWrapperArgs =
         let
           tools =
-            lib.optionals (wfdSupport || dlnaSupport || castSupport) captureTools
-            ++ lib.optionals wfdSupport wfdTools;
+            lib.optionals (wfdSupport || dlnaSupport || castSupport) finalAttrs.captureTools
+            ++ lib.optionals wfdSupport finalAttrs.wfdTools;
         in
         lib.optionals (tools != [ ]) [
           "--prefix"
@@ -121,12 +121,12 @@ let
       meta = {
         description = "Stream your Linux desktop to a Smart TV via Miracast/WFD, DLNA, or Chromecast";
         homepage = "https://github.com/IlyaP358/fluxcast";
-        changelog = "https://github.com/IlyaP358/fluxcast/releases/tag/${src.tag}";
+        changelog = "https://github.com/IlyaP358/fluxcast/releases/tag/${finalAttrs.src.tag}";
         license = lib.licenses.gpl3Plus;
         platforms = lib.platforms.linux;
         mainProgram = "fluxcast";
       };
-    };
+    });
 in
 {
   perSystem =

@@ -6,14 +6,14 @@ let
       python3Packages,
       nix-update-script,
     }:
-    python3Packages.buildPythonPackage rec {
+    python3Packages.buildPythonPackage (finalAttrs: {
       pname = "conventional-pre-commit";
       version = "4.4.0-pre1";
 
       src = fetchFromGitHub {
         owner = "compilerla";
         repo = "conventional-pre-commit";
-        tag = "v${version}";
+        tag = "v${finalAttrs.version}";
         hash = "sha256-8wpsdrTv2N2FFMZzRzJ3ufFtTehoZTaiHvXxNbV6vIQ=";
       };
 
@@ -34,12 +34,12 @@ let
       meta = {
         description = "A pre-commit hook that checks commit messages for Conventional Commits formatting";
         homepage = "https://github.com/compilerla/conventional-pre-commit";
-        changelog = "https://github.com/compilerla/conventional-pre-commit/releases/tag/${src.tag}";
+        changelog = "https://github.com/compilerla/conventional-pre-commit/releases/tag/${finalAttrs.src.tag}";
         license = lib.licenses.asl20;
         platforms = lib.platforms.all;
         mainProgram = "conventional-pre-commit";
       };
-    };
+    });
 in
 {
   perSystem =
