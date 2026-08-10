@@ -1,5 +1,6 @@
 { inputs, ... }:
 {
+  # TODO: https://github.com/charmbracelet/crush/pull/2731
   flake-file.inputs.crush = {
     url = "github:gurnben/crush/feat/theme-support";
     flake = false;
@@ -35,7 +36,7 @@
           '';
         };
 
-        # TODO: remove this override when charmbracelet/catwalk#501 lands (corrects deepseek-v4 reasoning levels).
+        # TODO: https://github.com/charmbracelet/catwalk/pull/501
         settings = {
           providers.opencode-go.models = [
             {

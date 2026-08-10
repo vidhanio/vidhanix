@@ -55,10 +55,7 @@ in
               config = {
                 networking.hostName = name;
 
-                # neededForUsers decrypts to /run/secrets-for-users before
-                # NixOS creates users, since hashedPasswordFile can't
-                # reference a secret decrypted by the normal (later)
-                # sops-nix activation step.
+                # Decrypt before user creation: hashedPasswordFile can't use the later sops activation step.
                 sops.secrets = lib.mapAttrs' (
                   username: _: lib.nameValuePair "passwords/${username}" { neededForUsers = true; }
                 ) activeUsers;

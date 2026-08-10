@@ -9,9 +9,7 @@
       providers.wl-copy.enable = true;
     };
 
-    # These groups come from the colorscheme with their own background.
-    # Clear just the background, keeping each group's foreground, so they
-    # blend into the code background instead of showing a different shade.
+    # Colorscheme groups ship their own bg; clear it so they blend into the code background.
     extraConfigLuaPost = ''
       for _, name in ipairs({
         "SignColumn",
@@ -37,10 +35,8 @@
       tabstop = 2;
       foldlevelstart = 99;
       winborder = "rounded";
-      # mini.basics' own default value plus "popup", for inline LSP doc
-      # preview in the completion menu. Set explicitly here (rather than
-      # letting mini.basics set its default) since it loads first and
-      # mini.basics only sets an option if it isn't already set.
+      # mini.basics' default plus "popup" for inline LSP docs; set first, since
+      # mini.basics skips options that are already set.
       completeopt = "menuone,noselect,popup";
     };
   };

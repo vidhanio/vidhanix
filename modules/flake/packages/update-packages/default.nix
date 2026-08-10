@@ -6,15 +6,11 @@ in
   perSystem =
     { self', pkgs, ... }:
     let
-      # the package lists and the path of nix-update are known at evaluation
-      # time; the script reads them from this file, so that the source stays
-      # valid python before `replaceVarsWith` fills in the placeholders.
+      # Eval-time values (package lists, nix-update path), read from JSON so the .py stays valid before replaceVarsWith.
       config = pkgs.writers.writeJSON "${name}-config.json" {
         known = lib.attrNames self'.packages;
 
-        # `&&` short-circuits before this package's own value is forced.
-        # that value depends on this list, so forcing it here is infinite
-        # recursion. this package carries no update script anyway.
+        # `&&` short-circuits before this package's own value is forced (infinite recursion otherwise).
         updatable = lib.attrNames (
           lib.filterAttrs (
             packageName: package: packageName != name && package ? passthru.updateScript

@@ -100,7 +100,6 @@ let
           done
 
           while read -r line; do
-            # continue if line does not start with "define_size = "
             if [[ ! $line =~ ^define_size\ = ]]; then
               echo $line 
               continue

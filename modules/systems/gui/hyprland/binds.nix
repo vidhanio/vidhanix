@@ -6,8 +6,7 @@
       lua = pkgs.formats.lua { };
       toLua = lib.generators.toLua { multiline = false; };
 
-      # `_flags` is the optional third argument of `hl.bind`; everything else is
-      # the dispatcher.
+      # `_flags` is hl.bind's optional third argument; the rest is the dispatcher.
       dispatcherOf = bind: lib.removeAttrs bind [ "_flags" ];
 
       bindType =
@@ -19,9 +18,7 @@
           descriptionClass = "noun";
         };
 
-      # A bare value is a single argument, `{ }` is no arguments, and `_args`
-      # spreads a list into multiple arguments (the convention the home-manager
-      # hyprland module already uses for `hl.*` calls).
+      # Bare value = one argument, `{ }` = none, `_args` = list spread (HM's hyprland convention).
       renderArgs =
         params:
         if lib.isAttrs params && params ? _args then

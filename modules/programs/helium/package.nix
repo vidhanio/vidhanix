@@ -11,7 +11,6 @@ let
       _experimental-update-script-combinators,
       nix-update-script,
 
-      # Runtime/build deps
       alsa-lib,
       at-spi2-atk,
       at-spi2-core,
@@ -58,7 +57,7 @@ let
       widevine-cdm,
     }:
     let
-      # Chromium flags applied on all platforms to disable update machinery.
+      # Disable Chromium update machinery.
       commonFlags = [
         "--disable-component-update"
         "--simulate-outdated-no-au='Tue, 31 Dec 2099 23:59:59 GMT'"
@@ -70,7 +69,7 @@ let
 
       addFlags = lib.concatMapStringsSep " \\\n      " (f: "--add-flags \"${f}\"");
 
-      # Libraries that must appear on LD_LIBRARY_PATH at runtime on Linux.
+      # Runtime LD_LIBRARY_PATH additions on Linux.
       linuxRuntimeLibs = [
         libGL
         libvdpau

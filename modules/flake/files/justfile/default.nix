@@ -26,13 +26,10 @@
         body = "nix fmt -- {{ flags }}";
       };
 
-      # Submodule copy of a shared recipe marked `[private]`, e.g.
-      # `add = mkPrivate add;`. The root justfile keeps the original.
+      # Private copy of a shared recipe; the root justfile keeps the original.
       mkPrivate = recipe: recipe // { attrs = [ "private" ]; };
 
-      # Tree-recipe builders: each takes the tree-specific part and returns a
-      # complete recipe. `prefix` is the installable before `.<option>`;
-      # `path` is a just expression evaluating to the installable.
+      # `prefix` = installable before `.<option>`; `path` = just expr for the installable.
       mkEvalTree = doc: prefix: {
         inherit doc;
         silent = true;

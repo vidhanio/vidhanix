@@ -11,11 +11,9 @@ let
 
   optionsTree = getOptions flakeAttrs;
 
-  # Option records (e.g. `perSystem`) keep their sub-options behind
-  # `type.getSubOptions`; plain attrset nodes nest them directly.
+  # Option nodes hide sub-options behind type.getSubOptions; plain attrs nest directly.
   subOptionsOf = node: if lib.isOption node then node.type.getSubOptions node.loc or { } else node;
 
-  # The subtree of `optionsTree` at the dotted `path`.
   select =
     node: path:
     if path == [ ] then

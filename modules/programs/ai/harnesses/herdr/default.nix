@@ -12,6 +12,7 @@
           onboarding = false;
 
           ui.tab_bar_position = "bottom";
+          ui.toast.delivery = "system";
 
           experimental.kitty_graphics = true;
 

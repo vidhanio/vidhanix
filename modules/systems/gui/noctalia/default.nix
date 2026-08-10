@@ -107,22 +107,18 @@
         ];
 
         hyprland.binds = {
-          # core binds
           "SUPER + e" = msg "panel-toggle launcher";
 
-          # volume / mic
           "XF86AudioRaiseVolume" = repeating (msg "volume-up");
           "XF86AudioLowerVolume" = repeating (msg "volume-down");
           "XF86AudioMute" = repeating (msg "volume-mute");
           "XF86AudioMicMute" = repeating (msg "mic-mute");
 
-          # brightness
           "XF86MonBrightnessUp" = repeating (msg "brightness-up");
           "XF86MonBrightnessDown" = repeating (msg "brightness-down");
           "SHIFT + XF86MonBrightnessUp" = repeating (msg "keyboard-backlight-up");
           "SHIFT + XF86MonBrightnessDown" = repeating (msg "keyboard-backlight-down");
 
-          # media playback
           "XF86AudioPlay" = locked (msg "media toggle");
           "XF86AudioPause" = locked (msg "media toggle");
           "XF86AudioNext" = locked (msg "media next");

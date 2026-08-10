@@ -23,7 +23,7 @@
           modelRoles.default = "opencode-go/deepseek-v4-flash:max";
         };
 
-        # TODO: remove this override when can1357/oh-my-pi#8064 lands (restores the max thinking tier for deepseek-v4-flash).
+        # TODO: https://github.com/can1357/oh-my-pi/pull/8064
         models.providers.opencode-go.modelOverrides.deepseek-v4-flash = {
           thinking = {
             mode = "effort";

@@ -11,8 +11,7 @@
           window-padding-y = padding;
           background-opacity-cells = true;
 
-          # Keep the systemd service running with no windows open, so every new
-          # window stays on the fast path.
+          # Stay resident with no windows open; new windows then take the fast path.
           quit-after-last-window-closed = false;
         };
     };

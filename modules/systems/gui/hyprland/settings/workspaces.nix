@@ -29,11 +29,10 @@
           }) (lib.range 1 9)
         )
         // {
-          # Special workspace (scratchpad)
+          # Scratchpad
           "SUPER + S"."workspace.toggle_special" = { };
           "SUPER + SHIFT + S"."window.move".workspace = "special";
 
-          # Monitors
           "SUPER + grave"."workspace.swap_monitors" = {
             monitor1 = "current";
             monitor2 = "+1";

@@ -1,7 +1,6 @@
 {
   flake.modules.nixvim.default = {
-    # Default content (`H.default_content_active` in mini.statusline), with
-    # an LSP progress indicator added in place of fidget.nvim.
+    # mini.statusline default content, with LSP progress in place of fidget.nvim.
     plugins.mini.modules.statusline.content.active.__raw = ''
       function()
         local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })

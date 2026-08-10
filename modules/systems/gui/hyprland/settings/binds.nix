@@ -14,7 +14,6 @@
           "Print".exec_cmd = "${lib.getExe pkgs.grimblast} --freeze copy area";
           "SHIFT + Print".exec_cmd = "${lib.getExe pkgs.hyprpicker} -a";
 
-          # move/resize windows with SUPER + LMB/RMB and dragging
           "SUPER + mouse:272" = {
             "window.drag" = { };
             _flags.mouse = true;
