@@ -1,6 +1,6 @@
 {
   flake.modules.homeManager.default =
-    { inputs', ... }:
+    { inputs', self', ... }:
     {
       programs.omp = {
         enable = true;
@@ -8,6 +8,9 @@
         package = inputs'.llm-agents.packages.omp;
 
         settings = {
+          # @czottmann/pi-automode, loaded straight from the Nix store.
+          extensions = [ "${self'.packages.pi-automode}/extensions/auto-mode.ts" ];
+
           startup = {
             setupWizard = false;
           };
