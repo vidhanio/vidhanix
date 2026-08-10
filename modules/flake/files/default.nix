@@ -2,7 +2,6 @@
 {
   perSystem =
     {
-      self',
       pkgs,
       config,
       ...
@@ -22,10 +21,13 @@
         '';
       };
 
+      # Run `just generate` instead of a pre-built binary: the hook then
+      # resolves `just` and rebuilds `generate-files` from the current flake
+      # state, instead of running a stale store path baked when the hook
+      # config was generated.
       pre-commit.settings.hooks.generate-files = {
         enable = true;
-        package = self'.packages.generate-files;
-        entry = lib.getExe self'.packages.generate-files;
+        entry = "just generate";
         pass_filenames = false;
       };
 

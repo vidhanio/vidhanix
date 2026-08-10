@@ -33,8 +33,11 @@
       settings.on-unmatched = "fatal";
     };
 
+    # Resolve `just fmt` from PATH instead of a store binary baked when the
+    # hook config was generated; keeps the hook current with the flake state.
     pre-commit.settings.hooks.treefmt = {
       enable = true;
+      entry = "just fmt --ci";
       pass_filenames = false;
     };
   };
