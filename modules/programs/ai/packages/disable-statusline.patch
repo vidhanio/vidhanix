@@ -1,0 +1,30 @@
+diff --git a/extensions/auto-mode/extension.ts b/extensions/auto-mode/extension.ts
+index fc26b67..eb4d4bc 100644
+--- a/extensions/auto-mode/extension.ts
++++ b/extensions/auto-mode/extension.ts
+@@ -45,7 +45,6 @@ import {
+   formatDenials,
+   pushDenial,
+   restoreState,
+-  statusLine,
+   statusText,
+ } from "./state.ts";
+ import { loadedContextFromSystemPromptOptions } from "./transcript.ts";
+@@ -151,16 +150,7 @@ export function createPiAutomode(options: PiAutomodeOptions = {}) {
+       pi.appendEntry("pi-automode-state", state);
+     }
+ 
+-    function updateUi(ctx: ExtensionContext): void {
+-      if (!ctx.hasUI) return;
+-      const cfg = effectiveConfig();
+-      const text = statusLine(cfg, state);
+-      ctx.ui.setStatus(
+-        "pi-automode",
+-        cfg.enabled
+-          ? ctx.ui.theme.fg("accent", text)
+-          : ctx.ui.theme.fg("dim", text),
+-      );
++    function updateUi(_ctx: ExtensionContext): void {
+     }
+ 
+     function block(

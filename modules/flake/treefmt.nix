@@ -30,7 +30,11 @@
         keep-sorted.enable = true;
       };
 
-      settings.on-unmatched = "fatal";
+      settings = {
+        # Patches are immutable diffs; treefmt has no formatter for them.
+        excludes = [ "*.patch" ];
+        on-unmatched = "fatal";
+      };
     };
 
     # Resolve `just fmt` from PATH instead of a store binary baked when the

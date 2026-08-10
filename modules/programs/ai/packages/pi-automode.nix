@@ -20,10 +20,14 @@ let
       dontBuild = true;
       dontConfigure = true;
 
+      patches = [ ./disable-statusline.patch ];
+
       installPhase = ''
         runHook preInstall
+
         mkdir -p $out
         cp -r extensions $out/extensions
+
         runHook postInstall
       '';
 
