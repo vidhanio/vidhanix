@@ -114,10 +114,10 @@
       '';
 
       xdg.autostart.entries = [
-        "${config.programs.nixcord.vesktop.package}/share/applications/vesktop.desktop"
+        "${config.programs.nixcord.equibop.package}/share/applications/equibop.desktop"
       ];
 
-      hyprland.autostartWorkspaces.vesktop = 2;
+      hyprland.autostartWorkspaces.equibop = 2;
 
       persist.directories = [ ".config/vesktop/sessionData/Local Storage" ];
     };
