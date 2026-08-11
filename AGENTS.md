@@ -1,44 +1,28 @@
 # AGENTS.md
 
-This file gives guidance to coding agents that work in this repository.
+This file guides coding agents working in this repository.
 
 ## What this is
 
-A [dendritic](https://github.com/mightyiam/dendritic) Nix flake. It holds the NixOS and Home Manager configuration for two hosts: `vidhan-pc` and `vidhan-macbook` (Apple Silicon, Asahi).
+A [dendritic](https://github.com/mightyiam/dendritic) Nix flake holding the NixOS and Home Manager configuration for two hosts: `vidhan-pc` and `vidhan-macbook` (Apple Silicon, Asahi).
 
-## Commands
+## Work eval-first
 
-direnv loads the dev shell automatically. The dev shell provides `just`, which runs the recipes in @justfile and its `*.just` modules (`eval`, `build`, `inspect`, `docs`).
+The dev shell (loaded by direnv) provides `just`, which runs the recipes in the generated `justfile` and its modules (`eval`, `docs`, `build`, `inspect`). Prefer `just` over raw `nix` commands wherever a recipe exists: the recipes fill in the host name, the user name, and the generated files, and each one documents itself.
 
-Run `just` first — its default recipe lists every recipe in every justfile — and `just --list <module>` to inspect one module. Prefer `just` recipes over raw `nix` commands wherever a recipe exists — the recipes fill in the host name, the user name, and the generated files, and each one documents itself.
+Work eval-first: verify every change by evaluation, and keep the rebuild for the end.
 
-- `just switch` — regenerate the files, then run `nh os switch`. This is the normal way to apply a change. `just boot` and `just test` run the other `nh os` actions.
-- `just add` — run `git add -AN`. Each recipe that reads the flake depends on this one, because Nix ignores an untracked file.
+1. Edit a module. If you created a file, `just add` (`git add -AN`) first — Nix ignores untracked files.
+2. Verify with `just eval` — evaluation is fast and builds nothing.
+3. Apply with `just switch`, which regenerates the files, then runs `nh os switch`. `just boot` and `just test` run the other `nh os` actions.
 
-`prek` runs the pre-commit hooks. The hooks run treefmt, `generate-files`, and a Conventional Commits check. Write each commit message as `type: description`.
+`prek` runs the pre-commit hooks: treefmt, `generate-files`, and a Conventional Commits check. Write each commit message as `type: description`.
 
-## Test a change
+## The recipe map
 
-To check an edit, evaluate the whole program or service, not the single option that you changed. `nix eval` forces each option under the attribute, so it catches an error anywhere in the module. Evaluation is fast, and it builds nothing. Keep the rebuild for the end of the work.
+`just` lists every recipe in every justfile; `just --list <module>` shows one module. The modules all take the same shape — `<tree> <option>`, where `<tree>` is `nixos`, `hm`, `flake`, or `perSystem` — filled in for the current machine.
 
-The `eval` module takes an option path. Each recipe fills in the host name, and `eval hm` also fills in the user name:
-
-```sh
-just eval nixos services.printing
-just eval hm programs.git
-```
-
-Read the output text to judge the result:
-
-- An inline `«error: ...»` marks one broken option. `nix eval` prints it, continues, and exits with status 0. The exit code alone is not sufficient.
-- A `trace: Obsolete option ...` line comes from a rename in nixpkgs or Home Manager. Ignore it, unless the name is one that this repository sets.
-
-An argument after the option path goes to `nix eval`:
-
-- `--raw` prints the content of one text option, such as a generated configuration file.
-- `--json` stops at the first broken option. Keep it for a narrow leaf, as in `just eval hm programs.git.settings.user --json`.
-
-To read an option's documentation instead of its value, use the `docs` module — it renders the markdown docs for an option in any tree:
+**Understand — `just docs <tree> <option>`.** The best agent context for any option. It renders the option's markdown docs — description, type, default, examples — prose written for reading. Reach for it whenever an option is unfamiliar: `just eval` shows the current value, `just docs` shows the meaning. It works in any tree, including this flake's own options:
 
 ```sh
 just docs nixos services.printing
@@ -47,7 +31,23 @@ just docs flake perSystem.readme
 just docs perSystem files.commentedFile
 ```
 
-To build a path and look inside its output instead of evaluating it, use the `inspect` module. The trailing arguments are a command run in the output directory:
+**Check — `just eval <tree> <option> [flags]`.** Evaluate the option's value:
+
+```sh
+just eval nixos services.printing
+just eval hm programs.git
+```
+
+Evaluate the whole program or service, not just the option you changed: `nix eval` forces every option under the attribute, so it catches an error anywhere in the module. Judge the output text, not the exit code — an inline `«error: ...»` marks one broken option, and the command still exits with status 0. Ignore a `trace: Obsolete option ...` line; it comes from a rename in nixpkgs or Home Manager, unless the name is one that this repository sets.
+
+Trailing flags go to `nix eval`:
+
+- `--raw` prints the content of one text option, such as a generated configuration file.
+- `--json` stops at the first broken option. Keep it for a narrow leaf, as in `just eval hm programs.git.settings.user --json`.
+
+`just eval system` evaluates the full configuration — it builds nothing and takes about 35 seconds. Run it before a rebuild.
+
+**Look inside — `just inspect <tree> <option> <cmd>`.** Build a path and run a command in its output directory:
 
 ```sh
 just inspect flake .#muvm-steam ls -la
@@ -55,9 +55,7 @@ just inspect nixos system.build.toplevel ls -la
 just inspect hm home.path ls -la
 ```
 
-`just build flake <path>` builds a flake path (or a nix build expression) and prints the output store paths.
-
-Run `just eval system` before a rebuild. It evaluates the full configuration, it builds nothing, and it takes about 35 seconds.
+**Build — `just build <tree> <option>`.** Build a path and print its output store paths without linking `result`. `just build flake <path>` also takes a raw flake path or nix build expression.
 
 ## Architecture
 
@@ -73,7 +71,7 @@ Run `just eval system` before a rebuild. It evaluates the full configuration, it
 flake-file.inputs.<name>.url = "github:owner/repo";
 ```
 
-`README.md` is generated the same way. A module adds a README section with `readme.content.<section>.content`. A module adds a `.gitignore` line with `perSystem.files.gitignore`.
+`README.md` is generated the same way. A module adds a README section with `readme.content.<section>.content`, and a `.gitignore` line with `perSystem.files.gitignore`.
 
 `justfile` and its `*.just` modules are generated the same way. A module declares variables with `justfile.vars.<name>`, recipes with `justfile.recipes.<name>` (in `justfile.order`), and submodules with `justfile.modules.<name>`, each rendered to `<name>.just`.
 
@@ -105,11 +103,12 @@ A program module holds all of the configuration for that program in one file. It
 
 ### Packages
 
-Define a package in `perSystem.packages.<name>`, usually in a `package.nix` file beside the module. `meta.description` is necessary, because the README table reads it. Add `passthru.updateScript` to include the package in `update-packages`.
+Define a package in `perSystem.packages.<name>`, usually in a `package.nix` file beside the module. `meta.description` is necessary, because the README table reads it. Add `passthru.updateScript` to include the package in `just update-packages`.
 
 ## Constraints
 
 - Import from derivation is off (`allow-import-from-derivation = false`). Evaluation fails if a module reads a build output.
 - treefmt sets `on-unmatched = "fatal"`. A new file type needs a formatter in `modules/flake/treefmt.nix`. If the formatter is absent, `just fmt` fails.
 - `self'` and `inputs'` are ordinary module arguments in NixOS and Home Manager modules. Use them in place of `withSystem`.
+- Comment only what the code cannot say — the non-obvious why — one line, plain words.
 - Secrets are in `secrets/secrets.yaml` (sops-nix, age keys from SSH keys). Reference a secret with `sops.secrets.<path>`.
