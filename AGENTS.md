@@ -6,6 +6,10 @@ This file guides coding agents working in this repository.
 
 A [dendritic](https://github.com/mightyiam/dendritic) Nix flake holding the NixOS and Home Manager configuration for two hosts: `vidhan-pc` and `vidhan-macbook` (Apple Silicon, Asahi).
 
+## State
+
+`TODO.md` tracks the current work — in-flight restructures, decisions, and next steps. Read it before starting; update it as the plan changes.
+
 ## Work eval-first
 
 The dev shell (loaded by direnv) provides `just`, which runs the recipes in the generated `justfile` and its modules (`eval`, `docs`, `build`, `inspect`). Prefer `just` over raw `nix` commands wherever a recipe exists: the recipes fill in the host name, the user name, and the generated files, and each one documents itself.
@@ -93,13 +97,19 @@ Two option trees live at the flake level, not in NixOS:
 
 ### One file for each program
 
-A program module holds all of the configuration for that program in one file. It sets the Home Manager or NixOS options. It also contributes to the cross-cutting options that other modules declare:
+A program module lives at `modules/programs/<name>.nix` while it fits in one file; the moment it needs a second file it becomes a directory `modules/programs/<name>/`, and the main module is always `default.nix`. Fragments are named by role — `options.nix`, `package.nix`, `stylix.nix`, a `SKILL.md` directly in the directory — or by the feature they hold, like `git/signing.nix`.
+
+A program module sets the Home Manager or NixOS options. It also contributes to the cross-cutting options that other modules declare:
 
 - `persist.directories` and `persist.files` — impermanence, in both NixOS and Home Manager.
 - `hyprland.binds."<key>"` and `hyprland.autostartWorkspaces.<name>`.
 - `xdg.autostart.entries`.
 
 `modules/programs/comma/default.nix` shows this pattern.
+
+### One services tree
+
+All services live in `modules/services/`; each file declares its own level (NixOS or Home Manager). A user-facing app that needs an activation hook is a program, not a service. Client-side config lives in `modules/programs/`, host-side daemons in `modules/systems/` — as with SSH: `programs/ssh.nix` holds the client's known hosts, `systems/ssh/` holds the daemon.
 
 ### Packages
 
