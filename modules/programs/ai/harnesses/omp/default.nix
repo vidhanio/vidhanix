@@ -1,6 +1,13 @@
 {
   flake.modules.homeManager.default =
-    { inputs', ... }:
+    {
+      inputs',
+      config,
+      ...
+    }:
+    let
+      hindsightCfg = config.programs.ai.hindsight;
+    in
     {
       programs.omp = {
         enable = true;
@@ -12,13 +19,17 @@
             setupWizard = false;
           };
 
-          providers.webSearchOrder = [ "exa" ];
-          exa = {
-            enabled = true;
-            enableSearch = true;
-          };
+          # The local SearXNG instance (modules/services/searxng.nix) as the
+          # web search provider, reachable from the tailnet.
+          providers.webSearchOrder = [ "searxng" ];
+          searxng.endpoint = "http://vidhan-pc:8080";
 
           symbolPreset = "nerd";
+
+          # The local hindsight server (programs.ai.hindsight) as the memory
+          # backend; no apiToken — the server has no tenant extension.
+          memory.backend = "hindsight";
+          hindsight.apiUrl = "http://vidhan-pc:${toString hindsightCfg.port}";
 
           modelRoles.default = "opencode-go/deepseek-v4-flash:max";
         };
