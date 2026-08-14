@@ -80,16 +80,16 @@ let
             hash = "sha256-W2ljoqPyc2VSjY62BDBcAOwwBJr2zoH60ewPOHMlRJ8=";
           };
           dolphin = {
-            version = "2606-unstable-2026-08-08";
+            version = "2606-unstable-2026-08-12";
 
-            rev = "3e215aae19467b555a846ee83596855b52b5c407";
-            hash = "sha256-hq4K3T8fjSlkYVFpZDg4mKDrTQaXt5E2nhbuMyuklnk=";
+            rev = "cd1d6298aacdd27d9b186d4037eaead10b63784d";
+            hash = "sha256-gIcy3TJMxjyQEQiIuzf39dus8eA9Wv1OVVsO6ZI08XU=";
           };
           ecwolf = {
             version = "0-unstable-2026-07-28";
 
-            rev = "f5a68634244c8719645626ef714387b268a5ae32";
-            hash = "sha256-MbbtkIdSkeVn5uWKbRC0kW5RN+4Hv0GtWGp/rGosPNg=";
+            rev = "00b425e10b90614a8f57a377e4e77b30279dd276";
+            hash = "sha256-ElaNJDW6ricZEB3UWAhUdjq/uPI2BamOlZpTwbIdoq0=";
           };
           qemu-libretro = {
             version = "0-unstable-2026-07-28";
