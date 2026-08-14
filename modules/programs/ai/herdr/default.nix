@@ -12,6 +12,7 @@
           onboarding = false;
 
           ui.tab_bar_position = "bottom";
+          ui.show_agent_labels_on_pane_borders = true;
           ui.toast.delivery = "system";
 
           experimental.kitty_graphics = true;

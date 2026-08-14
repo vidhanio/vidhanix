@@ -4,6 +4,5 @@
       enable = true;
       arguments = [ "--hidden" ];
     };
-    home.shellAliases.grep = "rg";
   };
 }
