@@ -1,124 +1,101 @@
-# AGENTS.md
+# Repository Guidelines
 
 This file guides coding agents working in this repository.
 
-## What this is
+## Project Overview
 
-A [dendritic](https://github.com/mightyiam/dendritic) Nix flake holding the NixOS and Home Manager configuration for two hosts: `vidhan-pc` and `vidhan-macbook` (Apple Silicon, Asahi).
+A [dendritic](https://github.com/mightyiam/dendritic) Nix flake holding the NixOS and Home Manager configuration for two hosts: `vidhan-pc` (x86_64-linux desktop) and `vidhan-macbook` (aarch64-linux, Apple Silicon via Asahi).
 
-## State
+Every `.nix` file under `modules/` is auto-imported as a flake-parts module — there is no import list. Project files (`flake.nix`, `flake.lock`, `README.md`, `justfile` and its `*.just` modules, `.gitignore`, `.envrc`, `LICENSE`) are generated from module-declared options; secrets live in one sops-encrypted file.
 
-`TODO.md` tracks the current work — in-flight restructures, decisions, and next steps. Read it before starting; update it as the plan changes.
+## Architecture & Data Flow
 
-## Work eval-first
+**Auto-import.** `flake.nix` is `inputs.flake-parts.lib.mkFlake { ... } (inputs.import-tree ./modules)`. Adding a `.nix` file under `modules/` adds a module. Nix ignores untracked files, so new files need `git add -AN` (the `just add` recipe; the main `just` recipes depend on it).
 
-The dev shell (loaded by direnv) provides `just`, which runs the recipes in the generated `justfile` and its modules (`eval`, `docs`, `build`, `inspect`). Prefer `just` over raw `nix` commands wherever a recipe exists: the recipes fill in the host name, the user name, and the generated files, and each one documents itself.
+**Modules never target a host directly** — they contribute to named aggregates:
 
-Work eval-first: verify every change by evaluation, and keep the rebuild for the end.
+- `flake.modules.nixos.default` (NixOS), `flake.modules.homeManager.default` (Home Manager) — the common layers. Bases in `modules/systems/bases/` (`desktop`, `macbook`) build `flake.modules.nixos.desktop`/`.macbook` on top of `default` (`macbook` adds `nixos-apple-silicon` with `hardware.asahi.enable`).
+- `configurations.<hostname>` — declared in `modules/systems/configurations/default.nix`; builds `flake.nixosConfigurations` via `nixosSystem`, creates the user accounts, connects Home Manager, and collects host SSH keys into `programs.ssh.knownHosts`. A host file (`modules/systems/configurations/<hostname>/default.nix`) sets its entry with `module.imports = [ desktop ]` (or `macbook`).
+- `users.<username>` — `modules/systems/users/default.nix`; full name, email, SSH keys, and a Home Manager `module`.
 
-1. Edit a module. If you created a file, `just add` (`git add -AN`) first — Nix ignores untracked files.
-2. Verify with `just eval` — evaluation is fast and builds nothing.
-3. Apply with `just switch`, which regenerates the files, then runs `nh os switch`. `just boot` and `just test` run the other `nh os` actions.
+**Cross-cutting options** a module contributes to (rather than setting directly):
 
-`prek` runs the pre-commit hooks: treefmt, `generate-files`, and a Conventional Commits check. Write each commit message as `type: description`.
-
-## The recipe map
-
-`just` lists every recipe in every justfile; `just --list <module>` shows one module. The modules all take the same shape — `<tree> <option>`, where `<tree>` is `nixos`, `hm`, `flake`, or `perSystem` — filled in for the current machine.
-
-**Understand — `just docs <tree> <option>`.** The best agent context for any option. It renders the option's markdown docs — description, type, default, examples — prose written for reading. Reach for it whenever an option is unfamiliar: `just eval` shows the current value, `just docs` shows the meaning. It works in any tree, including this flake's own options:
-
-```sh
-just docs nixos services.printing
-just docs hm programs.git
-just docs flake perSystem.readme
-just docs perSystem files.commentedFile
-```
-
-**Check — `just eval <tree> <option> [flags]`.** Evaluate the option's value:
-
-```sh
-just eval nixos services.printing
-just eval hm programs.git
-```
-
-Evaluate the whole program or service, not just the option you changed: `nix eval` forces every option under the attribute, so it catches an error anywhere in the module. Judge the output text, not the exit code — an inline `«error: ...»` marks one broken option, and the command still exits with status 0. Ignore a `trace: Obsolete option ...` line; it comes from a rename in nixpkgs or Home Manager, unless the name is one that this repository sets.
-
-Trailing flags go to `nix eval`:
-
-- `--raw` prints the content of one text option, such as a generated configuration file.
-- `--json` stops at the first broken option. Keep it for a narrow leaf, as in `just eval hm programs.git.settings.user --json`.
-
-`just eval system` evaluates the full configuration — it builds nothing and takes about 35 seconds. Run it before a rebuild.
-
-**Look inside — `just inspect <tree> <option> <cmd>`.** Build a path and run a command in its output directory:
-
-```sh
-just inspect flake .#muvm-steam ls -la
-just inspect nixos system.build.toplevel ls -la
-just inspect hm home.path ls -la
-```
-
-**Build — `just build <tree> <option>`.** Build a path and print its output store paths without linking `result`. `just build flake <path>` also takes a raw flake path or nix build expression.
-
-## Architecture
-
-### Auto-import
-
-`import-tree` imports each `.nix` file under `modules/` as a flake-parts module. There is no import list. To add a module, add the file. That is sufficient.
-
-### Generated files
-
-`flake.nix` is generated. Never edit it. To add an input, declare it in the module that uses it, then regenerate:
-
-```nix
-flake-file.inputs.<name>.url = "github:owner/repo";
-```
-
-`README.md` is generated the same way. A module adds a README section with `readme.content.<section>.content`, and a `.gitignore` line with `perSystem.files.gitignore`.
-
-`justfile` and its `*.just` modules are generated the same way. A module declares variables with `justfile.vars.<name>`, recipes with `justfile.recipes.<name>` (in `justfile.order`), and submodules with `justfile.modules.<name>`, each rendered to `<name>.just`.
-
-### Module aggregates
-
-A module contributes to a named aggregate. A module does not target a host directly.
-
-- `flake.modules.nixos.default` and `flake.modules.homeManager.default` apply to each host and each user.
-- `flake.modules.nixos.desktop` and `flake.modules.nixos.macbook` are the bases in `modules/systems/bases/`. Each base imports `default`.
-
-A host file in `modules/systems/configurations/<hostname>/` sets `configurations.<hostname>`. Its `module.imports` selects a base.
-
-### Flake-level options
-
-Two option trees live at the flake level, not in NixOS:
-
-- `users.<username>` (`modules/systems/users/default.nix`) — full name, email, SSH public keys, and a Home Manager `module`.
-- `configurations.<hostname>` (`modules/systems/configurations/default.nix`) — builds `nixosConfigurations`, creates the user accounts, connects Home Manager, and collects the host SSH keys into `programs.ssh.knownHosts`.
-
-### One file for each program
-
-A program module lives at `modules/programs/<name>.nix` while it fits in one file; the moment it needs a second file it becomes a directory `modules/programs/<name>/`, and the main module is always `default.nix`. Fragments are named by role — `options.nix`, `package.nix`, `stylix.nix`, a `SKILL.md` directly in the directory — or by the feature they hold, like `git/signing.nix`.
-
-A program module sets the Home Manager or NixOS options. It also contributes to the cross-cutting options that other modules declare:
-
-- `persist.directories` and `persist.files` — impermanence, in both NixOS and Home Manager.
-- `hyprland.binds."<key>"` and `hyprland.autostartWorkspaces.<name>`.
+- `persist.directories` / `persist.files` — impermanence, in both NixOS and Home Manager.
+- `hyprland.binds."<key>"`, `hyprland.autostartWorkspaces.<class>` — declared in `modules/systems/gui/hyprland/options.nix`.
 - `xdg.autostart.entries`.
+- `flake-file.inputs.<name>.url` — declares a flake input (serialized into `flake.nix`).
+- `perSystem.files.gitignore`, `readme.content.<section>.content`, `justfile.recipes` / `justfile.vars` / `justfile.modules`.
 
-`modules/programs/comma/default.nix` shows this pattern.
+**Data flow.** Module files declare options → aggregates compose them → `configurations.<hostname>` builds a `nixosConfiguration` → `just switch` regenerates the generated files and runs `nh os switch`.
 
-### One services tree
+**Secrets.** One sops-encrypted file, `secrets/secrets.yaml` (`.sops.yaml` holds the age rules; age keys are derived from SSH keys persisted via impermanence). Modules reference secrets with `sops.secrets."<path>"` and build env files with `sops.templates."<name>"` (see `modules/flake/sops-nix.nix`).
 
-All services live in `modules/services/`; each file declares its own level (NixOS or Home Manager). A user-facing app that needs an activation hook is a program, not a service. Client-side config lives in `modules/programs/`, host-side daemons in `modules/systems/` — as with SSH: `programs/ssh.nix` holds the client's known hosts, `systems/ssh/` holds the daemon.
+**Generated files** (`flake.nix`, `flake.lock`, `README.md`, `justfile` + `*.just`, `.gitignore`, `.envrc`, `LICENSE`) are produced by `just generate` from module options — never hand-edit them; change the generating module instead. `.pre-commit-config.yaml` is also generated (gitignored; hooks are configured in-flake).
 
-### Packages
+## Key Directories
 
-Define a package in `perSystem.packages.<name>`, usually in a `package.nix` file beside the module. `meta.description` is necessary, because the README table reads it. Add `passthru.updateScript` to include the package in `just update-packages`.
+- `modules/programs/` — one file per program: `modules/programs/<name>.nix` (e.g. `eza.nix`, `ripgrep.nix`, `wakatime.nix`); a directory `modules/programs/<name>/` with `default.nix` once a second file is needed (`git/`, `fish/`, `nixvim/`, `comma/`).
+- `modules/programs/ai/` — AI harnesses (`herdr/`, `hindsight/`, `harnesses/{omp,crush,prime-agent,pi-coding-agent,opencode2}/`), shared agent skills (`programs.agents.skills`, backed by the `mattpocock-skills` input), and `mcp.nix` (shared MCP servers).
+- `modules/services/` — all services, one file each; each file declares its own level (NixOS and/or Home Manager), e.g. `printing.nix` (NixOS), `udisks.nix` (both).
+- `modules/systems/` — host-side: `bases/`, `configurations/`, `users/`, `ssh/` (daemon: openssh, fail2ban, key persistence), `gui/` (hyprland, stylix, fonts, xdg), `hardware/`, `disk/` (impermanence), `nix/`, `boot/`, `locale/`.
+- `modules/flake/` — flake-level machinery: `treefmt.nix`, `files/` (generated files: justfile, readme, gitignore, license), `packages/`, `pre-commit/`, `dev-shell.nix`, `settings.nix`, `nixpkgs.nix`, `sops-nix.nix`, `substituters.nix`.
+- `secrets/` — the sops file; `.sops.yaml` at the root holds the age recipients and creation rules.
 
-## Constraints
+## Development Commands
 
-- Import from derivation is off (`allow-import-from-derivation = false`). Evaluation fails if a module reads a build output.
-- treefmt sets `on-unmatched = "fatal"`. A new file type needs a formatter in `modules/flake/treefmt.nix`. If the formatter is absent, `just fmt` fails.
-- `self'` and `inputs'` are ordinary module arguments in NixOS and Home Manager modules. Use them in place of `withSystem`.
-- Comment only what the code cannot say — the non-obvious why — one line, plain words.
-- Secrets are in `secrets/secrets.yaml` (sops-nix, age keys from SSH keys). Reference a secret with `sops.secrets.<path>`.
+The dev shell (loaded by direnv) provides `just`, `nh`, `sops`, `nil`, `prek`. Prefer `just` over raw `nix` commands wherever a recipe exists — recipes fill in the host name, the user name, and the generated files, and each documents itself.
+
+```sh
+just add                    # git add -AN — make new files visible to Nix
+just eval <tree> <option>   # evaluate one option (trees: nixos, hm, flake, perSystem)
+just docs <tree> <option>   # render the option's markdown docs
+just inspect <tree> <option> <cmd>  # build a path, run a command in its output dir
+just build <tree> <option>  # build a path without linking result
+just switch | boot | test   # regenerate files, then nh os <action>
+just fmt                    # nix fmt (treefmt)
+prek                        # run the pre-commit hooks
+just update-packages        # run each package's passthru.updateScript
+just update                 # nix flake update + update-packages
+```
+
+**Work eval-first**: verify every change by evaluation, keep the rebuild for the end. After editing a module: `just add` (if you created a file), then `just eval system` — full configuration evaluation, builds nothing, about 35 seconds. Apply with `just switch`.
+
+Reading `just eval` output: judge the output text, not the exit code — an inline `«error: ...»` marks one broken option and the command still exits 0. Ignore `trace: Obsolete option ...` lines from nixpkgs/Home Manager renames unless the name is one this repository sets. `--raw` prints one text option, `--json` stops at the first broken option.
+
+## Code Conventions & Common Patterns
+
+- **One file per program**, named for the feature it holds. Fragments inside a program directory are named by role — `options.nix`, `package.nix`, `stylix.nix`, `herdr.nix`, a bare `SKILL.md` — or by feature, like `git/signing.nix`, `fish/prompt.nix`, `nixvim/lsp.nix`. `modules/programs/comma/default.nix` is the canonical example: it uses every cross-cutting aggregate.
+- **Client-side config in `programs/`, host-side daemons in `systems/`** — SSH: client known hosts in `programs/ssh.nix`, daemon in `systems/ssh/`. A user-facing app needing an activation hook is a program, not a service.
+- **Services** all live in `modules/services/`; each file declares its own level.
+- **`self'` and `inputs'` are ordinary module arguments** in NixOS and Home Manager modules (wired by `modules/systems/nix/per-system-args.nix`) — use them in place of `withSystem`.
+- **Packages**: define in `perSystem.packages.<name>`, usually in a `package.nix` beside the module. `meta.description` is required — the README package table reads it. Add `passthru.updateScript` to include the package in `just update-packages`.
+- **Secrets**: `sops.secrets."<path>" = { };`, then use `config.sops.secrets."<path>".path`; for env files use `sops.templates."<name>"` with `config.sops.placeholder."<path>"` (see `modules/services/network.nix`).
+- **Comments**: only what the code cannot say — the non-obvious why — one line, plain words.
+- **Formatting**: treefmt with `on-unmatched = "fatal"` (nixfmt, statix, deadnix, shfmt, shellcheck, stylua, actionlint, ruff, oxfmt, xmllint, keep-sorted). A new file type needs a formatter entry in `modules/flake/treefmt.nix`, or `just fmt` fails.
+
+## Important Files
+
+- `flake.nix`, `flake.lock` — generated; inputs come from `flake-file.inputs.<name>.url` declarations in modules.
+- `modules/systems/configurations/default.nix` — the `configurations.<hostname>` option: builds `nixosConfigurations`, user accounts, Home Manager wiring, `knownHosts`.
+- `modules/systems/configurations/vidhan-pc/default.nix`, `modules/systems/configurations/vidhan-macbook/default.nix` — the host definitions (import a base, hardware, monitors, `system.stateVersion`).
+- `modules/systems/bases/desktop/default.nix`, `modules/systems/bases/macbook/default.nix` — the base aggregates.
+- `modules/systems/users/default.nix` — the `users.<username>` option tree.
+- `modules/flake/files/justfile/default.nix` — generator for the justfile recipes (eval/build/inspect/docs trees).
+- `modules/flake/files/readme/options.nix` — README section tree (`readme.content.<section>.content`).
+- `modules/flake/treefmt.nix` — formatter set and excludes.
+- `modules/flake/sops-nix.nix`, `secrets/secrets.yaml`, `.sops.yaml` — secrets wiring.
+- `modules/programs/comma/default.nix` — the pattern reference for a complete program module.
+
+## Runtime/Tooling Preferences
+
+- Nix flakes with `nix-command` and `flakes` experimental features; nixpkgs `nixos-unstable` with `allowUnfree = true`.
+- Import-from-derivation is off: `allow-import-from-derivation = false` (in the generated `nixConfig`) — evaluation fails if a module reads a build output.
+- direnv + the flake dev shell: `just`, `nh`, `sops`, `nil`, `prek`, `nix-output-monitor`, `git`.
+- `nh` drives system actions (`nh os switch`); `just` is the command surface.
+- Generated files are regenerated by `just generate` (also a pre-commit hook) — never edit them by hand; change the module that declares them.
+
+## Testing & QA
+
+- **No unit or integration tests exist** (no `checks`, no test files). Verification is eval-first: `just eval system`, then `just build <path>`, then `just test` (`nh os test`) for the real thing.
+- **Pre-commit** (run via `prek`, configured in `modules/flake/pre-commit/`): `generate-files` (regenerates project files), `treefmt` (`just fmt --ci`), `conventional-pre-commit` (`--strict`). Commit messages must be Conventional Commits: `type: description`.
+- **CI** (`.github/workflows/ci.yaml`): flake input checks (flake-checker, fail-mode) and `nix fmt -- --ci`. `treefmt` `on-unmatched = "fatal"` means a file matching no formatter fails CI.
