@@ -23,10 +23,6 @@
   };
 
   inputs = {
-    crush = {
-      url = "github:gurnben/crush/feat/theme-support";
-      flake = false;
-    };
     disko.url = "github:nix-community/disko";
     files = {
       url = "github:mightyiam/files";
@@ -55,7 +51,6 @@
       url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    moonshine.url = "github:hgaiser/moonshine";
     nix-auto-follow = {
       url = "github:vidhanio/nix-auto-follow/merge-fix-inputs-references";
       inputs.nixpkgs.follows = "nixpkgs";
