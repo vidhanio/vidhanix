@@ -73,7 +73,7 @@
     {
       treefmt.programs.just.enable = true;
 
-      justfile = {
+      files.justfile = {
         settings = [ "no-cd" ];
 
         inherit vars;
@@ -163,7 +163,7 @@
               nixos = mkEvalTree "evaluate a path under the current host's nixos config, e.g. `just eval nixos services.printing`" "{{ nixosConfig }}";
               hm = mkEvalTree "evaluate a home manager option, e.g. `just eval hm programs.git`" "{{ hmConfig }}";
               flake = mkEvalTree "evaluate a flake option's value, e.g. `just eval flake files.generatedMessage.text`" ".#debug.config";
-              perSystem = mkEvalTree "evaluate a per-system option's value, e.g. `just eval perSystem readme.rendered`" "{{ perSystemConfig }}";
+              perSystem = mkEvalTree "evaluate a per-system option's value, e.g. `just eval perSystem files.readme.rendered`" "{{ perSystemConfig }}";
               system = {
                 doc = "evaluate the whole configuration, and build nothing";
                 silent = true;
@@ -242,7 +242,7 @@
             ];
             recipes = {
               add = mkPrivate add;
-              flake = mkDocsTree "render a flake option's markdown docs, e.g. `just docs flake perSystem.readme`" "(flake: flake.debug.options)";
+              flake = mkDocsTree "render a flake option's markdown docs, e.g. `just docs flake perSystem.files.readme`" "(flake: flake.debug.options)";
               perSystem = mkDocsTree "render a per-system option's markdown docs, e.g. `just docs perSystem files.commentedFile`" ''(flake: flake.allSystems."{{ system }}".options)'';
               nixos = mkDocsTree "render a nixos option's markdown docs, e.g. `just docs nixos services.printing`" ''(flake: flake.nixosConfigurations."{{ host }}".options)'';
               hm = mkDocsTree "render a home-manager option's markdown docs, e.g. `just docs hm programs.git`" ''(flake: flake.nixosConfigurations."{{ host }}".options.home-manager.users.type.getSubOptions ["home-manager" "users"])'';

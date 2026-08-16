@@ -18,54 +18,13 @@ let
     attr = "nixosConfigurations.${name}.config.system.build.toplevel.drvPath";
   }) config.flake.nixosConfigurations;
 
-  checkout = {
-    name = "checkout";
-    uses = "actions/checkout@v5";
-  };
-
-  # the composite action keeps the runner setup identical across workflows.
-  setupNix = {
-    name = "setup nix";
-    uses = "./.github/actions/setup-nix";
-    "with" = {
-      "ssh-private-key" = ghExpr "secrets.FONTS_SSH_KEY";
+  # reusable workflow called by every nix job.
+  nixJob = {
+    uses = "./.github/workflows/nix.yaml";
+    secrets = {
+      FONTS_SSH_KEY = ghExpr "secrets.FONTS_SSH_KEY";
     };
   };
-
-  nixSteps = [
-    checkout
-    setupNix
-  ];
-
-  # package updates always start from main; create-pull-request then rebases
-  # the update branch.
-  nixStepsOnMain = [
-    (
-      checkout
-      // {
-        "with" = {
-          fetch-depth = 0;
-          persist-credentials = false;
-          ref = "main";
-        };
-      }
-    )
-    setupNix
-  ];
-
-  nixStepsOnBase = [
-    (
-      checkout
-      // {
-        "with" = {
-          fetch-depth = 0;
-          persist-credentials = false;
-          ref = ghExpr "github.event.pull_request.base.sha";
-        };
-      }
-    )
-    setupNix
-  ];
 in
 {
   options.perSystem = flake-parts-lib.mkPerSystemOption (
@@ -93,9 +52,7 @@ in
           ghExpr
           hosts
           just
-          nixSteps
-          nixStepsOnMain
-          nixStepsOnBase
+          nixJob
           updatablePackages
           ;
       };

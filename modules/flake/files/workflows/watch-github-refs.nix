@@ -1,7 +1,7 @@
 { flake-parts-lib, ... }:
 {
   options.perSystem = flake-parts-lib.mkPerSystemOption (_: {
-    config.workflows.watch-github-refs = {
+    config.files.workflows.watch-github-refs = {
       name = "watch github refs";
 
       on = {
@@ -18,7 +18,7 @@
 
       jobs.watch = {
         name = "watch github refs issues";
-        "runs-on" = "ubuntu-latest";
+        runs-on = "ubuntu-latest";
         steps = [
           {
             name = "checkout";

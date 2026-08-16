@@ -10,7 +10,6 @@ import sys
 from pathlib import Path
 
 WORKFLOW_ROOT = ".github/workflows"
-ACTION_ROOT = ".github/actions"
 SOURCE_ROOT = "modules/flake/files/workflows"
 VERSION = re.compile(r"v[0-9]+(?:\.[0-9]+){0,2}")
 ACTION = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+")
@@ -225,15 +224,12 @@ def main() -> int:
                     f"Dependabot PR changes {status} {path}; only edits are allowed"
                 )
             if not (
-                (
-                    path.startswith((f"{WORKFLOW_ROOT}/", f"{ACTION_ROOT}/"))
-                    and path.endswith(".yaml")
-                )
+                (path.startswith(f"{WORKFLOW_ROOT}/") and path.endswith(".yaml"))
                 or (path.startswith(f"{SOURCE_ROOT}/") and path.endswith(".nix"))
             ):
                 raise ValueError(f"unexpected file in Dependabot PR: {path}")
 
-        action_patch = output(
+        workflow_patch = output(
             "git",
             "diff",
             "--unified=0",
@@ -241,9 +237,8 @@ def main() -> int:
             values["HEAD_SHA"],
             "--",
             WORKFLOW_ROOT,
-            ACTION_ROOT,
         )
-        updates = action_updates(parse_patch(action_patch, YAML_USE))
+        updates = action_updates(parse_patch(workflow_patch, YAML_USE))
         verified_tags: set[str] = set()
         for new in updates.values():
             verify_action_tag(new, verified_tags)
@@ -274,8 +269,8 @@ def main() -> int:
         changed_sources = replace_sources(updates)
         run("nix", "develop", "-c", "just", "generate")
 
-        if diff_exists(values["HEAD_SHA"], WORKFLOW_ROOT, ACTION_ROOT):
-            raise ValueError("regenerated actions do not match the Dependabot PR")
+        if diff_exists(values["HEAD_SHA"], WORKFLOW_ROOT):
+            raise ValueError("regenerated workflows do not match the Dependabot PR")
 
         if not diff_exists(values["HEAD_SHA"], SOURCE_ROOT):
             print("Dependabot PR already contains the source sync")
@@ -285,11 +280,7 @@ def main() -> int:
         run("git", "diff", "--cached", "--check")
         staged = output("git", "diff", "--cached", "--name-only").splitlines()
         if any(
-            not (
-                path.startswith(
-                    (f"{WORKFLOW_ROOT}/", f"{ACTION_ROOT}/", f"{SOURCE_ROOT}/")
-                )
-            )
+            not path.startswith((f"{WORKFLOW_ROOT}/", f"{SOURCE_ROOT}/"))
             for path in staged
         ):
             raise ValueError("generated an unexpected staged file")

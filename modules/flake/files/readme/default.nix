@@ -1,5 +1,5 @@
 {
-  perSystem.readme = {
+  perSystem.files.readme = {
     title = "❄️ vidhanix";
     order = [
       "introduction"

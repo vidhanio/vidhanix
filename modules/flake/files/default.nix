@@ -45,11 +45,11 @@
         ];
       };
 
-      readme.content.generated-files.content = ''
+      files.readme.content.generated-files.content = ''
         most of the non-nix files in this repository (including this very readme) are generated via [`just generate`](justfile).
         the generated files are:
 
-        ${config.readme.lib.renderList (
+        ${config.files.readme.lib.renderList (
           map (p: "[`${p}`](${p})") (lib.sortOn (p: p) (lib.mapAttrsToList (path: _: path) config.files.file))
         )}
       '';

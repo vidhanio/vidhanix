@@ -29,7 +29,7 @@ user := `whoami`
 @flake option *flags: add
     nix eval {{ flags }} .#debug.config.{{ option }}
 
-# evaluate a per-system option's value, e.g. `just eval perSystem readme.rendered`
+# evaluate a per-system option's value, e.g. `just eval perSystem files.readme.rendered`
 @perSystem option *flags: add
     nix eval {{ flags }} {{ perSystemConfig }}.{{ option }}
 

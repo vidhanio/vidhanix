@@ -7,10 +7,10 @@
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
-      cfg = config.readme;
+      cfg = config.files.readme;
     in
     {
-      options.readme =
+      options.files.readme =
         let
           section =
             level:
@@ -80,7 +80,7 @@
         };
 
       config = {
-        readme = {
+        files.readme = {
           lib = {
             renderTable =
               {

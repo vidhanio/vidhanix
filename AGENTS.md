@@ -24,13 +24,14 @@ Every `.nix` file under `modules/` is auto-imported as a flake-parts module — 
 - `hyprland.binds."<key>"`, `hyprland.autostartWorkspaces.<class>` — declared in `modules/systems/gui/hyprland/options.nix`.
 - `xdg.autostart.entries`.
 - `flake-file.inputs.<name>.url` — declares a flake input (serialized into `flake.nix`).
-- `perSystem.files.gitignore`, `readme.content.<section>.content`, `justfile.recipes` / `justfile.vars` / `justfile.modules`.
+- `perSystem.files.gitignore`, `files.readme.content.<section>.content`, `files.justfile.recipes` / `files.justfile.vars` / `files.justfile.modules`.
+- `files.workflows.<name>` — generate GitHub workflow files, including reusable workflows.
 
 **Data flow.** Module files declare options → aggregates compose them → `configurations.<hostname>` builds a `nixosConfiguration` → `just switch` regenerates the generated files and runs `nh os switch`.
 
 **Secrets.** One sops-encrypted file, `secrets/secrets.yaml` (`.sops.yaml` holds the age rules; age keys are derived from SSH keys persisted via impermanence). Modules reference secrets with `sops.secrets."<path>"` and build env files with `sops.templates."<name>"` (see `modules/flake/sops-nix.nix`).
 
-**Generated files** (`flake.nix`, `flake.lock`, `README.md`, `justfile` + `*.just`, `.gitignore`, `.envrc`, `LICENSE`) are produced by `just generate` from module options — never hand-edit them; change the generating module instead. `.pre-commit-config.yaml` is also generated (gitignored; hooks are configured in-flake).
+**Generated files** (`flake.nix`, `flake.lock`, `README.md`, `justfile` + `*.just`, `.gitignore`, `.envrc`, `LICENSE`, `.github/workflows/*.yaml`) are produced by `just generate` from module options — never hand-edit them; change the generating module instead. `.pre-commit-config.yaml` is also generated (gitignored; hooks are configured in-flake).
 
 ## Key Directories
 
@@ -83,7 +84,7 @@ Reading `just eval` output: judge the output text, not the exit code — an inli
 - `modules/systems/bases/desktop/default.nix`, `modules/systems/bases/macbook/default.nix` — the base aggregates.
 - `modules/systems/users/default.nix` — the `users.<username>` option tree.
 - `modules/flake/files/justfile/default.nix` — generator for the justfile recipes (eval/build/inspect/docs trees).
-- `modules/flake/files/readme/options.nix` — README section tree (`readme.content.<section>.content`).
+- `modules/flake/files/readme/options.nix` — README section tree (`files.readme.content.<section>.content`).
 - `modules/flake/treefmt.nix` — formatter set and excludes.
 - `modules/flake/sops-nix.nix`, `secrets/secrets.yaml`, `.sops.yaml` — secrets wiring.
 - `modules/programs/comma/default.nix` — the pattern reference for a complete program module.
