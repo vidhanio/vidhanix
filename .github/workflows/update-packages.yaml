@@ -32,10 +32,11 @@ jobs:
       uses: peter-evans/create-pull-request@v8
       with:
         body: ${{ steps.update.outputs.body }}
-        branch: packages/${{ matrix.pkg }}-${{ steps.update.outputs.after }}
+        branch: packages/${{ matrix.pkg }}
         commit-message: 'chore(packages): bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before
           }} to ${{ steps.update.outputs.after }}'
         delete-branch: true
+        sign-commits: true
         title: 'chore(packages): bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before
           }} to ${{ steps.update.outputs.after }}'
         token: ${{ steps.app-token.outputs.token }}

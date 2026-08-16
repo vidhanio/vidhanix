@@ -32,6 +32,14 @@ jobs:
         PR_NUMBER: ${{ github.event.pull_request.number }}
       name: sync action updates
       run: python3 .github/scripts/sync-action-updates.py
+    - env:
+        GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+      name: commit
+      uses: planetscale/ghcommit-action@v0.2
+      with:
+        branch: ${{ github.event.pull_request.head.ref }}
+        commit_message: 'chore(deps): sync action updates to nix'
+        repo: ${{ github.repository }}
 name: sync action updates
 'on':
   pull_request_target:
