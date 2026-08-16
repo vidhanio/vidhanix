@@ -6,6 +6,13 @@
       config,
       ...
     }:
+    let
+      # The check sandbox has no nix.conf; bake the experimental features the
+      # justfile needs into a wrapper instead.
+      nix-cli = pkgs.writeShellScriptBin "nix" ''
+        exec ${pkgs.nix}/bin/nix --extra-experimental-features "nix-command flakes" "$@"
+      '';
+    in
     {
       packages.generate-files = pkgs.writeShellApplication {
         name = "generate-files";
@@ -29,6 +36,13 @@
         enable = true;
         entry = "just generate";
         pass_filenames = false;
+        # The hook rebuilds flake outputs, so it needs nix (and just) on PATH;
+        # this also lets `nix flake check` run the hook in its sandbox.
+        extraPackages = [
+          pkgs.hostname
+          nix-cli
+          pkgs.just
+        ];
       };
 
       readme.content.generated-files.content = ''

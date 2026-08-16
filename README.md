@@ -27,7 +27,6 @@ some of these packages provide a `passthru.updateScript`, all of which can be ru
 | [`libretro-database`](modules/programs/retroarch/packages/libretro-database.nix)                 | Databases used by RetroArch                                                                                                        |         ✓         |
 | [`libretro-system-files`](modules/programs/retroarch/packages/libretro-system-files/default.nix) | Auxiliary libretro core system files provided through the online updater                                                           |         ✓         |
 | [`libretrodb-tool`](modules/programs/retroarch/packages/libretrodb-tool.nix)                     | Tools for managing libretro databases                                                                                              |                   |
-| [`muvm-steam`](modules/programs/steam/packages/muvm-steam.nix)                                   | The Steam client, wrapped to run in muvm for Apple Silicon support                                                                 |                   |
 | [`pragmata-pro-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)                            | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |                   |
 | [`update-packages`](modules/flake/packages/update-packages/default.nix)                          | Update all packages in this flake that have an update script                                                                       |                   |
 
@@ -37,6 +36,8 @@ most of the non-nix files in this repository (including this very readme) are ge
 the generated files are:
 
 - [`.envrc`](.envrc)
+- [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+- [`.github/workflows/watch-github-refs.yml`](.github/workflows/watch-github-refs.yml)
 - [`.gitignore`](.gitignore)
 - [`LICENSE`](LICENSE)
 - [`README.md`](README.md)

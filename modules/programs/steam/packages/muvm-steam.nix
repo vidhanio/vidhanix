@@ -91,8 +91,17 @@ let
 in
 {
   perSystem =
-    { pkgs, ... }:
     {
-      packages.muvm-steam = pkgs.callPackage pkg { };
+      pkgs,
+      lib,
+      system,
+      ...
+    }:
+    {
+      # aarch64-only (Apple Silicon); exposing it on x86_64-linux fails
+      # `nix flake check` against meta.platforms.
+      packages = lib.mkIf (system == "aarch64-linux") {
+        muvm-steam = pkgs.callPackage pkg { };
+      };
     };
 }
