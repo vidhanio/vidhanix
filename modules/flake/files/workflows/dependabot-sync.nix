@@ -28,7 +28,7 @@
           # only the base workflow runs; the script treats the PR as data.
           "if" = "github.event.pull_request.user.login=='dependabot[bot]'";
           "with" = {
-            name = "sync dependabot actions";
+            name = "sync dependabot github actions updates";
             command = "python3 .github/scripts/dependabot-sync.py";
             ref = ghExpr "github.event.pull_request.base.sha";
             fetch-depth = 0;
