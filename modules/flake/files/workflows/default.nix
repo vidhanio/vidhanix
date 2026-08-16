@@ -28,6 +28,7 @@ let
         {
           name = "install nix";
           uses = "cachix/install-nix-action@v31";
+          "with".nix_path = "nixpkgs=channel:nixos-unstable";
         }
         {
           name = "restore nix store";
