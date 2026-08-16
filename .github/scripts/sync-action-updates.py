@@ -291,14 +291,6 @@ def main() -> int:
             for path in staged
         ):
             raise ValueError("generated an unexpected staged file")
-        run("git", "commit", "-m", "chore(deps): sync action updates to nix")
-        run(
-            "git",
-            "push",
-            f"--force-with-lease=refs/heads/{values['HEAD_REF']}:{values['HEAD_SHA']}",
-            "origin",
-            f"HEAD:refs/heads/{values['HEAD_REF']}",
-        )
         return 0
     except (ValueError, subprocess.CalledProcessError) as error:
         print(f"dependabot sync failed: {error}", file=sys.stderr)
