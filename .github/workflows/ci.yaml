@@ -6,8 +6,17 @@ concurrency:
   group: ${{ github.ref }}
 jobs:
   build-packages:
-    secrets:
-      FONTS_SSH_KEY: ${{ secrets.FONTS_SSH_KEY }}
+    name: 'build package: ${{ matrix.pkg }}'
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v5
+    - name: setup nix
+      uses: ./.github/actions/setup-nix
+      with:
+        ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
+    - name: build package
+      run: nix build .#${{ matrix.pkg }} --print-build-logs
     strategy:
       fail-fast: false
       matrix:
@@ -31,27 +40,44 @@ jobs:
         - write-flake
         - write-inputs
         - write-lock
-    uses: ./.github/workflows/nix.yaml
-    with:
-      command: nix build .#${{ matrix.pkg }} --print-build-logs
-      name: 'build package: ${{ matrix.pkg }}'
   check-formatting:
-    secrets:
-      FONTS_SSH_KEY: ${{ secrets.FONTS_SSH_KEY }}
-    uses: ./.github/workflows/nix.yaml
-    with:
-      command: nix develop -c just fmt --ci
-      name: check formatting
+    name: check formatting
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v5
+    - name: setup nix
+      uses: ./.github/actions/setup-nix
+      with:
+        ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
+    - name: check formatting
+      run: nix develop -c just fmt --ci
   check-generated-files:
-    secrets:
-      FONTS_SSH_KEY: ${{ secrets.FONTS_SSH_KEY }}
-    uses: ./.github/workflows/nix.yaml
-    with:
-      command: nix develop -c just generate && git diff --exit-code
-      name: check generated files
+    name: check generated files
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v5
+    - name: setup nix
+      uses: ./.github/actions/setup-nix
+      with:
+        ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
+    - name: generate files
+      run: nix develop -c just generate
+    - name: check diff
+      run: git diff --exit-code
   eval-systems:
-    secrets:
-      FONTS_SSH_KEY: ${{ secrets.FONTS_SSH_KEY }}
+    name: 'eval system: ${{ matrix.name }}'
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v5
+    - name: setup nix
+      uses: ./.github/actions/setup-nix
+      with:
+        ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
+    - name: eval system
+      run: nix eval .#${{ matrix.attr }} --raw
     strategy:
       fail-fast: false
       matrix:
@@ -62,10 +88,6 @@ jobs:
         - attr: 
             nixosConfigurations.vidhan-pc.config.system.build.toplevel.drvPath
           name: vidhan-pc
-    uses: ./.github/workflows/nix.yaml
-    with:
-      command: nix eval .#${{ matrix.attr }} --raw
-      name: 'eval system: ${{ matrix.name }}'
 name: ci
 'on':
   pull_request: {}

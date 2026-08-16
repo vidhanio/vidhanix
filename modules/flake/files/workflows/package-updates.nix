@@ -3,7 +3,7 @@
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
-      inherit (config.workflowCommon) ghExpr nixJob updatablePackages;
+      inherit (config.workflowCommon) ghExpr nixStepsOnMain updatablePackages;
     in
     {
       config.files.workflows.update-packages = {
@@ -27,23 +27,36 @@
           cancel-in-progress = false;
         };
 
-        jobs.update = nixJob // {
+        jobs.update = {
+          name = "update package: ${ghExpr "matrix.pkg"}";
+          runs-on = "ubuntu-latest";
           strategy = {
             matrix.pkg = updatablePackages;
             fail-fast = false;
           };
-          "with" = {
-            name = "update package: ${ghExpr "matrix.pkg"}";
-            command = "bash .github/scripts/update-package.sh \"$PACKAGE\"";
-            ref = "main";
-            fetch-depth = 0;
-            persist-credentials = false;
-            package = ghExpr "matrix.pkg";
-            create-package-pr = true;
-          };
-          secrets = nixJob.secrets // {
-            PACKAGE_UPDATE_TOKEN = ghExpr "secrets.PACKAGE_UPDATE_TOKEN";
-          };
+          steps = nixStepsOnMain ++ [
+            {
+              name = "update package";
+              id = "update";
+              env.PACKAGE = ghExpr "matrix.pkg";
+              run = "bash .github/scripts/update-package.sh \"$PACKAGE\"";
+            }
+            {
+              # the fixed branch is rebased on main and closed when it has no diff.
+              name = "create pull request";
+              uses = "peter-evans/create-pull-request@v8";
+              "with" = {
+                base = "main";
+                # GITHUB_TOKEN pushes do not trigger the pull request workflow.
+                token = ghExpr "secrets.PACKAGE_UPDATE_TOKEN";
+                branch = "package-updates/${ghExpr "matrix.pkg"}";
+                commit-message = "chore(packages): bump ${ghExpr "matrix.pkg"} from ${ghExpr "steps.update.outputs.before"} to ${ghExpr "steps.update.outputs.after"}";
+                delete-branch = true;
+                title = "chore(packages): bump ${ghExpr "matrix.pkg"} from ${ghExpr "steps.update.outputs.before"} to ${ghExpr "steps.update.outputs.after"}";
+                body = ghExpr "steps.update.outputs.body";
+              };
+            }
+          ];
         };
       };
     }

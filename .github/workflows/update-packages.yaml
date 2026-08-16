@@ -6,9 +6,36 @@ concurrency:
   group: update-packages
 jobs:
   update:
-    secrets:
-      FONTS_SSH_KEY: ${{ secrets.FONTS_SSH_KEY }}
-      PACKAGE_UPDATE_TOKEN: ${{ secrets.PACKAGE_UPDATE_TOKEN }}
+    name: 'update package: ${{ matrix.pkg }}'
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+        persist-credentials: false
+        ref: main
+    - name: setup nix
+      uses: ./.github/actions/setup-nix
+      with:
+        ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
+    - env:
+        PACKAGE: ${{ matrix.pkg }}
+      id: update
+      name: update package
+      run: bash .github/scripts/update-package.sh "$PACKAGE"
+    - name: create pull request
+      uses: peter-evans/create-pull-request@v8
+      with:
+        base: main
+        body: ${{ steps.update.outputs.body }}
+        branch: package-updates/${{ matrix.pkg }}
+        commit-message: 'chore(packages): bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before
+          }} to ${{ steps.update.outputs.after }}'
+        delete-branch: true
+        title: 'chore(packages): bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before
+          }} to ${{ steps.update.outputs.after }}'
+        token: ${{ secrets.PACKAGE_UPDATE_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
@@ -20,15 +47,6 @@ jobs:
         - hindsight-api-slim
         - libretro-database
         - libretro-system-files
-    uses: ./.github/workflows/nix.yaml
-    with:
-      command: bash .github/scripts/update-package.sh "$PACKAGE"
-      create-package-pr: true
-      fetch-depth: 0
-      name: 'update package: ${{ matrix.pkg }}'
-      package: ${{ matrix.pkg }}
-      persist-credentials: false
-      ref: main
 name: update packages
 'on':
   push:

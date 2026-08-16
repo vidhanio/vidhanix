@@ -7,7 +7,7 @@
         ghExpr
         hosts
         just
-        nixJob
+        nixSteps
         ;
     in
     {
@@ -31,40 +31,62 @@
         };
 
         jobs = {
-          check-formatting = nixJob // {
-            "with" = {
-              name = "check formatting";
-              command = "${just} fmt --ci";
-            };
+          check-formatting = {
+            name = "check formatting";
+            runs-on = "ubuntu-latest";
+            steps = nixSteps ++ [
+              {
+                name = "check formatting";
+                run = "${just} fmt --ci";
+              }
+            ];
           };
 
-          check-generated-files = nixJob // {
-            "with" = {
-              name = "check generated files";
-              command = "${just} generate && git diff --exit-code";
-            };
+          check-generated-files = {
+            name = "check generated files";
+            runs-on = "ubuntu-latest";
+            steps = nixSteps ++ [
+              {
+                name = "generate files";
+                run = "${just} generate";
+              }
+              {
+                name = "check diff";
+                run = "git diff --exit-code";
+              }
+            ];
           };
 
-          eval-systems = nixJob // {
+          eval-systems = {
+            name = "eval system: ${ghExpr "matrix.name"}";
+            runs-on = "ubuntu-latest";
             strategy = {
               matrix.include = hosts;
               fail-fast = false;
             };
-            "with" = {
-              name = "eval system: ${ghExpr "matrix.name"}";
-              command = "nix eval .#${ghExpr "matrix.attr"} --raw";
-            };
+            steps = nixSteps ++ [
+              {
+                name = "eval system";
+                # forcing the toplevel drvPath evaluates the whole system
+                # config without building anything.
+                run = "nix eval .#${ghExpr "matrix.attr"} --raw";
+              }
+            ];
           };
 
-          build-packages = nixJob // {
+          build-packages = {
+            name = "build package: ${ghExpr "matrix.pkg"}";
+            runs-on = "ubuntu-latest";
             strategy = {
               matrix.pkg = builtins.attrNames config.packages;
               fail-fast = false;
             };
-            "with" = {
-              name = "build package: ${ghExpr "matrix.pkg"}";
-              command = "nix build .#${ghExpr "matrix.pkg"} --print-build-logs";
-            };
+            steps = nixSteps ++ [
+              {
+                name = "build package";
+                run = "nix build .#${ghExpr "matrix.pkg"} --print-build-logs";
+              }
+            ];
           };
         };
       };

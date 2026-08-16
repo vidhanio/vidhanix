@@ -4,22 +4,29 @@
 jobs:
   sync:
     if: github.event.pull_request.user.login=='dependabot[bot]'
-    secrets:
-      FONTS_SSH_KEY: ${{ secrets.FONTS_SSH_KEY }}
-      PACKAGE_UPDATE_TOKEN: ${{ secrets.PACKAGE_UPDATE_TOKEN }}
-    uses: ./.github/workflows/nix.yaml
-    with:
-      base-ref: ${{ github.event.pull_request.base.ref }}
-      base-sha: ${{ github.event.pull_request.base.sha }}
-      command: python3 .github/scripts/dependabot-sync.py
-      fetch-depth: 0
-      head-ref: ${{ github.event.pull_request.head.ref }}
-      head-repo: ${{ github.event.pull_request.head.repo.full_name }}
-      head-sha: ${{ github.event.pull_request.head.sha }}
-      name: sync dependabot github actions updates
-      persist-credentials: false
-      pr-number: ${{ github.event.pull_request.number }}
-      ref: ${{ github.event.pull_request.base.sha }}
+    name: sync dependabot actions
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+        persist-credentials: false
+        ref: ${{ github.event.pull_request.base.sha }}
+    - name: setup nix
+      uses: ./.github/actions/setup-nix
+      with:
+        ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
+    - env:
+        BASE_REF: ${{ github.event.pull_request.base.ref }}
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        PACKAGE_UPDATE_TOKEN: ${{ secrets.PACKAGE_UPDATE_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      name: sync action updates
+      run: python3 .github/scripts/dependabot-sync.py
 name: sync dependabot actions
 'on':
   pull_request_target:

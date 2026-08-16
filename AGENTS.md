@@ -25,13 +25,13 @@ Every `.nix` file under `modules/` is auto-imported as a flake-parts module — 
 - `xdg.autostart.entries`.
 - `flake-file.inputs.<name>.url` — declares a flake input (serialized into `flake.nix`).
 - `perSystem.files.gitignore`, `files.readme.content.<section>.content`, `files.justfile.recipes` / `files.justfile.vars` / `files.justfile.modules`.
-- `files.workflows.<name>` — generate GitHub workflow files, including reusable workflows.
+- `files.workflows.<name>` and `files.actions.<name>` — generate GitHub workflow and composite-action files.
 
 **Data flow.** Module files declare options → aggregates compose them → `configurations.<hostname>` builds a `nixosConfiguration` → `just switch` regenerates the generated files and runs `nh os switch`.
 
 **Secrets.** One sops-encrypted file, `secrets/secrets.yaml` (`.sops.yaml` holds the age rules; age keys are derived from SSH keys persisted via impermanence). Modules reference secrets with `sops.secrets."<path>"` and build env files with `sops.templates."<name>"` (see `modules/flake/sops-nix.nix`).
 
-**Generated files** (`flake.nix`, `flake.lock`, `README.md`, `justfile` + `*.just`, `.gitignore`, `.envrc`, `LICENSE`, `.github/workflows/*.yaml`) are produced by `just generate` from module options — never hand-edit them; change the generating module instead. `.pre-commit-config.yaml` is also generated (gitignored; hooks are configured in-flake).
+**Generated files** (`flake.nix`, `flake.lock`, `README.md`, `justfile` + `*.just`, `.gitignore`, `.envrc`, `LICENSE`, `.github/workflows/*.yaml`, `.github/actions/*/action.yaml`) are produced by `just generate` from module options — never hand-edit them; change the generating module instead. `.pre-commit-config.yaml` is also generated (gitignored; hooks are configured in-flake).
 
 ## Key Directories
 
