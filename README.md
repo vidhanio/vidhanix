@@ -36,6 +36,7 @@ most of the non-nix files in this repository (including this very readme) are ge
 the generated files are:
 
 - [`.envrc`](.envrc)
+- [`.github/actions/setup-nix/action.yaml`](.github/actions/setup-nix/action.yaml)
 - [`.github/workflows/ci.yaml`](.github/workflows/ci.yaml)
 - [`.github/workflows/dependabot-sync.yaml`](.github/workflows/dependabot-sync.yaml)
 - [`.github/workflows/update-packages.yaml`](.github/workflows/update-packages.yaml)

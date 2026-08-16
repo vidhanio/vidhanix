@@ -27,17 +27,10 @@
 
           stylua.enable = true;
 
-          actionlint.enable = true;
-
           ruff-format.enable = true;
           ruff-check.enable = true;
 
-          oxfmt = {
-            enable = true;
-            # Generated workflows carry `${{ }}` expressions whose quoting oxfmt
-            # normalizes differently than the generator; keep them verbatim.
-            excludes = [ ".github/workflows/*" ];
-          };
+          oxfmt.enable = true;
 
           xmllint.enable = true;
 
