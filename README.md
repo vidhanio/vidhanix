@@ -36,9 +36,9 @@ most of the non-nix files in this repository (including this very readme) are ge
 the generated files are:
 
 - [`.envrc`](.envrc)
-- [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
-- [`.github/workflows/update-packages.yml`](.github/workflows/update-packages.yml)
-- [`.github/workflows/watch-github-refs.yml`](.github/workflows/watch-github-refs.yml)
+- [`.github/workflows/ci.yaml`](.github/workflows/ci.yaml)
+- [`.github/workflows/update-packages.yaml`](.github/workflows/update-packages.yaml)
+- [`.github/workflows/watch-github-refs.yaml`](.github/workflows/watch-github-refs.yaml)
 - [`.gitignore`](.gitignore)
 - [`LICENSE`](LICENSE)
 - [`README.md`](README.md)
