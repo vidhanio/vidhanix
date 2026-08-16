@@ -1135,6 +1135,22 @@
         "type": "github"
       }
     },
+    "pi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786771985,
+        "narHash": "sha256-gwt3idJIRIzo71enhzSEJHgXxEvKLkim+wNgg+bfBBo=",
+        "owner": "earendil-works",
+        "repo": "pi",
+        "rev": "086c32e74530564922d011ade23ff582c9d63116",
+        "type": "github"
+      },
+      "original": {
+        "owner": "earendil-works",
+        "repo": "pi",
+        "type": "github"
+      }
+    },
     "prime-agent": {
       "flake": false,
       "locked": {
@@ -1174,6 +1190,7 @@
         "nixpkgs": "nixpkgs_12",
         "nixvim": "nixvim",
         "noctalia": "noctalia",
+        "pi": "pi",
         "prime-agent": "prime-agent",
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",

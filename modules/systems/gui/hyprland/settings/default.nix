@@ -50,10 +50,10 @@
             respect_gaps = true;
           };
         };
+        master.smart_resizing = false;
         decoration.rounding = 8;
 
         input = {
-          follow_mouse = 2;
           repeat_rate = 50;
           repeat_delay = 500;
           touchpad = {

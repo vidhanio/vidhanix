@@ -10,7 +10,7 @@
             pkgs.runCommandLocal "wallpaper.png" { } ''
               ${lib.getExe' pkgs.imagemagick "magick"} \
                 ${./iceman.png} \
-                +level-colors "${base00},${base03}" \
+                +level-colors "${base00},${base01}" \
                 -colorspace sRGB \
                 $out
             '';

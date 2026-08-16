@@ -62,6 +62,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
+    pi = {
+      url = "github:earendil-works/pi";
+      flake = false;
+    };
     prime-agent = {
       url = "github:PrimeIntellect-ai/prime-agent";
       flake = false;
