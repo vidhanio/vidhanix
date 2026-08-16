@@ -33,6 +33,7 @@ in
             just = hashtag;
             justfile = hashtag;
             toml = hashtag;
+            yaml = hashtag;
             license = _: "";
           };
         readOnly = true;

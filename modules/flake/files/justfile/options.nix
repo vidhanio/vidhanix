@@ -114,10 +114,10 @@ in
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
-      cfg = config.justfile;
+      cfg = config.files.justfile;
     in
     {
-      options.justfile = justfileSubmodule.options // {
+      options.files.justfile = justfileSubmodule.options // {
         modules = lib.mkOption {
           type = lib.types.attrsOf (lib.types.submodule justfileSubmodule);
           description = "Submodules to generate alongside the justfile, e.g. `eval.just`.";

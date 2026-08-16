@@ -12,7 +12,7 @@ user := `whoami`
 @add:
     git add -AN
 
-# render a flake option's markdown docs, e.g. `just docs flake perSystem.readme`
+# render a flake option's markdown docs, e.g. `just docs flake perSystem.files.readme`
 @flake option: add
     nix build --file /nix/store/ban5gwpwqn9qn69nf1rxb64041ixgd1a-_option-doc.nix --no-substitute --argstr flake "{{ justfile_directory() }}" --arg getOptions '(flake: flake.debug.options)' --argstr option "{{ option }}" --no-link --print-out-paths | xargs cat
 

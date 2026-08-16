@@ -24,13 +24,14 @@ Every `.nix` file under `modules/` is auto-imported as a flake-parts module — 
 - `hyprland.binds."<key>"`, `hyprland.autostartWorkspaces.<class>` — declared in `modules/systems/gui/hyprland/options.nix`.
 - `xdg.autostart.entries`.
 - `flake-file.inputs.<name>.url` — declares a flake input (serialized into `flake.nix`).
-- `perSystem.files.gitignore`, `readme.content.<section>.content`, `justfile.recipes` / `justfile.vars` / `justfile.modules`.
+- `perSystem.files.gitignore`, `files.readme.content.<section>.content`, `files.justfile.recipes` / `files.justfile.vars` / `files.justfile.modules`.
+- `files.workflows.<name>` and `files.actions.<name>` — generate GitHub workflow and composite-action files.
 
 **Data flow.** Module files declare options → aggregates compose them → `configurations.<hostname>` builds a `nixosConfiguration` → `just switch` regenerates the generated files and runs `nh os switch`.
 
 **Secrets.** One sops-encrypted file, `secrets/secrets.yaml` (`.sops.yaml` holds the age rules; age keys are derived from SSH keys persisted via impermanence). Modules reference secrets with `sops.secrets."<path>"` and build env files with `sops.templates."<name>"` (see `modules/flake/sops-nix.nix`).
 
-**Generated files** (`flake.nix`, `flake.lock`, `README.md`, `justfile` + `*.just`, `.gitignore`, `.envrc`, `LICENSE`) are produced by `just generate` from module options — never hand-edit them; change the generating module instead. `.pre-commit-config.yaml` is also generated (gitignored; hooks are configured in-flake).
+**Generated files** (`flake.nix`, `flake.lock`, `README.md`, `justfile` + `*.just`, `.gitignore`, `.envrc`, `LICENSE`, `.github/workflows/*.yaml`, `.github/actions/*/action.yaml`) are produced by `just generate` from module options — never hand-edit them; change the generating module instead. `.pre-commit-config.yaml` is also generated (gitignored; hooks are configured in-flake).
 
 ## Key Directories
 
@@ -71,6 +72,8 @@ Reading `just eval` output: judge the output text, not the exit code — an inli
 - **Packages**: define in `perSystem.packages.<name>`, usually in a `package.nix` beside the module. `meta.description` is required — the README package table reads it. Add `passthru.updateScript` to include the package in `just update-packages`.
 - **Secrets**: `sops.secrets."<path>" = { };`, then use `config.sops.secrets."<path>".path`; for env files use `sops.templates."<name>"` with `config.sops.placeholder."<path>"` (see `modules/services/network.nix`).
 - **Comments**: only what the code cannot say — the non-obvious why — one line, plain words.
+- **Writing**: always lowercase — comments, commit subjects and descriptions, CI job and step names, workflow names. Preserve capitalization in user-facing templates when an external format requires it. Keep identifiers and `${{ }}` expressions verbatim; backtick any code reference in prose.
+- **Commits**: commit after every change — a finished unit of work is committed immediately, never left uncommitted. Conventional Commits (`type(scope): subject`), subject always lowercase.
 - **Formatting**: treefmt with `on-unmatched = "fatal"` (nixfmt, statix, deadnix, shfmt, shellcheck, stylua, actionlint, ruff, oxfmt, xmllint, keep-sorted). A new file type needs a formatter entry in `modules/flake/treefmt.nix`, or `just fmt` fails.
 
 ## Important Files
@@ -81,7 +84,7 @@ Reading `just eval` output: judge the output text, not the exit code — an inli
 - `modules/systems/bases/desktop/default.nix`, `modules/systems/bases/macbook/default.nix` — the base aggregates.
 - `modules/systems/users/default.nix` — the `users.<username>` option tree.
 - `modules/flake/files/justfile/default.nix` — generator for the justfile recipes (eval/build/inspect/docs trees).
-- `modules/flake/files/readme/options.nix` — README section tree (`readme.content.<section>.content`).
+- `modules/flake/files/readme/options.nix` — README section tree (`files.readme.content.<section>.content`).
 - `modules/flake/treefmt.nix` — formatter set and excludes.
 - `modules/flake/sops-nix.nix`, `secrets/secrets.yaml`, `.sops.yaml` — secrets wiring.
 - `modules/programs/comma/default.nix` — the pattern reference for a complete program module.
@@ -98,4 +101,4 @@ Reading `just eval` output: judge the output text, not the exit code — an inli
 
 - **No unit or integration tests exist** (no `checks`, no test files). Verification is eval-first: `just eval system`, then `just build <path>`, then `just test` (`nh os test`) for the real thing.
 - **Pre-commit** (run via `prek`, configured in `modules/flake/pre-commit/`): `generate-files` (regenerates project files), `treefmt` (`just fmt --ci`), `conventional-pre-commit` (`--strict`). Commit messages must be Conventional Commits: `type: description`.
-- **CI** (`.github/workflows/ci.yaml`): flake input checks (flake-checker, fail-mode) and `nix fmt -- --ci`. `treefmt` `on-unmatched = "fatal"` means a file matching no formatter fails CI.
+- **CI** (workflows generated from `modules/flake/files/workflows/`): evaluates both `nixosConfigurations` (`toplevel.drvPath`, no builds), builds every `perSystem.packages.*`, checks formatting (`just fmt --ci`) and generated files (`just generate` + `git diff`). Uses `cachix/install-nix-action` (no DeterminateSystems actions, no caching); jobs need `FONTS_SSH_KEY` for the private `vidhan-fonts` input. The package update and Dependabot sync workflows need a `PACKAGE_UPDATE_TOKEN` secret with contents and pull-request write access; configure it as both an Actions and Dependabot secret so generated PRs trigger CI and can be updated safely. Dependabot (`.github/dependabot.yml`) opens daily PRs for the `nix` and `github-actions` ecosystems; dependabot-triggered runs get no Actions secrets, so dependabot PRs need a matching Dependabot secret named `FONTS_SSH_KEY`. `treefmt` `on-unmatched = "fatal"` means a file matching no formatter fails CI.

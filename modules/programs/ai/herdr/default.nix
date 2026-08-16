@@ -4,7 +4,8 @@
 
     programs.herdr = {
       enable = true;
-      # package = inputs'.llm-agents.packages.herdr;
+
+      package = inputs'.llm-agents.packages.herdr;
 
       settings = {
         onboarding = false;
