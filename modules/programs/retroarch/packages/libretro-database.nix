@@ -11,13 +11,13 @@ let
     let
       libretro-super = stdenvNoCC.mkDerivation {
         pname = "libretro-super";
-        version = "Latest-unstable-2026-08-14";
+        version = "Latest-unstable-2026-08-16";
 
         src = fetchFromGitHub {
           owner = "libretro";
           repo = "libretro-super";
-          rev = "5a187dce87a920efc1cb6f65932a91bb9322f0d5";
-          hash = "sha256-DJvmr23PnU+eajI0oZ2SoqDuMt+lkcjyixq+2xCw8Vs=";
+          rev = "c8a4090cb8c7fae09b6d5d8170a45eb3000b54f8";
+          hash = "sha256-U52j+OndAornwDrKX6UevzKD2lsKvp4mARxdI8AB538=";
         };
 
         phases = [
