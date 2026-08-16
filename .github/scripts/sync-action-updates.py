@@ -177,7 +177,7 @@ def require_environment() -> dict[str, str]:
         )
     }
     if any(not value for value in values.values()):
-        raise ValueError("the Dependabot sync environment is incomplete")
+        raise ValueError("the action update environment is incomplete")
     if re.fullmatch(r"[0-9a-f]{40}", values["BASE_SHA"]) is None:
         raise ValueError("invalid base commit")
     if re.fullmatch(r"[0-9a-f]{40}", values["HEAD_SHA"]) is None:
@@ -291,7 +291,7 @@ def main() -> int:
             for path in staged
         ):
             raise ValueError("generated an unexpected staged file")
-        run("git", "commit", "-m", "chore(deps): sync github actions update")
+        run("git", "commit", "-m", "chore(deps): sync action updates to nix")
         run(
             "git",
             "push",

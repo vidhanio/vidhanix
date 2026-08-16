@@ -11,8 +11,8 @@
         ;
     in
     {
-      config.files.workflows.dependabot-sync = {
-        name = "sync dependabot action updates to nix";
+      config.files.workflows.sync-action-updates = {
+        name = "sync action updates";
 
         on.pull_request_target = {
           branches = [ "main" ];
@@ -32,14 +32,14 @@
         jobs.sync = {
           # only the base workflow runs; the script treats the PR as data.
           "if" = "github.event.pull_request.user.login=='dependabot[bot]'";
-          name = "sync dependabot action updates to nix";
+          name = "sync action updates";
           runs-on = "ubuntu-latest";
           steps = [
             deepCheckoutBase
             setupNix
             createAppToken
             {
-              name = "sync updates";
+              name = "sync action updates";
               env = {
                 BASE_REF = ghExpr "github.event.pull_request.base.ref";
                 BASE_SHA = ghExpr "github.event.pull_request.base.sha";
@@ -49,7 +49,7 @@
                 APP_TOKEN = ghExpr "steps.app-token.outputs.token";
                 PR_NUMBER = ghExpr "github.event.pull_request.number";
               };
-              run = "python3 .github/scripts/dependabot-sync.py";
+              run = "python3 .github/scripts/sync-action-updates.py";
             }
           ];
         };

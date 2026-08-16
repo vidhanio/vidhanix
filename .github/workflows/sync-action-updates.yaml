@@ -4,7 +4,7 @@
 jobs:
   sync:
     if: github.event.pull_request.user.login=='dependabot[bot]'
-    name: sync dependabot action updates to nix
+    name: sync action updates
     runs-on: ubuntu-latest
     steps:
     - name: checkout
@@ -30,9 +30,9 @@ jobs:
         HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
         HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
-      name: sync updates
-      run: python3 .github/scripts/dependabot-sync.py
-name: sync dependabot action updates to nix
+      name: sync action updates
+      run: python3 .github/scripts/sync-action-updates.py
+name: sync action updates
 'on':
   pull_request_target:
     branches:

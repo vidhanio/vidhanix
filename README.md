@@ -39,7 +39,7 @@ the generated files are:
 - [`.envrc`](.envrc)
 - [`.github/actions/setup-nix/action.yaml`](.github/actions/setup-nix/action.yaml)
 - [`.github/workflows/ci.yaml`](.github/workflows/ci.yaml)
-- [`.github/workflows/dependabot-sync.yaml`](.github/workflows/dependabot-sync.yaml)
+- [`.github/workflows/sync-action-updates.yaml`](.github/workflows/sync-action-updates.yaml)
 - [`.github/workflows/update-packages.yaml`](.github/workflows/update-packages.yaml)
 - [`.github/workflows/watch-github-refs.yaml`](.github/workflows/watch-github-refs.yaml)
 - [`.gitignore`](.gitignore)
