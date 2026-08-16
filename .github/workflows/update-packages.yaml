@@ -15,19 +15,10 @@ jobs:
         fetch-depth: 0
         persist-credentials: false
         ref: main
-    - name: setup ssh-agent
-      uses: webfactory/ssh-agent@v0.9.0
+    - name: setup nix
+      uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-    - name: free disk space
-      uses: wimpysworld/nothing-but-nix@v9
-    - name: install nix
-      uses: cachix/install-nix-action@v31
-    - name: restore nix store
-      uses: nix-community/cache-nix-action@v7
-      with:
-        primary-key: nix-${{ runner.os }}-${{ hashFiles('**/flake.lock') }}
-        restore-prefixes-first-match: nix-${{ runner.os }}-
     - env:
         PACKAGE: ${{ matrix.pkg }}
       id: update

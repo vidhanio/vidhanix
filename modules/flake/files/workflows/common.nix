@@ -18,45 +18,30 @@ let
     attr = "nixosConfigurations.${name}.config.system.build.toplevel.drvPath";
   }) config.flake.nixosConfigurations;
 
-  # shared setup for every nix job: checkout, the ssh key for the private
-  # `vidhan-fonts` input, disk space for the store, the nix installer, and
-  # a store cache keyed on the lockfile.
+  checkout = {
+    name = "checkout";
+    uses = "actions/checkout@v5";
+  };
+
+  # the composite action keeps the runner setup identical across workflows.
+  setupNix = {
+    name = "setup nix";
+    uses = "./.github/actions/setup-nix";
+    "with" = {
+      "ssh-private-key" = ghExpr "secrets.FONTS_SSH_KEY";
+    };
+  };
+
   nixSteps = [
-    {
-      name = "checkout";
-      uses = "actions/checkout@v5";
-    }
-    {
-      name = "setup ssh-agent";
-      uses = "webfactory/ssh-agent@v0.9.0";
-      "with" = {
-        "ssh-private-key" = ghExpr "secrets.FONTS_SSH_KEY";
-      };
-    }
-    # runner images ship ~20gb of bloat; reclaim it for /nix before installing
-    {
-      name = "free disk space";
-      uses = "wimpysworld/nothing-but-nix@v9";
-    }
-    {
-      name = "install nix";
-      uses = "cachix/install-nix-action@v31";
-    }
-    {
-      name = "restore nix store";
-      uses = "nix-community/cache-nix-action@v7";
-      "with" = {
-        "primary-key" = "nix-${ghExpr "runner.os"}-${ghExpr "hashFiles('**/flake.lock')"}";
-        "restore-prefixes-first-match" = "nix-${ghExpr "runner.os"}-";
-      };
-    }
+    checkout
+    setupNix
   ];
 
   # package updates always start from main; create-pull-request then rebases
   # the update branch.
   nixStepsOnMain = [
     (
-      (builtins.head nixSteps)
+      checkout
       // {
         "with" = {
           fetch-depth = 0;
@@ -65,12 +50,12 @@ let
         };
       }
     )
-  ]
-  ++ builtins.tail nixSteps;
+    setupNix
+  ];
 
   nixStepsOnBase = [
     (
-      (builtins.head nixSteps)
+      checkout
       // {
         "with" = {
           fetch-depth = 0;
@@ -79,8 +64,8 @@ let
         };
       }
     )
-  ]
-  ++ builtins.tail nixSteps;
+    setupNix
+  ];
 in
 {
   options.perSystem = flake-parts-lib.mkPerSystemOption (
