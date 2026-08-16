@@ -37,6 +37,7 @@ the generated files are:
 
 - [`.envrc`](.envrc)
 - [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+- [`.github/workflows/update-packages.yml`](.github/workflows/update-packages.yml)
 - [`.github/workflows/watch-github-refs.yml`](.github/workflows/watch-github-refs.yml)
 - [`.gitignore`](.gitignore)
 - [`LICENSE`](LICENSE)

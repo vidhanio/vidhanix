@@ -51,6 +51,22 @@ let
       };
     }
   ];
+
+  # package updates always start from main; create-pull-request then rebases
+  # the update branch.
+  nixStepsOnMain = [
+    (
+      (builtins.head nixSteps)
+      // {
+        "with" = {
+          fetch-depth = 0;
+          persist-credentials = false;
+          ref = "main";
+        };
+      }
+    )
+  ]
+  ++ builtins.tail nixSteps;
 in
 {
   options.perSystem = flake-parts-lib.mkPerSystemOption (
@@ -59,6 +75,12 @@ in
       # the justfile recipes run inside the devshell, which pins just (and
       # the other tools) to the locked nixpkgs.
       just = "nix develop -c just";
+
+      updatablePackages = lib.attrNames (
+        lib.filterAttrs (
+          packageName: package: packageName != "update-packages" && package ? passthru.updateScript
+        ) config.packages
+      );
 
       workflows = {
         ci = {
@@ -138,6 +160,61 @@ in
                 }
               ];
             };
+          };
+        };
+
+        "update-packages" = {
+          name = "update packages";
+
+          on = {
+            push.branches = [ "main" ];
+            schedule = [
+              { cron = "0 9 * * 1"; }
+            ];
+          };
+
+          permissions = {
+            actions = "write";
+            contents = "write";
+            pull-requests = "write";
+          };
+
+          concurrency = {
+            group = "update-packages";
+            "cancel-in-progress" = false;
+          };
+
+          jobs.update = {
+            name = "update package: ${ghExpr "matrix.pkg"}";
+            "runs-on" = "ubuntu-latest";
+            strategy = {
+              matrix.pkg = updatablePackages;
+              "fail-fast" = false;
+            };
+            steps = nixStepsOnMain ++ [
+              {
+                name = "update package";
+                id = "update";
+                env.PACKAGE = ghExpr "matrix.pkg";
+                run = "bash .github/scripts/update-package.sh \"$PACKAGE\"";
+              }
+              {
+                # the fixed branch is rebased on main and closed when it has no diff.
+                name = "create pull request";
+                uses = "peter-evans/create-pull-request@v8";
+                "with" = {
+                  base = "main";
+                  # GITHUB_TOKEN pushes do not trigger the pull request workflow.
+                  token = ghExpr "secrets.PACKAGE_UPDATE_TOKEN";
+                  branch = "package-updates/${ghExpr "matrix.pkg"}";
+                  "commit-message" =
+                    "chore(packages): bump ${ghExpr "matrix.pkg"} from ${ghExpr "steps.update.outputs.before"} to ${ghExpr "steps.update.outputs.after"}";
+                  "delete-branch" = true;
+                  title = "chore(packages): bump ${ghExpr "matrix.pkg"} from ${ghExpr "steps.update.outputs.before"} to ${ghExpr "steps.update.outputs.after"}";
+                  body = ghExpr "steps.update.outputs.body";
+                };
+              }
+            ];
           };
         };
 

@@ -34,6 +34,7 @@ class Result:
     package: str
     before: str = ""
     after: str = ""
+    homepage: str = ""
     log: str | None = None
 
     @property
@@ -45,6 +46,18 @@ class Result:
     def changed(self) -> bool:
         """The update script raised the version."""
         return self.before != self.after
+
+    def as_json(self) -> dict[str, object]:
+        """Return the result in the machine-readable output format."""
+        return {
+            "package": self.package,
+            "before": self.before,
+            "after": self.after,
+            "homepage": self.homepage,
+            "changed": self.changed,
+            "failed": self.failed,
+            "log": self.log,
+        }
 
     @property
     def mark(self) -> str:
@@ -76,21 +89,36 @@ def run(*command: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(command, capture_output=True, text=True, check=False)
 
 
-def version(package: str) -> str:
-    """Return the version of a package, or an empty string."""
+def version(package: str) -> str | None:
+    """Return the version of a package, or none when evaluation fails."""
     result = run("nix", "eval", "--raw", f".#{package}.version")
-    return result.stdout if result.returncode == 0 else ""
+    return result.stdout.strip() if result.returncode == 0 else None
+
+
+def homepage(package: str) -> str:
+    """Return a package's homepage, or an empty string when it has none."""
+    result = run("nix", "eval", "--raw", f".#{package}.meta.homepage")
+    return result.stdout.strip() if result.returncode == 0 else ""
 
 
 def update(package: str) -> Result:
     """Run the update script of one package."""
     before = version(package)
+    if not before:
+        return Result(
+            package, log=f"could not evaluate {package}.version before update"
+        )
+
     result = run(NIX_UPDATE, "--flake", "--use-update-script", package)
 
     if result.returncode != 0:
         return Result(package, log=result.stdout + result.stderr)
 
-    return Result(package, before=before, after=version(package))
+    after = version(package)
+    if not after:
+        return Result(package, log=f"could not evaluate {package}.version after update")
+
+    return Result(package, before=before, after=after, homepage=homepage(package))
 
 
 def verify(packages: Iterable[str]) -> list[str]:
@@ -106,16 +134,17 @@ def verify(packages: Iterable[str]) -> list[str]:
     return problems
 
 
-def update_all(packages: Sequence[str]) -> list[Result]:
-    """Update each package, and spin on its line until the update ends."""
-    failures = []
+def update_all(packages: Sequence[str], *, progress: bool) -> list[Result]:
+    """Update each package, optionally spinning on its line until it ends."""
+    if not progress:
+        return [update(package) for package in packages]
 
+    results = []
     columns = [Mark(style="blue"), TextColumn("{task.description}")]
 
-    with Progress(*columns, console=OUT) as progress:
+    with Progress(*columns, console=OUT) as display:
         tasks = {
-            package: progress.add_task(package, total=1, mark="")
-            for package in packages
+            package: display.add_task(package, total=1, mark="") for package in packages
         }
 
         with ThreadPoolExecutor() as pool:
@@ -123,17 +152,15 @@ def update_all(packages: Sequence[str]) -> list[Result]:
 
             for future in as_completed(futures):
                 result = future.result()
-                progress.update(
+                display.update(
                     tasks[result.package],
                     description=result.line(),
                     mark=result.mark,
                     completed=1,
                 )
+                results.append(result)
 
-                if result.failed:
-                    failures.append(result)
-
-    return failures
+    return results
 
 
 def report(failures: Sequence[Result]) -> None:
@@ -155,13 +182,20 @@ def main() -> int:
     """Verify the given names, update them in parallel, and report."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
+        "--json",
+        action="store_true",
+        dest="json_output",
+        help="print structured JSON instead of progress output",
+    )
+    parser.add_argument(
         "packages",
         nargs="*",
         default=UPDATABLE,
         metavar="PACKAGE",
         help="the packages to update (default: every updatable package)",
     )
-    packages = parser.parse_args().packages
+    args = parser.parse_args()
+    packages = args.packages
 
     problems = verify(packages)
     if problems:
@@ -169,12 +203,17 @@ def main() -> int:
             ERR.print(f"[red]✗[/] {problem}")
         return 1
 
-    failures = update_all(packages)
-    if not failures:
-        return 0
+    results = update_all(packages, progress=not args.json_output)
+    failures = [result for result in results if result.failed]
 
-    report(failures)
-    return 1
+    if args.json_output:
+        print(json.dumps([result.as_json() for result in results], indent=2))
+
+    if failures:
+        report(failures)
+        return 1
+
+    return 0
 
 
 if __name__ == "__main__":
