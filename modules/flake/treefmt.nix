@@ -31,8 +31,11 @@
       };
 
       settings = {
-        # Patches are immutable diffs; treefmt has no formatter for them.
-        excludes = [ "*.patch" ];
+        # Patches and npm lockfiles are immutable machine-generated files.
+        excludes = [
+          "*.patch"
+          "*.package-lock.json"
+        ];
         on-unmatched = "fatal";
       };
     };

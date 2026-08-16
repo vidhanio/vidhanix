@@ -35,7 +35,7 @@ Every `.nix` file under `modules/` is auto-imported as a flake-parts module — 
 ## Key Directories
 
 - `modules/programs/` — one file per program: `modules/programs/<name>.nix` (e.g. `eza.nix`, `ripgrep.nix`, `wakatime.nix`); a directory `modules/programs/<name>/` with `default.nix` once a second file is needed (`git/`, `fish/`, `nixvim/`, `comma/`).
-- `modules/programs/ai/` — AI harnesses (`herdr/`, `hindsight/`, `harnesses/{omp,crush,prime-agent,pi-coding-agent,opencode2}/`), shared agent skills (`programs.agents.skills`, backed by the `mattpocock-skills` input), and `mcp.nix` (shared MCP servers).
+- `modules/programs/ai/` — AI harnesses (`herdr/`, `harnesses/{omp,crush,prime-agent,pi-coding-agent,opencode2}/`), shared agent skills (`programs.agents.skills`, backed by the `mattpocock-skills` input), and `mcp.nix` (shared MCP servers).
 - `modules/services/` — all services, one file each; each file declares its own level (NixOS and/or Home Manager), e.g. `printing.nix` (NixOS), `udisks.nix` (both).
 - `modules/systems/` — host-side: `bases/`, `configurations/`, `users/`, `ssh/` (daemon: openssh, fail2ban, key persistence), `gui/` (hyprland, stylix, fonts, xdg), `hardware/`, `disk/` (impermanence), `nix/`, `boot/`, `locale/`.
 - `modules/flake/` — flake-level machinery: `treefmt.nix`, `files/` (generated files: justfile, readme, gitignore, license), `packages/`, `pre-commit/`, `dev-shell.nix`, `settings.nix`, `nixpkgs.nix`, `sops-nix.nix`, `substituters.nix`.

@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   flake-file.inputs.nixcord.url = "github:4evy/nixcord";
 
@@ -44,7 +44,7 @@
         };
       };
 
-      stylix.targets.nixcord.extraCss = ''
+      stylix.targets.nixcord.extraCss = lib.mkIf (config.stylix.opacity.applications < 1.0) ''
         :root {
             --window-opacity: ${toString config.stylix.opacity.applications};
         }
@@ -119,6 +119,6 @@
 
       hyprland.autostartWorkspaces.equibop = 2;
 
-      persist.directories = [ ".config/vesktop/sessionData/Local Storage" ];
+      persist.directories = [ ".config/equibop/sessionData/Local Storage" ];
     };
 }
