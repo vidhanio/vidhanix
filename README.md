@@ -37,6 +37,7 @@ the generated files are:
 
 - [`.envrc`](.envrc)
 - [`.github/workflows/ci.yaml`](.github/workflows/ci.yaml)
+- [`.github/workflows/dependabot-sync.yaml`](.github/workflows/dependabot-sync.yaml)
 - [`.github/workflows/update-packages.yaml`](.github/workflows/update-packages.yaml)
 - [`.github/workflows/watch-github-refs.yaml`](.github/workflows/watch-github-refs.yaml)
 - [`.gitignore`](.gitignore)

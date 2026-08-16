@@ -67,6 +67,20 @@ let
     )
   ]
   ++ builtins.tail nixSteps;
+
+  nixStepsOnBase = [
+    (
+      (builtins.head nixSteps)
+      // {
+        "with" = {
+          fetch-depth = 0;
+          persist-credentials = false;
+          ref = ghExpr "github.event.pull_request.base.sha";
+        };
+      }
+    )
+  ]
+  ++ builtins.tail nixSteps;
 in
 {
   options.perSystem = flake-parts-lib.mkPerSystemOption (
@@ -96,6 +110,7 @@ in
           just
           nixSteps
           nixStepsOnMain
+          nixStepsOnBase
           updatablePackages
           ;
       };
