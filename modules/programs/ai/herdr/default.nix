@@ -1,7 +1,5 @@
 {
-  flake.modules.homeManager.default = _: {
-    home.shellAliases.h = "herdr";
-
+  flake.modules.homeManager.default = { inputs', ... }: {
     programs.herdr = {
       enable = true;
 

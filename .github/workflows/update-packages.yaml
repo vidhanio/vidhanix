@@ -43,10 +43,11 @@ jobs:
         - breezex-cursor
         - conventional-pre-commit
         - helium-bin
-        - hindsight
-        - hindsight-api-slim
         - libretro-database
         - libretro-system-files
+        - pi-context-view
+        - pi-subagents
+        - pi-web-access
 name: update packages
 'on':
   push:

@@ -30,11 +30,12 @@ jobs:
         - generate-files
         - google-sans-flex
         - helium-bin
-        - hindsight
-        - hindsight-api-slim
         - libretro-database
         - libretro-system-files
         - libretrodb-tool
+        - pi-context-view
+        - pi-subagents
+        - pi-web-access
         - pragmata-pro-variable
         - update-packages
         - write-flake
