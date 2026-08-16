@@ -53,7 +53,7 @@
             }
             {
               name = "commit";
-              uses = "planetscale/ghcommit-action@v0.2";
+              uses = "planetscale/ghcommit-action@v0";
               "with" = {
                 commit_message = "chore(deps): sync action updates to nix";
                 repo = ghExpr "github.repository";
