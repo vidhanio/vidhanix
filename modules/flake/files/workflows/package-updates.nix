@@ -12,7 +12,7 @@
         on = {
           push.branches = [ "main" ];
           schedule = [
-            { cron = "0 9 * * 1"; }
+            { cron = "0 9 * * *"; }
           ];
         };
 

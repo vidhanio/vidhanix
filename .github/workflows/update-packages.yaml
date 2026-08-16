@@ -62,7 +62,7 @@ name: update packages
     branches:
     - main
   schedule:
-  - cron: 0 9 * * 1
+  - cron: 0 9 * * *
 permissions:
   actions: write
   contents: write
