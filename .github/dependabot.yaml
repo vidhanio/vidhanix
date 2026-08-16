@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: nix
+    directory: /
+    commit-message:
+      prefix: chore(flake-inputs)
+    schedule:
+      interval: daily
+  - package-ecosystem: github-actions
+    directory: /
+    commit-message:
+      prefix: chore(ci)
+    schedule:
+      interval: daily
