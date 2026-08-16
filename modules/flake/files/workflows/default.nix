@@ -28,7 +28,7 @@ let
         {
           name = "install nix";
           uses = "cachix/install-nix-action@v31";
-          "with".nix_path = "nixpkgs=channel:nixos-unstable";
+          "with".nix_path = "path: nixpkgs=channel:nixos-unstable";
         }
         {
           name = "restore nix store";
@@ -60,7 +60,6 @@ in
       };
 
       config = {
-        treefmt.programs.actionlint.enable = true;
         # generated workflow and action files carry `${{ }}` expressions whose
         # quoting oxfmt normalizes differently than the generator; keep them verbatim.
         treefmt.programs.oxfmt.excludes = [

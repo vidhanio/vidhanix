@@ -4,30 +4,35 @@
 jobs:
   sync:
     if: github.event.pull_request.user.login=='dependabot[bot]'
-    name: sync dependabot actions
+    name: sync dependabot action updates to nix
     runs-on: ubuntu-latest
     steps:
     - name: checkout
       uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        persist-credentials: false
         ref: ${{ github.event.pull_request.base.sha }}
     - name: setup nix
       uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
+    - id: app-token
+      name: create github app token
+      uses: actions/create-github-app-token@v3
+      with:
+        client-id: ${{ vars.APP_CLIENT_ID }}
+        private-key: ${{ secrets.APP_PRIVATE_KEY }}
     - env:
+        APP_TOKEN: ${{ steps.app-token.outputs.token }}
         BASE_REF: ${{ github.event.pull_request.base.ref }}
         BASE_SHA: ${{ github.event.pull_request.base.sha }}
         HEAD_REF: ${{ github.event.pull_request.head.ref }}
         HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
         HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        PACKAGE_UPDATE_TOKEN: ${{ secrets.PACKAGE_UPDATE_TOKEN }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
-      name: sync action updates
+      name: sync updates
       run: python3 .github/scripts/dependabot-sync.py
-name: sync dependabot actions
+name: sync dependabot action updates to nix
 'on':
   pull_request_target:
     branches:

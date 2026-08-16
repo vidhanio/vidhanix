@@ -3,7 +3,13 @@
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
-      inherit (config.workflowCommon) ghExpr nixStepsOnMain updatablePackages;
+      inherit (config.workflowCommon)
+        ghExpr
+        updatablePackages
+        deepCheckout
+        setupNix
+        createAppToken
+        ;
     in
     {
       config.files.workflows.update-packages = {
@@ -34,22 +40,23 @@
             matrix.pkg = updatablePackages;
             fail-fast = false;
           };
-          steps = nixStepsOnMain ++ [
+          steps = [
+            deepCheckout
+            setupNix
             {
               name = "update package";
               id = "update";
               env.PACKAGE = ghExpr "matrix.pkg";
               run = "bash .github/scripts/update-package.sh \"$PACKAGE\"";
             }
+            createAppToken
             {
               # the fixed branch is rebased on main and closed when it has no diff.
               name = "create pull request";
               uses = "peter-evans/create-pull-request@v8";
               "with" = {
-                base = "main";
-                # GITHUB_TOKEN pushes do not trigger the pull request workflow.
-                token = ghExpr "secrets.PACKAGE_UPDATE_TOKEN";
-                branch = "package-updates/${ghExpr "matrix.pkg"}";
+                token = ghExpr "steps.app-token.outputs.token";
+                branch = "packages/${ghExpr "matrix.pkg"}-${ghExpr "steps.update.outputs.after"}";
                 commit-message = "chore(packages): bump ${ghExpr "matrix.pkg"} from ${ghExpr "steps.update.outputs.before"} to ${ghExpr "steps.update.outputs.after"}";
                 delete-branch = true;
                 title = "chore(packages): bump ${ghExpr "matrix.pkg"} from ${ghExpr "steps.update.outputs.before"} to ${ghExpr "steps.update.outputs.after"}";

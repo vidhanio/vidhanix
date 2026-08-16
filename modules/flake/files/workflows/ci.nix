@@ -7,7 +7,8 @@
         ghExpr
         hosts
         just
-        nixSteps
+        checkout
+        setupNix
         ;
     in
     {
@@ -34,7 +35,9 @@
           check-formatting = {
             name = "check formatting";
             runs-on = "ubuntu-latest";
-            steps = nixSteps ++ [
+            steps = [
+              checkout
+              setupNix
               {
                 name = "check formatting";
                 run = "${just} fmt --ci";
@@ -45,7 +48,9 @@
           check-generated-files = {
             name = "check generated files";
             runs-on = "ubuntu-latest";
-            steps = nixSteps ++ [
+            steps = [
+              checkout
+              setupNix
               {
                 name = "generate files";
                 run = "${just} generate";
@@ -64,7 +69,9 @@
               matrix.include = hosts;
               fail-fast = false;
             };
-            steps = nixSteps ++ [
+            steps = [
+              checkout
+              setupNix
               {
                 name = "eval system";
                 # forcing the toplevel drvPath evaluates the whole system
@@ -81,7 +88,9 @@
               matrix.pkg = builtins.attrNames config.packages;
               fail-fast = false;
             };
-            steps = nixSteps ++ [
+            steps = [
+              checkout
+              setupNix
               {
                 name = "build package";
                 run = "nix build .#${ghExpr "matrix.pkg"} --print-build-logs";

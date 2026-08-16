@@ -27,45 +27,29 @@ let
   setupNix = {
     name = "setup nix";
     uses = "./.github/actions/setup-nix";
+    "with".ssh-private-key = ghExpr "secrets.FONTS_SSH_KEY";
+  };
+
+  deepCheckout = checkout // {
+    "with".fetch-depth = 0;
+  };
+
+  deepCheckoutBase = checkout // {
     "with" = {
-      ssh-private-key = ghExpr "secrets.FONTS_SSH_KEY";
+      fetch-depth = 0;
+      ref = ghExpr "github.event.pull_request.base.sha";
     };
   };
 
-  nixSteps = [
-    checkout
-    setupNix
-  ];
-
-  # package updates always start from main; create-pull-request then rebases
-  # the update branch.
-  nixStepsOnMain = [
-    (
-      checkout
-      // {
-        "with" = {
-          fetch-depth = 0;
-          persist-credentials = false;
-          ref = "main";
-        };
-      }
-    )
-    setupNix
-  ];
-
-  nixStepsOnBase = [
-    (
-      checkout
-      // {
-        "with" = {
-          fetch-depth = 0;
-          persist-credentials = false;
-          ref = ghExpr "github.event.pull_request.base.sha";
-        };
-      }
-    )
-    setupNix
-  ];
+  createAppToken = {
+    name = "create github app token";
+    id = "app-token";
+    uses = "actions/create-github-app-token@v3";
+    "with" = {
+      client-id = ghExpr "vars.APP_CLIENT_ID";
+      private-key = ghExpr "secrets.APP_PRIVATE_KEY";
+    };
+  };
 in
 {
   options.perSystem = flake-parts-lib.mkPerSystemOption (
@@ -90,12 +74,14 @@ in
 
       config.workflowCommon = {
         inherit
+          createAppToken
           ghExpr
           hosts
           just
-          nixSteps
-          nixStepsOnMain
-          nixStepsOnBase
+          setupNix
+          checkout
+          deepCheckout
+          deepCheckoutBase
           updatablePackages
           ;
       };

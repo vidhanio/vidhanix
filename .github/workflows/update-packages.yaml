@@ -13,8 +13,6 @@ jobs:
       uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        persist-credentials: false
-        ref: main
     - name: setup nix
       uses: ./.github/actions/setup-nix
       with:
@@ -24,18 +22,23 @@ jobs:
       id: update
       name: update package
       run: bash .github/scripts/update-package.sh "$PACKAGE"
+    - id: app-token
+      name: create github app token
+      uses: actions/create-github-app-token@v3
+      with:
+        client-id: ${{ vars.APP_CLIENT_ID }}
+        private-key: ${{ secrets.APP_PRIVATE_KEY }}
     - name: create pull request
       uses: peter-evans/create-pull-request@v8
       with:
-        base: main
         body: ${{ steps.update.outputs.body }}
-        branch: package-updates/${{ matrix.pkg }}
+        branch: packages/${{ matrix.pkg }}-${{ steps.update.outputs.after }}
         commit-message: 'chore(packages): bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before
           }} to ${{ steps.update.outputs.after }}'
         delete-branch: true
         title: 'chore(packages): bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before
           }} to ${{ steps.update.outputs.after }}'
-        token: ${{ secrets.PACKAGE_UPDATE_TOKEN }}
+        token: ${{ steps.app-token.outputs.token }}
     strategy:
       fail-fast: false
       matrix:

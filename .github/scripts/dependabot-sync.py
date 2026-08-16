@@ -173,7 +173,7 @@ def require_environment() -> dict[str, str]:
             "HEAD_REPO",
             "BASE_REF",
             "PR_NUMBER",
-            "PACKAGE_UPDATE_TOKEN",
+            "APP_TOKEN",
         )
     }
     if any(not value for value in values.values()):
@@ -198,7 +198,7 @@ def main() -> int:
     """Validate a Dependabot workflow diff, regenerate it, and push its source."""
     try:
         values = require_environment()
-        os.environ["GH_TOKEN"] = values["PACKAGE_UPDATE_TOKEN"]
+        os.environ["GH_TOKEN"] = values["APP_TOKEN"]
         run("gh", "auth", "setup-git")
 
         run(
