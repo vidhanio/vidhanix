@@ -166,6 +166,21 @@
         "type": "github"
       }
     },
+    "flake-aspects": {
+      "locked": {
+        "lastModified": 1773552804,
+        "narHash": "sha256-a0kjpCZGnD5lt7yW6C3hzPhSf5KjnTyvX6XZ2NuhGs4=",
+        "owner": "denful",
+        "repo": "flake-aspects",
+        "rev": "56fa8d4d4772d58eb7f9d66c28c1cd2762b60423",
+        "type": "github"
+      },
+      "original": {
+        "owner": "denful",
+        "repo": "flake-aspects",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -1173,6 +1188,7 @@
       "inputs": {
         "disko": "disko",
         "files": "files",
+        "flake-aspects": "flake-aspects",
         "flake-file": "flake-file",
         "flake-parts": "flake-parts",
         "ghostty-shader-playground": "ghostty-shader-playground",

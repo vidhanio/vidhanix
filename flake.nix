@@ -28,6 +28,7 @@
       url = "github:mightyiam/files";
       flake = false;
     };
+    flake-aspects.url = "github:denful/flake-aspects";
     flake-file.url = "github:vidhanio/flake-file/fix/write-flake-mtime-churn";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
