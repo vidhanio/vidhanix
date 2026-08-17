@@ -29,9 +29,6 @@ jobs:
         - conventional-pre-commit
         - generate-files
         - google-sans-flex
-        - libretro-database
-        - libretro-system-files
-        - libretrodb-tool
         - pi-context-view
         - pi-subagents
         - pi-web-access

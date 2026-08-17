@@ -20,7 +20,7 @@ user := `whoami`
 @perSystem option: add
     nix build --file /nix/store/ban5gwpwqn9qn69nf1rxb64041ixgd1a-_option-doc.nix --no-substitute --argstr flake "{{ justfile_directory() }}" --arg getOptions '(flake: flake.allSystems."{{ system }}".options)' --argstr option "{{ option }}" --no-link --print-out-paths | xargs cat
 
-# render a nixos option's markdown docs, e.g. `just docs nixos services.printing`
+# render a nixos option's markdown docs, e.g. `just docs nixos services.tailscale`
 @nixos option: add
     nix build --file /nix/store/ban5gwpwqn9qn69nf1rxb64041ixgd1a-_option-doc.nix --no-substitute --argstr flake "{{ justfile_directory() }}" --arg getOptions '(flake: flake.nixosConfigurations."{{ host }}".options)' --argstr option "{{ option }}" --no-link --print-out-paths | xargs cat
 

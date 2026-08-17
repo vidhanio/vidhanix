@@ -17,7 +17,7 @@ user := `whoami`
 @fmt *flags: add
     nix fmt -- {{ flags }}
 
-# evaluate a path under the current host's nixos config, e.g. `just eval nixos services.printing`
+# evaluate a path under the current host's nixos config, e.g. `just eval nixos services.tailscale`
 @nixos option *flags: add
     nix eval {{ flags }} {{ nixosConfig }}.{{ option }}
 

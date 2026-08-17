@@ -44,8 +44,6 @@ jobs:
         pkg:
         - breezex-cursor
         - conventional-pre-commit
-        - libretro-database
-        - libretro-system-files
         - pi-context-view
         - pi-subagents
         - pi-web-access
