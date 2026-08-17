@@ -6,7 +6,7 @@
       inherit (config.workflowCommon)
         ghExpr
         updatablePackages
-        deepCheckout
+        checkout
         setupNix
         createAppToken
         ;
@@ -41,7 +41,7 @@
             fail-fast = false;
           };
           steps = [
-            deepCheckout
+            checkout
             setupNix
             {
               name = "update package";

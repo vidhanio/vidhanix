@@ -11,8 +11,6 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v5
-      with:
-        fetch-depth: 0
     - name: setup nix
       uses: ./.github/actions/setup-nix
       with:

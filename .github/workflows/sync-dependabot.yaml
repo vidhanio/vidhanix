@@ -26,7 +26,6 @@ jobs:
     - name: checkout
       uses: actions/checkout@v5
       with:
-        fetch-depth: 0
         ref: ${{ github.event.pull_request.head.sha }}
     - name: setup nix
       uses: ./.github/actions/setup-nix
@@ -58,7 +57,6 @@ jobs:
     - name: checkout
       uses: actions/checkout@v5
       with:
-        fetch-depth: 0
         ref: ${{ github.event.pull_request.base.sha }}
     - env:
         UPDATED_DEPENDENCIES_JSON: ${{ needs.metadata.outputs.dependencies }}

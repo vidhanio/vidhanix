@@ -8,7 +8,7 @@
         just
         setupNix
         fetchMetadata
-        deepCheckoutBase
+        checkoutBase
         checkoutHead
         createAppToken
         commitToPrBranch
@@ -62,7 +62,7 @@
             "if" = "needs.metadata.outputs.ecosystem=='github_actions'";
             runs-on = "ubuntu-latest";
             steps = [
-              deepCheckoutBase
+              checkoutBase
               {
                 name = "sync action updates";
                 env.UPDATED_DEPENDENCIES_JSON = ghExpr "needs.metadata.outputs.dependencies";

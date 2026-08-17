@@ -30,22 +30,12 @@ let
     "with".ssh-private-key = ghExpr "secrets.FONTS_SSH_KEY";
   };
 
-  deepCheckout = checkout // {
-    "with".fetch-depth = 0;
-  };
-
-  deepCheckoutBase = checkout // {
-    "with" = {
-      fetch-depth = 0;
-      ref = ghExpr "github.event.pull_request.base.sha";
-    };
+  checkoutBase = checkout // {
+    "with".ref = ghExpr "github.event.pull_request.base.sha";
   };
 
   checkoutHead = checkout // {
-    "with" = {
-      fetch-depth = 0;
-      ref = ghExpr "github.event.pull_request.head.sha";
-    };
+    "with".ref = ghExpr "github.event.pull_request.head.sha";
   };
 
   # dependabot PRs carry structured metadata about their update; workflows
@@ -102,11 +92,10 @@ in
       config.workflowCommon = {
         inherit
           checkout
+          checkoutBase
           checkoutHead
           commitToPrBranch
           createAppToken
-          deepCheckout
-          deepCheckoutBase
           fetchMetadata
           ghExpr
           hosts
