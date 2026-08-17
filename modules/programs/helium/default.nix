@@ -6,16 +6,16 @@
       imports = [ inputs.helium-flake.nixosModules.default ];
     };
     homeManager.default =
-      { self', ... }:
+      { config, ... }:
       let
-        pkg = self'.packages.helium-bin;
+        cfg = config.programs.helium;
       in
       {
-        imports = [ inputs.helium-flake.homeManager.default ];
+        imports = [ inputs.helium-flake.homeModules.default ];
 
         programs.helium.enable = true;
 
-        xdg.autostart.entries = [ "${pkg}/share/applications/helium.desktop" ];
+        xdg.autostart.entries = [ "${cfg.package}/share/applications/helium.desktop" ];
 
         hyprland.autostartWorkspaces.helium = 1;
 

@@ -1,13 +1,4 @@
 {
-  inputs,
-  ...
-}:
-{
-  flake-file.inputs.pi = {
-    url = "github:earendil-works/pi";
-    flake = false;
-  };
-
   flake.modules.homeManager.default =
     {
       pkgs,
@@ -51,7 +42,7 @@
         builtins.listToAttrs (
           map (ext: {
             name = "${cfg.configDir}/extensions/${ext}";
-            value.source = "${inputs.pi}/packages/coding-agent/examples/extensions/${ext}";
+            value.source = "${cfg.package.src}/packages/coding-agent/examples/extensions/${ext}";
           }) exampleExtensions
         )
         // {

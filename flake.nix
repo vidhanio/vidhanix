@@ -63,14 +63,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
-    pi = {
-      url = "github:earendil-works/pi";
-      flake = false;
-    };
-    prime-agent = {
-      url = "github:PrimeIntellect-ai/prime-agent";
-      flake = false;
-    };
     sops-nix.url = "github:Mic92/sops-nix";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     stylix.url = "github:nix-community/stylix";

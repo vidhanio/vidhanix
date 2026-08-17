@@ -1169,38 +1169,6 @@
         "type": "github"
       }
     },
-    "pi": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1786771985,
-        "narHash": "sha256-gwt3idJIRIzo71enhzSEJHgXxEvKLkim+wNgg+bfBBo=",
-        "owner": "earendil-works",
-        "repo": "pi",
-        "rev": "086c32e74530564922d011ade23ff582c9d63116",
-        "type": "github"
-      },
-      "original": {
-        "owner": "earendil-works",
-        "repo": "pi",
-        "type": "github"
-      }
-    },
-    "prime-agent": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1786697973,
-        "narHash": "sha256-a5HUmdbY9J0ItCw4f4O9JSepm8BeF6Rsw9yNhLmm8m8=",
-        "owner": "PrimeIntellect-ai",
-        "repo": "prime-agent",
-        "rev": "9f9501146e869466acaca66dac49cff857b7b4f9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "PrimeIntellect-ai",
-        "repo": "prime-agent",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "disko": "disko",
@@ -1225,8 +1193,6 @@
         "nixpkgs": "nixpkgs_13",
         "nixvim": "nixvim",
         "noctalia": "noctalia",
-        "pi": "pi",
-        "prime-agent": "prime-agent",
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
         "stylix": "stylix",
