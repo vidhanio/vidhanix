@@ -6,7 +6,6 @@
       inherit (config.workflowCommon)
         ghExpr
         deepCheckoutBase
-        setupNix
         createAppToken
         ;
     in
@@ -30,18 +29,19 @@
         };
 
         jobs.sync = {
-          # only the base workflow runs; the script treats the PR as data.
-          "if" = "github.event.pull_request.user.login=='dependabot[bot]'";
+          # only dependabot github_actions PRs; the script treats the PR as data.
+          "if" =
+            "github.event.pull_request.user.login=='dependabot[bot]' && startsWith(github.event.pull_request.head.ref,'dependabot/github_actions/')";
           name = "sync action updates";
           runs-on = "ubuntu-latest";
           steps = [
             deepCheckoutBase
-            setupNix
             createAppToken
             {
               name = "sync action updates";
+              # skips the run triggered by our own sync commit (the loop).
+              "if" = "github.event.sender.login != concat(steps.app-token.outputs.app-slug, '[bot]')";
               env = {
-                APP_TOKEN = ghExpr "steps.app-token.outputs.token";
                 BASE_REF = ghExpr "github.event.pull_request.base.ref";
                 BASE_SHA = ghExpr "github.event.pull_request.base.sha";
                 HEAD_REF = ghExpr "github.event.pull_request.head.ref";
@@ -53,11 +53,13 @@
             }
             {
               name = "commit";
+              "if" = "github.event.sender.login != concat(steps.app-token.outputs.app-slug, '[bot]')";
               uses = "planetscale/ghcommit-action@v0.2.22";
               "with" = {
                 commit_message = "chore(deps): sync action updates to nix";
                 repo = ghExpr "github.repository";
                 branch = ghExpr "github.event.pull_request.head.ref";
+                empty = false;
               };
               env.GITHUB_TOKEN = ghExpr "steps.app-token.outputs.token";
             }

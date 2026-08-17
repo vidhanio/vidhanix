@@ -5,5 +5,6 @@
     result.*
 
     .direnv
+    __pycache__
   '';
 }
