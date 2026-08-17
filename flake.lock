@@ -1154,11 +1154,11 @@
     "prime-agent": {
       "flake": false,
       "locked": {
-        "lastModified": 1786697973,
-        "narHash": "sha256-a5HUmdbY9J0ItCw4f4O9JSepm8BeF6Rsw9yNhLmm8m8=",
+        "lastModified": 1786910379,
+        "narHash": "sha256-FL/7NL3GptV4HVZowws088OzRlhRhqD72lyGOTaerJc=",
         "owner": "PrimeIntellect-ai",
         "repo": "prime-agent",
-        "rev": "9f9501146e869466acaca66dac49cff857b7b4f9",
+        "rev": "2c34b82f86dd6e4110607eb83a210ab13dff2aa3",
         "type": "github"
       },
       "original": {
