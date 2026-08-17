@@ -39,8 +39,6 @@
             "github.event.pull_request.user.login=='dependabot[bot]' && startsWith(github.event.pull_request.head.ref,'dependabot/nix/')";
           steps = [
             {
-              # check out the pr head so generate runs on the new lock and
-              # the commit lands on the pr branch.
               name = "checkout";
               uses = "actions/checkout@v5";
               "with" = {
@@ -51,13 +49,10 @@
             setupNix
             createAppToken
             {
-              # skips the run triggered by our own prune commit (the loop).
-              "if" = "github.event.sender.login != concat(steps.app-token.outputs.app-slug, '[bot]')";
               name = "prune lock";
               run = "${just} generate";
             }
             {
-              "if" = "github.event.sender.login != concat(steps.app-token.outputs.app-slug, '[bot]')";
               name = "commit";
               uses = "planetscale/ghcommit-action@v0.2.22";
               "with" = {

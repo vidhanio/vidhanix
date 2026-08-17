@@ -23,14 +23,10 @@ jobs:
       with:
         client-id: ${{ vars.APP_CLIENT_ID }}
         private-key: ${{ secrets.APP_PRIVATE_KEY }}
-    - if: github.event.sender.login != concat(steps.app-token.outputs.app-slug, 
-        '[bot]')
-      name: prune lock
+    - name: prune lock
       run: nix develop -c just generate
     - env:
         GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-      if: github.event.sender.login != concat(steps.app-token.outputs.app-slug, 
-        '[bot]')
       name: commit
       uses: planetscale/ghcommit-action@v0.2.22
       with:

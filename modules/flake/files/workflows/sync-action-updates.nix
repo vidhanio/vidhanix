@@ -39,8 +39,6 @@
             createAppToken
             {
               name = "sync action updates";
-              # skips the run triggered by our own sync commit (the loop).
-              "if" = "github.event.sender.login != concat(steps.app-token.outputs.app-slug, '[bot]')";
               env = {
                 BASE_REF = ghExpr "github.event.pull_request.base.ref";
                 BASE_SHA = ghExpr "github.event.pull_request.base.sha";
@@ -53,7 +51,6 @@
             }
             {
               name = "commit";
-              "if" = "github.event.sender.login != concat(steps.app-token.outputs.app-slug, '[bot]')";
               uses = "planetscale/ghcommit-action@v0.2.22";
               "with" = {
                 commit_message = "chore(deps): sync action updates to nix";
