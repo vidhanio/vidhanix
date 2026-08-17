@@ -1,7 +1,7 @@
 { lib, ... }:
 {
-  flake.modules = {
-    homeManager.default =
+  flake.aspects.hyprland = {
+    homeManager =
       { pkgs, ... }:
       {
         hyprland.binds = {

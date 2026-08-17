@@ -1,0 +1,59 @@
+{
+  flake.aspects =
+    { aspects, ... }:
+    {
+      desktop.includes = with aspects; [
+        core
+        audio
+        clipboard
+        cursor
+        fonts
+        gnome-keyring
+        greeter
+        hyprland
+        lock
+        noctalia
+        ozone
+        stylix
+        wallpaper
+        xdg-autostart
+        logind
+        udisks
+        upower
+        aspects."1password"
+        helium
+        nixcord
+        nixvim
+        steam
+        mosh
+        bat
+        bb
+        btop
+        comma
+        crush
+        direnv
+        eza
+        fd
+        fzf
+        gh
+        ghostty
+        git
+        lazygit
+        minecraft
+        nautilus
+        omp
+        opencode2
+        pi-coding-agent
+        prime-agent
+        ripgrep
+        spicetify
+        spotify-player
+        tmux
+        vacuum-tube
+        yazi
+        yt-dlp
+        zellij
+        zoxide
+      ];
+    };
+}

@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.default = {
+  flake.aspects.run0.nixos = {
     security.sudo.enable = false;
 
     security.run0 = {

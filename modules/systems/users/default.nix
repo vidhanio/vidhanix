@@ -10,7 +10,7 @@ in
   options.users = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule (
-        { name, config, ... }:
+        { name, ... }:
         {
           options = {
             fullName = lib.mkOption {
@@ -42,9 +42,7 @@ in
               lib.filterAttrs (_: c: c.users.${name}.enable) configurationsCfg
             );
 
-            module = lib.mkIf (config.face != null) {
-              home.file.".face".source = config.face;
-            };
+            module = { };
           };
         }
       )

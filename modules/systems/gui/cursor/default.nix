@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.default =
+  flake.aspects.cursor = {
+    nixos =
       { self', config, ... }:
       {
         stylix = {
@@ -17,7 +17,7 @@
           };
         };
       };
-    homeManager.default = {
+    homeManager = {
       home.pointerCursor = {
         enable = true;
         hyprcursor.enable = true;

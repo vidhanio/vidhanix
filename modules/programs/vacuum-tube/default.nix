@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.default = {
+  flake.aspects.vacuum-tube.homeManager = {
     programs.vacuum-tube = {
       enable = true;
       settings = {

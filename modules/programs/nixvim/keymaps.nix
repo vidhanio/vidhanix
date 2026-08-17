@@ -1,5 +1,5 @@
 {
-  flake.modules.nixvim.default = {
+  flake.aspects.nixvim.nixvim = {
     keymaps = [
       {
         key = "<Esc>";

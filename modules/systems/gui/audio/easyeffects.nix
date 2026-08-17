@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.default = {
+  flake.aspects.audio.homeManager = {
     services.easyeffects = {
       enable = true;
       preset = "noise-cancel";

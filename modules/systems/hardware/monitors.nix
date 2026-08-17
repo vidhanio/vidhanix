@@ -60,7 +60,7 @@ let
   };
 in
 {
-  flake.modules.nixos.default = {
+  flake.aspects.hardware.nixos = {
     options.hardware.monitors = {
       main = lib.mkOption {
         type = monitorType;

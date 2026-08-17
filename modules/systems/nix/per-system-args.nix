@@ -1,6 +1,6 @@
 { withSystem, ... }:
 let
-  # Expose flake-parts' perSystem args as ordinary module args.
+  # expose flake-parts' per-system args as ordinary module args.
   # `_module.args` is a lazyAttrsOf: merging forces definition names, so
   # deriving them from a withSystem call that needs pkgs recurses infinitely.
   perSystemArgs =
@@ -13,8 +13,8 @@ let
     };
 in
 {
-  flake.modules = {
-    nixos.default = perSystemArgs;
-    homeManager.default = perSystemArgs;
+  flake.aspects.nix = {
+    nixos = perSystemArgs;
+    homeManager = perSystemArgs;
   };
 }

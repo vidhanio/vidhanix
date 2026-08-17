@@ -1,5 +1,5 @@
 {
-  flake.modules.nixvim.default = {
+  flake.aspects.nixvim.nixvim = {
     # mini.statusline default content, with LSP progress in place of fidget.nvim.
     plugins.mini.modules.statusline.content.active.__raw = ''
       function()

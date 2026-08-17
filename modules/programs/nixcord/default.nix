@@ -2,7 +2,7 @@
 {
   flake-file.inputs.nixcord.url = "github:4evy/nixcord";
 
-  flake.modules.homeManager.default =
+  flake.aspects.nixcord.homeManager =
     { config, ... }:
     {
       imports = [ inputs.nixcord.homeModules.default ];

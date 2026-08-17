@@ -1,10 +1,10 @@
 {
-  flake.modules = {
-    nixos.default = {
+  flake.aspects.lock = {
+    nixos = {
       security.pam.services.hyprlock = { };
     };
 
-    homeManager.default =
+    homeManager =
       { osConfig, ... }:
       {
         hyprland.binds."SUPER + L".exec_cmd = "loginctl lock-session";

@@ -1,24 +1,19 @@
 {
   inputs,
-  config,
   ...
 }:
 {
   flake-file.inputs.nixvim.url = "github:nix-community/nixvim";
 
-  flake.modules = {
-    nixos.default = {
+  flake.aspects.nixvim = {
+    nixos = {
       imports = [ inputs.nixvim.nixosModules.default ];
-
-      programs.nixvim.imports = [ config.flake.modules.nixvim.default ];
+      programs.nixvim.imports = [ inputs.self.modules.nixvim.nixvim ];
     };
-    homeManager.default = {
+    homeManager = {
       imports = [ inputs.nixvim.homeModules.default ];
-
-      programs.nixvim.imports = [ config.flake.modules.nixvim.default ];
+      programs.nixvim.imports = [ inputs.self.modules.nixvim.nixvim ];
     };
-    nixvim.default = {
-      nixpkgs.useGlobalPackages = true;
-    };
+    nixvim.nixpkgs.useGlobalPackages = true;
   };
 }

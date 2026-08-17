@@ -9,7 +9,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  flake.modules.homeManager.default =
+  flake.aspects.minecraft.homeManager =
     {
       inputs',
       config,

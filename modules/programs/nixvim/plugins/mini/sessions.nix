@@ -1,7 +1,7 @@
 {
   perSystem.files.gitignore = "Session.vim";
 
-  flake.modules.nixvim.default = {
+  flake.aspects.nixvim.nixvim = {
     plugins.mini.modules.sessions.autoread = true;
 
     keymaps = [

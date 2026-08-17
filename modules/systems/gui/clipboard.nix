@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.default =
+  flake.aspects.clipboard.homeManager =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [

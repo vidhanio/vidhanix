@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.homeManager.default =
+  flake.aspects.vacuum-tube.homeManager =
     { config, pkgs, ... }:
     let
       cfg = config.programs.vacuum-tube;

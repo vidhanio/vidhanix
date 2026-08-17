@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.homeManager.default =
+  flake.aspects.hyprland.homeManager =
     { config, pkgs, ... }:
     let
       binds = config.hyprland.binds;

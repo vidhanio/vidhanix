@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.default =
+  flake.aspects.fonts.nixos =
     {
       self',
       pkgs,

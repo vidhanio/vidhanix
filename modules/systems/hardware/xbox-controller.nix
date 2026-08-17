@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.default = {
+  flake.aspects.hardware.nixos = {
     hardware.xpadneo.enable = true;
 
     boot.extraModprobeConfig = ''

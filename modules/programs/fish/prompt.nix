@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.homeManager.default =
+  flake.aspects.fish.homeManager =
     { pkgs, ... }:
     {
       programs.fish.functions = {

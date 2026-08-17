@@ -6,7 +6,7 @@ let
   flakeUsers = config.users;
 in
 {
-  flake.modules.homeManager.default =
+  flake.aspects.git.homeManager =
     { config, ... }:
     {
       programs.git = {

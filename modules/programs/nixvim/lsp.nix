@@ -1,5 +1,5 @@
 {
-  flake.modules.nixvim.default = {
+  flake.aspects.nixvim.nixvim = {
     lsp.servers = {
       # keep-sorted start
       nil_ls.enable = true;

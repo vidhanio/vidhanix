@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.default = {
+  flake.aspects.hyprland.homeManager = {
     services.hyprpolkitagent.enable = true;
   };
 }

@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.modules.nixos.default = {
+  flake.aspects.nix.nixos = {
     nix = {
       channel.enable = false;
 

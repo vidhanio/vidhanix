@@ -6,7 +6,7 @@
   flake-file.inputs.stylix.url = "github:nix-community/stylix";
   flake-file.prune-lock.ignore = [ "stylix" ];
 
-  flake.modules.nixos.default = {
+  flake.aspects.stylix.nixos = {
     imports = [ inputs.stylix.nixosModules.default ];
 
     stylix = {

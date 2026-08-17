@@ -1,5 +1,5 @@
 {
-  flake.modules.nixvim.default = {
+  flake.aspects.nixvim.nixvim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
