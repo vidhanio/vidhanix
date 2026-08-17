@@ -70,7 +70,7 @@
                 run = "python3 .github/scripts/sync-action-updates.py";
               }
               createAppToken
-              (commitToPrBranch "chore(ci): sync action updates to nix")
+              (commitToPrBranch "chore(ci): sync action updates")
             ];
           };
 

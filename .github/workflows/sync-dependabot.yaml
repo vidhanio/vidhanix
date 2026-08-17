@@ -74,7 +74,7 @@ jobs:
       uses: planetscale/ghcommit-action@v0.2.22
       with:
         branch: ${{ github.event.pull_request.head.ref }}
-        commit_message: 'chore(ci): sync action updates to nix'
+        commit_message: 'chore(ci): sync action updates'
         repo: ${{ github.repository }}
 name: sync dependabot
 'on':
