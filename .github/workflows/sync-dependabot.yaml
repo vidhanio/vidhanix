@@ -45,7 +45,7 @@ jobs:
       uses: planetscale/ghcommit-action@v0.2.22
       with:
         branch: ${{ github.event.pull_request.head.ref }}
-        commitMessage: 'chore(flake): prune lock'
+        commit_message: 'chore(flake): prune lock'
         repo: ${{ github.repository }}
   sync-actions:
     if: needs.metadata.outputs.ecosystem=='github_actions'
@@ -57,7 +57,7 @@ jobs:
     - name: checkout
       uses: actions/checkout@v5
       with:
-        ref: ${{ github.event.pull_request.base.sha }}
+        ref: ${{ github.event.pull_request.head.sha }}
     - env:
         UPDATED_DEPENDENCIES_JSON: ${{ needs.metadata.outputs.dependencies }}
       name: sync action updates
@@ -74,7 +74,7 @@ jobs:
       uses: planetscale/ghcommit-action@v0.2.22
       with:
         branch: ${{ github.event.pull_request.head.ref }}
-        commitMessage: 'chore(ci): sync action updates to nix'
+        commit_message: 'chore(ci): sync action updates to nix'
         repo: ${{ github.repository }}
 name: sync dependabot
 'on':

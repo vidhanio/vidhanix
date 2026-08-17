@@ -8,7 +8,6 @@
         just
         setupNix
         fetchMetadata
-        checkoutBase
         checkoutHead
         createAppToken
         commitToPrBranch
@@ -61,8 +60,10 @@
             needs = [ "metadata" ];
             "if" = "needs.metadata.outputs.ecosystem=='github_actions'";
             runs-on = "ubuntu-latest";
+            # the head checkout also sets ghcommit's expected branch tip: it
+            # must equal the PR branch head or the API commit is refused.
             steps = [
-              checkoutBase
+              checkoutHead
               {
                 name = "sync action updates";
                 env.UPDATED_DEPENDENCIES_JSON = ghExpr "needs.metadata.outputs.dependencies";

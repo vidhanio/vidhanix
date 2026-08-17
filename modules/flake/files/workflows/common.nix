@@ -30,10 +30,6 @@ let
     "with".ssh-private-key = ghExpr "secrets.FONTS_SSH_KEY";
   };
 
-  checkoutBase = checkout // {
-    "with".ref = ghExpr "github.event.pull_request.base.sha";
-  };
-
   checkoutHead = checkout // {
     "with".ref = ghExpr "github.event.pull_request.head.sha";
   };
@@ -51,7 +47,7 @@ let
     name = "commit";
     uses = "planetscale/ghcommit-action@v0.2.22";
     "with" = {
-      inherit commitMessage;
+      commit_message = commitMessage;
       repo = ghExpr "github.repository";
       branch = ghExpr "github.event.pull_request.head.ref";
     };
@@ -92,7 +88,6 @@ in
       config.workflowCommon = {
         inherit
           checkout
-          checkoutBase
           checkoutHead
           commitToPrBranch
           createAppToken
