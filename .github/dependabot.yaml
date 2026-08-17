@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: nix
     directory: /
     commit-message:
-      prefix: chore(flake-inputs)
+      prefix: chore(flake)
     registries: "*"
     cooldown:
       exclude:

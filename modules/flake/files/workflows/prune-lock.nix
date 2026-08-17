@@ -56,7 +56,7 @@
               name = "commit";
               uses = "planetscale/ghcommit-action@v0.2.22";
               "with" = {
-                commit_message = "chore(deps): prune lock after nix bump";
+                commit_message = "chore(flake): prune lock";
                 repo = ghExpr "github.repository";
                 branch = ghExpr "github.event.pull_request.head.ref";
               };
