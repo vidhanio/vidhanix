@@ -134,11 +134,11 @@
           '';
         };
 
-        agentInstructions = lib.mkOption {
+        context = lib.mkOption {
           type = lib.types.either lib.types.lines lib.types.path;
           default = "";
           description = ''
-            User-level agent instructions for bb.
+            Global context for bb.
 
             The value is either:
             - Inline content as a string
@@ -228,11 +228,11 @@
           };
 
           ".bb/AGENTS.md" =
-            if lib.isPath cfg.agentInstructions then
-              { source = cfg.agentInstructions; }
+            if lib.isPath cfg.context then
+              { source = cfg.context; }
             else
-              lib.mkIf (cfg.agentInstructions != "") {
-                text = cfg.agentInstructions;
+              lib.mkIf (cfg.context != "") {
+                text = cfg.context;
               };
         }
         // (lib.optionalAttrs (lib.hm.strings.isPathLike cfg.themes) {
