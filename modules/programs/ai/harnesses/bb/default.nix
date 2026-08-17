@@ -5,12 +5,12 @@
 
       package = inputs'.llm-agents.packages.bb-app;
 
-      # Helper inference through the opencode CLI on PATH, like the other
-      # harnesses' opencode-go default. The fallback mirrors the primary model
-      # because deepseek-v4-flash is the only one configured here.
+      # Helper inference rides the pi stack: pi-ai's opencode-go route with
+      # the model pi defaults to (see the pi-coding-agent module), so bb's
+      # server-side helpers use the same model as the `pi` thread provider.
       settings.config = {
-        BB_INFERENCE = "acp-opencode/deepseek-v4-flash";
-        BB_INFERENCE_FALLBACK = "acp-opencode/deepseek-v4-flash";
+        BB_INFERENCE = "opencode-go/deepseek-v4-flash";
+        BB_INFERENCE_FALLBACK = "opencode-go/deepseek-v4-flash";
       };
     };
 
