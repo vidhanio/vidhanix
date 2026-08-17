@@ -29,7 +29,6 @@ jobs:
         - conventional-pre-commit
         - generate-files
         - google-sans-flex
-        - helium-bin
         - libretro-database
         - libretro-system-files
         - libretrodb-tool
