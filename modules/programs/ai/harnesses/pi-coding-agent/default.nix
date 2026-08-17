@@ -15,7 +15,6 @@
         "dirty-repo-guard.ts"
         "git-checkpoint.ts"
         "handoff.ts"
-        "permission-gate.ts"
         "protected-paths.ts"
         "question.ts"
         "questionnaire.ts"
