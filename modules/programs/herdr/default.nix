@@ -1,9 +1,9 @@
 {
-  flake.aspects.herdr.homeManager = { inputs', lib, ... }: {
+  flake.aspects.herdr.homeManager = { inputs', ... }: {
     programs.herdr = {
       enable = true;
 
-      package = lib.mkDefault inputs'.llm-agents.packages.herdr;
+      package = inputs'.llm-agents.packages.herdr;
 
       settings = {
         onboarding = false;
