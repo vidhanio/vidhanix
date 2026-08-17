@@ -5,16 +5,18 @@ updates:
     directory: /
     commit-message:
       prefix: chore(flake-inputs)
-    schedule:
-      interval: daily
     registries: "*"
     cooldown:
       exclude:
         - "*"
+    open-pull-requests-limit: 64
+    schedule:
+      interval: daily
   - package-ecosystem: github-actions
     directory: /
     commit-message:
       prefix: chore(ci)
+    open-pull-requests-limit: 64
     schedule:
       interval: daily
 
