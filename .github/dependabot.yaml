@@ -6,15 +6,17 @@ updates:
       prefix: chore(flake-inputs)
     schedule:
       interval: daily
-    registries:
-      github:
-        type: git
-        url: ssh://git@github.com
-        username: x-access-token
-        password: ${{ secrets.FONTS_PAT }}
+    registries: "*"
   - package-ecosystem: github-actions
     directory: /
     commit-message:
       prefix: chore(ci)
     schedule:
       interval: daily
+
+registries:
+  github:
+    type: git
+    url: ssh://git@github.com
+    username: x-access-token
+    password: ${{ secrets.FONTS_PAT }}
