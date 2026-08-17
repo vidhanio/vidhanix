@@ -8,6 +8,8 @@ updates:
       interval: daily
     registries:
       github:
+        type: git
+        url: ssh://git@github.com
         username: x-access-token
         password: ${{ secrets.FONTS_PAT }}
   - package-ecosystem: github-actions
