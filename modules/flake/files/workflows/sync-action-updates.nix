@@ -59,7 +59,6 @@
                 commit_message = "chore(deps): sync action updates to nix";
                 repo = ghExpr "github.repository";
                 branch = ghExpr "github.event.pull_request.head.ref";
-                empty = false;
               };
               env.GITHUB_TOKEN = ghExpr "steps.app-token.outputs.token";
             }
