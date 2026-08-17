@@ -41,6 +41,33 @@ let
     };
   };
 
+  checkoutHead = checkout // {
+    "with" = {
+      fetch-depth = 0;
+      ref = ghExpr "github.event.pull_request.head.sha";
+    };
+  };
+
+  # dependabot PRs carry structured metadata about their update; workflows
+  # dispatch on its ecosystem output instead of parsing branch names.
+  fetchMetadata = {
+    name = "fetch dependabot metadata";
+    id = "metadata";
+    uses = "dependabot/fetch-metadata@v3";
+  };
+
+  # commits the worktree back onto the PR branch; a clean tree makes it a no-op.
+  commitToPrBranch = commitMessage: {
+    name = "commit";
+    uses = "planetscale/ghcommit-action@v0.2.22";
+    "with" = {
+      inherit commitMessage;
+      repo = ghExpr "github.repository";
+      branch = ghExpr "github.event.pull_request.head.ref";
+    };
+    env.GITHUB_TOKEN = ghExpr "steps.app-token.outputs.token";
+  };
+
   createAppToken = {
     name = "create github app token";
     id = "app-token";
@@ -74,14 +101,17 @@ in
 
       config.workflowCommon = {
         inherit
+          checkout
+          checkoutHead
+          commitToPrBranch
           createAppToken
+          deepCheckout
+          deepCheckoutBase
+          fetchMetadata
           ghExpr
           hosts
           just
           setupNix
-          checkout
-          deepCheckout
-          deepCheckoutBase
           updatablePackages
           ;
       };
