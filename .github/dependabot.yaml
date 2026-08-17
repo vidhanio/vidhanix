@@ -6,6 +6,10 @@ updates:
       prefix: chore(flake-inputs)
     schedule:
       interval: daily
+    registries:
+      github:
+        username: x-access-token
+        password: ${{ secrets.FONTS_PAT }}
   - package-ecosystem: github-actions
     directory: /
     commit-message:
