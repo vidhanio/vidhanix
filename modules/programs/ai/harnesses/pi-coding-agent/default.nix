@@ -68,8 +68,6 @@
             "${self'.packages.pi-web-access}/lib/node_modules/pi-web-access";
           "${cfg.configDir}/extensions/pi-context-view".source = self'.packages.pi-context-view;
 
-          "${cfg.configDir}/agents".source = ./agents;
-
           # pi-web-access reads its config (searxng endpoint, SSRF ranges)
           # from ~/.pi/web-search.json, next to the agent dir.
           ".pi/web-search.json".text = builtins.toJSON {
