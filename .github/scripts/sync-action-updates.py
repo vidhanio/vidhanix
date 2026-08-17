@@ -10,7 +10,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-SOURCES = Path("modules/flake/files/workflows")
+SOURCES = Path("modules/flake/files")
 
 FULL_SHA = re.compile(r"[0-9a-f]{40}")
 
@@ -48,7 +48,7 @@ def main() -> int:
             print("no version bumps in the PR metadata")
             return 0
         changed = []
-        for path in sorted(SOURCES.glob("*.nix")):
+        for path in sorted(SOURCES.glob("ci-*.nix")):
             text = path.read_text()
             new_text = text
             for old, new in bumped.items():

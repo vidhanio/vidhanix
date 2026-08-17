@@ -6,17 +6,17 @@ disable-model-invocation: true
 
 # infrastructure changes
 
-1. Classify the change. If it affects only user-space configuration, use the normal eval-first cycle; otherwise continue with this procedure.
-2. Inspect callers, dependencies, secrets, and host selection before editing.
-3. If the requested behavior is explicit, record the relevant before-and-after options. If it is not explicit, pause and obtain approval before changing behavior.
-4. Run focused evaluations for every affected host and option, then evaluate both complete hosts.
-5. Build only the affected system or package paths; use `--no-build` checks when a build is unavailable on the current platform.
-6. If any option is missing, errors, or changes outside the request, stop and restore the narrow scope.
+1. if the change affects only user-space configuration, use the normal eval-first cycle; otherwise continue.
+2. inspect callers, dependencies, secrets, and host selection before editing.
+3. if the requested behavior is explicit, record the relevant before-and-after options; otherwise stop and obtain approval.
+4. run focused evaluations for every affected host and option.
+5. evaluate both toplevel derivations with `nix eval --raw .#nixosConfigurations.vidhan-pc.config.system.build.toplevel.drvPath` and the equivalent `vidhan-macbook` command.
+6. run affected builds; if the current platform cannot build one, record the limitation and run `nix flake check --no-build`.
+7. if an option is missing, errors, or changes outside the request, restore the narrow scope; otherwise run `prek` and `git diff --check`.
 
-Completion gates:
+completion gates:
 
-- [ ] scope and before/after behavior are recorded.
-- [ ] approval exists for every unrequested infrastructure behavior change.
+- [ ] scope, before-and-after behavior, and required approvals are recorded.
 - [ ] focused evaluations and both host evaluations pass without inline errors.
-- [ ] relevant builds or an explicit platform limitation are recorded.
-- [ ] repository checks pass and the diff contains no unrelated infrastructure change.
+- [ ] affected builds pass or an explicit platform limitation is recorded.
+- [ ] `prek`, `nix flake check --no-build`, and `git diff --check` pass.
