@@ -15,9 +15,12 @@ runs:
       ssh-private-key: ${{ inputs.ssh-private-key }}
   - name: free disk space
     uses: wimpysworld/nothing-but-nix@v9
+    with:
+      hatchet-protocol: carve
   - name: install nix
     uses: cachix/install-nix-action@v31
     with:
+      extra_nix_config: build-dir = /nix/build
       nix_path: 'path: nixpkgs=channel:nixos-unstable'
   - name: restore nix store
     uses: nix-community/cache-nix-action@v7

@@ -24,11 +24,15 @@ let
         {
           name = "free disk space";
           uses = "wimpysworld/nothing-but-nix@v9";
+          "with".hatchet-protocol = "carve";
         }
         {
           name = "install nix";
           uses = "cachix/install-nix-action@v31";
-          "with".nix_path = "path: nixpkgs=channel:nixos-unstable";
+          "with" = {
+            nix_path = "path: nixpkgs=channel:nixos-unstable";
+            extra_nix_config = "build-dir = /nix/build";
+          };
         }
         {
           name = "restore nix store";
