@@ -25,7 +25,7 @@ let
         cp ${./pi-web-access.package-lock.json} package-lock.json
       '';
 
-      npmDepsHash = "sha256-TUOiefsKK1rbjn2PGUfuanLHg39bm08NvMOZTVMqfLo=";
+      npmDepsHash = "sha256-hFnpkvT6kGhbsIzkLE4XOP9/n7tTX4gUD4qtSR8F8rc=";
 
       npmFlags = [ "--legacy-peer-deps" ];
 
