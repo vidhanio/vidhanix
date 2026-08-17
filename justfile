@@ -26,18 +26,18 @@ user := `whoami`
 @generate: add
     nix run .#generate-files
 
-# regenerate the files, then run `nh os` with the given action
-@os action="switch": generate
-    if [ -t 1 ]; then nh os {{ action }}; else nh os {{ action }} --no-nom; fi
+# regenerate the files, then run `nh os` with the given action and flags
+@os action="switch" *flags: generate
+    if [ -t 1 ]; then nh os {{ action }} {{ flags }}; else nh os {{ action }} --no-nom {{ flags }}; fi
 
-# activate the configuration now
-@switch: (os "switch")
+# activate the configuration now, passing extra flags to `nh os`
+@switch *flags: (os "switch" flags)
 
-# activate the configuration at the next boot
-@boot: (os "boot")
+# activate the configuration at the next boot, passing extra flags to `nh os`
+@boot *flags: (os "boot" flags)
 
-# activate the configuration without making it the boot default
-@test: (os "test")
+# activate the configuration without making it the boot default, passing extra flags to `nh os`
+@test *flags: (os "test" flags)
 
 # format the tree with treefmt, e.g. `just fmt --ci`
 @fmt *flags: add

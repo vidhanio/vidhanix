@@ -105,27 +105,34 @@
             body = "nix run .#generate-files";
           };
           os = {
-            doc = "regenerate the files, then run `nh os` with the given action";
+            doc = "regenerate the files, then run `nh os` with the given action and flags";
             silent = true;
-            args = [ ''action="switch"'' ];
+            args = [
+              ''action="switch"''
+              "*flags"
+            ];
             dependencies = [ "generate" ];
-            # `--no-nom` is a subcommand flag in nh: `nh os <action> --no-nom`.
-            body = "if [ -t 1 ]; then nh os {{ action }}; else nh os {{ action }} --no-nom; fi";
+            # `--no-nom` hides the nom progress bar when not on a TTY, and as a
+            # subcommand flag it comes before the user's flags: `nh os <action> --no-nom ...`.
+            body = "if [ -t 1 ]; then nh os {{ action }} {{ flags }}; else nh os {{ action }} --no-nom {{ flags }}; fi";
           };
           switch = {
-            doc = "activate the configuration now";
+            doc = "activate the configuration now, passing extra flags to `nh os`";
             silent = true;
-            dependencies = [ ''(os "switch")'' ];
+            args = [ "*flags" ];
+            dependencies = [ ''(os "switch" flags)'' ];
           };
           boot = {
-            doc = "activate the configuration at the next boot";
+            doc = "activate the configuration at the next boot, passing extra flags to `nh os`";
             silent = true;
-            dependencies = [ ''(os "boot")'' ];
+            args = [ "*flags" ];
+            dependencies = [ ''(os "boot" flags)'' ];
           };
           test = {
-            doc = "activate the configuration without making it the boot default";
+            doc = "activate the configuration without making it the boot default, passing extra flags to `nh os`";
             silent = true;
-            dependencies = [ ''(os "test")'' ];
+            args = [ "*flags" ];
+            dependencies = [ ''(os "test" flags)'' ];
           };
           inherit fmt;
           update-packages = {
