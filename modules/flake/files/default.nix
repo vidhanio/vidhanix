@@ -47,7 +47,7 @@
 
       files.readme.content.generated-files.content = ''
         Most of the non-Nix files in this repository (including this very README) are generated via [`just generate`](justfile).
-        The generated files are:
+        This repository generates the following files:
 
         ${config.files.lib.readme.renderList (
           map (p: "[`${p}`](${p})") (lib.sortOn (p: p) (lib.mapAttrsToList (path: _: path) config.files.file))
