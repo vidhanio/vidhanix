@@ -12,38 +12,44 @@ in
 {
   options.hosts = lib.mkOption {
     type = lib.types.lazyAttrsOf (
-      lib.types.submodule (
-        { name, config, ... }:
-        {
-          options = {
-            users = lib.mapAttrs (username: _: {
-              enable = lib.mkEnableOption "${username}'s account";
-              publicKey = lib.mkOption {
-                type = lib.types.str;
-                description = "The user's SSH public key for this host.";
-              };
-            }) usersCfg;
+      lib.types.submodule {
+        options = {
+          users = lib.mapAttrs (username: _: {
+            enable = lib.mkEnableOption "${username}'s account";
             publicKey = lib.mkOption {
               type = lib.types.str;
-              description = "The public SSH key for this system, which will be added to the authorized keys of all users.";
+              description = "The user's SSH public key for this host.";
             };
-            hostPlatform = lib.mkOption {
-              type = lib.types.str;
-              description = "The platform for this host.";
-            };
-            module = lib.mkOption {
-              type = lib.types.deferredModule;
-              default = { };
-              description = "NixOS configuration module for this host.";
-            };
+          }) usersCfg;
+          publicKey = lib.mkOption {
+            type = lib.types.str;
+            description = "The public SSH key for this system, which will be added to the authorized keys of all users.";
           };
+          hostPlatform = lib.mkOption {
+            type = lib.types.str;
+            description = "The platform for this host.";
+          };
+        };
+      }
+    );
+  };
 
-          config.module =
-            let
-              activeUsers = lib.filterAttrs (username: _: config.users.${username}.enable) usersCfg;
-              rootPublicKeys = lib.mapAttrsToList (_: c: c.publicKey) cfg;
-              inherit (config) hostPlatform;
-            in
+  config = {
+    flake.nixosConfigurations = lib.mapAttrs (
+      name: _: inputs.nixpkgs.lib.nixosSystem { modules = [ inputs.self.modules.nixos.${name} ]; }
+    ) cfg;
+
+    flake.aspects =
+      { aspects, ... }:
+      lib.mapAttrs (
+        name:
+        { users, hostPlatform, ... }:
+        let
+          activeUsers = lib.filterAttrs (username: _: users.${username}.enable) usersCfg;
+          rootPublicKeys = lib.mapAttrsToList (_: c: c.publicKey) cfg;
+        in
+        {
+          nixos =
             { config, ... }:
             {
               options.users.primaryUser = lib.mkOption {
@@ -75,23 +81,7 @@ in
               };
             };
         }
-      )
-    );
-  };
-
-  config = {
-    flake.nixosConfigurations = lib.mapAttrs (
-      _:
-      { module, ... }:
-      inputs.nixpkgs.lib.nixosSystem { modules = [ module ]; }
-    ) cfg;
-
-    flake.aspects =
-      { aspects, ... }:
-      lib.mapAttrs (
-        _:
-        { users, ... }:
-        forward {
+        // forward {
           each = lib.attrNames (lib.filterAttrs (_: user: user.enable) users);
           fromClass = _: "homeManager";
           intoClass = _: "nixos";

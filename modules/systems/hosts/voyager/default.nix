@@ -1,4 +1,3 @@
-{ inputs, ... }:
 {
   flake.aspects =
     { aspects, ... }:
@@ -6,7 +5,6 @@
       voyager = {
         includes = [ aspects.apple-silicon ];
         nixos = {
-
           disko.devices.disk.main = {
             device = "/dev/disk/by-id/nvme-APPLE_SSD_AP0256Q_0ba012e404080419";
             content.partitions = {
@@ -37,6 +35,5 @@
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKpEHUbyfwBLGJqsrZLO8xDpldmg655DPYLGNOJUJfHM vidhanio@voyager";
     };
     publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrlsMqmLKW+8+MyHndMWNZXk86Oo0Ik8wPs3v1Nx7ZR voyager";
-    module = inputs.self.modules.nixos.voyager;
   };
 }
