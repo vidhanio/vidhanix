@@ -30,7 +30,6 @@ Some of these packages provide a `passthru.updateScript`, all of which can be ru
 ## Generated Files
 
 Most of the non-Nix files in this repository (including this very README) are generated via [`just generate`](justfile).
-This repository generates the following files:
 
 - [`.envrc`](.envrc)
 - [`.github/actions/setup-nix/action.yaml`](.github/actions/setup-nix/action.yaml)
