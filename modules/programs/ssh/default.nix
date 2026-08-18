@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  inherit (config) configurations;
+  inherit (config) hosts;
 in
 {
   flake.aspects.ssh-client = {
@@ -16,7 +16,7 @@ in
           inherit publicKey;
           extraHostNames = [ "${hostname}.local" ];
         }
-      ) configurations;
+      ) hosts;
     };
 
     homeManager = {

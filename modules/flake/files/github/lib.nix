@@ -51,8 +51,8 @@ let
     };
   };
 
-  # hosts come from the built configurations, so the eval matrix stays in
-  # sync with `configurations.<hostname>`. evaluation runs on any platform;
+  # hosts come from the built NixOS configurations, so the eval matrix stays in
+  # sync with `hosts.<hostname>`. evaluation runs on any platform;
   # only builds need a matching runner. the full drvPath attr keeps the run
   # line short enough that remarshal does not fold the `${{ }}` expression.
   hosts = lib.mapAttrsToList (name: _cfg: {

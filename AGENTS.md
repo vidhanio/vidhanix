@@ -32,7 +32,7 @@ preserve infrastructure behavior by default. before changing boot, disks, persis
 ## interface map
 
 - `flake.aspects` defines the feature and profile graph; resolved modules are consumed through `inputs.self.modules`.
-- `configurations` registers hosts and produces NixOS configurations.
+- `hosts` registers hosts and produces NixOS configurations.
 - `users` registers identities and complete Home Manager aspects.
 - generator sources live under `modules/flake/files/`.
 - command entrypoints are the generated `justfile`, `just`, `nix`, and `prek`.

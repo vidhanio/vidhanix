@@ -5,12 +5,12 @@
   ...
 }:
 let
-  cfg = config.configurations;
+  cfg = config.hosts;
   usersCfg = config.users;
   inherit ((inputs.flake-aspects.lib lib)) forward;
 in
 {
-  options.configurations = lib.mkOption {
+  options.hosts = lib.mkOption {
     type = lib.types.lazyAttrsOf (
       lib.types.submodule (
         { name, config, ... }:
@@ -30,7 +30,7 @@ in
             module = lib.mkOption {
               type = lib.types.deferredModule;
               default = { };
-              description = "NixOS configuration module for this configuration.";
+              description = "NixOS configuration module for this host.";
             };
           };
 

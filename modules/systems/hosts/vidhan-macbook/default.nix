@@ -32,7 +32,7 @@
       };
     };
 
-  configurations.vidhan-macbook = {
+  hosts.vidhan-macbook = {
     users.vidhanio = {
       enable = true;
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKpEHUbyfwBLGJqsrZLO8xDpldmg655DPYLGNOJUJfHM vidhanio@vidhan-macbook";

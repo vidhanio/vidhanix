@@ -53,7 +53,7 @@
       };
     };
 
-  configurations.vidhan-pc = {
+  hosts.vidhan-pc = {
     users.vidhanio = {
       enable = true;
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxMGko3NUtTtMB7pfDE1VYnTy1OR1fsLaGpVp9FaKtv vidhanio@vidhan-pc";

@@ -4,7 +4,8 @@
   ...
 }:
 let
-  configurationsCfg = config.configurations;
+  hostsCfg = config.hosts;
+  flakeUsers = config.users;
 in
 {
   options.users = lib.mkOption {
@@ -34,11 +35,24 @@ in
 
           config = {
             publicKeys = lib.mapAttrsToList (_: c: c.users.${name}.publicKey) (
-              lib.filterAttrs (_: c: c.users.${name}.enable) configurationsCfg
+              lib.filterAttrs (_: c: c.users.${name}.enable) hostsCfg
             );
           };
         }
       )
     );
+  };
+
+  config.flake.aspects.face = {
+    homeManager =
+      { config, ... }:
+      let
+        face = flakeUsers.${config.home.username}.face;
+      in
+      {
+        home.file.".face" = lib.mkIf (face != null) {
+          source = face;
+        };
+      };
   };
 }
