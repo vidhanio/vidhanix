@@ -2,38 +2,34 @@
 
 # ❄️ vidhanix
 
-## introduction
+## Introduction
 
-a [dendritic](https://github.com/mightyiam/dendritic) nix flake for my stuff.
+A [Dendritic](https://github.com/mightyiam/dendritic) Nix flake for my stuff.
 
-## packages
+## Packages
 
-this flake has a couple packages, mostly used internally, but available via `.#<package>`.
-some of these packages provide a `passthru.updateScript`, all of which can be run via `just update-packages`.
+This flake has a couple of packages, mostly used internally, but available via `.#<package>`.
+Some of these packages provide a `passthru.updateScript`, all of which can be run via `just update-packages`.
 
-| package                                                                                           | description                                                                                                                        | has update script |
-| :------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------- | :---------------: |
-| [`berkeley-mono`](modules/systems/gui/fonts/vidhan-fonts.nix)                                     | A love letter to the golden era of computing                                                                                       |                   |
-| [`berkeley-mono-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)                            | A love letter to the golden era of computing                                                                                       |                   |
-| [`breezex-combined`](modules/systems/gui/cursor/packages/breezex-cursor.nix)                      | BreezeX Cursor theme combining both Xcursor and hyprcursor versions                                                                |                   |
-| [`breezex-cursor`](modules/systems/gui/cursor/packages/breezex-cursor.nix)                        | Extended KDE cursor                                                                                                                |         ✓         |
-| [`breezex-hyprcursor`](modules/systems/gui/cursor/packages/breezex-cursor.nix)                    | BreezeX Cursor theme adapted for hyprcursor                                                                                        |                   |
-| [`conventional-pre-commit`](modules/flake/pre-commit/conventional-pre-commit/package.nix)         | A pre-commit hook that checks commit messages for Conventional Commits formatting                                                  |         ✓         |
-| [`generate-files`](modules/flake/files/default.nix)                                               | Generate various files for this repository                                                                                         |                   |
-| [`google-sans-flex`](modules/systems/gui/fonts/vidhan-fonts.nix)                                  | The next generation of Google's brand typeface                                                                                     |                   |
-| [`libretro-database`](modules/programs/retroarch/packages/libretro-database.nix)                  | Databases used by RetroArch                                                                                                        |         ✓         |
-| [`libretro-system-files`](modules/programs/retroarch/packages/libretro-system-files/default.nix)  | Auxiliary libretro core system files provided through the online updater                                                           |         ✓         |
-| [`libretrodb-tool`](modules/programs/retroarch/packages/libretrodb-tool.nix)                      | Tools for managing libretro databases                                                                                              |                   |
-| [`pi-context-view`](modules/programs/ai/harnesses/pi-coding-agent/extensions/pi-context-view.nix) | Pi extension to visualize context usage and inspect the hidden parts: base prompt, tools defs, and extension injections            |         ✓         |
-| [`pi-subagents`](modules/programs/ai/harnesses/pi-coding-agent/extensions/pi-subagents.nix)       | Pi extension for async subagent delegation with truncation, artifacts, and session sharing                                         |         ✓         |
-| [`pi-web-access`](modules/programs/ai/harnesses/pi-coding-agent/extensions/pi-web-access.nix)     | Web search and content extraction extension for Pi coding agent                                                                    |         ✓         |
-| [`pragmata-pro-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)                             | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |                   |
-| [`update-packages`](modules/flake/packages/update-packages/default.nix)                           | Update all packages in this flake that have an update script                                                                       |                   |
+| Package                                                                                   | Description                                                                                                                        | Updatable |
+| :---------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :-------: |
+| [`berkeley-mono`](modules/systems/gui/fonts/vidhan-fonts.nix)                             | A love letter to the golden era of computing                                                                                       |           |
+| [`berkeley-mono-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)                    | A love letter to the golden era of computing                                                                                       |           |
+| [`breezex-combined`](modules/systems/gui/cursor/packages/breezex-cursor.nix)              | BreezeX Cursor theme combining both Xcursor and hyprcursor versions                                                                |           |
+| [`breezex-cursor`](modules/systems/gui/cursor/packages/breezex-cursor.nix)                | Extended KDE cursor                                                                                                                |     ✓     |
+| [`breezex-hyprcursor`](modules/systems/gui/cursor/packages/breezex-cursor.nix)            | BreezeX Cursor theme adapted for hyprcursor                                                                                        |           |
+| [`conventional-pre-commit`](modules/flake/pre-commit/conventional-pre-commit/package.nix) | A pre-commit hook that checks commit messages for Conventional Commits formatting                                                  |     ✓     |
+| [`generate-files`](modules/flake/files/default.nix)                                       | Generate various files for this repository                                                                                         |           |
+| [`google-sans-flex`](modules/systems/gui/fonts/vidhan-fonts.nix)                          | The next generation of Google's brand typeface                                                                                     |           |
+| [`pi-context-view`](modules/programs/pi-coding-agent/extensions/pi-context-view.nix)      | Pi extension to visualize context usage and inspect the hidden parts: base prompt, tools defs, and extension injections            |     ✓     |
+| [`pi-subagents`](modules/programs/pi-coding-agent/extensions/pi-subagents.nix)            | Pi extension for async subagent delegation with truncation, artifacts, and session sharing                                         |     ✓     |
+| [`pi-web-access`](modules/programs/pi-coding-agent/extensions/pi-web-access.nix)          | Web search and content extraction extension for Pi coding agent                                                                    |     ✓     |
+| [`pragmata-pro-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)                     | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |           |
+| [`update-packages`](modules/flake/packages/update-packages/default.nix)                   | Update all packages in this flake that have an update script                                                                       |           |
 
-## generated files
+## Generated Files
 
-most of the non-nix files in this repository (including this very readme) are generated via [`just generate`](justfile).
-the generated files are:
+Most of the non-Nix files in this repository (including this very README) are generated via [`just generate`](justfile).
 
 - [`.envrc`](.envrc)
 - [`.github/actions/setup-nix/action.yaml`](.github/actions/setup-nix/action.yaml)

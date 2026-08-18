@@ -2,59 +2,61 @@
 {
   flake-file.inputs.nix-index-database.url = "github:nix-community/nix-index-database";
 
-  flake.modules.homeManager.default =
-    { inputs', pkgs, ... }:
-    let
-      binNames =
-        pkgs.runCommand "comma-fish-bin-names"
-          {
-            nativeBuildInputs = [
-              inputs'.nix-index-database.packages.nix-index-with-db
-            ];
-          }
-          ''
-            nix-locate --at-root "/bin/" | sed -E 's#.*/##' | sort -u > $out
+  flake.aspects.comma = {
+    homeManager =
+      { inputs', pkgs, ... }:
+      let
+        binNames =
+          pkgs.runCommand "comma-fish-bin-names"
+            {
+              nativeBuildInputs = [
+                inputs'.nix-index-database.packages.nix-index-with-db
+              ];
+            }
+            ''
+              nix-locate --at-root "/bin/" | sed -E 's#.*/##' | sort -u > $out
+            '';
+      in
+      {
+        imports = [
+          inputs.nix-index-database.homeModules.default
+        ];
+
+        programs.nix-index-database.comma.enable = true;
+
+        programs.agents.skills.skills.comma = ./SKILL.md;
+
+        programs.fish.completions = {
+          comma = ''
+            comma --print-completions fish 2>/dev/null | source
+
+            complete -c comma -n "__fish_comma_needs_command" -a "(cat ${binNames})"
           '';
-    in
-    {
-      imports = [
-        inputs.nix-index-database.homeModules.default
-      ];
 
-      programs.nix-index-database.comma.enable = true;
-
-      programs.agents.skills.skills.comma = ./SKILL.md;
-
-      programs.fish.completions = {
-        comma = ''
-          comma --print-completions fish 2>/dev/null | source
-
-          complete -c comma -n "__fish_comma_needs_command" -a "(cat ${binNames})"
-        '';
-
-        "," = "complete -c , -w comma";
-      };
-
-      programs.noctalia.settings.shell.launcher.dmenu.entry.comma =
-        let
-          picker = pkgs.writeShellScript "comma-noctalia-picker" ''
-            choice=$(sed 's/\.out$//' | sort | noctalia dmenu -p "Pick a package")
-            if [[ -n "$choice" ]]; then
-              printf '%s.out\n' "$choice"
-            fi
-          '';
-        in
-        {
-          label = "Comma";
-          prefix = ",";
-          glyph = "terminal";
-          global = false;
-          freeform = true;
-          exec = "comma --picker ${picker} -- {query}";
+          "," = "complete -c , -w comma";
         };
 
-      hyprland.binds."SUPER + comma".exec_cmd = "noctalia msg panel-toggle launcher '/, '";
+        programs.noctalia.settings.shell.launcher.dmenu.entry.comma =
+          let
+            picker = pkgs.writeShellScript "comma-noctalia-picker" ''
+              choice=$(sed 's/\.out$//' | sort | noctalia dmenu -p "Pick a package")
+              if [[ -n "$choice" ]]; then
+                printf '%s.out\n' "$choice"
+              fi
+            '';
+          in
+          {
+            label = "Comma";
+            prefix = ",";
+            glyph = "terminal";
+            global = false;
+            freeform = true;
+            exec = "comma --picker ${picker} -- {query}";
+          };
 
-      persist.files = [ ".local/state/comma/choices" ];
-    };
+        hyprland.binds."SUPER + comma".exec_cmd = "noctalia msg panel-toggle launcher '/, '";
+
+        persist.files = [ ".local/state/comma/choices" ];
+      };
+  };
 }

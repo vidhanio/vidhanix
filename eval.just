@@ -7,32 +7,32 @@ system := `nix eval --raw --impure --expr 'builtins.currentSystem'`
 systemPackage := nixosConfig + ".system.build.toplevel"
 user := `whoami`
 
-# record the intent to add each new file, so that the flake sees it
+# Record the intent to add each new file, so that the flake sees it
 [private]
 @add:
     git add -AN
 
-# format the tree with treefmt, e.g. `just fmt --ci`
+# Format the tree with treefmt, e.g. `just fmt --ci`
 [private]
 @fmt *flags: add
     nix fmt -- {{ flags }}
 
-# evaluate a path under the current host's nixos config, e.g. `just eval nixos services.printing`
+# Evaluate a path under the current host's NixOS config, e.g. `just eval nixos services.tailscale`
 @nixos option *flags: add
     nix eval {{ flags }} {{ nixosConfig }}.{{ option }}
 
-# evaluate a home manager option, e.g. `just eval hm programs.git`
+# Evaluate a Home Manager option, e.g. `just eval hm programs.git`
 @hm option *flags: add
     nix eval {{ flags }} {{ hmConfig }}.{{ option }}
 
-# evaluate a flake option's value, e.g. `just eval flake files.generatedMessage.text`
+# Evaluate a flake option's value, e.g. `just eval flake files.generatedMessage.text`
 @flake option *flags: add
     nix eval {{ flags }} .#debug.config.{{ option }}
 
-# evaluate a per-system option's value, e.g. `just eval perSystem files.readme.rendered`
+# Evaluate a per-system option's value, e.g. `just eval perSystem files.readme.rendered`
 @perSystem option *flags: add
     nix eval {{ flags }} {{ perSystemConfig }}.{{ option }}
 
-# evaluate the whole configuration, and build nothing
+# Evaluate the whole configuration, and build nothing
 @system: fmt
     nix eval --raw {{ systemPackage }}.drvPath

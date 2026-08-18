@@ -28,6 +28,7 @@
       url = "github:mightyiam/files";
       flake = false;
     };
+    flake-aspects.url = "github:denful/flake-aspects";
     flake-file.url = "github:vidhanio/flake-file/fix/write-flake-mtime-churn";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -42,7 +43,6 @@
     home-manager.url = "github:nix-community/home-manager";
     impermanence.url = "github:nix-community/impermanence";
     import-tree.url = "github:vic/import-tree";
-    librepods.url = "github:kavishdevar/librepods/linux/rust";
     llm-agents.url = "github:numtide/llm-agents.nix";
     mattpocock-skills = {
       url = "github:mattpocock/skills";

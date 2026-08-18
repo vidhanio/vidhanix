@@ -1,11 +1,11 @@
 { inputs, ... }: {
   flake-file.inputs.helium-flake.url = "github:oxcl/nix-flake-helium-browser";
 
-  flake.modules = {
-    nixos.default = {
+  flake.aspects.helium = {
+    nixos = {
       imports = [ inputs.helium-flake.nixosModules.default ];
     };
-    homeManager.default =
+    homeManager =
       { config, ... }:
       let
         cfg = config.programs.helium;

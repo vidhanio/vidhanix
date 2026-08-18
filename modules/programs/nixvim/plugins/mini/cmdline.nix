@@ -1,5 +1,7 @@
 {
-  flake.modules.nixvim.default = {
-    plugins.mini.modules.cmdline = { };
+  flake.aspects.nixvim = {
+    nixvim = {
+      plugins.mini.modules.cmdline = { };
+    };
   };
 }

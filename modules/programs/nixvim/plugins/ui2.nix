@@ -1,7 +1,9 @@
 {
-  flake.modules.nixvim.default = {
-    extraConfigLua = ''
-      require('vim._core.ui2').enable({})
-    '';
+  flake.aspects.nixvim = {
+    nixvim = {
+      extraConfigLua = ''
+        require('vim._core.ui2').enable({})
+      '';
+    };
   };
 }

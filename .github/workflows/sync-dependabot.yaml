@@ -7,41 +7,41 @@ concurrency:
 jobs:
   metadata:
     if: github.event.pull_request.user.login=='dependabot[bot]'
-    name: fetch dependabot metadata
+    name: Fetch Dependabot metadata
     outputs:
       dependencies: ${{ steps.metadata.outputs.updated-dependencies-json }}
       ecosystem: ${{ steps.metadata.outputs.package-ecosystem }}
     runs-on: ubuntu-latest
     steps:
     - id: metadata
-      name: fetch dependabot metadata
+      name: Fetch Dependabot metadata
       uses: dependabot/fetch-metadata@v3
   prune-lock:
     if: needs.metadata.outputs.ecosystem=='nix'
-    name: prune lock
+    name: Prune lock
     needs:
     - metadata
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
+    - name: Checkout
       uses: actions/checkout@v5
       with:
         ref: ${{ github.event.pull_request.head.sha }}
-    - name: setup nix
+    - name: Set up Nix
       uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
     - id: app-token
-      name: create github app token
+      name: Create GitHub App token
       uses: actions/create-github-app-token@v3
       with:
         client-id: ${{ vars.APP_CLIENT_ID }}
         private-key: ${{ secrets.APP_PRIVATE_KEY }}
-    - name: prune lock
+    - name: Prune lock
       run: nix develop -c just generate
     - env:
         GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-      name: commit
+      name: Commit
       uses: planetscale/ghcommit-action@v0.2.22
       with:
         branch: ${{ github.event.pull_request.head.ref }}
@@ -49,34 +49,34 @@ jobs:
         repo: ${{ github.repository }}
   sync-actions:
     if: needs.metadata.outputs.ecosystem=='github_actions'
-    name: sync action updates
+    name: Sync GitHub Actions updates
     needs:
     - metadata
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
+    - name: Checkout
       uses: actions/checkout@v5
       with:
         ref: ${{ github.event.pull_request.head.sha }}
     - env:
         UPDATED_DEPENDENCIES_JSON: ${{ needs.metadata.outputs.dependencies }}
-      name: sync action updates
+      name: Sync GitHub Actions updates
       run: python3 .github/scripts/sync-action-updates.py
     - id: app-token
-      name: create github app token
+      name: Create GitHub App token
       uses: actions/create-github-app-token@v3
       with:
         client-id: ${{ vars.APP_CLIENT_ID }}
         private-key: ${{ secrets.APP_PRIVATE_KEY }}
     - env:
         GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-      name: commit
+      name: Commit
       uses: planetscale/ghcommit-action@v0.2.22
       with:
         branch: ${{ github.event.pull_request.head.ref }}
         commit_message: 'chore(ci): sync action updates'
         repo: ${{ github.repository }}
-name: sync dependabot
+name: Sync Dependabot
 'on':
   pull_request_target:
     branches:

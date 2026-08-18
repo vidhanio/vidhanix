@@ -7,23 +7,23 @@ system := `nix eval --raw --impure --expr 'builtins.currentSystem'`
 systemPackage := nixosConfig + ".system.build.toplevel"
 user := `whoami`
 
-# record the intent to add each new file, so that the flake sees it
+# Record the intent to add each new file, so that the flake sees it
 [private]
 @add:
     git add -AN
 
-# build a flake path (or a nix build expression) and print its output store paths, without linking `result`
+# Build a flake path (or a Nix build expression) and print its output store paths, without linking `result`
 @flake *args: add
     if [ -t 1 ]; then nom build --no-link --print-out-paths {{ args }}; else nix build --no-link --print-out-paths {{ args }}; fi
 
-# build a nixos config path, e.g. `just build nixos system.build.toplevel`
+# Build a NixOS config path, e.g. `just build nixos system.build.toplevel`
 @nixos option *flags: (flake (nixosConfig + "." + option) flags)
 
-# build a home manager config path, e.g. `just build hm home.path`
+# Build a Home Manager config path, e.g. `just build hm home.path`
 @hm option *flags: (flake (hmConfig + "." + option) flags)
 
-# build a per-system config path, e.g. `just build perSystem packages.generate-files`
+# Build a per-system config path, e.g. `just build perSystem packages.generate-files`
 @perSystem option *flags: (flake (perSystemConfig + "." + option) flags)
 
-# build the whole configuration
+# Build the whole configuration
 @system: (flake systemPackage)

@@ -1,12 +1,12 @@
 {
-  flake.modules = {
-    nixos.default = {
+  flake.aspects.hyprland = {
+    nixos = {
       programs.hyprland = {
         enable = true;
         withUWSM = true;
       };
     };
-    homeManager.default =
+    homeManager =
       { config, ... }:
       {
         # https://wiki.hypr.land/Nix/Hyprland-on-Home-Manager/#nixos-uwsm

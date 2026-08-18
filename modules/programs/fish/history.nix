@@ -1,10 +1,12 @@
 {
-  flake.modules.homeManager.default = {
-    persist.files = [
-      {
-        file = ".local/share/fish/fish_history";
-        method = "symlink";
-      }
-    ];
+  flake.aspects.fish = {
+    homeManager = {
+      persist.files = [
+        {
+          file = ".local/share/fish/fish_history";
+          method = "symlink";
+        }
+      ];
+    };
   };
 }

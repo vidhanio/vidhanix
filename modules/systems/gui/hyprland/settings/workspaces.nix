@@ -1,7 +1,7 @@
 { lib, ... }:
 {
-  flake.modules = {
-    homeManager.default = {
+  flake.aspects.hyprland = {
+    homeManager = {
       wayland.windowManager.hyprland.extraLuaFiles."cycle-workspace" = {
         content = ./cycle-workspace.lua;
         autoLoad = true;

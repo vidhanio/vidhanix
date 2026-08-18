@@ -1,5 +1,7 @@
 {
-  flake.modules.nixos.default = {
-    services.fwupd.enable = true;
+  flake.aspects.hardware = {
+    nixos = {
+      services.fwupd.enable = true;
+    };
   };
 }

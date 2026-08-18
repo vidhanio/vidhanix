@@ -13,8 +13,8 @@
     prune-lock.ignore = [ "noctalia" ];
   };
 
-  flake.modules = {
-    nixos.default =
+  flake.aspects.noctalia = {
+    nixos =
       { inputs', ... }:
       {
         programs.noctalia = {
@@ -24,7 +24,7 @@
         };
       };
 
-    homeManager.default =
+    homeManager =
       { config, ... }:
       let
         msg = command: { exec_cmd = "noctalia msg ${command}"; };

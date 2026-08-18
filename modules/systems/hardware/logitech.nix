@@ -1,5 +1,7 @@
 {
-  flake.modules.nixos.default = {
-    hardware.logitech.wireless.enable = true;
+  flake.aspects.hardware = {
+    nixos = {
+      hardware.logitech.wireless.enable = true;
+    };
   };
 }

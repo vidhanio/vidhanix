@@ -1,58 +1,60 @@
 {
-  flake.modules.nixos.default =
-    {
-      self',
-      pkgs,
-      config,
-      ...
-    }:
-    let
-      cfg = config.stylix;
+  flake.aspects.fonts = {
+    nixos =
+      {
+        self',
+        pkgs,
+        config,
+        ...
+      }:
+      let
+        cfg = config.stylix;
 
-      patchNerdFont =
-        font:
-        pkgs.stdenv.mkDerivation {
-          pname = "${font.pname}-nerd-font";
-          inherit (font) version;
+        patchNerdFont =
+          font:
+          pkgs.stdenv.mkDerivation {
+            pname = "${font.pname}-nerd-font";
+            inherit (font) version;
 
-          src = font;
+            src = font;
 
-          nativeBuildInputs = [
-            pkgs.nerd-font-patcher
-            pkgs.parallel
-          ];
+            nativeBuildInputs = [
+              pkgs.nerd-font-patcher
+              pkgs.parallel
+            ];
 
-          buildPhase = ''
-            runHook preBuild
+            buildPhase = ''
+              runHook preBuild
 
-            find -name \*.ttf -o -name \*.otf | parallel --will-cite nerd-font-patcher -c
+              find -name \*.ttf -o -name \*.otf | parallel --will-cite nerd-font-patcher -c
 
-            runHook postBuild
-          '';
+              runHook postBuild
+            '';
 
-          installPhase = ''
-            runHook preInstall
+            installPhase = ''
+              runHook preInstall
 
-            cp -a . $out
+              cp -a . $out
 
-            runHook postInstall
-          '';
-        };
-
-    in
-    {
-      stylix = {
-        fonts = {
-          monospace = {
-            package = patchNerdFont self'.packages.berkeley-mono;
-            name = "BerkeleyMono Nerd Font";
+              runHook postInstall
+            '';
           };
-          serif = cfg.fonts.monospace;
-          sansSerif = {
-            package = self'.packages.google-sans-flex;
-            name = "Google Sans Flex";
+
+      in
+      {
+        stylix = {
+          fonts = {
+            monospace = {
+              package = patchNerdFont self'.packages.berkeley-mono;
+              name = "BerkeleyMono Nerd Font";
+            };
+            serif = cfg.fonts.monospace;
+            sansSerif = {
+              package = self'.packages.google-sans-flex;
+              name = "Google Sans Flex";
+            };
           };
         };
       };
-    };
+  };
 }

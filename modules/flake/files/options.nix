@@ -47,6 +47,13 @@ in
       in
       {
         options.files = {
+          lib = lib.mkOption {
+            type = lib.types.attrsOf lib.types.anything;
+            default = { };
+            internal = true;
+            description = "Helper values for generated files.";
+          };
+
           commentedFile = lib.mkOption {
             description = ''
               Files to generate with a generated comment prepended.

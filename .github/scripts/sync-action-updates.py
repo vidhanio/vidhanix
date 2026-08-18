@@ -10,7 +10,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-SOURCES = Path("modules/flake/files/workflows")
+SOURCES = Path("modules/flake/files/github")
 
 FULL_SHA = re.compile(r"[0-9a-f]{40}")
 
@@ -21,12 +21,12 @@ def run(*command: str) -> str:
 
 
 def ref(version: str) -> str:
-    """The `uses:` form of an action version: shas stay bare, tags get a leading `v`."""
+    """The `uses:` form of an action version: SHAs stay bare, tags get a leading `v`."""
     return version if FULL_SHA.fullmatch(version) else f"v{version}"
 
 
 def bumps(dependencies: list[dict]) -> dict[str, str]:
-    """Map the refs the PR bumps from old to new version."""
+    """Map the refs the PR bumps from the old to the new version."""
     found: dict[str, str] = {}
     for dependency in dependencies:
         previous = dependency["prevVersion"]
@@ -45,7 +45,7 @@ def main() -> int:
     try:
         bumped = bumps(json.loads(os.environ["UPDATED_DEPENDENCIES_JSON"]))
         if not bumped:
-            print("no version bumps in the PR metadata")
+            print("No version bumps in the PR metadata.")
             return 0
         changed = []
         for path in sorted(SOURCES.glob("*.nix")):
@@ -58,7 +58,7 @@ def main() -> int:
                 changed.append(path)
         if not changed:
             # the bot's previous sync already covers this update
-            print("the PR already contains the source sync")
+            print("The PR already contains the source sync.")
             return 0
         run("git", "add", *map(str, changed))
     except (KeyError, ValueError, subprocess.CalledProcessError) as error:

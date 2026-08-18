@@ -7,20 +7,20 @@ system := `nix eval --raw --impure --expr 'builtins.currentSystem'`
 systemPackage := nixosConfig + ".system.build.toplevel"
 user := `whoami`
 
-# record the intent to add each new file, so that the flake sees it
+# Record the intent to add each new file, so that the flake sees it
 [private]
 @add:
     git add -AN
 
-# build a flake path and run a command in its output directory, e.g. `just inspect flake .#muvm-steam ls -la`
+# Build a flake path and run a command in its output directory, e.g. `just inspect flake .#muvm-steam ls -la`
 @flake package cmd *args: add
     if [ -t 1 ]; then nom build --no-link --print-out-paths {{ package }} | while read -r out; do (cd "$out" && {{ cmd }} {{ args }}); done; else nix build --no-link --print-out-paths {{ package }} | while read -r out; do (cd "$out" && {{ cmd }} {{ args }}); done; fi
 
-# build a nixos config path and run a command in its output directory, e.g. `just inspect nixos system.build.toplevel ls`
+# Build a NixOS config path and run a command in its output directory, e.g. `just inspect nixos system.build.toplevel ls`
 @nixos option cmd *args: (flake (nixosConfig + "." + option) cmd args)
 
-# build a home manager config path and run a command in its output directory, e.g. `just inspect hm home.path ls`
+# Build a Home Manager config path and run a command in its output directory, e.g. `just inspect hm home.path ls`
 @hm option cmd *args: (flake (hmConfig + "." + option) cmd args)
 
-# build a per-system config path and run a command in its output directory, e.g. `just inspect perSystem packages.generate-files ls`
+# Build a per-system config path and run a command in its output directory, e.g. `just inspect perSystem packages.generate-files ls`
 @perSystem option cmd *args: (flake (perSystemConfig + "." + option) cmd args)

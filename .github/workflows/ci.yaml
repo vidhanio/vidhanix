@@ -6,16 +6,16 @@ concurrency:
   group: ${{ github.ref }}
 jobs:
   build-packages:
-    name: 'build package: ${{ matrix.pkg }}'
+    name: 'Build package: ${{ matrix.pkg }}'
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
+    - name: Checkout
       uses: actions/checkout@v5
-    - name: setup nix
+    - name: Set up Nix
       uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-    - name: build package
+    - name: Build package
       run: nix build .#${{ matrix.pkg }} --print-build-logs
     strategy:
       fail-fast: false
@@ -29,9 +29,6 @@ jobs:
         - conventional-pre-commit
         - generate-files
         - google-sans-flex
-        - libretro-database
-        - libretro-system-files
-        - libretrodb-tool
         - pi-context-view
         - pi-subagents
         - pi-web-access
@@ -41,54 +38,52 @@ jobs:
         - write-inputs
         - write-lock
   check-formatting:
-    name: check formatting
+    name: Check formatting
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
+    - name: Checkout
       uses: actions/checkout@v5
-    - name: setup nix
+    - name: Set up Nix
       uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-    - name: check formatting
+    - name: Check formatting
       run: nix develop -c just fmt --ci
   check-generated-files:
-    name: check generated files
+    name: Check generated files
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
+    - name: Checkout
       uses: actions/checkout@v5
-    - name: setup nix
+    - name: Set up Nix
       uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-    - name: generate files
+    - name: Generate files
       run: nix develop -c just generate
-    - name: check diff
+    - name: Check diff
       run: git diff --exit-code
   eval-systems:
-    name: 'eval system: ${{ matrix.name }}'
+    name: 'Evaluate system: ${{ matrix.name }}'
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
+    - name: Checkout
       uses: actions/checkout@v5
-    - name: setup nix
+    - name: Set up Nix
       uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-    - name: eval system
+    - name: Evaluate system
       run: nix eval .#${{ matrix.attr }} --raw
     strategy:
       fail-fast: false
       matrix:
         include:
-        - attr: 
-            nixosConfigurations.vidhan-macbook.config.system.build.toplevel.drvPath
-          name: vidhan-macbook
-        - attr: 
-            nixosConfigurations.vidhan-pc.config.system.build.toplevel.drvPath
-          name: vidhan-pc
-name: ci
+        - attr: nixosConfigurations.vortex.config.system.build.toplevel.drvPath
+          name: vortex
+        - attr: nixosConfigurations.voyager.config.system.build.toplevel.drvPath
+          name: voyager
+name: CI
 'on':
   pull_request: {}
   push: {}

@@ -4,13 +4,14 @@
   ...
 }:
 let
-  configurationsCfg = config.configurations;
+  hostsCfg = config.hosts;
+  flakeUsers = config.users;
 in
 {
   options.users = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule (
-        { name, config, ... }:
+        { name, ... }:
         {
           options = {
             fullName = lib.mkOption {
@@ -25,11 +26,6 @@ in
               type = lib.types.listOf lib.types.str;
               description = "A list of SSH public keys for the user.";
             };
-            module = lib.mkOption {
-              type = lib.types.deferredModule;
-              default = { };
-              description = "Home Manager configuration for the user.";
-            };
             face = lib.mkOption {
               type = lib.types.nullOr lib.types.path;
               default = null;
@@ -39,15 +35,24 @@ in
 
           config = {
             publicKeys = lib.mapAttrsToList (_: c: c.users.${name}.publicKey) (
-              lib.filterAttrs (_: c: c.users.${name}.enable) configurationsCfg
+              lib.filterAttrs (_: c: c.users.${name}.enable) hostsCfg
             );
-
-            module = lib.mkIf (config.face != null) {
-              home.file.".face".source = config.face;
-            };
           };
         }
       )
     );
+  };
+
+  config.flake.aspects.face = {
+    homeManager =
+      { config, ... }:
+      let
+        face = flakeUsers.${config.home.username}.face;
+      in
+      {
+        home.file.".face" = lib.mkIf (face != null) {
+          source = face;
+        };
+      };
   };
 }

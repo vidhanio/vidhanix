@@ -1,5 +1,7 @@
 {
-  flake.modules.nixos.default = {
-    security.rtkit.enable = true;
+  flake.aspects.audio = {
+    nixos = {
+      security.rtkit.enable = true;
+    };
   };
 }

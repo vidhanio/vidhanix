@@ -1,10 +1,9 @@
 {
-  flake.modules = {
-    nixvim.default = {
+  flake.aspects.nixvim = {
+    nixvim = {
       opts.undofile = true;
     };
-
-    homeManager.default = {
+    homeManager = {
       persist.directories = [ ".local/state/nvim/undo" ];
     };
   };

@@ -1,5 +1,7 @@
 {
-  flake.modules.nixvim.default = {
-    plugins.sleuth.enable = true;
+  flake.aspects.nixvim = {
+    nixvim = {
+      plugins.sleuth.enable = true;
+    };
   };
 }
