@@ -8,13 +8,13 @@ let
     }:
     buildNpmPackage (finalAttrs: {
       pname = "pi-web-access";
-      version = "0.23.0";
+      version = "0.24.0";
 
       src = fetchFromGitHub {
         owner = "nicobailon";
         repo = "pi-web-access";
         rev = "v${finalAttrs.version}";
-        hash = "sha256-q/TZUkgeC/W/Ft7RMVIDc6m/Dsj2amicHhSeCbzk05E=";
+        hash = "sha256-1E6ogt3gL+UhuLaTiLYlcDgjKar9AP3izuDEk1erXlI=";
       };
 
       # Upstream's lockfile auto-includes the @earendil-works/pi-* peer
