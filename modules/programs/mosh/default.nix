@@ -1,5 +1,7 @@
 {
-  flake.aspects.mosh.nixos = {
-    programs.mosh.enable = true;
+  flake.aspects.mosh = {
+    nixos = {
+      programs.mosh.enable = true;
+    };
   };
 }

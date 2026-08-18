@@ -1,5 +1,7 @@
 {
-  flake.aspects.tmux.homeManager = {
-    programs.tmux.enable = true;
+  flake.aspects.tmux = {
+    homeManager = {
+      programs.tmux.enable = true;
+    };
   };
 }

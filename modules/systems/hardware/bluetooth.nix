@@ -1,9 +1,11 @@
 {
-  flake.aspects.hardware.nixos = {
-    hardware.bluetooth.enable = true;
+  flake.aspects.hardware = {
+    nixos = {
+      hardware.bluetooth.enable = true;
 
-    persist.directories = [
-      "/var/lib/bluetooth"
-    ];
+      persist.directories = [
+        "/var/lib/bluetooth"
+      ];
+    };
   };
 }

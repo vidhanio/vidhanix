@@ -1,5 +1,7 @@
 {
-  flake.aspects.xdg-autostart.homeManager = {
-    xdg.autostart.enable = true;
+  flake.aspects.xdg-autostart = {
+    homeManager = {
+      xdg.autostart.enable = true;
+    };
   };
 }

@@ -1,5 +1,7 @@
 {
-  flake.aspects.nixvim.nixvim = {
-    plugins.mini.modules.surround = { };
+  flake.aspects.nixvim = {
+    nixvim = {
+      plugins.mini.modules.surround = { };
+    };
   };
 }

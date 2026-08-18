@@ -1,5 +1,7 @@
 {
-  flake.aspects.fd.homeManager = {
-    programs.fd.enable = true;
+  flake.aspects.fd = {
+    homeManager = {
+      programs.fd.enable = true;
+    };
   };
 }

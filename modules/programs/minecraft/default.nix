@@ -1,7 +1,9 @@
 {
-  flake.aspects.minecraft.homeManager = {
-    programs.prismlauncher.enable = true;
+  flake.aspects.minecraft = {
+    homeManager = {
+      programs.prismlauncher.enable = true;
 
-    persist.directories = [ ".local/share/PrismLauncher" ];
+      persist.directories = [ ".local/share/PrismLauncher" ];
+    };
   };
 }

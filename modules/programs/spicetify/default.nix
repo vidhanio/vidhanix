@@ -2,29 +2,31 @@
 {
   flake-file.inputs.spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
-  flake.aspects.spicetify.homeManager =
-    {
-      config,
-      pkgs,
-      ...
-    }:
-    {
-      imports = [
-        inputs.spicetify-nix.homeManagerModules.default
-      ];
-
-      config = lib.mkIf pkgs.stdenv.hostPlatform.isx86_64 {
-        programs.spicetify = {
-          enable = true;
-        };
-
-        xdg.autostart.entries = [
-          "${config.programs.spicetify.spicedSpotify}/share/applications/spotify.desktop"
+  flake.aspects.spicetify = {
+    homeManager =
+      {
+        config,
+        pkgs,
+        ...
+      }:
+      {
+        imports = [
+          inputs.spicetify-nix.homeManagerModules.default
         ];
 
-        hyprland.autostartWorkspaces.spotify = 2;
+        config = lib.mkIf pkgs.stdenv.hostPlatform.isx86_64 {
+          programs.spicetify = {
+            enable = true;
+          };
 
-        persist.directories = [ ".config/spotify" ];
+          xdg.autostart.entries = [
+            "${config.programs.spicetify.spicedSpotify}/share/applications/spotify.desktop"
+          ];
+
+          hyprland.autostartWorkspaces.spotify = 2;
+
+          persist.directories = [ ".config/spotify" ];
+        };
       };
-    };
+  };
 }

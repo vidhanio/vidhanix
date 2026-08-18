@@ -1,5 +1,7 @@
 {
-  flake.aspects.nixvim.nixvim = {
-    plugins.mini.enable = true;
+  flake.aspects.nixvim = {
+    nixvim = {
+      plugins.mini.enable = true;
+    };
   };
 }

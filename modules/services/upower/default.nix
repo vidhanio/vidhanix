@@ -1,5 +1,7 @@
 {
-  flake.aspects.upower.nixos = {
-    services.upower.enable = true;
+  flake.aspects.upower = {
+    nixos = {
+      services.upower.enable = true;
+    };
   };
 }

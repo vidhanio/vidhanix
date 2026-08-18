@@ -1,9 +1,11 @@
 {
-  flake.aspects.hardware.nixos = {
-    hardware.xpadneo.enable = true;
+  flake.aspects.hardware = {
+    nixos = {
+      hardware.xpadneo.enable = true;
 
-    boot.extraModprobeConfig = ''
-      options hid_xpadneo rumble_attenuation=50
-    '';
+      boot.extraModprobeConfig = ''
+        options hid_xpadneo rumble_attenuation=50
+      '';
+    };
   };
 }

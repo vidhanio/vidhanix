@@ -1,5 +1,7 @@
 {
-  flake.aspects.audio.nixos = {
-    security.rtkit.enable = true;
+  flake.aspects.audio = {
+    nixos = {
+      security.rtkit.enable = true;
+    };
   };
 }

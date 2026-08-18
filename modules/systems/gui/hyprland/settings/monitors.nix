@@ -15,13 +15,15 @@ let
   renderMonitors = monitors: map renderMonitor ([ monitors.main ] ++ monitors.others);
 in
 {
-  flake.aspects.hyprland.homeManager =
-    { osConfig, ... }:
-    {
-      wayland.windowManager.hyprland.settings = {
-        monitor = renderMonitors osConfig.hardware.monitors;
+  flake.aspects.hyprland = {
+    homeManager =
+      { osConfig, ... }:
+      {
+        wayland.windowManager.hyprland.settings = {
+          monitor = renderMonitors osConfig.hardware.monitors;
 
-        config.misc.vrr = 1;
+          config.misc.vrr = 1;
+        };
       };
-    };
+  };
 }

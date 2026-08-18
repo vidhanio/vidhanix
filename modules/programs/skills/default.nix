@@ -8,11 +8,13 @@
     flake = false;
   };
 
-  flake.aspects.skills.homeManager = {
-    programs.agents.skills = {
-      enable = true;
+  flake.aspects.skills = {
+    homeManager = {
+      programs.agents.skills = {
+        enable = true;
 
-      skills.mattpocock = inputs.mattpocock-skills + "/skills";
+        skills.mattpocock = inputs.mattpocock-skills + "/skills";
+      };
     };
   };
 }

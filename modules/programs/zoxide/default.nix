@@ -1,21 +1,23 @@
 {
-  flake.aspects.zoxide.homeManager = {
-    programs.zoxide = {
-      enable = true;
-      options = [
-        "--cmd"
-        "cd"
-      ];
+  flake.aspects.zoxide = {
+    homeManager = {
+      programs.zoxide = {
+        enable = true;
+        options = [
+          "--cmd"
+          "cd"
+        ];
+      };
+
+      programs.fish.functions.c = ''
+        if test (count $argv) -eq 0
+          code-insiders
+        else
+          code-insiders (zoxide query -- $argv)
+        end
+      '';
+
+      persist.directories = [ ".local/share/zoxide" ];
     };
-
-    programs.fish.functions.c = ''
-      if test (count $argv) -eq 0
-        code-insiders
-      else
-        code-insiders (zoxide query -- $argv)
-      end
-    '';
-
-    persist.directories = [ ".local/share/zoxide" ];
   };
 }

@@ -1,5 +1,7 @@
 {
-  flake.aspects.nixvim.nixvim = {
-    plugins.wakatime.enable = true;
+  flake.aspects.nixvim = {
+    nixvim = {
+      plugins.wakatime.enable = true;
+    };
   };
 }

@@ -1,5 +1,7 @@
 {
-  flake.aspects.nixvim.nixvim = {
-    plugins.mini.modules.pairs = { };
+  flake.aspects.nixvim = {
+    nixvim = {
+      plugins.mini.modules.pairs = { };
+    };
   };
 }

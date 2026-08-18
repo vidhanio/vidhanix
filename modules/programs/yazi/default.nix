@@ -1,7 +1,9 @@
 {
-  flake.aspects.yazi.homeManager = {
-    programs.yazi.enable = true;
+  flake.aspects.yazi = {
+    homeManager = {
+      programs.yazi.enable = true;
 
-    persist.directories = [ ".local/state/yazi" ];
+      persist.directories = [ ".local/state/yazi" ];
+    };
   };
 }

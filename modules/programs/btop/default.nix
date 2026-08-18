@@ -1,5 +1,7 @@
 {
-  flake.aspects.btop.homeManager = {
-    programs.btop.enable = true;
+  flake.aspects.btop = {
+    homeManager = {
+      programs.btop.enable = true;
+    };
   };
 }

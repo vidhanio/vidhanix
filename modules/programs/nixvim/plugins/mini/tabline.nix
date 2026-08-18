@@ -1,5 +1,7 @@
 {
-  flake.aspects.nixvim.nixvim = {
-    plugins.mini.modules.tabline = { };
+  flake.aspects.nixvim = {
+    nixvim = {
+      plugins.mini.modules.tabline = { };
+    };
   };
 }

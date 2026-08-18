@@ -6,32 +6,34 @@ let
   flakeUsers = config.users;
 in
 {
-  flake.aspects.git.homeManager =
-    { config, ... }:
-    {
-      programs.git = {
-        enable = true;
-        settings = {
-          user =
-            let
-              user = flakeUsers.${config.home.username};
-            in
-            {
-              name = user.fullName;
-              inherit (user) email;
-            };
+  flake.aspects.git = {
+    homeManager =
+      { config, ... }:
+      {
+        programs.git = {
+          enable = true;
+          settings = {
+            user =
+              let
+                user = flakeUsers.${config.home.username};
+              in
+              {
+                name = user.fullName;
+                inherit (user) email;
+              };
 
-          init.defaultBranch = "main";
+            init.defaultBranch = "main";
 
-          push.autoSetupRemote = true;
-          pull.rebase = true;
-          rebase.autostash = true;
-          merge.ff = "only";
-          submodule.recurse = true;
+            push.autoSetupRemote = true;
+            pull.rebase = true;
+            rebase.autostash = true;
+            merge.ff = "only";
+            submodule.recurse = true;
 
-          url."git@github.com:".insteadOf = "https://github.com/";
+            url."git@github.com:".insteadOf = "https://github.com/";
+          };
+          lfs.enable = true;
         };
-        lfs.enable = true;
       };
-    };
+  };
 }
