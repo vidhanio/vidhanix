@@ -5,7 +5,7 @@ keys:
   - &vidhan-macbook-root ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrlsMqmLKW+8+MyHndMWNZXk86Oo0Ik8wPs3v1Nx7ZR root@vidhan-macbook
 
 creation_rules:
-  - path_regex: secrets/secrets\.yaml$
+  - path_regex: secrets\.yaml$
     key_groups:
       - age:
           - *vidhan-pc-vidhanio

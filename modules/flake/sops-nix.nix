@@ -2,12 +2,12 @@
 {
   flake-file.inputs.sops-nix.url = "github:Mic92/sops-nix";
 
-  perSystem.treefmt.settings.excludes = [ "secrets/secrets.yaml" ];
+  perSystem.treefmt.settings.excludes = [ "secrets.yaml" ];
 
   flake.aspects.sops =
     let
       mkSopsConfig = key: {
-        defaultSopsFile = ../../secrets/secrets.yaml;
+        defaultSopsFile = ../../secrets.yaml;
         # TODO: https://github.com/Mic92/sops-nix/pull/779
         environment.SOPS_AGE_SSH_PRIVATE_KEY_FILE = key;
         age.sshKeyPaths = [ key ];
