@@ -6,14 +6,14 @@ inputs:
   ssh-private-key:
     description: SSH key for private flake inputs
     required: true
-name: Set up Nix
+name: Set Up Nix
 runs:
   steps:
-  - name: Set up SSH agent
+  - name: Set Up SSH Agent
     uses: webfactory/ssh-agent@v0.9.0
     with:
       ssh-private-key: ${{ inputs.ssh-private-key }}
-  - name: Free disk space
+  - name: Free Disk Space
     uses: wimpysworld/nothing-but-nix@v9
     with:
       hatchet-protocol: carve
@@ -22,7 +22,7 @@ runs:
     with:
       extra_nix_config: build-dir = /nix/build
       nix_path: 'path: nixpkgs=channel:nixos-unstable'
-  - name: Restore Nix store
+  - name: Restore Nix Store
     uses: nix-community/cache-nix-action@v7
     with:
       primary-key: nix-${{ runner.os }}-${{ hashFiles('**/flake.lock') }}

@@ -10,7 +10,7 @@ let
   ghExpr = name: "$" + "{{ ${name} }}";
 
   setupNixAction = {
-    name = "Set up Nix";
+    name = "Set Up Nix";
     description = "Install Nix and prepare the runner for a Nix job";
     inputs.ssh-private-key = {
       description = "SSH key for private flake inputs";
@@ -20,14 +20,14 @@ let
       using = "composite";
       steps = [
         {
-          name = "Set up SSH agent";
+          name = "Set Up SSH Agent";
           uses = "webfactory/ssh-agent@v0.9.0";
           "with" = {
             ssh-private-key = ghExpr "inputs.ssh-private-key";
           };
         }
         {
-          name = "Free disk space";
+          name = "Free Disk Space";
           uses = "wimpysworld/nothing-but-nix@v9";
           "with".hatchet-protocol = "carve";
         }
@@ -40,7 +40,7 @@ let
           };
         }
         {
-          name = "Restore Nix store";
+          name = "Restore Nix Store";
           uses = "nix-community/cache-nix-action@v7";
           "with" = {
             primary-key = "nix-${ghExpr "runner.os"}-${ghExpr "hashFiles('**/flake.lock')"}";
@@ -67,7 +67,7 @@ let
 
   # the composite action keeps the runner setup identical across workflows.
   setupNix = {
-    name = "Set up Nix";
+    name = "Set Up Nix";
     uses = "./.github/actions/setup-nix";
     "with".ssh-private-key = ghExpr "secrets.FONTS_SSH_KEY";
   };
@@ -79,7 +79,7 @@ let
   # dependabot PRs carry structured metadata about their update; workflows
   # dispatch on its ecosystem output instead of parsing branch names.
   fetchMetadata = {
-    name = "Fetch Dependabot metadata";
+    name = "Fetch Dependabot Metadata";
     id = "metadata";
     uses = "dependabot/fetch-metadata@v3";
   };
@@ -97,7 +97,7 @@ let
   };
 
   createAppToken = {
-    name = "Create GitHub App token";
+    name = "Create GitHub App Token";
     id = "app-token";
     uses = "actions/create-github-app-token@v3";
     "with" = {

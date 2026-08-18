@@ -2,7 +2,7 @@
 {
   options.perSystem = flake-parts-lib.mkPerSystemOption {
     config.files.github.workflows.watch-github-refs = {
-      name = "Watch GitHub references";
+      name = "Watch GitHub References";
 
       on = {
         schedule = [
@@ -17,7 +17,7 @@
       };
 
       jobs.watch = {
-        name = "Watch GitHub reference issues";
+        name = "Watch GitHub Reference Issues";
         runs-on = "ubuntu-latest";
         steps = [
           {
@@ -25,7 +25,7 @@
             uses = "actions/checkout@v5";
           }
           {
-            name = "Scan and notify";
+            name = "Scan and Notify";
             run = "bash .github/scripts/watch-github-refs.sh";
           }
         ];

@@ -3,14 +3,14 @@
 ---
 jobs:
   watch:
-    name: Watch GitHub reference issues
+    name: Watch GitHub Reference Issues
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v5
-    - name: Scan and notify
+    - name: Scan and Notify
       run: bash .github/scripts/watch-github-refs.sh
-name: Watch GitHub references
+name: Watch GitHub References
 'on':
   schedule:
   - cron: 0 9 * * *

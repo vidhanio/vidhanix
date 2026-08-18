@@ -1,8 +1,8 @@
-# development playbook
+# Development Playbook
 
-## cycle
+## Cycle
 
-work eval-first. inspect the relevant module and its callers, make the smallest change, then run:
+Work eval-first. Inspect the relevant module and its callers, make the smallest change, then run:
 
 ```sh
 just add
@@ -11,28 +11,28 @@ just fmt --ci
 just eval system
 ```
 
-use `just eval <tree> <option>` for a focused value, `just build <tree> <option>` for a relevant build, and `prek` for repository checks. use `nix flake check --no-build` when validating the complete flake. read command output for inline `«error: ...»` values; a successful exit status alone is not enough.
+Use `just eval <tree> <option>` for a focused value, `just build <tree> <option>` for a relevant build, and `prek` for repository checks. Use `nix flake check --no-build` when validating the complete flake. Read command output for inline `«error: ...»` values; a successful exit status alone is not enough.
 
-run generation before reviewing a diff. finish with both host evaluations and relevant builds when a change touches system or package configuration.
+Run generation before reviewing a diff. Finish with both host evaluations and relevant builds when a change touches system or package configuration.
 
-## source of truth
+## Source of Truth
 
-generated files are outputs, not editing targets. change their module source under `modules/flake/files/`, then run `just generate` and inspect the result. keep generated output in the commit when it changes. treat secrets and `.sops.yaml` as sensitive.
+Generated files are outputs, not editing targets. Change their module source under `modules/flake/files/`, then run `just generate` and inspect the result. Keep generated output in the commit when it changes. Treat secrets and `.sops.yaml` as sensitive.
 
-## style
+## Style
 
-write prose with standard capitalization. keep commit titles, comments, and CLI errors lowercase. preserve required code and protocol spelling, including Nix option names and GitHub expressions. write short comments only for non-obvious reasons. declare each aspect attribute path once per source file, co-locate its classes and providers within that file, and use an `imports` list inside that declaration for multiple implementation pieces. keep separate implementation files separate instead of folding them into a default file. never inline a class configuration: use `flake.aspects.<name> = { <class> = ...; };` instead of `flake.aspects.<name>.<class> = ...`, even when the class has only one setting. omit module argument lists when no arguments are used instead of writing `_:`. format with `just fmt --ci`; keep the configured formatter set passing.
+Write prose with standard capitalization. Keep commit titles, comments, and CLI errors lowercase. Preserve required code and protocol spelling, including Nix option names and GitHub expressions. Write short comments only for non-obvious reasons. Declare each aspect attribute path once per source file, co-locate its classes and providers within that file, and use an `imports` list inside that declaration for multiple implementation pieces. Keep separate implementation files separate instead of folding them into a default file. Never inline a class configuration: use `flake.aspects.<name> = { <class> = ...; };` instead of `flake.aspects.<name>.<class> = ...`, even when the class has only one setting. Omit module argument lists when no arguments are used instead of writing `_:`. Format with `just fmt --ci`; keep the configured formatter set passing.
 
-use conventional commits. commit each finished unit of work promptly, with no unrelated changes. leave no staged or unstaged work after a finished unit.
+Use conventional commits. Commit each finished unit of work promptly, with no unrelated changes. Leave no staged or unstaged work after a finished unit.
 
-## safety
+## Safety
 
-preserve infrastructure behavior by default. before changing boot, disks, persistence, networking, secrets, ssh, hosts, services, or CI, inspect dependencies and compare the relevant evaluated options. ask for approval before an infrastructure-impacting behavior change that is not explicitly requested. never hide an evaluation error or weaken a safety check to make validation pass.
+Preserve infrastructure behavior by default. Before changing boot, disks, persistence, networking, secrets, SSH, hosts, services, or CI, inspect dependencies and compare the relevant evaluated options. Ask for approval before an infrastructure-impacting behavior change that is not explicitly requested. Never hide an evaluation error or weaken a safety check to make validation pass.
 
-## interface map
+## Interface Map
 
 - `flake.aspects` defines the feature and profile graph; resolved modules are consumed through `inputs.self.modules`.
 - `hosts` registers hosts and produces NixOS configurations.
 - `users` registers identities and complete Home Manager aspects.
-- generator sources live under `modules/flake/files/`.
-- command entrypoints are the generated `justfile`, `just`, `nix`, and `prek`.
+- Generator sources live under `modules/flake/files/`.
+- Command entrypoints are the generated `justfile`, `just`, `nix`, and `prek`.

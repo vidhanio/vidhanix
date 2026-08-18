@@ -33,37 +33,37 @@
 
         jobs = {
           check-formatting = {
-            name = "Check formatting";
+            name = "Check Formatting";
             runs-on = "ubuntu-latest";
             steps = [
               checkout
               setupNix
               {
-                name = "Check formatting";
+                name = "Check Formatting";
                 run = "${just} fmt --ci";
               }
             ];
           };
 
           check-generated-files = {
-            name = "Check generated files";
+            name = "Check Generated Files";
             runs-on = "ubuntu-latest";
             steps = [
               checkout
               setupNix
               {
-                name = "Generate files";
+                name = "Generate Files";
                 run = "${just} generate";
               }
               {
-                name = "Check diff";
+                name = "Check Diff";
                 run = "git diff --exit-code";
               }
             ];
           };
 
           eval-systems = {
-            name = "Evaluate system: ${ghExpr "matrix.name"}";
+            name = "Evaluate System: ${ghExpr "matrix.name"}";
             runs-on = "ubuntu-latest";
             strategy = {
               matrix.include = hosts;
@@ -73,7 +73,7 @@
               checkout
               setupNix
               {
-                name = "Evaluate system";
+                name = "Evaluate System";
                 # forcing the toplevel drvPath evaluates the whole system
                 # config without building anything.
                 run = "nix eval .#${ghExpr "matrix.attr"} --raw";
@@ -82,7 +82,7 @@
           };
 
           build-packages = {
-            name = "Build package: ${ghExpr "matrix.pkg"}";
+            name = "Build Package: ${ghExpr "matrix.pkg"}";
             runs-on = "ubuntu-latest";
             strategy = {
               matrix.pkg = builtins.attrNames config.packages;
@@ -92,7 +92,7 @@
               checkout
               setupNix
               {
-                name = "Build package";
+                name = "Build Package";
                 run = "nix build .#${ghExpr "matrix.pkg"} --print-build-logs";
               }
             ];

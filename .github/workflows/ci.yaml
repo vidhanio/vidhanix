@@ -6,16 +6,16 @@ concurrency:
   group: ${{ github.ref }}
 jobs:
   build-packages:
-    name: 'Build package: ${{ matrix.pkg }}'
+    name: 'Build Package: ${{ matrix.pkg }}'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v5
-    - name: Set up Nix
+    - name: Set Up Nix
       uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-    - name: Build package
+    - name: Build Package
       run: nix build .#${{ matrix.pkg }} --print-build-logs
     strategy:
       fail-fast: false
@@ -38,42 +38,42 @@ jobs:
         - write-inputs
         - write-lock
   check-formatting:
-    name: Check formatting
+    name: Check Formatting
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v5
-    - name: Set up Nix
+    - name: Set Up Nix
       uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-    - name: Check formatting
+    - name: Check Formatting
       run: nix develop -c just fmt --ci
   check-generated-files:
-    name: Check generated files
+    name: Check Generated Files
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v5
-    - name: Set up Nix
+    - name: Set Up Nix
       uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-    - name: Generate files
+    - name: Generate Files
       run: nix develop -c just generate
-    - name: Check diff
+    - name: Check Diff
       run: git diff --exit-code
   eval-systems:
-    name: 'Evaluate system: ${{ matrix.name }}'
+    name: 'Evaluate System: ${{ matrix.name }}'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v5
-    - name: Set up Nix
+    - name: Set Up Nix
       uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-    - name: Evaluate system
+    - name: Evaluate System
       run: nix eval .#${{ matrix.attr }} --raw
     strategy:
       fail-fast: false

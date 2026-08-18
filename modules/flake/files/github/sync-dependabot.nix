@@ -43,7 +43,7 @@
           # one metadata fetch drives both sync paths; the jobs below dispatch
           # on its ecosystem output instead of matching branch name prefixes.
           metadata = {
-            name = "Fetch Dependabot metadata";
+            name = "Fetch Dependabot Metadata";
             runs-on = "ubuntu-latest";
             # the author gate keeps the action from failing on other PRs
             "if" = "github.event.pull_request.user.login=='dependabot[bot]'";
@@ -56,7 +56,7 @@
 
           # only dependabot github_actions PRs; the script treats the metadata as data.
           sync-actions = {
-            name = "Sync GitHub Actions updates";
+            name = "Sync GitHub Actions Updates";
             needs = [ "metadata" ];
             "if" = "needs.metadata.outputs.ecosystem=='github_actions'";
             runs-on = "ubuntu-latest";
@@ -65,7 +65,7 @@
             steps = [
               checkoutHead
               {
-                name = "Sync GitHub Actions updates";
+                name = "Sync GitHub Actions Updates";
                 env.UPDATED_DEPENDENCIES_JSON = ghExpr "needs.metadata.outputs.dependencies";
                 run = "python3 .github/scripts/sync-action-updates.py";
               }
@@ -77,7 +77,7 @@
           # only dependabot nix PRs; `just generate` prunes the new lock and
           # regenerates everything else from it.
           prune-lock = {
-            name = "Prune lock";
+            name = "Prune Lock";
             needs = [ "metadata" ];
             "if" = "needs.metadata.outputs.ecosystem=='nix'";
             runs-on = "ubuntu-latest";
@@ -86,7 +86,7 @@
               setupNix
               createAppToken
               {
-                name = "Prune lock";
+                name = "Prune Lock";
                 run = "${just} generate";
               }
               (commitToPrBranch "chore(flake): prune lock")
