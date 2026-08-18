@@ -13,7 +13,7 @@
     in
     {
       config.files.github.workflows.update-packages = {
-        name = "Update packages";
+        name = "Update Packages";
 
         on = {
           push.branches = [ "main" ];
@@ -34,7 +34,7 @@
         };
 
         jobs.update = {
-          name = "Update package: ${ghExpr "matrix.pkg"}";
+          name = "Update Package: ${ghExpr "matrix.pkg"}";
           runs-on = "ubuntu-latest";
           strategy = {
             matrix.pkg = updatablePackages;
@@ -44,7 +44,7 @@
             checkout
             setupNix
             {
-              name = "Update package";
+              name = "Update Package";
               id = "update";
               env.PACKAGE = ghExpr "matrix.pkg";
               run = "bash .github/scripts/update-package.sh \"$PACKAGE\"";
@@ -52,7 +52,7 @@
             createAppToken
             {
               # the fixed branch is rebased on main and closed when it has no diff.
-              name = "Create pull request";
+              name = "Create Pull Request";
               uses = "peter-evans/create-pull-request@v8";
               "with" = {
                 token = ghExpr "steps.app-token.outputs.token";

@@ -3,7 +3,7 @@ name: comma
 description: Run a program from nixpkgs that is not installed, with comma. Use when a shell command fails with "command not found", or when a task needs a CLI tool that is absent from PATH.
 ---
 
-# Run missing commands with comma
+# Run Missing Commands with Comma
 
 `comma` runs any program from nixpkgs for one command, without installation. The nix-index database is local on this machine, so the search for a program is immediate.
 
@@ -34,7 +34,7 @@ description: Run a program from nixpkgs that is not installed, with comma. Use w
    nix shell nixpkgs#<package> --command <cmd> <args>
    ```
 
-## Unfree programs
+## Unfree Programs
 
 The nix-index database holds free packages only. comma finds no unfree program, and it reports `No executable <cmd> found in nix-index database` for `op`, `spotify`, and other unfree programs.
 
@@ -54,7 +54,7 @@ The nix-index database holds free packages only. comma finds no unfree program, 
 
 The flake `github:numtide/nixpkgs-unfree` is nixpkgs with `allowUnfree` set to true. Plain `nixpkgs#<attr>` gives the error `Refusing to evaluate package ... because it has an unfree license`.
 
-## More comma commands
+## More Comma Commands
 
 - `comma man <cmd>` shows the man page of a program.
 - `comma -x <cmd>` prints the absolute store path of the executable, and runs nothing. Use it when a different program needs the path.
