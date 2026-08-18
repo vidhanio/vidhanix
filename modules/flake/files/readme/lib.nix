@@ -17,7 +17,7 @@
               c = ":---:";
               r = "---:";
             }
-            .${char} or (throw "Invalid alignment character: ${char} (must be one of 'l', 'c', 'r')");
+            .${char} or (throw "invalid alignment character: ${char} (must be one of 'l', 'c', 'r')");
         in
         assert lib.assertMsg (lib.all (
           row: lib.length row == lib.length header

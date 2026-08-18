@@ -22,7 +22,7 @@
               mkdir "$out"
               ln -s "$source" "$out/SKILL.md"
             else
-              echo "Agent skill source must be a file or directory: $source" >&2
+              echo "skill source must be a file or directory: $source" >&2
               exit 1
             fi
           '';

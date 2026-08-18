@@ -62,7 +62,7 @@ def main() -> int:
             return 0
         run("git", "add", *map(str, changed))
     except (KeyError, ValueError, subprocess.CalledProcessError) as error:
-        print(f"Dependabot sync failed: {error}", file=sys.stderr)
+        print(f"dependabot sync failed: {error}", file=sys.stderr)
         return 1
     return 0
 

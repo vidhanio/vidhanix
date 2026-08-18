@@ -78,7 +78,7 @@
               };
             };
           in
-          assert lib.assertMsg (lib.hasAttr anchor positions) "Bad Waywall layout anchor: ${anchor}";
+          assert lib.assertMsg (lib.hasAttr anchor positions) "bad Waywall layout anchor: ${anchor}";
           positions.${anchor} // { inherit (size) w h; };
 
         monitor = {
@@ -158,7 +158,7 @@
                   badVarNames = lib.filter (name: matchVarName name == null) (lib.attrNames cfg.config.variables);
                 in
                 assert lib.assertMsg (badVarNames == [ ])
-                  "Bad Lua var names: ${lib.generators.toPretty { } badVarNames}";
+                  "bad Lua var names: ${lib.generators.toPretty { } badVarNames}";
                 lib.concatStrings (
                   lib.mapAttrsToList (
                     key: value: "local ${key} = ${lib.generators.toLua { } value}\n"

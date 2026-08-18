@@ -106,7 +106,7 @@ def update(package: str) -> Result:
     before = version(package)
     if not before:
         return Result(
-            package, log=f"Could not evaluate {package}.version before update"
+            package, log=f"could not evaluate {package}.version before update"
         )
 
     result = run(NIX_UPDATE, "--flake", "--use-update-script", package)
@@ -116,7 +116,7 @@ def update(package: str) -> Result:
 
     after = version(package)
     if not after:
-        return Result(package, log=f"Could not evaluate {package}.version after update")
+        return Result(package, log=f"could not evaluate {package}.version after update")
 
     return Result(package, before=before, after=after, homepage=homepage(package))
 
@@ -127,9 +127,9 @@ def verify(packages: Iterable[str]) -> list[str]:
 
     for package in packages:
         if package not in KNOWN:
-            problems.append(f"Package {package} is not a package in this flake")
+            problems.append(f"package {package} is not a package in this flake")
         elif package not in UPDATABLE:
-            problems.append(f"Package {package} has no update script")
+            problems.append(f"package {package} has no update script")
 
     return problems
 

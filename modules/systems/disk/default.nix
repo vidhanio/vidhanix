@@ -71,7 +71,7 @@
           map
             (p: {
               assertion = config.disko.devices.disk.main.content.partitions.${p}.uuid != null;
-              message = "Partition \"${p}\" must have its UUID manually assigned.";
+              message = "partition \"${p}\" must have its UUID manually assigned.";
             })
             [
               "iBootSystemContainer"

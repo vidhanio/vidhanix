@@ -14,16 +14,16 @@ user := `whoami`
 
 # Render a flake option's Markdown docs, e.g. `just docs flake perSystem.files.readme`
 @flake option: add
-    nix build --file /nix/store/rp3qaxk7fxam7bpjkpvykrh9f2djcikz-_option-doc.nix --no-substitute --argstr flake "{{ justfile_directory() }}" --arg getOptions '(flake: flake.debug.options)' --argstr option "{{ option }}" --no-link --print-out-paths | xargs cat
+    nix build --file /nix/store/ban5gwpwqn9qn69nf1rxb64041ixgd1a-_option-doc.nix --no-substitute --argstr flake "{{ justfile_directory() }}" --arg getOptions '(flake: flake.debug.options)' --argstr option "{{ option }}" --no-link --print-out-paths | xargs cat
 
 # Render a per-system option's Markdown docs, e.g. `just docs perSystem files.commentedFile`
 @perSystem option: add
-    nix build --file /nix/store/rp3qaxk7fxam7bpjkpvykrh9f2djcikz-_option-doc.nix --no-substitute --argstr flake "{{ justfile_directory() }}" --arg getOptions '(flake: flake.allSystems."{{ system }}".options)' --argstr option "{{ option }}" --no-link --print-out-paths | xargs cat
+    nix build --file /nix/store/ban5gwpwqn9qn69nf1rxb64041ixgd1a-_option-doc.nix --no-substitute --argstr flake "{{ justfile_directory() }}" --arg getOptions '(flake: flake.allSystems."{{ system }}".options)' --argstr option "{{ option }}" --no-link --print-out-paths | xargs cat
 
 # Render a NixOS option's Markdown docs, e.g. `just docs nixos services.tailscale`
 @nixos option: add
-    nix build --file /nix/store/rp3qaxk7fxam7bpjkpvykrh9f2djcikz-_option-doc.nix --no-substitute --argstr flake "{{ justfile_directory() }}" --arg getOptions '(flake: flake.nixosConfigurations."{{ host }}".options)' --argstr option "{{ option }}" --no-link --print-out-paths | xargs cat
+    nix build --file /nix/store/ban5gwpwqn9qn69nf1rxb64041ixgd1a-_option-doc.nix --no-substitute --argstr flake "{{ justfile_directory() }}" --arg getOptions '(flake: flake.nixosConfigurations."{{ host }}".options)' --argstr option "{{ option }}" --no-link --print-out-paths | xargs cat
 
 # Render a Home Manager option's Markdown docs, e.g. `just docs hm programs.git`
 @hm option: add
-    nix build --file /nix/store/rp3qaxk7fxam7bpjkpvykrh9f2djcikz-_option-doc.nix --no-substitute --argstr flake "{{ justfile_directory() }}" --arg getOptions '(flake: flake.nixosConfigurations."{{ host }}".options.home-manager.users.type.getSubOptions ["home-manager" "users"])' --argstr option "{{ option }}" --no-link --print-out-paths | xargs cat
+    nix build --file /nix/store/ban5gwpwqn9qn69nf1rxb64041ixgd1a-_option-doc.nix --no-substitute --argstr flake "{{ justfile_directory() }}" --arg getOptions '(flake: flake.nixosConfigurations."{{ host }}".options.home-manager.users.type.getSubOptions ["home-manager" "users"])' --argstr option "{{ option }}" --no-link --print-out-paths | xargs cat
