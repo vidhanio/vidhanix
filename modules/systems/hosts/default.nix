@@ -20,17 +20,17 @@ in
               enable = lib.mkEnableOption "${username}'s account";
               publicKey = lib.mkOption {
                 type = lib.types.str;
-                description = "the user's ssh public key for this host.";
+                description = "The user's SSH public key for this host.";
               };
             }) usersCfg;
             publicKey = lib.mkOption {
               type = lib.types.str;
-              description = "the public ssh key for this system, which will be added to the authorized keys of all users.";
+              description = "The public SSH key for this system, which will be added to the authorized keys of all users.";
             };
             module = lib.mkOption {
               type = lib.types.deferredModule;
               default = { };
-              description = "nixos configuration module for this configuration.";
+              description = "NixOS configuration module for this configuration.";
             };
           };
 
@@ -44,7 +44,7 @@ in
               options.users.primaryUser = lib.mkOption {
                 type = lib.types.enum (lib.attrNames activeUsers);
                 default = "vidhanio";
-                description = "the primary user of this system.";
+                description = "The primary user of this system.";
               };
 
               config = {
