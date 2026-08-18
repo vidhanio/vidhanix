@@ -33,5 +33,14 @@
 
     programs.agents.skills.skills.herdr = ./SKILL.md;
 
+    persist = {
+      directories = [ ".herdr/worktrees" ];
+      files = [
+        {
+          file = ".config/herdr/session.json";
+          method = "symlink";
+        }
+      ];
+    };
   };
 }

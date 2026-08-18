@@ -13,22 +13,10 @@ in
     { aspects, ... }:
     {
       vidhanio = {
-        includes = [
-          aspects.desktop
-          aspects.herdr
-        ];
+        includes = [ aspects.desktop ];
         homeManager = {
           home.file.".face".source = face;
           programs.gh.username = "vidhanio";
-          persist = {
-            directories = [ ".herdr/worktrees" ];
-            files = [
-              {
-                file = ".config/herdr/session.json";
-                method = "symlink";
-              }
-            ];
-          };
         };
       };
     };

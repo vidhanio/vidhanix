@@ -36,6 +36,7 @@
         fd
         fzf
         gh
+        herdr
         ghostty
         git
         lazygit
