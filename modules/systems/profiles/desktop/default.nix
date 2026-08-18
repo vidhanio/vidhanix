@@ -4,6 +4,7 @@
     {
       desktop.includes = with aspects; [
         core
+        cachyos-kernel
         audio
         clipboard
         cursor
