@@ -9,7 +9,7 @@
       }:
       let
         cfg = config.programs.prime-agent;
-        jsonFormat = pkgs.formats.json { };
+        json = pkgs.formats.json { };
 
         mkResourceOption =
           { dir, description }:
@@ -108,7 +108,7 @@
           };
 
           settings = lib.mkOption {
-            inherit (jsonFormat) type;
+            inherit (json) type;
             default = { };
             example = {
               model = "anthropic/claude-sonnet-4-20250514";
@@ -184,7 +184,7 @@
           };
 
           themes = lib.mkOption {
-            type = lib.types.either (lib.types.attrsOf (lib.types.either jsonFormat.type lib.types.path)) lib.types.path;
+            type = lib.types.either (lib.types.attrsOf (lib.types.either json.type lib.types.path)) lib.types.path;
             default = { };
             example = {
               stylix = {
@@ -219,7 +219,7 @@
 
           home.file = {
             ".prime/agent/settings.json" = lib.mkIf (settings != { }) {
-              source = jsonFormat.generate "prime-agent-settings.json" settings;
+              source = json.generate "prime-agent-settings.json" settings;
             };
           }
           // (lib.optionalAttrs (lib.hm.strings.isPathLike cfg.themes) {
@@ -235,7 +235,7 @@
                 { source = content; }
               else
                 {
-                  source = jsonFormat.generate "prime-agent-${name}.json" (
+                  source = json.generate "prime-agent-${name}.json" (
                     {
                       "$schema" =
                         "https://raw.githubusercontent.com/PrimeIntellect-ai/prime-agent/main/packages/coding-agent/src/modes/interactive/theme/theme-schema.json";

@@ -9,7 +9,7 @@
       }:
       let
         cfg = config.programs.opencode2;
-        jsonFormat = pkgs.formats.json { };
+        json = pkgs.formats.json { };
 
         toOpencode2Server =
           server:
@@ -136,7 +136,7 @@
           };
 
           settings = lib.mkOption {
-            inherit (jsonFormat) type;
+            inherit (json) type;
             default = { };
             example = {
               model = "anthropic/claude-sonnet-4-5";
@@ -161,7 +161,7 @@
           };
 
           cli = lib.mkOption {
-            inherit (jsonFormat) type;
+            inherit (json) type;
             default = { };
             example = {
               theme = {
@@ -261,7 +261,7 @@
           };
 
           themes = lib.mkOption {
-            type = lib.types.either (lib.types.attrsOf (lib.types.either jsonFormat.type lib.types.path)) lib.types.path;
+            type = lib.types.either (lib.types.attrsOf (lib.types.either json.type lib.types.path)) lib.types.path;
             default = { };
             example = {
               stylix = {
@@ -319,7 +319,7 @@
 
           xdg.configFile = {
             "opencode/opencode.json" = lib.mkIf (cfg.settings != { } || transformedMcpServers != { }) {
-              source = jsonFormat.generate "opencode2-settings.json" (
+              source = json.generate "opencode2-settings.json" (
                 {
                   "$schema" = "https://opencode.ai/config.json";
                 }
@@ -328,7 +328,7 @@
             };
 
             "opencode/cli.json" = lib.mkIf (cfg.cli != { }) {
-              source = jsonFormat.generate "opencode2-cli.json" cfg.cli;
+              source = json.generate "opencode2-cli.json" cfg.cli;
             };
 
             "opencode/AGENTS.md" =
@@ -352,7 +352,7 @@
                 { source = content; }
               else
                 {
-                  source = jsonFormat.generate "opencode2-${name}.json" (
+                  source = json.generate "opencode2-${name}.json" (
                     {
                       "$schema" = "https://opencode.ai/theme.json";
                     }

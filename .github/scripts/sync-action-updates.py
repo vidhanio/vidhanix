@@ -10,7 +10,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-SOURCES = Path("modules/flake/files/ci")
+SOURCES = Path("modules/flake/files/github")
 
 FULL_SHA = re.compile(r"[0-9a-f]{40}")
 

@@ -9,8 +9,8 @@
       }:
       let
         cfg = config.programs.omp;
-        yamlFormat = pkgs.formats.yaml { };
-        jsonFormat = pkgs.formats.json { };
+        yaml = pkgs.formats.yaml { };
+        json = pkgs.formats.json { };
 
         mkResourceOption =
           { dir, description }:
@@ -83,7 +83,7 @@
           package = lib.mkPackageOption pkgs "omp" { nullable = true; };
 
           settings = lib.mkOption {
-            inherit (yamlFormat) type;
+            inherit (yaml) type;
             default = { };
             example = {
               theme.dark = "titanium";
@@ -99,7 +99,7 @@
           };
 
           models = lib.mkOption {
-            inherit (yamlFormat) type;
+            inherit (yaml) type;
             default = { };
             example = {
               providers.opencode-go.modelOverrides.deepseek-v4-flash.thinking = {
@@ -134,7 +134,7 @@
           };
 
           mcpServers = lib.mkOption {
-            inherit (jsonFormat) type;
+            inherit (json) type;
             default = { };
             example = {
               filesystem = {
@@ -152,7 +152,7 @@
           };
 
           keybindings = lib.mkOption {
-            inherit (yamlFormat) type;
+            inherit (yaml) type;
             default = { };
             example = {
               "app.model.cycleForward" = "Ctrl+P";
@@ -180,7 +180,7 @@
           };
 
           themes = lib.mkOption {
-            type = lib.types.either (lib.types.attrsOf (lib.types.either jsonFormat.type lib.types.path)) lib.types.path;
+            type = lib.types.either (lib.types.attrsOf (lib.types.either json.type lib.types.path)) lib.types.path;
             default = { };
             example = {
               stylix = {
@@ -296,19 +296,19 @@
 
           home.file = {
             ".omp/agent/config.yml" = lib.mkIf (cfg.settings != { }) {
-              source = yamlFormat.generate "omp-config.yml" cfg.settings;
+              source = yaml.generate "omp-config.yml" cfg.settings;
             };
 
             ".omp/agent/models.yml" = lib.mkIf (cfg.models != { }) {
-              source = yamlFormat.generate "omp-models.yml" cfg.models;
+              source = yaml.generate "omp-models.yml" cfg.models;
             };
 
             ".omp/agent/mcp.json" = lib.mkIf (mcpServers != { }) {
-              source = jsonFormat.generate "omp-mcp.json" { inherit mcpServers; };
+              source = json.generate "omp-mcp.json" { inherit mcpServers; };
             };
 
             ".omp/agent/keybindings.yml" = lib.mkIf (cfg.keybindings != { }) {
-              source = yamlFormat.generate "omp-keybindings.yml" cfg.keybindings;
+              source = yaml.generate "omp-keybindings.yml" cfg.keybindings;
             };
 
             ".omp/agent/AGENTS.md" =
@@ -332,7 +332,7 @@
                 { source = content; }
               else
                 {
-                  source = jsonFormat.generate "omp-${name}.json" (
+                  source = json.generate "omp-${name}.json" (
                     {
                       "$schema" =
                         "https://raw.githubusercontent.com/can1357/oh-my-pi/main/packages/coding-agent/theme-schema.json";

@@ -2,15 +2,18 @@
 {
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, pkgs, ... }:
+    let
+      yaml = pkgs.formats.yaml { };
+    in
     {
       options.files.github = {
         workflows = lib.mkOption {
-          type = lib.types.attrsOf lib.types.anything;
+          inherit (yaml) type;
           default = { };
           description = "GitHub Actions workflows to generate, one file per attr.";
         };
         actions = lib.mkOption {
-          type = lib.types.attrsOf lib.types.anything;
+          inherit (yaml) type;
           default = { };
           description = "GitHub composite actions to generate, one directory per attr.";
         };
@@ -31,14 +34,14 @@
             name: workflow:
             lib.nameValuePair ".github/workflows/${name}.yaml" {
               fileType = "yaml";
-              source = pkgs.writers.writeYAML "${name}.yaml" workflow;
+              source = yaml.generate "${name}.yaml" workflow;
             }
           ) config.files.github.workflows
           // lib.mapAttrs' (
             name: action:
             lib.nameValuePair ".github/actions/${name}/action.yaml" {
               fileType = "yaml";
-              source = pkgs.writers.writeYAML "github-action-${name}.yaml" action;
+              source = yaml.generate "github-action-${name}.yaml" action;
             }
           ) config.files.github.actions;
       };

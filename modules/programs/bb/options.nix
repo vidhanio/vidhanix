@@ -9,7 +9,7 @@
       }:
       let
         cfg = config.programs.bb;
-        jsonFormat = pkgs.formats.json { };
+        json = pkgs.formats.json { };
 
         mkResourceOption =
           { dir, description }:
@@ -82,7 +82,7 @@
           package = lib.mkPackageOption pkgs "bb-app" { nullable = true; };
 
           settings = lib.mkOption {
-            inherit (jsonFormat) type;
+            inherit (json) type;
             default = { };
             example = managedConfigExample;
             description = ''
@@ -102,7 +102,7 @@
           };
 
           env = lib.mkOption {
-            inherit (jsonFormat) type;
+            inherit (json) type;
             default = { };
             example = {
               env.OPENAI_API_KEY = "sk-...";
@@ -119,7 +119,7 @@
           };
 
           client = lib.mkOption {
-            inherit (jsonFormat) type;
+            inherit (json) type;
             default = { };
             example = {
               servers."https://bb.example.test".hosts.host_abc = {
@@ -217,15 +217,15 @@
 
           home.file = {
             ".bb/config.json" = lib.mkIf (cfg.settings != { }) {
-              source = jsonFormat.generate "bb-config.json" cfg.settings;
+              source = json.generate "bb-config.json" cfg.settings;
             };
 
             ".bb/env.json" = lib.mkIf (cfg.env != { }) {
-              source = jsonFormat.generate "bb-env.json" cfg.env;
+              source = json.generate "bb-env.json" cfg.env;
             };
 
             ".bb/client.json" = lib.mkIf (cfg.client != { }) {
-              source = jsonFormat.generate "bb-client.json" cfg.client;
+              source = json.generate "bb-client.json" cfg.client;
             };
 
             ".bb/AGENTS.md" =
