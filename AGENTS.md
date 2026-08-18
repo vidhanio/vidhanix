@@ -21,7 +21,7 @@ generated files are outputs, not editing targets. change their module source und
 
 ## style
 
-keep prose, comments, identifiers exposed to users, and commit subjects lowercase unless an external format requires otherwise. preserve required code and protocol spelling, including Nix option names and GitHub expressions. write short comments only for non-obvious reasons. format with `just fmt --ci`; keep the configured formatter set passing.
+keep prose, comments, identifiers exposed to users, and commit subjects lowercase unless an external format requires otherwise. preserve required code and protocol spelling, including Nix option names and GitHub expressions. write short comments only for non-obvious reasons. declare each aspect attribute path once, co-locate its classes and providers, and use an `imports` list inside that declaration for multiple implementation pieces. omit module argument lists when no arguments are used instead of writing `_:`. format with `just fmt --ci`; keep the configured formatter set passing.
 
 use conventional commits. commit each finished unit of work promptly, with no unrelated changes. leave no staged or unstaged work after a finished unit.
 
