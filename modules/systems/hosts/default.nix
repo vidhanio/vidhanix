@@ -95,18 +95,6 @@ in
           ];
           fromAspect = username: aspects.${username};
         }
-      ) cfg
-      // {
-        ssh-client.nixos = {
-          programs.ssh.knownHosts = lib.mapAttrs (
-            hostname:
-            { publicKey, ... }:
-            {
-              inherit publicKey;
-              extraHostNames = [ "${hostname}.local" ];
-            }
-          ) cfg;
-        };
-      };
+      ) cfg;
   };
 }
