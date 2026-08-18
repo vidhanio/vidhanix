@@ -55,6 +55,7 @@ in
               config = {
                 networking.hostName = name;
                 nixpkgs.hostPlatform = hostPlatform;
+                system.stateVersion = config.system.nixos.release;
 
                 sops.secrets = lib.mapAttrs' (
                   username: _: lib.nameValuePair "passwords/${username}" { neededForUsers = true; }
