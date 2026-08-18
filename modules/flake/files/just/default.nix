@@ -67,7 +67,7 @@
         silent = true;
         args = [ "option" ];
         dependencies = [ "add" ];
-        body = "nix build --file ${./_commands-option-doc.nix} --no-substitute --argstr flake \"{{ justfile_directory() }}\" --arg getOptions '${getOptions}' --argstr option \"{{ option }}\" --no-link --print-out-paths | xargs cat";
+        body = "nix build --file ${./_option-doc.nix} --no-substitute --argstr flake \"{{ justfile_directory() }}\" --arg getOptions '${getOptions}' --argstr option \"{{ option }}\" --no-link --print-out-paths | xargs cat";
       };
     in
     {
