@@ -7,6 +7,7 @@
 let
   cfg = config.configurations;
   usersCfg = config.users;
+  inherit ((inputs.flake-aspects.lib lib)) forward;
 in
 {
   options.configurations = lib.mkOption {
@@ -64,8 +65,6 @@ in
                   useDefaultShell = true;
                   openssh.authorizedKeys.keys = user.publicKeys ++ rootPublicKeys;
                 }) activeUsers;
-
-                home-manager.users = lib.mapAttrs (_: user: user.module) activeUsers;
               };
             };
         }
@@ -80,15 +79,34 @@ in
       inputs.nixpkgs.lib.nixosSystem { modules = [ module ]; }
     ) cfg;
 
-    flake.aspects.ssh-client.nixos = {
-      programs.ssh.knownHosts = lib.mapAttrs (
-        hostname:
-        { publicKey, ... }:
-        {
-          inherit publicKey;
-          extraHostNames = [ "${hostname}.local" ];
+    flake.aspects =
+      { aspects, ... }:
+      lib.mapAttrs (
+        _:
+        { users, ... }:
+        forward {
+          each = lib.attrNames (lib.filterAttrs (_: user: user.enable) users);
+          fromClass = _: "homeManager";
+          intoClass = _: "nixos";
+          intoPath = username: [
+            "home-manager"
+            "users"
+            username
+          ];
+          fromAspect = username: aspects.${username};
         }
-      ) cfg;
-    };
+      ) cfg
+      // {
+        ssh-client.nixos = {
+          programs.ssh.knownHosts = lib.mapAttrs (
+            hostname:
+            { publicKey, ... }:
+            {
+              inherit publicKey;
+              extraHostNames = [ "${hostname}.local" ];
+            }
+          ) cfg;
+        };
+      };
   };
 }

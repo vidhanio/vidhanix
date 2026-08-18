@@ -1,4 +1,4 @@
-{ withSystem, inputs, ... }:
+{ withSystem, ... }:
 let
   face = withSystem "x86_64-linux" (
     { pkgs, ... }:
@@ -40,6 +40,5 @@ in
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINcNbwiEfw2GG4G//eWdtjyuv4S7vlkHuB9Z1INIfDwE vidhanio@vidhan-iphone"
     ];
     inherit face;
-    module = inputs.self.modules.homeManager.vidhanio;
   };
 }

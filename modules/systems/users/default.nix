@@ -25,11 +25,6 @@ in
               type = lib.types.listOf lib.types.str;
               description = "A list of SSH public keys for the user.";
             };
-            module = lib.mkOption {
-              type = lib.types.deferredModule;
-              default = { };
-              description = "Home Manager configuration for the user.";
-            };
             face = lib.mkOption {
               type = lib.types.nullOr lib.types.path;
               default = null;
@@ -41,8 +36,6 @@ in
             publicKeys = lib.mapAttrsToList (_: c: c.users.${name}.publicKey) (
               lib.filterAttrs (_: c: c.users.${name}.enable) configurationsCfg
             );
-
-            module = { };
           };
         }
       )
