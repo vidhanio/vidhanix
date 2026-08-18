@@ -46,7 +46,6 @@ in
         { users, hostPlatform, ... }:
         let
           activeUsers = lib.filterAttrs (username: _: users.${username}.enable) usersCfg;
-          rootPublicKeys = lib.mapAttrsToList (_: c: c.publicKey) cfg;
         in
         {
           nixos =
@@ -76,7 +75,6 @@ in
                     "wheel"
                   ];
                   useDefaultShell = true;
-                  openssh.authorizedKeys.keys = user.publicKeys ++ rootPublicKeys;
                 }) activeUsers;
               };
             };
