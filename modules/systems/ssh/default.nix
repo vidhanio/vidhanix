@@ -10,5 +10,8 @@
     };
 
     services.fail2ban.enable = true;
+    persist.files = [ "/etc/ssh/ssh_host_ed25519_key" ];
   };
+
+  flake.aspects.ssh-server.homeManager.persist.files = [ ".ssh/id_ed25519" ];
 }
