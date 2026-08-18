@@ -54,7 +54,6 @@
         vacuum-tube
         yazi
         yt-dlp
-        zellij
         zoxide
       ];
     };
