@@ -40,8 +40,3 @@ Most of the non-Nix files in this repository (including this very README) are ge
 - [`.gitignore`](.gitignore)
 - [`LICENSE`](LICENSE)
 - [`README.md`](README.md)
-- [`build.just`](build.just)
-- [`docs.just`](docs.just)
-- [`eval.just`](eval.just)
-- [`inspect.just`](inspect.just)
-- [`justfile`](justfile)

@@ -8,10 +8,10 @@ Work eval-first. Inspect the relevant module and its callers, make the smallest 
 just add
 just generate
 just fmt --ci
-just eval system
+just eval-system
 ```
 
-Use `just eval <tree> <option>` for a focused value, `just build <tree> <option>` for a relevant build, and `prek` for repository checks. Use `nix flake check --no-build` when validating the complete flake. Read command output for inline `«error: ...»` values; a successful exit status alone is not enough.
+Use `just eval-nixos <option>` and the other `eval-*` recipes for focused values, `just build-nixos <option>` and the other `build-*` recipes for relevant builds, and `prek` for repository checks. Use `nix flake check --no-build` when validating the complete flake. Read command output for inline `«error: ...»` values; a successful exit status alone is not enough.
 
 Run generation before reviewing a diff. Finish with both host evaluations and relevant builds when a change touches system or package configuration.
 
@@ -35,4 +35,4 @@ Preserve infrastructure behavior by default. Before changing boot, disks, persis
 - `hosts` registers hosts and produces NixOS configurations.
 - `users` registers identities and complete Home Manager aspects.
 - Generator sources live under `modules/flake/files/`.
-- Command entrypoints are the generated `justfile`, `just`, `nix`, and `prek`.
+- Command entrypoints are the direct `justfile`, `just`, `nix`, and `prek`.

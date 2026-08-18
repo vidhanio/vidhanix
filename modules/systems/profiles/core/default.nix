@@ -11,6 +11,7 @@
         swap
         boot
         locale
+        automatic-timezoned
         network
         tailscale
         ssh-client

@@ -30,8 +30,6 @@ in
             sh = hashtag;
             envrc = hashtag;
             gitignore = hashtag;
-            just = hashtag;
-            justfile = hashtag;
             toml = hashtag;
             yaml = hashtag;
             license = _: "";
