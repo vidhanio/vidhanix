@@ -1,6 +1,6 @@
 {
   # Local SearXNG instance for the machine's agents (omp search provider).
-  # Reachable from the tailnet at http://vidhan-pc:8080.
+  # Reachable from the tailnet at http://vortex:8080.
   flake.aspects.searxng = {
     nixos =
       { config, ... }:

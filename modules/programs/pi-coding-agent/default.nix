@@ -62,7 +62,7 @@
             # pi-web-access reads its config (searxng endpoint, SSRF ranges)
             # from ~/.pi/web-search.json, next to the agent dir.
             ".pi/web-search.json".text = builtins.toJSON {
-              searxngBaseUrl = "http://vidhan-pc:8080";
+              searxngBaseUrl = "http://vortex:8080";
               ssrf.allowRanges = [ "100.64.0.0/10" ];
             };
           };

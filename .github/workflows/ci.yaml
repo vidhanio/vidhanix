@@ -79,12 +79,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - attr: 
-            nixosConfigurations.vidhan-macbook.config.system.build.toplevel.drvPath
-          name: vidhan-macbook
-        - attr: 
-            nixosConfigurations.vidhan-pc.config.system.build.toplevel.drvPath
-          name: vidhan-pc
+        - attr: nixosConfigurations.vortex.config.system.build.toplevel.drvPath
+          name: vortex
+        - attr: nixosConfigurations.voyager.config.system.build.toplevel.drvPath
+          name: voyager
 name: CI
 'on':
   pull_request: {}

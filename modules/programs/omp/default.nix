@@ -14,7 +14,7 @@
           # the local SearXNG instance (modules/services/searxng/default.nix) as
           # the web search provider, reachable from the tailnet.
           providers.webSearchOrder = [ "searxng" ];
-          searxng.endpoint = "http://vidhan-pc:8080";
+          searxng.endpoint = "http://vortex:8080";
 
           symbolPreset = "nerd";
 

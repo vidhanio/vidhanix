@@ -10,10 +10,10 @@
       { osConfig, ... }:
       {
         persist.directories = [ ".local/share/Steam" ];
-        xdg.autostart.entries = lib.mkIf (osConfig.networking.hostName == "vidhan-pc") [
+        xdg.autostart.entries = lib.mkIf (osConfig.networking.hostName == "vortex") [
           "${osConfig.programs.steam.package}/share/applications/steam.desktop"
         ];
-        hyprland.autostartWorkspaces.steam = lib.mkIf (osConfig.networking.hostName == "vidhan-pc") 3;
+        hyprland.autostartWorkspaces.steam = lib.mkIf (osConfig.networking.hostName == "vortex") 3;
       };
 
     provides.apple-silicon.nixos =

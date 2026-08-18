@@ -3,10 +3,10 @@
   flake.aspects =
     { aspects, ... }:
     {
-      vidhan-macbook = {
+      voyager = {
         includes = [ aspects.apple-silicon ];
         nixos = {
-          networking.hostName = "vidhan-macbook";
+          networking.hostName = "voyager";
           nixpkgs.hostPlatform = "aarch64-linux";
           disko.devices.disk.main = {
             device = "/dev/disk/by-id/nvme-APPLE_SSD_AP0256Q_0ba012e404080419";
@@ -32,12 +32,12 @@
       };
     };
 
-  hosts.vidhan-macbook = {
+  hosts.voyager = {
     users.vidhanio = {
       enable = true;
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKpEHUbyfwBLGJqsrZLO8xDpldmg655DPYLGNOJUJfHM vidhanio@vidhan-macbook";
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKpEHUbyfwBLGJqsrZLO8xDpldmg655DPYLGNOJUJfHM vidhanio@voyager";
     };
-    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrlsMqmLKW+8+MyHndMWNZXk86Oo0Ik8wPs3v1Nx7ZR root@vidhan-macbook";
-    module = inputs.self.modules.nixos.vidhan-macbook;
+    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrlsMqmLKW+8+MyHndMWNZXk86Oo0Ik8wPs3v1Nx7ZR root@voyager";
+    module = inputs.self.modules.nixos.voyager;
   };
 }

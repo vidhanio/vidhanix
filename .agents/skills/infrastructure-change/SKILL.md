@@ -10,7 +10,7 @@ disable-model-invocation: true
 2. Inspect callers, dependencies, secrets, and host selection before editing.
 3. If the requested behavior is explicit, record the relevant before-and-after options; otherwise stop and obtain approval.
 4. Run focused evaluations for every affected host and option.
-5. Evaluate both toplevel derivations with `nix eval --raw .#nixosConfigurations.vidhan-pc.config.system.build.toplevel.drvPath` and the equivalent `vidhan-macbook` command.
+5. Evaluate both toplevel derivations with `nix eval --raw .#nixosConfigurations.vortex.config.system.build.toplevel.drvPath` and the equivalent `voyager` command.
 6. Run affected builds; if the current platform cannot build one, record the limitation and run `nix flake check --no-build`.
 7. If an option is missing, errors, or changes outside the request, restore the narrow scope; otherwise run `prek` and `git diff --check`.
 

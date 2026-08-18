@@ -3,7 +3,7 @@
   flake.aspects =
     { aspects, ... }:
     {
-      vidhan-pc = {
+      vortex = {
         includes = [
           aspects.desktop
           aspects.disk.provides.desktop
@@ -12,7 +12,7 @@
           aspects.tailscale.provides.exit-node
         ];
         nixos = {
-          networking.hostName = "vidhan-pc";
+          networking.hostName = "vortex";
           nixpkgs.hostPlatform = "x86_64-linux";
           disko.devices.disk.main.device = "/dev/disk/by-id/nvme-SHPP41-2000GM_ASDAN54031240AV5V";
           hardware.monitors = {
@@ -53,12 +53,12 @@
       };
     };
 
-  hosts.vidhan-pc = {
+  hosts.vortex = {
     users.vidhanio = {
       enable = true;
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxMGko3NUtTtMB7pfDE1VYnTy1OR1fsLaGpVp9FaKtv vidhanio@vidhan-pc";
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxMGko3NUtTtMB7pfDE1VYnTy1OR1fsLaGpVp9FaKtv vidhanio@vortex";
     };
-    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICfS/WsqGHJYgJFWe+bf1SSKjyvFP0pISi30W/cvar/D root@vidhan-pc";
-    module = inputs.self.modules.nixos.vidhan-pc;
+    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICfS/WsqGHJYgJFWe+bf1SSKjyvFP0pISi30W/cvar/D root@vortex";
+    module = inputs.self.modules.nixos.vortex;
   };
 }

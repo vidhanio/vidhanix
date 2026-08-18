@@ -9,7 +9,7 @@
     homeManager =
       { osConfig, ... }:
       {
-        programs.ghostty.settings.custom-shader = lib.mkIf (osConfig.networking.hostName == "vidhan-pc") [
+        programs.ghostty.settings.custom-shader = lib.mkIf (osConfig.networking.hostName == "vortex") [
           "${inputs.ghostty-shader-playground}/public/shaders/cursor_smear.glsl"
         ];
       };
