@@ -33,7 +33,7 @@
             header = [
               "Package"
               "Description"
-              "Has Update Script"
+              "Updatable"
             ];
             alignments = [
               "l"
