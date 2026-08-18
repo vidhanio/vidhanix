@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.aspects."1password" = {
+  flake.aspects._1password = {
     nixos = {
       environment.etc = {
         "1password/custom_allowed_browsers" = {

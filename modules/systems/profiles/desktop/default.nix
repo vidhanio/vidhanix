@@ -20,7 +20,7 @@
         logind
         udisks
         upower
-        aspects."1password"
+        aspects._1password
         helium
         nixcord
         nixvim

@@ -1,5 +1,5 @@
 {
-  flake.aspects."1password" = {
+  flake.aspects._1password = {
     nixos = {
       programs._1password-gui.enable = true;
     };
