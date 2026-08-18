@@ -29,7 +29,7 @@
           this flake has a couple packages, mostly used internally, but available via `.#<package>`.
           some of these packages provide a `passthru.updateScript`, all of which can be run via `just update-packages`.
 
-          ${config.files.readme.lib.renderTable {
+          ${config.files.lib.readme.renderTable {
             header = [
               "package"
               "description"

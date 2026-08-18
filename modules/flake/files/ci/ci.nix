@@ -3,7 +3,7 @@
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
-      inherit (config.workflowCommon)
+      inherit (config.files.lib.github)
         ghExpr
         hosts
         just
@@ -12,7 +12,7 @@
         ;
     in
     {
-      config.files.workflows.ci = {
+      config.files.github.workflows.ci = {
         name = "ci";
 
         on = {

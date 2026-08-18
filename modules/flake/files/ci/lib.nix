@@ -9,6 +9,48 @@ let
   # expression syntax from parts.
   ghExpr = name: "$" + "{{ ${name} }}";
 
+  setupNixAction = {
+    name = "setup nix";
+    description = "install nix and prepare the runner for a nix job";
+    inputs.ssh-private-key = {
+      description = "ssh key for private flake inputs";
+      required = true;
+    };
+    runs = {
+      using = "composite";
+      steps = [
+        {
+          name = "setup ssh-agent";
+          uses = "webfactory/ssh-agent@v0.9.0";
+          "with" = {
+            ssh-private-key = ghExpr "inputs.ssh-private-key";
+          };
+        }
+        {
+          name = "free disk space";
+          uses = "wimpysworld/nothing-but-nix@v9";
+          "with".hatchet-protocol = "carve";
+        }
+        {
+          name = "install nix";
+          uses = "cachix/install-nix-action@v31";
+          "with" = {
+            nix_path = "path: nixpkgs=channel:nixos-unstable";
+            extra_nix_config = "build-dir = /nix/build";
+          };
+        }
+        {
+          name = "restore nix store";
+          uses = "nix-community/cache-nix-action@v7";
+          "with" = {
+            primary-key = "nix-${ghExpr "runner.os"}-${ghExpr "hashFiles('**/flake.lock')"}";
+            restore-prefixes-first-match = "nix-${ghExpr "runner.os"}-";
+          };
+        }
+      ];
+    };
+  };
+
   # hosts come from the built configurations, so the eval matrix stays in
   # sync with `configurations.<hostname>`. evaluation runs on any platform;
   # only builds need a matching runner. the full drvPath attr keeps the run
@@ -79,13 +121,7 @@ in
       );
     in
     {
-      options.workflowCommon = lib.mkOption {
-        type = lib.types.attrsOf lib.types.anything;
-        readOnly = true;
-        internal = true;
-      };
-
-      config.workflowCommon = {
+      config.files.lib.github = {
         inherit
           checkout
           checkoutHead
@@ -96,6 +132,7 @@ in
           hosts
           just
           setupNix
+          setupNixAction
           updatablePackages
           ;
       };

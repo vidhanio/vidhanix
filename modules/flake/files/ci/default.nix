@@ -1,56 +1,9 @@
 { flake-parts-lib, lib, ... }:
-let
-  # `${{ ... }}` would parse as a nix interpolation, so build github
-  # expression syntax from parts.
-  ghExpr = name: "$" + "{{ ${name} }}";
-
-  setupNixAction = {
-    name = "setup nix";
-    description = "install nix and prepare the runner for a nix job";
-    inputs.ssh-private-key = {
-      description = "ssh key for private flake inputs";
-      required = true;
-    };
-    runs = {
-      using = "composite";
-      steps = [
-        {
-          name = "setup ssh-agent";
-          uses = "webfactory/ssh-agent@v0.9.0";
-          "with" = {
-            ssh-private-key = ghExpr "inputs.ssh-private-key";
-          };
-        }
-        {
-          name = "free disk space";
-          uses = "wimpysworld/nothing-but-nix@v9";
-          "with".hatchet-protocol = "carve";
-        }
-        {
-          name = "install nix";
-          uses = "cachix/install-nix-action@v31";
-          "with" = {
-            nix_path = "path: nixpkgs=channel:nixos-unstable";
-            extra_nix_config = "build-dir = /nix/build";
-          };
-        }
-        {
-          name = "restore nix store";
-          uses = "nix-community/cache-nix-action@v7";
-          "with" = {
-            primary-key = "nix-${ghExpr "runner.os"}-${ghExpr "hashFiles('**/flake.lock')"}";
-            restore-prefixes-first-match = "nix-${ghExpr "runner.os"}-";
-          };
-        }
-      ];
-    };
-  };
-in
 {
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, pkgs, ... }:
     {
-      options.files = {
+      options.files.github = {
         workflows = lib.mkOption {
           type = lib.types.attrsOf lib.types.anything;
           default = { };
@@ -71,7 +24,7 @@ in
           ".github/actions/*"
         ];
 
-        files.actions.setup-nix = setupNixAction;
+        files.github.actions.setup-nix = config.files.lib.github.setupNixAction;
 
         files.commentedFile =
           lib.mapAttrs' (
@@ -80,14 +33,14 @@ in
               fileType = "yaml";
               source = pkgs.writers.writeYAML "${name}.yaml" workflow;
             }
-          ) config.files.workflows
+          ) config.files.github.workflows
           // lib.mapAttrs' (
             name: action:
             lib.nameValuePair ".github/actions/${name}/action.yaml" {
               fileType = "yaml";
               source = pkgs.writers.writeYAML "github-action-${name}.yaml" action;
             }
-          ) config.files.actions;
+          ) config.files.github.actions;
       };
     }
   );

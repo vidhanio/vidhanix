@@ -49,7 +49,7 @@
         most of the non-nix files in this repository (including this very readme) are generated via [`just generate`](justfile).
         the generated files are:
 
-        ${config.files.readme.lib.renderList (
+        ${config.files.lib.readme.renderList (
           map (p: "[`${p}`](${p})") (lib.sortOn (p: p) (lib.mapAttrsToList (path: _: path) config.files.file))
         )}
       '';

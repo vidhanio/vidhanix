@@ -3,7 +3,7 @@
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
-      inherit (config.workflowCommon)
+      inherit (config.files.lib.github)
         ghExpr
         just
         setupNix
@@ -14,7 +14,7 @@
         ;
     in
     {
-      config.files.workflows.sync-dependabot = {
+      config.files.github.workflows.sync-dependabot = {
         name = "sync dependabot";
 
         on.pull_request_target = {

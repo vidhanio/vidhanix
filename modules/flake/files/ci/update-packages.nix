@@ -3,7 +3,7 @@
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
-      inherit (config.workflowCommon)
+      inherit (config.files.lib.github)
         ghExpr
         updatablePackages
         checkout
@@ -12,7 +12,7 @@
         ;
     in
     {
-      config.files.workflows.update-packages = {
+      config.files.github.workflows.update-packages = {
         name = "update packages";
 
         on = {
