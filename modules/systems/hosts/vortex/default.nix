@@ -12,8 +12,7 @@
           aspects.tailscale.provides.exit-node
         ];
         nixos = {
-          networking.hostName = "vortex";
-          nixpkgs.hostPlatform = "x86_64-linux";
+
           disko.devices.disk.main.device = "/dev/disk/by-id/nvme-SHPP41-2000GM_ASDAN54031240AV5V";
           hardware.monitors = {
             main = {
@@ -46,7 +45,6 @@
             ];
           };
           hardware.facter.reportPath = ./facter.json;
-          system.stateVersion = "26.05";
           boot.loader.systemd-boot.windows."11".efiDeviceHandle = "HD0d";
           environment.shellAliases.reboot-windows = "systemctl reboot --boot-loader-entry windows_11.conf";
         };
@@ -54,6 +52,7 @@
     };
 
   hosts.vortex = {
+    hostPlatform = "x86_64-linux";
     users.vidhanio = {
       enable = true;
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxMGko3NUtTtMB7pfDE1VYnTy1OR1fsLaGpVp9FaKtv vidhanio@vortex";

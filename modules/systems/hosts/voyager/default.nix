@@ -6,8 +6,7 @@
       voyager = {
         includes = [ aspects.apple-silicon ];
         nixos = {
-          networking.hostName = "voyager";
-          nixpkgs.hostPlatform = "aarch64-linux";
+
           disko.devices.disk.main = {
             device = "/dev/disk/by-id/nvme-APPLE_SSD_AP0256Q_0ba012e404080419";
             content.partitions = {
@@ -27,12 +26,12 @@
             scale = 1.6;
           };
           hardware.asahi.peripheralFirmwareDirectory = ./firmware;
-          system.stateVersion = "26.05";
         };
       };
     };
 
   hosts.voyager = {
+    hostPlatform = "aarch64-linux";
     users.vidhanio = {
       enable = true;
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKpEHUbyfwBLGJqsrZLO8xDpldmg655DPYLGNOJUJfHM vidhanio@voyager";

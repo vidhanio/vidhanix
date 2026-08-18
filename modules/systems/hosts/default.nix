@@ -27,6 +27,10 @@ in
               type = lib.types.str;
               description = "The public SSH key for this system, which will be added to the authorized keys of all users.";
             };
+            hostPlatform = lib.mkOption {
+              type = lib.types.str;
+              description = "The platform for this host.";
+            };
             module = lib.mkOption {
               type = lib.types.deferredModule;
               default = { };
@@ -38,6 +42,7 @@ in
             let
               activeUsers = lib.filterAttrs (username: _: config.users.${username}.enable) usersCfg;
               rootPublicKeys = lib.mapAttrsToList (_: c: c.publicKey) cfg;
+              inherit (config) hostPlatform;
             in
             { config, ... }:
             {
@@ -49,6 +54,7 @@ in
 
               config = {
                 networking.hostName = name;
+                nixpkgs.hostPlatform = hostPlatform;
 
                 sops.secrets = lib.mapAttrs' (
                   username: _: lib.nameValuePair "passwords/${username}" { neededForUsers = true; }
