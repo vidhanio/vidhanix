@@ -7,5 +7,4 @@ result.*
 __pycache__
 
 .pre-commit-config.yaml
-.crush
 Session.vim

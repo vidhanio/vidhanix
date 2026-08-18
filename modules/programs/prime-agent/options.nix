@@ -30,6 +30,35 @@
             '';
           };
 
+        normalizeDirectory =
+          name: option: source:
+          if lib.isPath source then
+            source
+          else
+            pkgs.runCommandLocal name { } ''
+              source=${lib.escapeShellArg (toString source)}
+              if [[ ! -d "$source" ]]; then
+                echo ${lib.escapeShellArg "programs.prime-agent.${option} must be a directory"} >&2
+                exit 1
+              fi
+              ln -s "$source" "$out"
+            '';
+
+        normalizeSkill =
+          source:
+          pkgs.runCommandLocal "prime-agent-skill" { } ''
+            source=${lib.escapeShellArg (toString source)}
+            if [[ -d "$source" ]]; then
+              ln -s "$source" "$out"
+            elif [[ -f "$source" ]]; then
+              mkdir "$out"
+              ln -s "$source" "$out/SKILL.md"
+            else
+              echo "Prime Agent skill source must be a file or directory: $source" >&2
+              exit 1
+            fi
+          '';
+
         resourceFiles =
           dir: suffix: resources:
           let
@@ -37,15 +66,20 @@
           in
           (lib.optionalAttrs (lib.hm.strings.isPathLike resources) {
             ".prime/agent/${dir}" = {
-              source = resources;
+              source = normalizeDirectory "prime-agent-${dir}" dir resources;
               recursive = true;
             };
           })
           // lib.mapAttrs' (
             name: content:
-            if lib.hm.strings.isPathLike content && lib.pathIsDirectory content then
+            if lib.isPath content && lib.pathIsDirectory content then
               lib.nameValuePair ".prime/agent/${dir}/${name}" {
                 source = content;
+                recursive = true;
+              }
+            else if dir == "skills" && lib.hm.strings.isPathLike content && !lib.isPath content then
+              lib.nameValuePair ".prime/agent/${dir}/${name}" {
+                source = normalizeSkill content;
                 recursive = true;
               }
             else
@@ -57,7 +91,7 @@
         resourceAssertion =
           { dir, resources }:
           {
-            assertion = !lib.hm.strings.isPathLike resources || lib.pathIsDirectory resources;
+            assertion = !lib.isPath resources || lib.pathIsDirectory resources;
             message = "`programs.prime-agent.${dir}` must be a directory when set to a path";
           };
 

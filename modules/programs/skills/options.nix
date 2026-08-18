@@ -4,6 +4,7 @@
       {
         config,
         lib,
+        pkgs,
         ...
       }:
       let
@@ -11,17 +12,37 @@
 
         defaultSkillsDir = "${config.home.homeDirectory}/.agents/skills";
 
+        normalizeSkill =
+          name: source:
+          pkgs.runCommandLocal "agent-skill-${lib.strings.sanitizeDerivationName name}" { } ''
+            source=${lib.escapeShellArg "${source}"}
+            if [[ -d "$source" ]]; then
+              ln -s "$source" "$out"
+            elif [[ -f "$source" ]]; then
+              mkdir "$out"
+              ln -s "$source" "$out/SKILL.md"
+            else
+              echo "Agent skill source must be a file or directory: $source" >&2
+              exit 1
+            fi
+          '';
+
         mkSkillEntry =
           name: content:
-          if lib.hm.strings.isPathLike content && lib.pathIsDirectory content then
+          if lib.isPath content && lib.pathIsDirectory content then
             lib.nameValuePair "${cfg.configDir}/${name}" {
               source = content;
               recursive = true;
             }
+          else if lib.isPath content then
+            lib.nameValuePair "${cfg.configDir}/${name}/SKILL.md" { source = content; }
+          else if lib.hm.strings.isPathLike content then
+            lib.nameValuePair "${cfg.configDir}/${name}" {
+              source = normalizeSkill name content;
+              recursive = true;
+            }
           else
-            lib.nameValuePair "${cfg.configDir}/${name}/SKILL.md" (
-              if lib.hm.strings.isPathLike content then { source = content; } else { text = content; }
-            );
+            lib.nameValuePair "${cfg.configDir}/${name}/SKILL.md" { text = content; };
       in
       {
         options.programs.agents.skills = {
