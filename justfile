@@ -31,7 +31,7 @@ user := `whoami`
 # Activate the configuration at the next boot, passing extra flags to `nh os`
 @boot *flags: (os "boot" flags)
 
-# Activate the configuration without making it the boot default, passing extra flags to `nh os`
+# Test the configuration, passing extra flags to `nh os`
 @test *flags: (os "test" flags)
 
 # Format the tree with treefmt, e.g. `just fmt --ci`
@@ -63,11 +63,11 @@ update: generate
 @eval-per-system option *flags: add
     nix eval {{ flags }} {{ perSystemConfig }}.{{ option }}
 
-# Evaluate the whole configuration, and build nothing
+# Evaluate the whole configuration
 @eval-system: fmt
     nix eval --raw {{ systemPackage }}.drvPath
 
-# Build a flake path (or a Nix build expression) and print its output store paths, without linking `result`
+# Build a flake path (or a Nix build expression) and print its output store paths
 @build-flake *args: add
     if [ -t 1 ]; then nom build --no-link --print-out-paths {{ args }}; else nix build --no-link --print-out-paths {{ args }}; fi
 
