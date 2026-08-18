@@ -26,6 +26,11 @@ in
               type = lib.types.listOf lib.types.str;
               description = "A list of SSH public keys for the user.";
             };
+            extraGroups = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = "Additional groups for the user.";
+            };
             face = lib.mkOption {
               type = lib.types.nullOr lib.types.path;
               default = null;

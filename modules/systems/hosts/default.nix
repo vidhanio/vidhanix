@@ -70,10 +70,7 @@ in
                   isNormalUser = true;
                   description = user.fullName;
                   hashedPasswordFile = config.sops.secrets."passwords/${username}".path;
-                  extraGroups = [
-                    "networkmanager"
-                    "wheel"
-                  ];
+                  inherit (user) extraGroups;
                   useDefaultShell = true;
                 }) activeUsers;
               };
