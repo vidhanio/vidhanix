@@ -1,4 +1,4 @@
-_: {
+{
   perSystem.files.gitignore = ".crush";
 
   flake.aspects.crush.homeManager =

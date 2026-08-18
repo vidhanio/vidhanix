@@ -8,7 +8,7 @@
     flake = false;
   };
 
-  flake.aspects.skills.homeManager = _: {
+  flake.aspects.skills.homeManager = {
     programs.agents.skills = {
       enable = true;
 

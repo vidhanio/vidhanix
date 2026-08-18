@@ -39,9 +39,8 @@
         theme = "dark:nobg";
       };
     };
-  };
-
-  flake.aspects.tailscale.provides.exit-node.nixos = {
-    services.tailscale.extraSetFlags = [ "--advertise-exit-node" ];
+    provides.exit-node.nixos = {
+      services.tailscale.extraSetFlags = [ "--advertise-exit-node" ];
+    };
   };
 }

@@ -1,6 +1,6 @@
 { flake-parts-lib, ... }:
 {
-  options.perSystem = flake-parts-lib.mkPerSystemOption (_: {
+  options.perSystem = flake-parts-lib.mkPerSystemOption {
     config.files.workflows.watch-github-refs = {
       name = "watch github refs";
 
@@ -31,5 +31,5 @@
         ];
       };
     };
-  });
+  };
 }

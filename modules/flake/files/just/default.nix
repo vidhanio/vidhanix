@@ -1,6 +1,5 @@
 {
   perSystem =
-    _:
     let
       vars = {
         host = "`hostname`";
