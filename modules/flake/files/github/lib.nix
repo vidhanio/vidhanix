@@ -10,29 +10,29 @@ let
   ghExpr = name: "$" + "{{ ${name} }}";
 
   setupNixAction = {
-    name = "setup nix";
-    description = "install nix and prepare the runner for a nix job";
+    name = "Set up Nix";
+    description = "Install Nix and prepare the runner for a Nix job";
     inputs.ssh-private-key = {
-      description = "ssh key for private flake inputs";
+      description = "SSH key for private flake inputs";
       required = true;
     };
     runs = {
       using = "composite";
       steps = [
         {
-          name = "setup ssh-agent";
+          name = "Set up SSH agent";
           uses = "webfactory/ssh-agent@v0.9.0";
           "with" = {
             ssh-private-key = ghExpr "inputs.ssh-private-key";
           };
         }
         {
-          name = "free disk space";
+          name = "Free disk space";
           uses = "wimpysworld/nothing-but-nix@v9";
           "with".hatchet-protocol = "carve";
         }
         {
-          name = "install nix";
+          name = "Install Nix";
           uses = "cachix/install-nix-action@v31";
           "with" = {
             nix_path = "path: nixpkgs=channel:nixos-unstable";
@@ -40,7 +40,7 @@ let
           };
         }
         {
-          name = "restore nix store";
+          name = "Restore Nix store";
           uses = "nix-community/cache-nix-action@v7";
           "with" = {
             primary-key = "nix-${ghExpr "runner.os"}-${ghExpr "hashFiles('**/flake.lock')"}";
@@ -61,13 +61,13 @@ let
   }) config.flake.nixosConfigurations;
 
   checkout = {
-    name = "checkout";
+    name = "Checkout";
     uses = "actions/checkout@v5";
   };
 
   # the composite action keeps the runner setup identical across workflows.
   setupNix = {
-    name = "setup nix";
+    name = "Set up Nix";
     uses = "./.github/actions/setup-nix";
     "with".ssh-private-key = ghExpr "secrets.FONTS_SSH_KEY";
   };
@@ -79,14 +79,14 @@ let
   # dependabot PRs carry structured metadata about their update; workflows
   # dispatch on its ecosystem output instead of parsing branch names.
   fetchMetadata = {
-    name = "fetch dependabot metadata";
+    name = "Fetch Dependabot metadata";
     id = "metadata";
     uses = "dependabot/fetch-metadata@v3";
   };
 
   # commits the worktree back onto the PR branch; a clean tree makes it a no-op.
   commitToPrBranch = commitMessage: {
-    name = "commit";
+    name = "Commit";
     uses = "planetscale/ghcommit-action@v0.2.22";
     "with" = {
       commit_message = commitMessage;
@@ -97,7 +97,7 @@ let
   };
 
   createAppToken = {
-    name = "create github app token";
+    name = "Create GitHub App token";
     id = "app-token";
     uses = "actions/create-github-app-token@v3";
     "with" = {

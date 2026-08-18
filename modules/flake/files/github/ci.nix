@@ -13,7 +13,7 @@
     in
     {
       config.files.github.workflows.ci = {
-        name = "ci";
+        name = "CI";
 
         on = {
           push = { };
@@ -33,37 +33,37 @@
 
         jobs = {
           check-formatting = {
-            name = "check formatting";
+            name = "Check formatting";
             runs-on = "ubuntu-latest";
             steps = [
               checkout
               setupNix
               {
-                name = "check formatting";
+                name = "Check formatting";
                 run = "${just} fmt --ci";
               }
             ];
           };
 
           check-generated-files = {
-            name = "check generated files";
+            name = "Check generated files";
             runs-on = "ubuntu-latest";
             steps = [
               checkout
               setupNix
               {
-                name = "generate files";
+                name = "Generate files";
                 run = "${just} generate";
               }
               {
-                name = "check diff";
+                name = "Check diff";
                 run = "git diff --exit-code";
               }
             ];
           };
 
           eval-systems = {
-            name = "eval system: ${ghExpr "matrix.name"}";
+            name = "Evaluate system: ${ghExpr "matrix.name"}";
             runs-on = "ubuntu-latest";
             strategy = {
               matrix.include = hosts;
@@ -73,7 +73,7 @@
               checkout
               setupNix
               {
-                name = "eval system";
+                name = "Evaluate system";
                 # forcing the toplevel drvPath evaluates the whole system
                 # config without building anything.
                 run = "nix eval .#${ghExpr "matrix.attr"} --raw";
@@ -82,7 +82,7 @@
           };
 
           build-packages = {
-            name = "build package: ${ghExpr "matrix.pkg"}";
+            name = "Build package: ${ghExpr "matrix.pkg"}";
             runs-on = "ubuntu-latest";
             strategy = {
               matrix.pkg = builtins.attrNames config.packages;
@@ -92,7 +92,7 @@
               checkout
               setupNix
               {
-                name = "build package";
+                name = "Build package";
                 run = "nix build .#${ghExpr "matrix.pkg"} --print-build-logs";
               }
             ];

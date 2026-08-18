@@ -2,16 +2,16 @@
 
 # ❄️ vidhanix
 
-## introduction
+## Introduction
 
-a [dendritic](https://github.com/mightyiam/dendritic) nix flake for my stuff.
+A [Dendritic](https://github.com/mightyiam/dendritic) Nix flake for my stuff.
 
-## packages
+## Packages
 
-this flake has a couple packages, mostly used internally, but available via `.#<package>`.
-some of these packages provide a `passthru.updateScript`, all of which can be run via `just update-packages`.
+This flake has a couple of packages, mostly used internally, but available via `.#<package>`.
+Some of these packages provide a `passthru.updateScript`, all of which can be run via `just update-packages`.
 
-| package                                                                                   | description                                                                                                                        | has update script |
+| Package                                                                                   | Description                                                                                                                        | Has Update Script |
 | :---------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :---------------: |
 | [`berkeley-mono`](modules/systems/gui/fonts/vidhan-fonts.nix)                             | A love letter to the golden era of computing                                                                                       |                   |
 | [`berkeley-mono-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)                    | A love letter to the golden era of computing                                                                                       |                   |
@@ -27,10 +27,10 @@ some of these packages provide a `passthru.updateScript`, all of which can be ru
 | [`pragmata-pro-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)                     | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |                   |
 | [`update-packages`](modules/flake/packages/update-packages/default.nix)                   | Update all packages in this flake that have an update script                                                                       |                   |
 
-## generated files
+## Generated Files
 
-most of the non-nix files in this repository (including this very readme) are generated via [`just generate`](justfile).
-the generated files are:
+Most of the non-Nix files in this repository (including this very README) are generated via [`just generate`](justfile).
+The generated files are:
 
 - [`.envrc`](.envrc)
 - [`.github/actions/setup-nix/action.yaml`](.github/actions/setup-nix/action.yaml)

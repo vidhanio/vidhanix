@@ -27,7 +27,7 @@ let
       if subOptions ? ${name} then
         { ${name} = select subOptions.${name} rest; }
       else
-        throw "no option named '${option}' in the options tree";
+        throw "No option named '${option}' in the options tree";
 in
 (pkgs.nixosOptionsDoc {
   options = select optionsTree (lib.splitString "." option);

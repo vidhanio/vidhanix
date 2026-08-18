@@ -28,7 +28,7 @@ while IFS= read -r ref; do
   fi
 
   gh issue create --repo "$repo" \
-    --title "upstream $path#$num closed" \
+    --title "Upstream $path#$num closed" \
     --body "Upstream $ref has been closed. It is referenced in this repo (usually above an ad-hoc patch waiting on the upstream fix); find the references and remove any patches that are no longer needed:
 
 \`\`\`

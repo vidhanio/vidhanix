@@ -12,13 +12,13 @@
       };
 
       add = {
-        doc = "record the intent to add each new file, so that the flake sees it";
+        doc = "Record the intent to add each new file, so that the flake sees it";
         silent = true;
         body = "git add -AN";
       };
 
       fmt = {
-        doc = "format the tree with treefmt, e.g. `just fmt --ci`";
+        doc = "Format the tree with treefmt, e.g. `just fmt --ci`";
         silent = true;
         args = [ "*flags" ];
         dependencies = [ "add" ];
@@ -92,19 +92,19 @@
 
         recipes = {
           default = {
-            doc = "list the available recipes in all justfiles";
+            doc = "List the available recipes in all justfiles";
             silent = true;
             body = "just --list --list-submodules";
           };
           inherit add;
           generate = {
-            doc = "regenerate the generated files";
+            doc = "Regenerate the generated files";
             silent = true;
             dependencies = [ "add" ];
             body = "nix run .#generate-files";
           };
           os = {
-            doc = "regenerate the files, then run `nh os` with the given action and flags";
+            doc = "Regenerate the files, then run `nh os` with the given action and flags";
             silent = true;
             args = [
               ''action="switch"''
@@ -116,33 +116,33 @@
             body = "if [ -t 1 ]; then nh os {{ action }} {{ flags }}; else nh os {{ action }} --no-nom {{ flags }}; fi";
           };
           switch = {
-            doc = "activate the configuration now, passing extra flags to `nh os`";
+            doc = "Activate the configuration now, passing extra flags to `nh os`";
             silent = true;
             args = [ "*flags" ];
             dependencies = [ ''(os "switch" flags)'' ];
           };
           boot = {
-            doc = "activate the configuration at the next boot, passing extra flags to `nh os`";
+            doc = "Activate the configuration at the next boot, passing extra flags to `nh os`";
             silent = true;
             args = [ "*flags" ];
             dependencies = [ ''(os "boot" flags)'' ];
           };
           test = {
-            doc = "activate the configuration without making it the boot default, passing extra flags to `nh os`";
+            doc = "Activate the configuration without making it the boot default, passing extra flags to `nh os`";
             silent = true;
             args = [ "*flags" ];
             dependencies = [ ''(os "test" flags)'' ];
           };
           inherit fmt;
           update-packages = {
-            doc = "run the update script of each package that has one";
+            doc = "Run the update script of each package that has one";
             silent = true;
             args = [ "*packages" ];
             dependencies = [ "generate" ];
             body = "nix run .#update-packages -- {{ packages }}";
           };
           update = {
-            doc = "update the flake inputs, then update each package";
+            doc = "Update the flake inputs, then update each package";
             dependencies = [ "generate" ];
             body = ''
               nix flake update
@@ -166,12 +166,12 @@
             recipes = {
               add = mkPrivate add;
               fmt = mkPrivate fmt;
-              nixos = mkEvalTree "evaluate a path under the current host's nixos config, e.g. `just eval nixos services.tailscale`" "{{ nixosConfig }}";
-              hm = mkEvalTree "evaluate a home manager option, e.g. `just eval hm programs.git`" "{{ hmConfig }}";
-              flake = mkEvalTree "evaluate a flake option's value, e.g. `just eval flake files.generatedMessage.text`" ".#debug.config";
-              perSystem = mkEvalTree "evaluate a per-system option's value, e.g. `just eval perSystem files.readme.rendered`" "{{ perSystemConfig }}";
+              nixos = mkEvalTree "Evaluate a path under the current host's NixOS config, e.g. `just eval nixos services.tailscale`" "{{ nixosConfig }}";
+              hm = mkEvalTree "Evaluate a Home Manager option, e.g. `just eval hm programs.git`" "{{ hmConfig }}";
+              flake = mkEvalTree "Evaluate a flake option's value, e.g. `just eval flake files.generatedMessage.text`" ".#debug.config";
+              perSystem = mkEvalTree "Evaluate a per-system option's value, e.g. `just eval perSystem files.readme.rendered`" "{{ perSystemConfig }}";
               system = {
-                doc = "evaluate the whole configuration, and build nothing";
+                doc = "Evaluate the whole configuration, and build nothing";
                 silent = true;
                 dependencies = [ "fmt" ];
                 body = "nix eval --raw {{ systemPackage }}.drvPath";
@@ -192,17 +192,17 @@
             recipes = {
               add = mkPrivate add;
               flake = {
-                doc = "build a flake path (or a nix build expression) and print its output store paths, without linking `result`";
+                doc = "Build a flake path (or a Nix build expression) and print its output store paths, without linking `result`";
                 silent = true;
                 args = [ "*args" ];
                 dependencies = [ "add" ];
                 body = "if [ -t 1 ]; then nom build --no-link --print-out-paths {{ args }}; else nix build --no-link --print-out-paths {{ args }}; fi";
               };
-              nixos = mkBuildTree "build a nixos config path, e.g. `just build nixos system.build.toplevel`" "(nixosConfig + \".\" + option)";
-              hm = mkBuildTree "build a home manager config path, e.g. `just build hm home.path`" "(hmConfig + \".\" + option)";
-              perSystem = mkBuildTree "build a per-system config path, e.g. `just build perSystem packages.generate-files`" "(perSystemConfig + \".\" + option)";
+              nixos = mkBuildTree "Build a NixOS config path, e.g. `just build nixos system.build.toplevel`" "(nixosConfig + \".\" + option)";
+              hm = mkBuildTree "Build a Home Manager config path, e.g. `just build hm home.path`" "(hmConfig + \".\" + option)";
+              perSystem = mkBuildTree "Build a per-system config path, e.g. `just build perSystem packages.generate-files`" "(perSystemConfig + \".\" + option)";
               system = {
-                doc = "build the whole configuration";
+                doc = "Build the whole configuration";
                 silent = true;
                 dependencies = [ "(flake systemPackage)" ];
               };
@@ -221,7 +221,7 @@
             recipes = {
               add = mkPrivate add;
               flake = {
-                doc = "build a flake path and run a command in its output directory, e.g. `just inspect flake .#muvm-steam ls -la`";
+                doc = "Build a flake path and run a command in its output directory, e.g. `just inspect flake .#muvm-steam ls -la`";
                 silent = true;
                 args = [
                   "package"
@@ -231,9 +231,9 @@
                 dependencies = [ "add" ];
                 body = "if [ -t 1 ]; then nom build --no-link --print-out-paths {{ package }} | while read -r out; do (cd \"$out\" && {{ cmd }} {{ args }}); done; else nix build --no-link --print-out-paths {{ package }} | while read -r out; do (cd \"$out\" && {{ cmd }} {{ args }}); done; fi";
               };
-              nixos = mkInspectTree "build a nixos config path and run a command in its output directory, e.g. `just inspect nixos system.build.toplevel ls`" "(nixosConfig + \".\" + option)";
-              hm = mkInspectTree "build a home manager config path and run a command in its output directory, e.g. `just inspect hm home.path ls`" "(hmConfig + \".\" + option)";
-              perSystem = mkInspectTree "build a per-system config path and run a command in its output directory, e.g. `just inspect perSystem packages.generate-files ls`" "(perSystemConfig + \".\" + option)";
+              nixos = mkInspectTree "Build a NixOS config path and run a command in its output directory, e.g. `just inspect nixos system.build.toplevel ls`" "(nixosConfig + \".\" + option)";
+              hm = mkInspectTree "Build a Home Manager config path and run a command in its output directory, e.g. `just inspect hm home.path ls`" "(hmConfig + \".\" + option)";
+              perSystem = mkInspectTree "Build a per-system config path and run a command in its output directory, e.g. `just inspect perSystem packages.generate-files ls`" "(perSystemConfig + \".\" + option)";
             };
           };
 
@@ -248,10 +248,10 @@
             ];
             recipes = {
               add = mkPrivate add;
-              flake = mkDocsTree "render a flake option's markdown docs, e.g. `just docs flake perSystem.files.readme`" "(flake: flake.debug.options)";
-              perSystem = mkDocsTree "render a per-system option's markdown docs, e.g. `just docs perSystem files.commentedFile`" ''(flake: flake.allSystems."{{ system }}".options)'';
-              nixos = mkDocsTree "render a nixos option's markdown docs, e.g. `just docs nixos services.tailscale`" ''(flake: flake.nixosConfigurations."{{ host }}".options)'';
-              hm = mkDocsTree "render a home-manager option's markdown docs, e.g. `just docs hm programs.git`" ''(flake: flake.nixosConfigurations."{{ host }}".options.home-manager.users.type.getSubOptions ["home-manager" "users"])'';
+              flake = mkDocsTree "Render a flake option's Markdown docs, e.g. `just docs flake perSystem.files.readme`" "(flake: flake.debug.options)";
+              perSystem = mkDocsTree "Render a per-system option's Markdown docs, e.g. `just docs perSystem files.commentedFile`" ''(flake: flake.allSystems."{{ system }}".options)'';
+              nixos = mkDocsTree "Render a NixOS option's Markdown docs, e.g. `just docs nixos services.tailscale`" ''(flake: flake.nixosConfigurations."{{ host }}".options)'';
+              hm = mkDocsTree "Render a Home Manager option's Markdown docs, e.g. `just docs hm programs.git`" ''(flake: flake.nixosConfigurations."{{ host }}".options.home-manager.users.type.getSubOptions ["home-manager" "users"])'';
             };
           };
         };

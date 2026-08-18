@@ -6,27 +6,27 @@ concurrency:
   group: update-packages
 jobs:
   update:
-    name: 'update package: ${{ matrix.pkg }}'
+    name: 'Update package: ${{ matrix.pkg }}'
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
+    - name: Checkout
       uses: actions/checkout@v5
-    - name: setup nix
+    - name: Set up Nix
       uses: ./.github/actions/setup-nix
       with:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
     - env:
         PACKAGE: ${{ matrix.pkg }}
       id: update
-      name: update package
+      name: Update package
       run: bash .github/scripts/update-package.sh "$PACKAGE"
     - id: app-token
-      name: create github app token
+      name: Create GitHub App token
       uses: actions/create-github-app-token@v3
       with:
         client-id: ${{ vars.APP_CLIENT_ID }}
         private-key: ${{ secrets.APP_PRIVATE_KEY }}
-    - name: create pull request
+    - name: Create pull request
       uses: peter-evans/create-pull-request@v8
       with:
         body: ${{ steps.update.outputs.body }}
@@ -47,7 +47,7 @@ jobs:
         - pi-context-view
         - pi-subagents
         - pi-web-access
-name: update packages
+name: Update packages
 'on':
   push:
     branches:

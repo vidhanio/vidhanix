@@ -69,7 +69,7 @@ class Result:
         if self.failed:
             return self.package
 
-        detail = f"{self.before} → {self.after}" if self.changed else "up to date"
+        detail = f"{self.before} → {self.after}" if self.changed else "Up to date"
         return f"{self.package} [dim]{detail}[/]"
 
 
@@ -106,7 +106,7 @@ def update(package: str) -> Result:
     before = version(package)
     if not before:
         return Result(
-            package, log=f"could not evaluate {package}.version before update"
+            package, log=f"Could not evaluate {package}.version before update"
         )
 
     result = run(NIX_UPDATE, "--flake", "--use-update-script", package)
@@ -116,7 +116,7 @@ def update(package: str) -> Result:
 
     after = version(package)
     if not after:
-        return Result(package, log=f"could not evaluate {package}.version after update")
+        return Result(package, log=f"Could not evaluate {package}.version after update")
 
     return Result(package, before=before, after=after, homepage=homepage(package))
 
@@ -127,9 +127,9 @@ def verify(packages: Iterable[str]) -> list[str]:
 
     for package in packages:
         if package not in KNOWN:
-            problems.append(f"{package} is not a package in this flake")
+            problems.append(f"Package {package} is not a package in this flake")
         elif package not in UPDATABLE:
-            problems.append(f"{package} has no update script")
+            problems.append(f"Package {package} has no update script")
 
     return problems
 
@@ -185,14 +185,14 @@ def main() -> int:
         "--json",
         action="store_true",
         dest="json_output",
-        help="print structured JSON instead of progress output",
+        help="Print structured JSON instead of progress output",
     )
     parser.add_argument(
         "packages",
         nargs="*",
         default=UPDATABLE,
         metavar="PACKAGE",
-        help="the packages to update (default: every updatable package)",
+        help="The packages to update (default: every updatable package)",
     )
     args = parser.parse_args()
     packages = args.packages

@@ -26,14 +26,14 @@
           );
         in
         ''
-          this flake has a couple packages, mostly used internally, but available via `.#<package>`.
-          some of these packages provide a `passthru.updateScript`, all of which can be run via `just update-packages`.
+          This flake has a couple of packages, mostly used internally, but available via `.#<package>`.
+          Some of these packages provide a `passthru.updateScript`, all of which can be run via `just update-packages`.
 
           ${config.files.lib.readme.renderTable {
             header = [
-              "package"
-              "description"
-              "has update script"
+              "Package"
+              "Description"
+              "Has Update Script"
             ];
             alignments = [
               "l"

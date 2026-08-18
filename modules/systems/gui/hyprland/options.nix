@@ -18,7 +18,7 @@
             bind: lib.length (lib.attrNames (dispatcherOf bind)) == 1
           )
           // {
-            description = "hyprland bind naming exactly one dispatcher";
+            description = "Hyprland bind naming exactly one dispatcher";
             descriptionClass = "noun";
           };
 

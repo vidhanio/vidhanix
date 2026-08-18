@@ -15,7 +15,7 @@
           boot.initrd.systemd = {
             enable = true;
             services.wipe-root = {
-              description = "wipe btrfs tmproot subvolume";
+              description = "Wipe Btrfs tmproot subvolume";
               wantedBy = [ "initrd.target" ];
               after = [ "initrd-root-device.target" ];
               before = [ "sysroot.mount" ];

@@ -15,7 +15,7 @@
     in
     {
       config.files.github.workflows.sync-dependabot = {
-        name = "sync dependabot";
+        name = "Sync Dependabot";
 
         on.pull_request_target = {
           branches = [ "main" ];
@@ -43,7 +43,7 @@
           # one metadata fetch drives both sync paths; the jobs below dispatch
           # on its ecosystem output instead of matching branch name prefixes.
           metadata = {
-            name = "fetch dependabot metadata";
+            name = "Fetch Dependabot metadata";
             runs-on = "ubuntu-latest";
             # the author gate keeps the action from failing on other PRs
             "if" = "github.event.pull_request.user.login=='dependabot[bot]'";
@@ -56,7 +56,7 @@
 
           # only dependabot github_actions PRs; the script treats the metadata as data.
           sync-actions = {
-            name = "sync action updates";
+            name = "Sync GitHub Actions updates";
             needs = [ "metadata" ];
             "if" = "needs.metadata.outputs.ecosystem=='github_actions'";
             runs-on = "ubuntu-latest";
@@ -65,7 +65,7 @@
             steps = [
               checkoutHead
               {
-                name = "sync action updates";
+                name = "Sync GitHub Actions updates";
                 env.UPDATED_DEPENDENCIES_JSON = ghExpr "needs.metadata.outputs.dependencies";
                 run = "python3 .github/scripts/sync-action-updates.py";
               }
@@ -77,7 +77,7 @@
           # only dependabot nix PRs; `just generate` prunes the new lock and
           # regenerates everything else from it.
           prune-lock = {
-            name = "prune lock";
+            name = "Prune lock";
             needs = [ "metadata" ];
             "if" = "needs.metadata.outputs.ecosystem=='nix'";
             runs-on = "ubuntu-latest";
@@ -86,7 +86,7 @@
               setupNix
               createAppToken
               {
-                name = "prune lock";
+                name = "Prune lock";
                 run = "${just} generate";
               }
               (commitToPrBranch "chore(flake): prune lock")

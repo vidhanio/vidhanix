@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-package="${1:?usage: $0 PACKAGE}"
+package="${1:?Usage: $0 PACKAGE}"
 result_file="$(mktemp)"
 trap 'rm -f "$result_file"' EXIT
 

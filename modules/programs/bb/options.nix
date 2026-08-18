@@ -54,7 +54,7 @@
               mkdir "$out"
               ln -s "$source" "$out/SKILL.md"
             else
-              echo "bb skill source must be a file or directory: $source" >&2
+              echo "BB skill source must be a file or directory: $source" >&2
               exit 1
             fi
           '';

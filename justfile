@@ -14,40 +14,40 @@ system := `nix eval --raw --impure --expr 'builtins.currentSystem'`
 systemPackage := nixosConfig + ".system.build.toplevel"
 user := `whoami`
 
-# list the available recipes in all justfiles
+# List the available recipes in all justfiles
 @default:
     just --list --list-submodules
 
-# record the intent to add each new file, so that the flake sees it
+# Record the intent to add each new file, so that the flake sees it
 @add:
     git add -AN
 
-# regenerate the generated files
+# Regenerate the generated files
 @generate: add
     nix run .#generate-files
 
-# regenerate the files, then run `nh os` with the given action and flags
+# Regenerate the files, then run `nh os` with the given action and flags
 @os action="switch" *flags: generate
     if [ -t 1 ]; then nh os {{ action }} {{ flags }}; else nh os {{ action }} --no-nom {{ flags }}; fi
 
-# activate the configuration now, passing extra flags to `nh os`
+# Activate the configuration now, passing extra flags to `nh os`
 @switch *flags: (os "switch" flags)
 
-# activate the configuration at the next boot, passing extra flags to `nh os`
+# Activate the configuration at the next boot, passing extra flags to `nh os`
 @boot *flags: (os "boot" flags)
 
-# activate the configuration without making it the boot default, passing extra flags to `nh os`
+# Activate the configuration without making it the boot default, passing extra flags to `nh os`
 @test *flags: (os "test" flags)
 
-# format the tree with treefmt, e.g. `just fmt --ci`
+# Format the tree with treefmt, e.g. `just fmt --ci`
 @fmt *flags: add
     nix fmt -- {{ flags }}
 
-# run the update script of each package that has one
+# Run the update script of each package that has one
 @update-packages *packages: generate
     nix run .#update-packages -- {{ packages }}
 
-# update the flake inputs, then update each package
+# Update the flake inputs, then update each package
 update: generate
     nix flake update
     just update-packages
