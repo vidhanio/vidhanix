@@ -1,16 +1,9 @@
-{ config, lib, ... }:
-let
-  inherit (config) hosts;
-  inherit (config) users;
-in
+{ lib, ... }:
 {
   flake.aspects.network = {
     nixos =
       { config, ... }:
       let
-        activeUsers = lib.filterAttrs (
-          username: _: hosts.${config.networking.hostName}.users.${username}.enable
-        ) users;
         ssids = [
           "EMC2-5G"
           "Vidhan's iPhone"
@@ -38,10 +31,6 @@ in
         };
       in
       {
-        users.users = lib.mapAttrs (_: _: {
-          extraGroups = [ "networkmanager" ];
-        }) activeUsers;
-
         sops = {
           secrets = lib.listToAttrs (map (ssid: lib.nameValuePair "networks/${ssid}" { }) ssids);
 
