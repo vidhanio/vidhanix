@@ -33,6 +33,7 @@
         crush
         direnv
         eza
+        face
         fd
         fzf
         gh

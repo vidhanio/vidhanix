@@ -14,10 +14,7 @@ in
     {
       vidhanio = {
         includes = [ aspects.desktop ];
-        homeManager = {
-          home.file.".face".source = face;
-          programs.gh.username = "vidhanio";
-        };
+        homeManager.programs.gh.username = "vidhanio";
       };
     };
 
