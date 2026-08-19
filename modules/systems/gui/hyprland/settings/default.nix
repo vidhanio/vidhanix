@@ -51,7 +51,6 @@
               respect_gaps = true;
             };
           };
-          master.smart_resizing = false;
           decoration.rounding = 8;
 
           input = {

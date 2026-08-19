@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake-file.inputs.disko.url = "github:nix-community/disko";
+  flake-file.inputs.disko.url = "github:vidhanio/disko/feature/skip-partition-uuid";
 
   flake.aspects.disk = {
     nixos =
@@ -64,46 +64,30 @@
       };
     };
 
-    provides.apple-silicon.nixos =
-      { config, ... }:
-      {
-        assertions =
-          map
-            (p: {
-              assertion = config.disko.devices.disk.main.content.partitions.${p}.uuid != null;
-              message = "partition \"${p}\" must have its UUID manually assigned.";
-            })
-            [
-              "iBootSystemContainer"
-              "Container"
-              "NixOSContainer"
-              "ESP"
-              "RecoveryOSContainer"
-            ];
-
-        disko.devices.disk.main.content.partitions = {
-          iBootSystemContainer = {
-            label = "iBootSystemContainer";
-            priority = 1;
-            type = "AF0B";
-          };
-          Container = {
-            label = "Container";
-            priority = 2;
-            type = "AF0A";
-          };
-          NixOSContainer = {
-            label = "NixOSContainer";
-            priority = 3;
-            type = "AF0A";
-          };
-          ESP.priority = 4;
-          RecoveryOSContainer = {
-            label = "RecoveryOSContainer";
-            priority = 5;
-            type = "AF0C";
-          };
+    provides.apple-silicon.nixos = {
+      disko.devices.disk.main.content.partitions = {
+        iBootSystemContainer = {
+          label = "iBootSystemContainer";
+          priority = 1;
+          type = "AF0B";
+        };
+        Container = {
+          label = "Container";
+          priority = 2;
+          type = "AF0A";
+        };
+        NixOSContainer = {
+          label = "NixOSContainer";
+          priority = 3;
+          type = "AF0A";
+        };
+        ESP.priority = 4;
+        RecoveryOSContainer = {
+          label = "RecoveryOSContainer";
+          priority = 5;
+          type = "AF0C";
         };
       };
+    };
   };
 }

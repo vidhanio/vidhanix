@@ -23,7 +23,7 @@
   };
 
   inputs = {
-    disko.url = "github:nix-community/disko";
+    disko.url = "github:vidhanio/disko/feature/skip-partition-uuid";
     files = {
       url = "github:mightyiam/files";
       flake = false;
