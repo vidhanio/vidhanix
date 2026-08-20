@@ -46,20 +46,20 @@ in
         { users, hostPlatform, ... }:
         let
           activeUsers = lib.filterAttrs (username: _: users.${username}.enable) usersCfg;
-          userForward = forward {
-            each = lib.attrNames (lib.filterAttrs (_: user: user.enable) users);
-            fromClass = _: "homeManager";
-            intoClass = _: "nixos";
-            intoPath = username: [
-              "home-manager"
-              "users"
-              username
-            ];
-            fromAspect = username: aspects.${username};
-          };
         in
         {
-          includes = userForward.includes ++ [
+          includes = [
+            (forward {
+              each = lib.attrNames (lib.filterAttrs (_: user: user.enable) users);
+              fromClass = _: "homeManager";
+              intoClass = _: "nixos";
+              intoPath = username: [
+                "home-manager"
+                "users"
+                username
+              ];
+              fromAspect = username: aspects.${username};
+            })
             (
               # only bridge from nixos so resolving the host's home manager graph terminates.
               { class, ... }:
