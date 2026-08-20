@@ -8,13 +8,13 @@ let
     }:
     stdenvNoCC.mkDerivation (finalAttrs: {
       pname = "pi-context-view";
-      version = "0.4.2";
+      version = "0.4.3";
 
       src = fetchFromGitHub {
         owner = "dimk90";
         repo = "pi-context-view";
         rev = "v${finalAttrs.version}";
-        hash = "sha256-VXi87R8FY0M6pTe0LDSZRFsLYAAD58BTnw5zGCFRB2M=";
+        hash = "sha256-BEJNRx/YsNmTgJQHJ5xDnlG6NfO8dinjfBlC4iyUfXk=";
       };
 
       phases = [
