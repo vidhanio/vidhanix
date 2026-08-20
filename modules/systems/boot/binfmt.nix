@@ -1,18 +1,12 @@
-{ lib, ... }:
 {
   flake.aspects.boot = {
     nixos =
       { pkgs, ... }:
       {
-        # make binfmt available for non-native architectures
-        boot.binfmt.emulatedSystems =
-          let
-            mkSystemIfNot = target: lib.mkIf (pkgs.stdenv.hostPlatform.system != target) [ target ];
-          in
-          lib.mkMerge [
-            (mkSystemIfNot "aarch64-linux")
-            (mkSystemIfNot "x86_64-linux")
-          ];
+        boot.binfmt.emulatedSystems = builtins.filter (system: system != pkgs.stdenv.hostPlatform.system) [
+          "aarch64-linux"
+          "x86_64-linux"
+        ];
       };
   };
 }

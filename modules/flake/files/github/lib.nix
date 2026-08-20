@@ -40,7 +40,10 @@ let
           uses = "cachix/install-nix-action@v31";
           "with" = {
             nix_path = "path: nixpkgs=channel:nixos-unstable";
-            extra_nix_config = "build-dir = /nix/build";
+            extra_nix_config = ''
+              build-dir = /nix/build
+              extra-platforms = x86_64-linux aarch64-linux
+            '';
           };
         }
         {

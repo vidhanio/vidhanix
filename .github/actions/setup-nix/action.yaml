@@ -22,7 +22,7 @@ runs:
   - name: Install Nix
     uses: cachix/install-nix-action@v31
     with:
-      extra_nix_config: build-dir = /nix/build
+      extra_nix_config: "build-dir = /nix/build\nextra-platforms = x86_64-linux aarch64-linux\n"
       nix_path: 'path: nixpkgs=channel:nixos-unstable'
   - name: Restore Nix Store
     uses: nix-community/cache-nix-action@v7
