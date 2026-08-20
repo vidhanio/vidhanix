@@ -48,7 +48,7 @@
           files = [
             {
               file = ".config/herdr/session.json";
-              how = "symlink";
+              method = "symlink";
             }
           ];
         };

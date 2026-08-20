@@ -4,7 +4,7 @@
       persist.files = [
         {
           file = ".local/share/fish/fish_history";
-          how = "symlink";
+          method = "symlink";
         }
       ];
     };
