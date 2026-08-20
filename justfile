@@ -39,12 +39,13 @@ user := `whoami`
     nix fmt -- {{ flags }}
 
 # Run the update script of each package that has one
-@update-packages *packages: generate
+@update-packages *packages: add
     nix run .#update-packages -- {{ packages }}
 
 # Update the flake inputs, then update each package
 update: generate
     nix flake update
+    just generate
     just update-packages
 
 # Evaluate a path under the current host's NixOS config, e.g. `just eval-nixos services.tailscale`

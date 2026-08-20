@@ -33,12 +33,18 @@
 
         persist.directories = [ "/var/lib/tailscale" ];
       };
-    homeManager = {
-      services.tailscale-systray = {
-        enable = true;
-        theme = "dark:nobg";
+    homeManager =
+      { lib, config, ... }:
+      let
+        inherit (config.stylix) polarity;
+      in
+      {
+        services.tailscale-systray = {
+          enable = true;
+          theme = lib.mkIf (polarity != "either") "${polarity}:nobg";
+        };
       };
-    };
+
     provides.exit-node.nixos = {
       services.tailscale.extraSetFlags = [ "--advertise-exit-node" ];
     };
