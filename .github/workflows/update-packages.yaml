@@ -44,9 +44,6 @@ jobs:
         pkg:
         - breezex-cursor
         - conventional-pre-commit
-        - pi-context-view
-        - pi-subagents
-        - pi-web-access
 name: Update Packages
 'on':
   push:

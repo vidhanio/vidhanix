@@ -72,18 +72,6 @@ jobs:
         - pkg: muvm-steam
           runner: ubuntu-26.04-arm
           system: aarch64-linux
-        - pkg: pi-subagents
-          runner: ubuntu-latest
-          system: x86_64-linux
-        - pkg: pi-subagents
-          runner: ubuntu-26.04-arm
-          system: aarch64-linux
-        - pkg: pi-web-access
-          runner: ubuntu-latest
-          system: x86_64-linux
-        - pkg: pi-web-access
-          runner: ubuntu-26.04-arm
-          system: aarch64-linux
         - pkg: pragmata-pro-variable
           runner: ubuntu-latest
           system: x86_64-linux
