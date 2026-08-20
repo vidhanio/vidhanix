@@ -39,7 +39,7 @@
       flake = false;
     };
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
-    helium-flake.url = "github:oxcl/nix-flake-helium-browser";
+    helium.url = "github:schembriaiden/helium-browser-nix-flake";
     home-manager.url = "github:nix-community/home-manager";
     impermanence.url = "github:nix-community/impermanence";
     import-tree.url = "github:vic/import-tree";

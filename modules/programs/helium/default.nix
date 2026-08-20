@@ -1,21 +1,16 @@
-{ inputs, ... }: {
-  flake-file.inputs.helium-flake.url = "github:oxcl/nix-flake-helium-browser";
+{
+  flake-file.inputs.helium.url = "github:schembriaiden/helium-browser-nix-flake";
 
   flake.aspects.helium = {
-    nixos = {
-      imports = [ inputs.helium-flake.nixosModules.default ];
-    };
     homeManager =
-      { config, ... }:
+      { inputs', ... }:
       let
-        cfg = config.programs.helium;
+        pkg = inputs'.helium.packages.default;
       in
       {
-        imports = [ inputs.helium-flake.homeModules.default ];
+        home.packages = [ pkg ];
 
-        programs.helium.enable = true;
-
-        xdg.autostart.entries = [ "${cfg.package}/share/applications/helium.desktop" ];
+        xdg.autostart.entries = [ "${pkg}/share/applications/helium.desktop" ];
 
         hyprland.autostartWorkspaces.helium = 1;
 
