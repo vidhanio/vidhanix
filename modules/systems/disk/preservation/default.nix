@@ -25,39 +25,7 @@
           (lib.mkAliasOptionModule [ "persist" ] [ "preservation" "preserveAt" "/persist" ])
         ];
 
-        home-manager.sharedModules = [
-          (
-            { config, ... }:
-            let
-              userOptions = preservationUserType.getSubOptions [ config.home.username ];
-              # reuse preservation's entry type without the list option's home-prefixing apply function.
-              withoutHomePrefix =
-                option:
-                let
-                  entryType = option.type.nestedTypes.elemType;
-                in
-                lib.types.listOf (
-                  entryType.substSubModules (
-                    entryType.getSubModules ++ [ { _module.args.defaultOwner = lib.mkForce config.home.username; } ]
-                  )
-                );
-            in
-            {
-              options.persist = {
-                directories = lib.mkOption {
-                  type = withoutHomePrefix userOptions.directories;
-                  default = [ ];
-                  inherit (userOptions.directories) description;
-                };
-                files = lib.mkOption {
-                  type = withoutHomePrefix userOptions.files;
-                  default = [ ];
-                  inherit (userOptions.files) description;
-                };
-              };
-            }
-          )
-        ];
+        home-manager.extraSpecialArgs = { inherit preservationUserType; };
 
         preservation.enable = true;
         persist = {
@@ -89,12 +57,41 @@
         systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
       };
 
-    homeManager = {
-      persist.directories = [
-        "Downloads"
-        "Projects"
-        ".cache/nix"
-      ];
-    };
+    homeManager =
+      { config, preservationUserType, ... }:
+      let
+        userOptions = preservationUserType.getSubOptions [ config.home.username ];
+        # reuse preservation's entry type without the list option's home-prefixing apply function.
+        withoutHomePrefix =
+          option:
+          let
+            entryType = option.type.nestedTypes.elemType;
+          in
+          lib.types.listOf (
+            entryType.substSubModules (
+              entryType.getSubModules ++ [ { _module.args.defaultOwner = lib.mkForce config.home.username; } ]
+            )
+          );
+      in
+      {
+        options.persist = {
+          directories = lib.mkOption {
+            type = withoutHomePrefix userOptions.directories;
+            default = [ ];
+            inherit (userOptions.directories) description;
+          };
+          files = lib.mkOption {
+            type = withoutHomePrefix userOptions.files;
+            default = [ ];
+            inherit (userOptions.files) description;
+          };
+        };
+
+        config.persist.directories = [
+          "Downloads"
+          "Projects"
+          ".cache/nix"
+        ];
+      };
   };
 }

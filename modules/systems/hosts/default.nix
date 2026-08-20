@@ -46,8 +46,31 @@ in
         { users, hostPlatform, ... }:
         let
           activeUsers = lib.filterAttrs (username: _: users.${username}.enable) usersCfg;
+          userForward = forward {
+            each = lib.attrNames (lib.filterAttrs (_: user: user.enable) users);
+            fromClass = _: "homeManager";
+            intoClass = _: "nixos";
+            intoPath = username: [
+              "home-manager"
+              "users"
+              username
+            ];
+            fromAspect = username: aspects.${username};
+          };
         in
         {
+          includes = userForward.includes ++ [
+            (
+              # only bridge from nixos so resolving the host's home manager graph terminates.
+              { class, ... }:
+              lib.optionalAttrs (class == "nixos") {
+                nixos.home-manager.sharedModules = [
+                  (aspects.${name}.resolve { class = "homeManager"; })
+                ];
+              }
+            )
+          ];
+
           nixos =
             { config, ... }:
             {
@@ -78,17 +101,6 @@ in
                 }) activeUsers;
               };
             };
-        }
-        // forward {
-          each = lib.attrNames (lib.filterAttrs (_: user: user.enable) users);
-          fromClass = _: "homeManager";
-          intoClass = _: "nixos";
-          intoPath = username: [
-            "home-manager"
-            "users"
-            username
-          ];
-          fromAspect = username: aspects.${username};
         }
       ) cfg;
   };
