@@ -26,7 +26,6 @@
           pkgs.just
           pkgs.nh
           pkgs.nil
-          pkgs.nix
           pkgs.nix-output-monitor
           pkgs.sops
         ];

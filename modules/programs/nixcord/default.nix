@@ -38,7 +38,6 @@
               equibopStreamFixes.enable = true;
               fakeNitro.enable = true;
               spotifyCrack.enable = true;
-              timezones.enable = true;
               volumeBooster.enable = true;
               youtubeAdblock.enable = true;
               # keep-sorted end

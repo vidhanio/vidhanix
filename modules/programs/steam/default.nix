@@ -19,7 +19,7 @@
     provides.apple-silicon.nixos =
       { self', ... }:
       {
-        programs.steam.package = self'.packages.muvm-steam.override { memoryMiB = 6144; };
+        programs.steam.package = self'.packages.muvm-steam;
         # steam asserts 32-bit graphics on x86; the guest gets them from muvm-steam.
         hardware.graphics.enable32Bit = lib.mkForce false;
       };
