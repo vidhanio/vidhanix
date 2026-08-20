@@ -46,11 +46,12 @@ in
         { users, hostPlatform, ... }:
         let
           activeUsers = lib.filterAttrs (username: _: users.${username}.enable) usersCfg;
+          activeUsernames = lib.attrNames activeUsers;
         in
         {
           includes = [
             (forward {
-              each = lib.attrNames (lib.filterAttrs (_: user: user.enable) users);
+              each = activeUsernames;
               fromClass = _: "homeManager";
               intoClass = _: "nixos";
               intoPath = username: [
@@ -60,16 +61,9 @@ in
               ];
               fromAspect = username: aspects.${username};
             })
-            (
-              # only bridge from nixos so resolving the host's home manager graph terminates.
-              { class, ... }:
-              lib.optionalAttrs (class == "nixos") {
-                nixos.home-manager.sharedModules = [
-                  (aspects.${name}.resolve { class = "homeManager"; })
-                ];
-              }
-            )
           ];
+
+          homeManager = { };
 
           nixos =
             { config, ... }:
@@ -84,6 +78,7 @@ in
                 networking.hostName = name;
                 nixpkgs.hostPlatform = hostPlatform;
                 system.stateVersion = config.system.nixos.release;
+                home-manager.sharedModules = [ inputs.self.modules.homeManager.${name} ];
 
                 sops.secrets = lib.mapAttrs' (
                   username: _: lib.nameValuePair "passwords/${username}" { neededForUsers = true; }
