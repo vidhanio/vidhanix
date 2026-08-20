@@ -28,7 +28,12 @@ in
         }) activeUsers;
 
         services.fail2ban.enable = true;
-        persist.files = [ "/etc/ssh/ssh_host_ed25519_key" ];
+        persist.files = [
+          {
+            file = "/etc/ssh/ssh_host_ed25519_key";
+            parentDirectory.mode = "0755";
+          }
+        ];
       };
   };
 }
