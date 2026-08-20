@@ -29,6 +29,20 @@
             speed = 2.5;
             bezier = "easeOutQuint";
           }
+          {
+            leaf = "specialWorkspaceIn";
+            enabled = true;
+            speed = 2.5;
+            bezier = "easeOutQuint";
+            style = "slidevert top";
+          }
+          {
+            leaf = "specialWorkspaceOut";
+            enabled = true;
+            speed = 2.5;
+            bezier = "easeOutQuint";
+            style = "slidevert bottom";
+          }
         ];
       };
     };
