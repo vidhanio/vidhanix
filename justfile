@@ -22,8 +22,8 @@ user := `whoami`
     nix run .#generate-files
 
 # Regenerate the files, then run `nh os` with the given action and flags
-@os action="switch" *flags: generate
-    if [ -t 1 ]; then nh os {{ action }} {{ flags }}; else nh os {{ action }} --no-nom {{ flags }}; fi
+@os action *flags: generate
+    if [ -t 1 ]; then nh os {{ action }} {{ flags }} .; else nh os {{ action }} --no-nom {{ flags }} .; fi
 
 # Activate the configuration now, passing extra flags to `nh os`
 @switch *flags: (os "switch" flags)
