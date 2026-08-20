@@ -1,12 +1,9 @@
 {
-  flake.aspects =
-    { aspects, ... }:
-    {
-      vidhanio = {
-        includes = [ aspects.desktop ];
-        homeManager.programs.gh.username = "vidhanio";
-      };
+  flake.aspects.vidhanio = {
+    homeManager = {
+      programs.gh.username = "vidhanio";
     };
+  };
 
   users.vidhanio = {
     fullName = "Vidhan Bhatt";
