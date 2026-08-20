@@ -38,6 +38,13 @@
             };
           };
         locked = bind: bind // { _flags.locked = true; };
+        capsuleGroup = id: members: {
+          inherit id members;
+          fill = "surface_variant";
+          opacity = config.stylix.opacity.desktop;
+          padding = 8;
+          radius = 8;
+        };
       in
       {
         imports = [ inputs.noctalia.homeModules.default ];
@@ -71,7 +78,8 @@
             location.auto_locate = true;
 
             bar.main = {
-              background_opacity = config.stylix.opacity.desktop;
+              background_opacity = 0;
+              capsule_opacity = config.stylix.opacity.desktop;
               border_width = 0;
               shadow = false;
 
@@ -84,19 +92,28 @@
               padding = 8;
 
               start = [
-                "date"
-                "time"
-                "spacer"
-                "battery"
-                "network"
-                "bluetooth"
-                "volume"
+                "group:datetime"
+                "group:system"
               ];
               center = [
-                "workspaces"
+                "group:workspaces"
               ];
               end = [
-                "tray"
+                "group:tray"
+              ];
+              capsule_group = [
+                (capsuleGroup "datetime" [
+                  "date"
+                  "time"
+                ])
+                (capsuleGroup "system" [
+                  "battery"
+                  "network"
+                  "bluetooth"
+                  "volume"
+                ])
+                (capsuleGroup "workspaces" [ "workspaces" ])
+                (capsuleGroup "tray" [ "tray" ])
               ];
             };
             dock.shadow = false;
