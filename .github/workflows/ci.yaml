@@ -6,7 +6,7 @@ concurrency:
   group: ${{ github.ref }}
 jobs:
   build-packages:
-    name: 'Build Package: ${{ matrix.pkg }} (${{ matrix.system }})'
+    name: 'Build Package (${{ matrix.system }}): ${{ matrix.pkg }}'
     runs-on: ${{ matrix.runner }}
     steps:
     - name: Checkout

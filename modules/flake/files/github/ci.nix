@@ -105,7 +105,7 @@
           };
 
           build-packages = {
-            name = "Build Package: ${ghExpr "matrix.pkg"} (${ghExpr "matrix.system"})";
+            name = "Build Package (${ghExpr "matrix.system"}): ${ghExpr "matrix.pkg"}";
             runs-on = ghExpr "matrix.runner";
             strategy = {
               matrix.include = packageBuilds;
