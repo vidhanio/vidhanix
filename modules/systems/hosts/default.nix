@@ -63,13 +63,11 @@ in
             })
           ];
 
-          homeManager = { };
-
           nixos =
             { config, ... }:
             {
               options.users.primaryUser = lib.mkOption {
-                type = lib.types.enum (lib.attrNames activeUsers);
+                type = lib.types.enum activeUsernames;
                 default = "vidhanio";
                 description = "The primary user of this system.";
               };
@@ -78,7 +76,10 @@ in
                 networking.hostName = name;
                 nixpkgs.hostPlatform = hostPlatform;
                 system.stateVersion = config.system.nixos.release;
-                home-manager.sharedModules = [ inputs.self.modules.homeManager.${name} ];
+
+                home-manager.sharedModules = [
+                  (aspects.${name}.resolve { class = "homeManager"; })
+                ];
 
                 sops.secrets = lib.mapAttrs' (
                   username: _: lib.nameValuePair "passwords/${username}" { neededForUsers = true; }
