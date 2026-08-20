@@ -89,7 +89,7 @@
 
               # match hyprland rounding
               radius = 8;
-              padding = 8;
+              padding = 0;
 
               start = [
                 "group:datetime"
