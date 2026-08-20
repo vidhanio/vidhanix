@@ -52,7 +52,16 @@
 
             shell = {
               popup_shadows = false;
-              panel.shadow = false;
+              panel = {
+                shadow = false;
+                transparency_mode =
+                  if config.stylix.opacity.popups == 1.0 then
+                    "solid"
+                  else if config.stylix.opacity.popups >= 0.6 then
+                    "soft"
+                  else
+                    "glass";
+              };
 
               launch_apps_custom_command = "uwsm app -- $CMD";
               setup_wizard_enabled = false;
@@ -63,7 +72,7 @@
 
             bar.main = {
               background_opacity = config.stylix.opacity.desktop;
-              border_width = 2;
+              border_width = 0;
               shadow = false;
 
               # match hyprland's gaps_out

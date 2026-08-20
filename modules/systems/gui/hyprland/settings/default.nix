@@ -42,7 +42,7 @@
         config = {
           general = {
             layout = "master";
-            border_size = 2;
+            border_size = 0;
             gaps_in = 4;
             gaps_out = 8;
 
@@ -53,6 +53,11 @@
           };
           decoration = {
             rounding = 8;
+            blur = {
+              enabled = true;
+              size = 8;
+              passes = 3;
+            };
             shadow.enabled = false;
           };
 
