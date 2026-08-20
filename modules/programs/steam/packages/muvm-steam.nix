@@ -104,7 +104,7 @@ in
         # TODO: drop once https://github.com/NixOS/nixpkgs/pull/554106 lands (fex 2605 -> 2608)
         muvm-steam =
           (pkgs.extend (
-            _final: prev: {
+            _: prev: {
               fex = prev.fex.overrideAttrs (old: {
                 version = "2608";
                 src = old.src.override {
