@@ -51,7 +51,10 @@
               respect_gaps = true;
             };
           };
-          decoration.rounding = 8;
+          decoration = {
+            rounding = 8;
+            shadow.enabled = false;
+          };
 
           input = {
             repeat_rate = 50;

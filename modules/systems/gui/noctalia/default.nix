@@ -51,6 +51,9 @@
             wallpaper.enabled = false; # handled by hyprpaper
 
             shell = {
+              popup_shadows = false;
+              panel.shadow = false;
+
               launch_apps_custom_command = "uwsm app -- $CMD";
               setup_wizard_enabled = false;
               external_ip_enabled = true;
@@ -61,6 +64,7 @@
             bar.main = {
               background_opacity = config.stylix.opacity.desktop;
               border_width = 2;
+              shadow = false;
 
               # match hyprland's gaps_out
               margin_edge = 8;
@@ -86,6 +90,7 @@
                 "tray"
               ];
             };
+            dock.shadow = false;
             widget = {
               date = {
                 type = "clock";
