@@ -58,14 +58,16 @@
             "${cfg.configDir}/extensions/web-access".source =
               "${self'.packages.pi-web-access}/lib/node_modules/pi-web-access";
             "${cfg.configDir}/extensions/pi-context-view".source = self'.packages.pi-context-view;
-
-            # pi-web-access reads its config (searxng endpoint, SSRF ranges)
-            # from ~/.pi/web-search.json, next to the agent dir.
-            ".pi/web-search.json".text = builtins.toJSON {
-              searxngBaseUrl = "http://vortex:8080";
-              ssrf.allowRanges = [ "100.64.0.0/10" ];
-            };
           };
+
+        # pi-web-access reads its config from XDG_CONFIG_HOME when set.
+        xdg.configFile."pi/web-search.json".text = builtins.toJSON {
+          searxngBaseUrl = "http://vortex:8080";
+          ssrf.allowRanges = [
+            "100.64.0.0/10"
+            "127.0.0.2/32"
+          ];
+        };
 
         persist.directories = [ ".pi/agent" ];
       };
