@@ -106,6 +106,9 @@ in
                 src = old.src.override {
                   hash = "sha256-2NdkQpzqDkM/fEW8QYS05KU3JPJeLw4gliryqdOJ3vE=";
                 };
+                postInstall = (old.postInstall or "") + ''
+                  ln -s FEX $out/bin/FEXInterpreter
+                '';
               });
             }
           )).callPackage
