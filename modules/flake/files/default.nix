@@ -16,7 +16,10 @@
     {
       packages.generate-files = pkgs.writeShellApplication {
         name = "generate-files";
-        meta.description = "Generate various files for this repository";
+        meta = {
+          description = "Generate various files for this repository";
+          platforms = lib.platforms.linux;
+        };
         derivationArgs = {
           preferLocalBuild = true;
           allowSubstitutes = false;

@@ -93,14 +93,10 @@ in
   perSystem =
     {
       pkgs,
-      lib,
-      system,
       ...
     }:
     {
-      # aarch64-only (Apple Silicon); exposing it on x86_64-linux fails
-      # `nix flake check` against meta.platforms.
-      packages = lib.mkIf (system == "aarch64-linux") {
+      packages = {
         # TODO: drop once https://github.com/NixOS/nixpkgs/pull/554106 lands (fex 2605 -> 2608)
         muvm-steam =
           (pkgs.extend (

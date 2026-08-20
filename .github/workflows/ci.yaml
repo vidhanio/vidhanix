@@ -6,8 +6,8 @@ concurrency:
   group: ${{ github.ref }}
 jobs:
   build-packages:
-    name: 'Build Package: ${{ matrix.pkg }}'
-    runs-on: ubuntu-latest
+    name: 'Build Package: ${{ matrix.pkg }} (${{ matrix.system }})'
+    runs-on: ${{ matrix.runner }}
     steps:
     - name: Checkout
       uses: actions/checkout@v5
@@ -20,23 +20,76 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        pkg:
-        - berkeley-mono
-        - berkeley-mono-variable
-        - breezex-combined
-        - breezex-cursor
-        - breezex-hyprcursor
-        - conventional-pre-commit
-        - generate-files
-        - google-sans-flex
-        - pi-context-view
-        - pi-subagents
-        - pi-web-access
-        - pragmata-pro-variable
-        - update-packages
-        - write-flake
-        - write-inputs
-        - write-lock
+        include:
+        - pkg: berkeley-mono
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: berkeley-mono
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: berkeley-mono-variable
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: berkeley-mono-variable
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: breezex-combined
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: breezex-combined
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: breezex-cursor
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: breezex-cursor
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: breezex-hyprcursor
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: breezex-hyprcursor
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: conventional-pre-commit
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: conventional-pre-commit
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: generate-files
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: generate-files
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: google-sans-flex
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: google-sans-flex
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: muvm-steam
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: pi-subagents
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: pi-subagents
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: pi-web-access
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: pi-web-access
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: pragmata-pro-variable
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: pragmata-pro-variable
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
   check-formatting:
     name: Check Formatting
     runs-on: ubuntu-latest

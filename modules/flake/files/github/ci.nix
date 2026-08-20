@@ -1,4 +1,4 @@
-{ flake-parts-lib, ... }:
+{ flake-parts-lib, lib, ... }:
 {
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
@@ -10,6 +10,29 @@
         checkout
         setupNix
         ;
+
+      buildSystems = [
+        {
+          system = "x86_64-linux";
+          runner = "ubuntu-latest";
+        }
+        {
+          system = "aarch64-linux";
+          runner = "ubuntu-26.04-arm";
+        }
+      ];
+
+      packageBuilds = lib.concatLists (
+        lib.mapAttrsToList (
+          pkg: package:
+          map
+            (buildSystem: {
+              inherit pkg;
+              inherit (buildSystem) system runner;
+            })
+            (lib.filter (buildSystem: lib.elem buildSystem.system (package.meta.platforms or [ ])) buildSystems)
+        ) config.packages
+      );
     in
     {
       config.files.github.workflows.ci = {
@@ -82,10 +105,10 @@
           };
 
           build-packages = {
-            name = "Build Package: ${ghExpr "matrix.pkg"}";
-            runs-on = "ubuntu-latest";
+            name = "Build Package: ${ghExpr "matrix.pkg"} (${ghExpr "matrix.system"})";
+            runs-on = ghExpr "matrix.runner";
             strategy = {
-              matrix.pkg = builtins.attrNames config.packages;
+              matrix.include = packageBuilds;
               fail-fast = false;
             };
             steps = [

@@ -13,6 +13,8 @@ runs:
     uses: webfactory/ssh-agent@v0.9.0
     with:
       ssh-private-key: ${{ inputs.ssh-private-key }}
+  - name: Set Up QEMU
+    uses: docker/setup-qemu-action@v3
   - name: Free Disk Space
     uses: wimpysworld/nothing-but-nix@v9
     with:
@@ -25,6 +27,6 @@ runs:
   - name: Restore Nix Store
     uses: nix-community/cache-nix-action@v7
     with:
-      primary-key: nix-${{ runner.os }}-${{ hashFiles('**/flake.lock') }}
-      restore-prefixes-first-match: nix-${{ runner.os }}-
+      primary-key: nix-${{ runner.arch }}-${{ hashFiles('**/flake.lock') }}
+      restore-prefixes-first-match: nix-${{ runner.arch }}-
   using: composite

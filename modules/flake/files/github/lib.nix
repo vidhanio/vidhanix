@@ -27,6 +27,10 @@ let
           };
         }
         {
+          name = "Set Up QEMU";
+          uses = "docker/setup-qemu-action@v3";
+        }
+        {
           name = "Free Disk Space";
           uses = "wimpysworld/nothing-but-nix@v9";
           "with".hatchet-protocol = "carve";
@@ -43,8 +47,8 @@ let
           name = "Restore Nix Store";
           uses = "nix-community/cache-nix-action@v7";
           "with" = {
-            primary-key = "nix-${ghExpr "runner.os"}-${ghExpr "hashFiles('**/flake.lock')"}";
-            restore-prefixes-first-match = "nix-${ghExpr "runner.os"}-";
+            primary-key = "nix-${ghExpr "runner.arch"}-${ghExpr "hashFiles('**/flake.lock')"}";
+            restore-prefixes-first-match = "nix-${ghExpr "runner.arch"}-";
           };
         }
       ];
