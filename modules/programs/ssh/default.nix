@@ -20,7 +20,14 @@ in
     };
 
     homeManager = {
-      persist.files = [ ".ssh/id_ed25519" ];
+      persist.files = [
+        {
+          file = ".ssh/id_ed25519";
+          mode = "0600";
+          configureParent = true;
+          parent.mode = "0755";
+        }
+      ];
     };
   };
 }
