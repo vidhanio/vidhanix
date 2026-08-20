@@ -27,7 +27,7 @@ let
                 refreshRateInt = lib.mkOption {
                   type = lib.types.int;
                   readOnly = true;
-                  default = builtins.floor config.refreshRate;
+                  default = lib.floor config.refreshRate;
                   description = "The monitor refresh rate in hertz, rounded down to an integer.";
                 };
               };

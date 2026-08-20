@@ -14,9 +14,7 @@
         pskVar =
           ssid:
           "PSK_"
-          + lib.toUpper (
-            lib.stringAsChars (c: if builtins.match "[A-Za-z0-9]" c != null then c else "_") ssid
-          );
+          + lib.toUpper (lib.stringAsChars (c: if lib.match "[A-Za-z0-9]" c != null then c else "_") ssid);
 
         mkWifiProfile = ssid: {
           connection = {
