@@ -30,6 +30,7 @@
           config = {
             useQuickCss = true;
             disableMinSize = true;
+            transparent = lib.mkIf (config.stylix.opacity.applications < 1.0) true;
             plugins = {
               # keep-sorted start
               clearUrls.enable = true;
