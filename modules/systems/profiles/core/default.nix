@@ -7,7 +7,7 @@
         home-manager
         sops
         disk
-        preservation
+        impermanence
         swap
         boot
         locale

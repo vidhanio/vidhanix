@@ -41,6 +41,7 @@
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     helium.url = "github:schembriaiden/helium-browser-nix-flake";
     home-manager.url = "github:nix-community/home-manager";
+    impermanence.url = "github:nix-community/impermanence";
     import-tree.url = "github:vic/import-tree";
     llm-agents.url = "github:numtide/llm-agents.nix";
     mattpocock-skills = {
@@ -62,7 +63,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
-    preservation.url = "github:nix-community/preservation";
     sops-nix.url = "github:Mic92/sops-nix";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     stylix.url = "github:nix-community/stylix";
