@@ -64,8 +64,10 @@
         xdg.configFile."pi/web-search.json".text = builtins.toJSON {
           searxngBaseUrl = "http://vortex:8080";
           ssrf.allowRanges = [
-            "100.64.0.0/10"
+            # vortex resolves to this loopback alias locally.
             "127.0.0.2/32"
+            # only needed when vortex resolves to a tailnet address.
+            "100.64.0.0/10"
           ];
         };
 
