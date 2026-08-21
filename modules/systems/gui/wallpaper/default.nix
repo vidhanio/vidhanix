@@ -9,7 +9,7 @@
           black = "base00";
           white = "base0D";
           blackSplit = 0;
-          whiteSplit = 0.2;
+          whiteSplit = 0.1;
         };
         channel = color: component: colors."${color}-dec-${component}";
         rmsChannel =

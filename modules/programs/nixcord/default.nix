@@ -127,10 +127,6 @@
             background-color: ${alpha "base00" "window"};
           }
 
-          html body [class*="guilds_"][class*="guilds_"] {
-            border-right: 1px solid rgb(from var(--base05) r g b / var(--discord-border));
-          }
-
           html body :is(
             [class*="sidebarList_"][class*="sidebarList_"],
             [class*="sidebar_"][class*="sidebar_"] > [class*="container_"]
@@ -177,7 +173,6 @@
 
           html body [class*="modalContentInner_"] > [class*="container_"] > [class*="sidebar_"] {
             background-color: ${alpha "base00" "sidebar"};
-            border-right: 1px solid rgb(from var(--base05) r g b / var(--discord-border));
           }
 
           :is(.theme-light, .theme-dark, .theme-darker, .theme-midnight, .visual-refresh) [class*="chatGradient_"] {

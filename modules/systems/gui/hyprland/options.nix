@@ -10,17 +10,21 @@
         lua = pkgs.formats.lua { };
         toLua = lib.generators.toLua { multiline = false; };
 
-        # `_flags` is hl.bind's optional third argument; the rest is the dispatcher.
+        # `_flags` is hl.bind's optional third argument; raw binds are complete Lua dispatchers.
         dispatcherOf = bind: lib.removeAttrs bind [ "_flags" ];
 
-        bindType =
-          lib.types.addCheck (lib.types.attrsOf lua.type) (
-            bind: lib.length (lib.attrNames (dispatcherOf bind)) == 1
+        bindType = lib.types.oneOf [
+          lib.types.luaInline
+          (
+            lib.types.addCheck (lib.types.attrsOf lua.type) (
+              bind: lib.length (lib.attrNames (dispatcherOf bind)) == 1
+            )
+            // {
+              description = "Hyprland bind naming exactly one dispatcher";
+              descriptionClass = "noun";
+            }
           )
-          // {
-            description = "Hyprland bind naming exactly one dispatcher";
-            descriptionClass = "noun";
-          };
+        ];
 
         # Bare value = one argument, `{ }` = none, `_args` = list spread (HM's hyprland convention).
         renderArgs =
@@ -35,13 +39,21 @@
         renderBind =
           keys: bind:
           let
+            isRaw = (bind._type or null) == "lua-inline";
             dispatcher = dispatcherOf bind;
-            name = lib.head (lib.attrNames dispatcher);
           in
           {
             _args = [
               keys
-              (lua.lib.mkRaw "hl.dsp.${name}(${renderArgs dispatcher.${name}})")
+              (
+                if isRaw then
+                  bind
+                else
+                  let
+                    name = lib.head (lib.attrNames dispatcher);
+                  in
+                  lua.lib.mkRaw "hl.dsp.${name}(${renderArgs dispatcher.${name}})"
+              )
             ]
             ++ lib.optional (bind ? _flags) (lua.lib.mkRaw (toLua bind._flags));
           };
@@ -55,11 +67,12 @@
               description = ''
                 Hyprland keybinds, keyed by key combination.
 
-                Each bind is an attribute set naming exactly one `hl.dsp` dispatcher,
-                whose value becomes its arguments. Nested dispatchers are written as
-                dotted names, e.g. `"window.close"`. `{ }` calls the dispatcher with
-                no arguments, an `_args` list spreads into multiple arguments, and any
-                other value is passed as a single argument.
+                Each bind is either a raw Lua dispatcher expression or an attribute
+                set naming exactly one `hl.dsp` dispatcher, whose value becomes its
+                arguments. Nested dispatchers are written as dotted names, e.g.
+                `"window.close"`. `{ }` calls the dispatcher with no arguments, an
+                `_args` list spreads into multiple arguments, and any other value is
+                passed as a single argument.
 
                 The optional `_flags` attribute becomes the bind flag table passed as
                 `hl.bind`'s third argument.

@@ -3,8 +3,9 @@
 
   flake.aspects.helium = {
     homeManager =
-      { inputs', ... }:
+      { inputs', pkgs, ... }:
       let
+        lua = pkgs.formats.lua { };
         pkg = inputs'.helium.packages.default;
       in
       {
@@ -12,9 +13,23 @@
 
         xdg.autostart.entries = [ "${pkg}/share/applications/helium.desktop" ];
 
-        wayland.windowManager.hyprland.autostartWorkspaces.helium = 1;
+        wayland.windowManager.hyprland = {
+          autostartWorkspaces.helium = 1;
 
-        wayland.windowManager.hyprland.binds."SUPER + B".exec_cmd = "uwsm app -- helium";
+          binds = {
+            "SUPER + B" = lua.lib.mkRaw ''
+              function()
+                local window = hl.get_window("class:helium")
+                if window then
+                  hl.dispatch(hl.dsp.focus({ window = window }))
+                else
+                  hl.exec_cmd("uwsm app -- helium")
+                end
+              end
+            '';
+            "SUPER + SHIFT + B".exec_cmd = "uwsm app -- helium --new-window";
+          };
+        };
 
         persist.directories = [ ".config/net.imput.helium" ];
       };

@@ -54,7 +54,7 @@
           decoration = {
             rounding = 8;
             blur = {
-              size = 4;
+              size = 2;
               passes = 3;
               vibrancy = 0.5;
               vibrancy_darkness = 0.5;

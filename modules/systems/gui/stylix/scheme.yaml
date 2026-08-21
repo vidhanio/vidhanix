@@ -1,23 +1,21 @@
-# base16 port of the Moonlight color scheme, originally for VSCode.
-# Ported from the Neovim version (https://github.com/shaunsingh/moonlight.nvim).
 system: "base16"
-name: "Moonlight"
-author: "Jeremy Swinarton (https://github.com/jswinarton)"
+name: "Catppuccin Mocha"
+author: "https://github.com/catppuccin/catppuccin"
 variant: "dark"
 palette:
-  base00: "#212337"
-  base01: "#403c64"
-  base02: "#596399"
-  base03: "#748cd6"
-  base04: "#a1abe0"
-  base05: "#a3ace1"
-  base06: "#b4a4f4"
-  base07: "#ef43fa"
-  base08: "#ff5370"
-  base09: "#f67f81"
-  base0A: "#ffc777"
-  base0B: "#2df4c0"
-  base0D: "#40ffff"
-  base0C: "#04d1f9"
-  base0E: "#b994f1"
-  base0F: "#ecb2f0"
+  base00: "#1e1e2e" # base
+  base01: "#181825" # mantle
+  base02: "#313244" # surface0
+  base03: "#45475a" # surface1
+  base04: "#585b70" # surface2
+  base05: "#cdd6f4" # text
+  base06: "#f5e0dc" # rosewater
+  base07: "#b4befe" # lavender
+  base08: "#f38ba8" # red
+  base09: "#fab387" # peach
+  base0A: "#f9e2af" # yellow
+  base0B: "#a6e3a1" # green
+  base0C: "#94e2d5" # teal
+  base0D: "#89b4fa" # blue
+  base0E: "#cba6f7" # mauve
+  base0F: "#f2cdcd" # flamingo
