@@ -25,7 +25,11 @@
       };
 
     homeManager =
-      { config, ... }:
+      {
+        config,
+        lib,
+        ...
+      }:
       let
         msg = command: { exec_cmd = "noctalia msg ${command}"; };
         repeating =
@@ -38,6 +42,14 @@
             };
           };
         locked = bind: bind // { _flags.locked = true; };
+
+        # `home.profileDirectory` is the user package profile (merged into
+        # `home-manager-path`), not the generations directory. The NixOS module
+        # activates Home Manager with driver version 1, which never creates
+        # `home-manager` generation profiles. Instead the base activation writes
+        # a theme-switch script with the newest base generation baked in, and
+        # the hook config links that script.
+        themeSwitch = "${config.xdg.stateHome}/noctalia/theme-switch";
 
         hyprlandCfg = config.wayland.windowManager.hyprland.settings.config;
         padding = hyprlandCfg.general.gaps_out;
@@ -84,6 +96,8 @@
 
             location.auto_locate = true;
 
+            hooks.theme_mode_changed = themeSwitch;
+
             bar.main = {
               background_opacity = 0;
               capsule_opacity = config.stylix.opacity.desktop;
@@ -118,7 +132,11 @@
                   "volume"
                 ])
                 (capsuleGroup "workspaces" [ "workspaces" ])
-                (capsuleGroup "tray" [ "tray" ])
+                (capsuleGroup "tray" [
+                  "theme_mode"
+                  "spacer"
+                  "tray"
+                ])
               ];
             };
             dock.shadow = false;
@@ -136,6 +154,24 @@
             };
           };
         };
+
+        home.activation.noctaliaThemeSwitch = lib.mkIf (config.specialisation != { }) (
+          lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            mkdir -p ${lib.escapeShellArg (builtins.dirOf themeSwitch)}
+            cat > ${lib.escapeShellArg themeSwitch} <<'EOF'
+            #!/usr/bin/env bash
+            mode=''${NOCTALIA_THEME_MODE:-}
+            case "$mode" in
+              dark|light) ;;
+              *) exit 0 ;;
+            esac
+            [ -x "@generation@/specialisation/$mode/activate" ] || exit 0
+            exec "@generation@/specialisation/$mode/activate"
+            EOF
+            sed -i "s|@generation@|$newGenPath|" ${lib.escapeShellArg themeSwitch}
+            chmod +x ${lib.escapeShellArg themeSwitch}
+          ''
+        );
 
         persist.directories = [ ".local/state/noctalia" ];
         systemd.user.tmpfiles.rules = [
