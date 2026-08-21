@@ -5,14 +5,14 @@
       {
         stylix = {
           cursor = {
-            package = self'.packages.breezex-combined.override (
+            package = self'.packages.bibata-combined.override (
               with config.lib.stylix.colors.withHashtag;
               {
                 baseColor = base01;
                 outlineColor = base07;
               }
             );
-            name = "BreezeX Cursor";
+            name = "Bibata Cursor";
             size = 32;
           };
         };
