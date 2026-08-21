@@ -28,6 +28,7 @@
       {
         config,
         lib,
+        pkgs,
         ...
       }:
       let
@@ -50,6 +51,17 @@
         # a theme-switch script with the newest base generation baked in, and
         # the hook config links that script.
         themeSwitch = "${config.xdg.stateHome}/noctalia/theme-switch";
+
+        # The generation path is only known at activation time, so the script
+        # ships with a placeholder that activation substitutes with `$newGenPath`.
+        # writeShellScript prepends the shebang itself, so the indented string
+        # content needs no column-zero care.
+        themeSwitchTemplate = pkgs.writeShellScript "noctalia-theme-switch" ''
+          mode="''${NOCTALIA_THEME_MODE:-}"
+          if [[ "$mode" == dark || "$mode" == light ]] && [ -x "@generation@/specialisation/$mode/activate" ]; then
+            exec "@generation@/specialisation/$mode/activate"
+          fi
+        '';
 
         hyprlandCfg = config.wayland.windowManager.hyprland.settings.config;
         padding = hyprlandCfg.general.gaps_out;
@@ -158,18 +170,10 @@
         home.activation.noctaliaThemeSwitch = lib.mkIf (config.specialisation != { }) (
           lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             mkdir -p ${lib.escapeShellArg (builtins.dirOf themeSwitch)}
-            cat > ${lib.escapeShellArg themeSwitch} <<'EOF'
-            #!/usr/bin/env bash
-            mode=''${NOCTALIA_THEME_MODE:-}
-            case "$mode" in
-              dark|light) ;;
-              *) exit 0 ;;
-            esac
-            [ -x "@generation@/specialisation/$mode/activate" ] || exit 0
-            exec "@generation@/specialisation/$mode/activate"
-            EOF
+            install -m 755 \\
+              ${lib.escapeShellArg themeSwitchTemplate} \\
+              ${lib.escapeShellArg themeSwitch}
             sed -i "s|@generation@|$newGenPath|" ${lib.escapeShellArg themeSwitch}
-            chmod +x ${lib.escapeShellArg themeSwitch}
           ''
         );
 
