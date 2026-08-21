@@ -170,9 +170,7 @@
         home.activation.noctaliaThemeSwitch = lib.mkIf (config.specialisation != { }) (
           lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             mkdir -p ${lib.escapeShellArg (builtins.dirOf themeSwitch)}
-            install -m 755 \\
-              ${lib.escapeShellArg themeSwitchTemplate} \\
-              ${lib.escapeShellArg themeSwitch}
+            install -m 755 ${lib.escapeShellArg themeSwitchTemplate} ${lib.escapeShellArg themeSwitch}
             sed -i "s|@generation@|$newGenPath|" ${lib.escapeShellArg themeSwitch}
           ''
         );
