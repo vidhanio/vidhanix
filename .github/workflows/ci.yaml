@@ -33,6 +33,24 @@ jobs:
         - pkg: berkeley-mono-variable
           runner: ubuntu-26.04-arm
           system: aarch64-linux
+        - pkg: bibata-combined
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: bibata-combined
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: bibata-cursor
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: bibata-cursor
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: bibata-hyprcursor
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: bibata-hyprcursor
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
         - pkg: breezex-combined
           runner: ubuntu-latest
           system: x86_64-linux

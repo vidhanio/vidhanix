@@ -38,6 +38,7 @@ def prepare_cursor(
     svg_directory: Path,
     base_color: str,
     outline_color: str,
+    watch_background_color: str | None,
 ) -> None:
     for png in cursor_directory.glob("*.png"):
         png.unlink()
@@ -46,11 +47,14 @@ def prepare_cursor(
     for source in svgs:
         destination = cursor_directory / source.name
         shutil.copy2(source, destination)
-        destination.write_text(
+        content = (
             destination.read_text()
             .replace("#00FF00", base_color)
             .replace("#0000FF", outline_color)
         )
+        if watch_background_color is not None:
+            content = content.replace("#FF0000", watch_background_color)
+        destination.write_text(content)
 
     rewrite_metadata(cursor_directory / "meta.hl", svgs)
 
@@ -61,6 +65,7 @@ def main() -> None:
     parser.add_argument("svg_directory", type=Path)
     parser.add_argument("base_color")
     parser.add_argument("outline_color")
+    parser.add_argument("watch_background_color", nargs="?")
     args = parser.parse_args()
 
     for cursor_directory in sorted((args.theme / "hyprcursors").iterdir()):
@@ -69,6 +74,7 @@ def main() -> None:
             args.svg_directory,
             args.base_color,
             args.outline_color,
+            args.watch_background_color,
         )
 
 
