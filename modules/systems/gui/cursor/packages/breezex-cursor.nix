@@ -84,32 +84,23 @@ let
 
   combined =
     {
-      runCommandLocal,
+      symlinkJoin,
       breezex-cursor,
       breezex-hyprcursor,
 
       baseColor ? "#000000",
       outlineColor ? "#FFFFFF",
     }:
-    runCommandLocal "breezex-combined-cursor"
-      {
-        meta = breezex-cursor.meta // {
-          description = "BreezeX Cursor theme combining both Xcursor and hyprcursor versions";
-        };
-      }
-      ''
-        mkdir -p $out/share/icons
-
-        cp -r "${breezex-cursor.override { inherit baseColor outlineColor; }}/share/icons/BreezeX Cursor" \
-          $out/share/icons/
-
-        chmod -R u+w $out/share/icons/BreezeX\ Cursor
-
-        cp -r "${
-          breezex-hyprcursor.override { inherit baseColor outlineColor; }
-        }/share/icons/BreezeX Cursor" \
-          $out/share/icons/
-      '';
+    symlinkJoin {
+      name = "breezex-combined-cursor";
+      paths = [
+        (breezex-cursor.override { inherit baseColor outlineColor; })
+        (breezex-hyprcursor.override { inherit baseColor outlineColor; })
+      ];
+      meta = breezex-cursor.meta // {
+        description = "BreezeX Cursor theme combining both Xcursor and hyprcursor versions";
+      };
+    };
 in
 {
   perSystem =
