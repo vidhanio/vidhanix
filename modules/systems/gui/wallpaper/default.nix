@@ -7,40 +7,41 @@
         colors = config.lib.stylix.colors;
         gradient = {
           black = {
-            color = "base00";
-            start = 0.75;
-            end = 0.50;
+            start = "base00";
+            end = "base0D";
+            percent = 0.25;
           };
-          accent = {
-            color = "base0D";
-            start = 0.25;
-            end = 0.50;
+          white = {
+            start = "base00";
+            end = "base0D";
+            percent = 0.50;
           };
         };
-        channel = color: component: colors."${color}-dec-${component}";
+        channel =
+          endpoint: side: component:
+          colors."${endpoint.${side}}-dec-${component}";
+        rmsChannel =
+          endpoint: component:
+          "rms(${channel endpoint "start" component}, ${
+            channel endpoint "end" component
+          }, ${toString endpoint.percent})";
       in
       {
         stylix = {
           image = pkgs.runCommandLocal "wallpaper.png" { } ''
             gradient=$(
               ${lib.getExe' pkgs.gawk "awk"} '
-                function rms(a, aWeight, b, bWeight) {
-                  return sqrt(aWeight * a ^ 2 + bWeight * b ^ 2) * 100
+                function rms(start, end, percent) {
+                  return sqrt((1 - percent) * start ^ 2 + percent * end ^ 2) * 100
                 }
                 BEGIN {
-                  blackR = ${channel gradient.black.color "r"}
-                  blackG = ${channel gradient.black.color "g"}
-                  blackB = ${channel gradient.black.color "b"}
-                  accentR = ${channel gradient.accent.color "r"}
-                  accentG = ${channel gradient.accent.color "g"}
-                  accentB = ${channel gradient.accent.color "b"}
                   printf "rgb(%.6f%%,%.6f%%,%.6f%%),rgb(%.6f%%,%.6f%%,%.6f%%)",
-                    rms(blackR, ${toString gradient.black.start}, accentR, ${toString gradient.accent.start}),
-                    rms(blackG, ${toString gradient.black.start}, accentG, ${toString gradient.accent.start}),
-                    rms(blackB, ${toString gradient.black.start}, accentB, ${toString gradient.accent.start}),
-                    rms(blackR, ${toString gradient.black.end}, accentR, ${toString gradient.accent.end}),
-                    rms(blackG, ${toString gradient.black.end}, accentG, ${toString gradient.accent.end}),
-                    rms(blackB, ${toString gradient.black.end}, accentB, ${toString gradient.accent.end})
+                    ${rmsChannel gradient.black "r"},
+                    ${rmsChannel gradient.black "g"},
+                    ${rmsChannel gradient.black "b"},
+                    ${rmsChannel gradient.white "r"},
+                    ${rmsChannel gradient.white "g"},
+                    ${rmsChannel gradient.white "b"}
                 }
               '
             )
