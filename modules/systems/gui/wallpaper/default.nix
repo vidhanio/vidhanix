@@ -9,12 +9,12 @@
           black = {
             start = "base00";
             end = "base0D";
-            percent = 0.25;
+            splitPercent = 0.75;
           };
           white = {
             start = "base00";
             end = "base0D";
-            percent = 0.50;
+            splitPercent = 0.50;
           };
         };
         channel =
@@ -24,15 +24,15 @@
           endpoint: component:
           "rms(${channel endpoint "start" component}, ${
             channel endpoint "end" component
-          }, ${toString endpoint.percent})";
+          }, ${toString endpoint.splitPercent})";
       in
       {
         stylix = {
           image = pkgs.runCommandLocal "wallpaper.png" { } ''
             gradient=$(
               ${lib.getExe' pkgs.gawk "awk"} '
-                function rms(start, end, percent) {
-                  return sqrt((1 - percent) * start ^ 2 + percent * end ^ 2) * 100
+                function rms(start, end, splitPercent) {
+                  return sqrt(splitPercent * start ^ 2 + (1 - splitPercent) * end ^ 2) * 100
                 }
                 BEGIN {
                   printf "rgb(%.6f%%,%.6f%%,%.6f%%),rgb(%.6f%%,%.6f%%,%.6f%%)",
