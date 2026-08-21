@@ -60,6 +60,7 @@
             shell = {
               popup_shadows = false;
               panel = {
+                control_center_placement = "floating";
                 shadow = false;
                 transparency_mode =
                   if config.stylix.opacity.popups == 1.0 then
@@ -80,6 +81,7 @@
             bar.main = {
               background_opacity = 0;
               capsule_opacity = config.stylix.opacity.desktop;
+              capsule_thickness = 1.0;
               border_width = 0;
               shadow = false;
 
