@@ -1,7 +1,12 @@
 {
   flake.aspects.pi-coding-agent = {
     homeManager =
-      { pkgs, config, ... }:
+      {
+        inputs',
+        pkgs,
+        config,
+        ...
+      }:
       let
         cfg = config.programs.pi-coding-agent;
 
@@ -22,7 +27,7 @@
         programs.pi-coding-agent = {
           enable = true;
 
-          package = pkgs.pi-coding-agent;
+          package = inputs'.llm-agents.packages.pi;
           extraPackages = [ pkgs.nodejs ];
 
           settings = {
