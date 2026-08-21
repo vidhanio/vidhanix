@@ -3,59 +3,10 @@
     { aspects, ... }:
     {
       desktop.includes = with aspects; [
-        core
+        gui
         cachyos-kernel
-        audio
-        clipboard
-        cursor
-        fonts
-        gnome-keyring
-        greeter
-        hyprland
-        lock
-        noctalia
-        ozone
-        stylix
-        wallpaper
-        xdg-autostart
-        logind
-        udisks
-        upower
-        aspects._1password
-        helium
-        nixcord
-        nixvim
-        steam
-        mosh
-        bat
-        bb
-        btop
-        comma
-        crush
-        direnv
-        eza
-        face
-        fd
-        fzf
-        gh
-        herdr
-        ghostty
-        git
-        lazygit
-        minecraft
-        nautilus
-        omp
-        opencode2
-        pi-coding-agent
-        prime-agent
-        ripgrep
-        spicetify
-        spotify-player
-        tmux
-        vacuum-tube
-        yazi
-        yt-dlp
-        zoxide
+        disk.provides.desktop
+        boot.provides.desktop
       ];
     };
 }

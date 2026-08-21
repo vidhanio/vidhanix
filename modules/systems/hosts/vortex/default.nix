@@ -5,8 +5,6 @@
       vortex = {
         includes = [
           aspects.desktop
-          aspects.disk.provides.desktop
-          aspects.boot.provides.desktop
           aspects.searxng
           aspects.tailscale.provides.exit-node
         ];

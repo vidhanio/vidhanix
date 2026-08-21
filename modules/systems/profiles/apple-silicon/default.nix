@@ -7,7 +7,7 @@
     {
       apple-silicon = {
         includes = [
-          aspects.desktop
+          aspects.gui
           aspects.disk.provides.apple-silicon
           aspects.steam.provides.apple-silicon
         ];
