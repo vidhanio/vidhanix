@@ -47,70 +47,108 @@
 
         stylix.targets.nixcord.extraCss = lib.mkIf (config.stylix.opacity.applications < 1.0) ''
           :root {
-              --window-opacity: ${toString config.stylix.opacity.applications};
+            --window-opacity: ${toString config.stylix.opacity.applications};
+            --discord-window: calc(var(--window-opacity) * 0.32);
+            --discord-rail: 36%;
+            --discord-sidebar: 24%;
+            --discord-content: 4%;
+            --discord-members: 16%;
+            --discord-raised: 30%;
+            --discord-border: 12%;
           }
 
-          .theme-light,
-          .theme-dark,
-          .theme-darker,
-          .theme-midnight,
-          .visual-refresh {
-              --background-primary: transparent !important;
-              --background-secondary: transparent !important;
-              --background-secondary-alt: transparent !important;
-              --background-tertiary: transparent !important;
-              --background-base-low: transparent !important;
-              --background-base-lower: transparent !important;
-              --background-base-lowest: transparent !important;
-              --background-base-tertiary: transparent !important;
-              --bg-base-primary: transparent !important;
-              --bg-base-secondary: transparent !important;
-              --bg-base-tertiary: transparent !important;
-              --bg-overlay-app-frame: transparent !important;
-              --bg-overlay-chat: transparent !important;
-              --chat-background-default: transparent !important;
-              --home-background: transparent !important;
+          :is(.theme-light, .theme-dark, .theme-darker, .theme-midnight, .visual-refresh) {
+            --background-primary: rgb(from var(--base00) r g b / var(--discord-content)) !important;
+            --background-secondary: rgb(from var(--base00) r g b / var(--discord-sidebar)) !important;
+            --background-secondary-alt: rgb(from var(--base00) r g b / var(--discord-raised)) !important;
+            --background-tertiary: rgb(from var(--base00) r g b / var(--discord-rail)) !important;
+            --background-base-low: rgb(from var(--base00) r g b / var(--discord-content)) !important;
+            --background-base-lower: rgb(from var(--base00) r g b / var(--discord-sidebar)) !important;
+            --background-base-lowest: rgb(from var(--base00) r g b / var(--discord-rail)) !important;
+            --background-base-tertiary: rgb(from var(--base00) r g b / var(--discord-rail)) !important;
+            --bg-base-primary: rgb(from var(--base00) r g b / var(--discord-content)) !important;
+            --bg-base-secondary: rgb(from var(--base00) r g b / var(--discord-sidebar)) !important;
+            --bg-base-tertiary: rgb(from var(--base00) r g b / var(--discord-rail)) !important;
+            --bg-overlay-app-frame: rgb(from var(--base00) r g b / var(--discord-window)) !important;
+            --bg-overlay-chat: rgb(from var(--base00) r g b / var(--discord-content)) !important;
+            --chat-background-default: rgb(from var(--base00) r g b / var(--discord-content)) !important;
+            --home-background: rgb(from var(--base00) r g b / var(--discord-content)) !important;
 
-              /* Hover and selection have to be additive tints now that the
-                 surfaces they used to sit on are gone. */
-              --background-message-hover: rgb(from var(--base05) r g b / 5%) !important;
-              --background-modifier-hover: rgb(from var(--base05) r g b / 7%) !important;
-              --background-modifier-active: rgb(from var(--base05) r g b / 11%) !important;
-              --background-modifier-selected: rgb(from var(--base05) r g b / 15%) !important;
-              --background-mentioned: rgb(from var(--base0A) r g b / 10%) !important;
-              --background-mentioned-hover: rgb(from var(--base0A) r g b / 16%) !important;
-              --background-message-highlight: rgb(from var(--base0A) r g b / 10%) !important;
+            --background-message-hover: rgb(from var(--base05) r g b / 6%) !important;
+            --background-modifier-hover: rgb(from var(--base05) r g b / 8%) !important;
+            --background-modifier-active: rgb(from var(--base05) r g b / 12%) !important;
+            --background-modifier-selected: rgb(from var(--base05) r g b / 16%) !important;
+            --background-modifier-accent: rgb(from var(--base05) r g b / var(--discord-border)) !important;
+            --background-mentioned: rgb(from var(--base0A) r g b / 12%) !important;
+            --background-mentioned-hover: rgb(from var(--base0A) r g b / 18%) !important;
+            --background-message-highlight: rgb(from var(--base0A) r g b / 12%) !important;
 
-              /* Blocks that should read as raised without going solid. */
-              --background-code: rgb(from var(--base05) r g b / 8%) !important;
-              --bg-overlay-3: rgb(from var(--base05) r g b / 8%) !important;
-              --channeltextarea-background: rgb(from var(--base05) r g b / 8%) !important;
+            --background-code: rgb(from var(--base00) r g b / 44%) !important;
+            --channeltextarea-background: rgb(from var(--base00) r g b / var(--discord-raised)) !important;
+            --input-background: rgb(from var(--base00) r g b / var(--discord-raised)) !important;
+            --modal-background: rgb(from var(--base00) r g b / 88%) !important;
+            --modal-footer-background: rgb(from var(--base00) r g b / 94%) !important;
+            --background-floating: rgb(from var(--base00) r g b / 92%) !important;
           }
 
-          /* Stylix's own theme also hardcodes a few element backgrounds straight
-             to var(--base00/01) -- the app frame, server rail, channel sidebar,
-             chat body and member list -- which the variable overrides above
-             cannot reach. Those rules are nested under .visual-refresh, so match
-             that specificity; being later in the same file wins the tie. */
-          :is(.theme-light, .theme-dark, .theme-darker, .theme-midnight, .visual-refresh) :is(
-              [class*="bg__"],
-              [class*="guilds_"],
-              [class*="sidebar_"],
-              [class*="chatContent_"],
-              [class*="members_"],
-              [class*="member_"],
-              [class*="callContainer_"]
+          html,
+          body,
+          #app-mount,
+          [class*="app_"],
+          [class*="bg__"] {
+            background: transparent !important;
+          }
+
+          html body {
+            background: rgb(from var(--base00) r g b / var(--discord-window)) !important;
+          }
+
+          html body [class*="guilds_"][class*="guilds_"] {
+            background-color: rgb(from var(--base00) r g b / var(--discord-rail)) !important;
+            border-right: 1px solid rgb(from var(--base05) r g b / var(--discord-border));
+          }
+
+          html body :is(
+            [class*="sidebarList_"][class*="sidebarList_"],
+            [class*="sidebar_"][class*="sidebar_"] > [class*="container_"]
           ) {
-              background: transparent !important;
+            background-color: rgb(from var(--base00) r g b / var(--discord-sidebar)) !important;
+          }
+
+          html body :is(
+            [class*="chatContent_"][class*="chatContent_"],
+            [class*="page_"][class*="page_"]
+          ) {
+            background-color: rgb(from var(--base00) r g b / var(--discord-content)) !important;
+          }
+
+          html body :is(
+            [class*="membersWrap_"][class*="membersWrap_"],
+            [class*="members_"][class*="members_"]
+          ) {
+            background-color: rgb(from var(--base00) r g b / var(--discord-members)) !important;
+          }
+
+          html body :is(
+            [class*="panels_"][class*="panels_"],
+            [class*="searchBar_"][class*="searchBar_"],
+            [class*="channelTextArea_"][class*="channelTextArea_"]
+          ) {
+            background-color: rgb(from var(--base00) r g b / var(--discord-raised)) !important;
+            border-color: rgb(from var(--base05) r g b / var(--discord-border)) !important;
+          }
+
+          html body [class*="modalContentInner_"][class*="theme-"] {
+            background-color: rgb(from var(--base00) r g b / 92%) !important;
+          }
+
+          html body [class*="modalContentInner_"] > [class*="container_"] > [class*="sidebar_"] {
+            background-color: rgb(from var(--base00) r g b / var(--discord-sidebar)) !important;
+            border-right: 1px solid rgb(from var(--base05) r g b / var(--discord-border));
           }
 
           :is(.theme-light, .theme-dark, .theme-darker, .theme-midnight, .visual-refresh) [class*="chatGradient_"] {
-              background: none !important;
-          }
-
-          /* The single translucent layer. */
-          body {
-              background-color: rgb(from var(--base00) r g b / var(--window-opacity)) !important;
+            background: none !important;
           }
         '';
 
