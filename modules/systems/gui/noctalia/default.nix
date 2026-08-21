@@ -93,6 +93,7 @@
 
               margin_edge = padding;
               margin_ends = padding;
+              padding = 0;
               inherit radius;
 
               start = [
