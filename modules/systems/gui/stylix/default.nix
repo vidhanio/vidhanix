@@ -15,10 +15,10 @@
         polarity = "dark";
         base16Scheme = ./scheme.yaml;
         opacity = {
-          applications = 0.5;
-          desktop = 0.5;
+          applications = 0.25;
           popups = 0.5;
-          terminal = 0.5;
+          desktop = 0.25;
+          terminal = 0.25;
         };
       };
     };

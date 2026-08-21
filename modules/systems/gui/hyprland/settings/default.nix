@@ -53,7 +53,12 @@
           };
           decoration = {
             rounding = 8;
-            blur.passes = 2;
+            blur = {
+              size = 4;
+              passes = 3;
+              vibrancy = 0.5;
+              vibrancy_darkness = 0.5;
+            };
             shadow.enabled = false;
           };
 

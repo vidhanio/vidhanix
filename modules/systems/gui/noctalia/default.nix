@@ -38,16 +38,22 @@
             };
           };
         locked = bind: bind // { _flags.locked = true; };
+
+        hyprlandCfg = config.wayland.windowManager.hyprland.settings.config;
+        padding = hyprlandCfg.general.gaps_out;
+        radius = hyprlandCfg.decoration.rounding;
+
         capsuleGroup = id: members: {
           inherit id members;
           fill = "surface_variant";
           opacity = config.stylix.opacity.desktop;
-          padding = 8;
-          radius = 8;
+          inherit padding radius;
         };
       in
       {
         imports = [ inputs.noctalia.homeModules.default ];
+
+        stylix.targets.noctalia.image.enable = false;
 
         programs.noctalia = {
           enable = true;
@@ -85,13 +91,9 @@
               border_width = 0;
               shadow = false;
 
-              # match hyprland's gaps_out
-              margin_edge = 8;
-              margin_ends = 8;
-
-              # match hyprland rounding
-              radius = 8;
-              padding = 0;
+              margin_edge = padding;
+              margin_ends = padding;
+              inherit radius;
 
               start = [
                 "group:datetime"
@@ -177,7 +179,7 @@
               match.namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd|window-switcher)$";
 
               no_anim = true;
-              ignore_alpha = 0.5;
+              ignore_alpha = 0;
               blur = true;
               blur_popups = true;
             }

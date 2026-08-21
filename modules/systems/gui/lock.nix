@@ -5,14 +5,31 @@
     };
 
     homeManager =
-      { osConfig, ... }:
+      { osConfig, config, ... }:
+      let
+        decorationCfg = config.wayland.windowManager.hyprland.settings.config.decoration;
+        blurCfg = decorationCfg.blur;
+      in
       {
         hyprland.binds."SUPER + L".exec_cmd = "loginctl lock-session";
+
+        stylix.targets.hyprlock = {
+          image.enable = false;
+          colors.override = with config.lib.stylix.colors; {
+            base00 = "${toString base00-dec-r}, ${toString base00-dec-g}, ${toString base00-dec-b}, ${toString config.stylix.opacity.desktop}";
+          };
+        };
 
         programs.hyprlock = {
           enable = true;
 
           settings = {
+            background = {
+              path = "screenshot";
+              blur_size = blurCfg.size;
+              blur_passes = blurCfg.passes;
+              inherit (blurCfg) vibrancy vibrancy_darkness;
+            };
             input-field = {
               monitor = osConfig.hardware.monitors.main.name;
 
@@ -20,8 +37,8 @@
               placeholder_text = "";
 
               # match hyprland/noctalia
-              rounding = 8;
-              outline_thickness = 4; # needs to be doubled for some reason
+              inherit (decorationCfg) rounding;
+              outline_thickness = 0;
             };
           };
         };
