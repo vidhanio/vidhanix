@@ -25,12 +25,7 @@
       };
 
     homeManager =
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }:
+      { config, ... }:
       let
         msg = command: { exec_cmd = "noctalia msg ${command}"; };
         repeating =
@@ -43,25 +38,6 @@
             };
           };
         locked = bind: bind // { _flags.locked = true; };
-
-        # `home.profileDirectory` is the user package profile (merged into
-        # `home-manager-path`), not the generations directory. The NixOS module
-        # activates Home Manager with driver version 1, which never creates
-        # `home-manager` generation profiles. Instead the base activation writes
-        # a theme-switch script with the newest base generation baked in, and
-        # the hook config links that script.
-        themeSwitch = "${config.xdg.stateHome}/noctalia/theme-switch";
-
-        # The generation path is only known at activation time, so the script
-        # ships with a placeholder that activation substitutes with `$newGenPath`.
-        # writeShellScript prepends the shebang itself, so the indented string
-        # content needs no column-zero care.
-        themeSwitchTemplate = pkgs.writeShellScript "noctalia-theme-switch" ''
-          mode="''${NOCTALIA_THEME_MODE:-}"
-          if [[ "$mode" == dark || "$mode" == light ]] && [ -x "@generation@/specialisation/$mode/activate" ]; then
-            exec "@generation@/specialisation/$mode/activate"
-          fi
-        '';
 
         hyprlandCfg = config.wayland.windowManager.hyprland.settings.config;
         padding = hyprlandCfg.general.gaps_out;
@@ -107,8 +83,6 @@
             };
 
             location.auto_locate = true;
-
-            hooks.theme_mode_changed = themeSwitch;
 
             bar.main = {
               background_opacity = 0;
@@ -166,14 +140,6 @@
             };
           };
         };
-
-        home.activation.noctaliaThemeSwitch = lib.mkIf (config.specialisation != { }) (
-          lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-            mkdir -p ${lib.escapeShellArg (builtins.dirOf themeSwitch)}
-            install -m 755 ${lib.escapeShellArg themeSwitchTemplate} ${lib.escapeShellArg themeSwitch}
-            sed -i "s|@generation@|$newGenPath|" ${lib.escapeShellArg themeSwitch}
-          ''
-        );
 
         persist.directories = [ ".local/state/noctalia" ];
         systemd.user.tmpfiles.rules = [

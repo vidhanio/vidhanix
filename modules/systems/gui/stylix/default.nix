@@ -11,15 +11,9 @@ let
     };
   };
 
-  # NixOS specialisations merge their configuration over the base at equal
-  # priority, so the overriding fields need mkForce. Harmless at the Home
-  # Manager level, where nothing else defines them.
-  specialisation = lib.mapAttrs (_: scheme: {
-    configuration.stylix = {
-      polarity = lib.mkForce scheme.polarity;
-      base16Scheme = lib.mkForce scheme.base16Scheme;
-    };
-  }) schemes;
+  # The base defaults mean the specialisations can override with plain values
+  # instead of mkForce.
+  specialisation = lib.mapAttrs (_: scheme: { configuration.stylix = scheme; }) schemes;
 in
 {
   flake-file.inputs = {
@@ -36,16 +30,15 @@ in
 
       stylix = {
         enable = true;
-      }
-      // schemes.dark;
+        polarity = lib.mkDefault schemes.dark.polarity;
+        base16Scheme = lib.mkDefault schemes.dark.base16Scheme;
+      };
 
       inherit specialisation;
     };
 
     homeManager = {
       stylix.targets.kde.enable = false;
-
-      inherit specialisation;
     };
   };
 }
