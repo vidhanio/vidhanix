@@ -51,6 +51,7 @@
         ripgrep
         spicetify
         spotify-player
+        t3code
         tmux
         vacuum-tube
         yazi
