@@ -21,9 +21,9 @@
         "${config.programs.ghostty.package}/share/applications/com.mitchellh.ghostty.desktop"
       ];
 
-      hyprland.autostartWorkspaces.ghostty = 1;
+      wayland.windowManager.hyprland.autostartWorkspaces.ghostty = 1;
 
-      hyprland.binds."SUPER + T".exec_cmd = "ghostty +new-window";
+      wayland.windowManager.hyprland.binds."SUPER + T".exec_cmd = "ghostty +new-window";
     };
   };
 }

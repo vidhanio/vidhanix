@@ -12,9 +12,9 @@
 
         xdg.autostart.entries = [ "${pkg}/share/applications/helium.desktop" ];
 
-        hyprland.autostartWorkspaces.helium = 1;
+        wayland.windowManager.hyprland.autostartWorkspaces.helium = 1;
 
-        hyprland.binds."SUPER + B".exec_cmd = "uwsm app -- helium";
+        wayland.windowManager.hyprland.binds."SUPER + B".exec_cmd = "uwsm app -- helium";
 
         persist.directories = [ ".config/net.imput.helium" ];
       };

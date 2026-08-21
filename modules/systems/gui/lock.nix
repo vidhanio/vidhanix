@@ -11,7 +11,7 @@
         blurCfg = decorationCfg.blur;
       in
       {
-        hyprland.binds."SUPER + L".exec_cmd = "loginctl lock-session";
+        wayland.windowManager.hyprland.binds."SUPER + L".exec_cmd = "loginctl lock-session";
 
         stylix.targets.hyprlock.image.enable = false;
 

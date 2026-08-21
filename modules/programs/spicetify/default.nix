@@ -23,7 +23,7 @@
             "${config.programs.spicetify.spicedSpotify}/share/applications/spotify.desktop"
           ];
 
-          hyprland.autostartWorkspaces.spotify = 2;
+          wayland.windowManager.hyprland.autostartWorkspaces.spotify = 2;
 
           persist.directories = [ ".config/spotify" ];
         };

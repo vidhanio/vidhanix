@@ -4,7 +4,7 @@
     homeManager =
       { pkgs, ... }:
       {
-        hyprland.binds = {
+        wayland.windowManager.hyprland.binds = {
           "SUPER + Q"."window.close" = { };
           "SUPER + M".exec_cmd = "uwsm stop";
           "SUPER + V".exec_cmd = "noctalia msg panel-toggle clipboard";

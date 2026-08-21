@@ -142,7 +142,7 @@
           "r %h/.local/state/noctalia/settings.toml" # get rid of imperative settings
         ];
 
-        hyprland.binds = {
+        wayland.windowManager.hyprland.binds = {
           "SUPER + e" = msg "panel-toggle launcher";
 
           "XF86AudioRaiseVolume" = repeating (msg "volume-up");
