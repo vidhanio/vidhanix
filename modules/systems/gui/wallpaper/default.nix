@@ -8,8 +8,8 @@
         gradient = {
           black = "base00";
           white = "base0D";
-          blackSplit = 1;
-          whiteSplit = 0.75;
+          blackSplit = 0;
+          whiteSplit = 0.2;
         };
         channel = color: component: colors."${color}-dec-${component}";
         rmsChannel =
@@ -22,7 +22,7 @@
             gradient=$(
               ${lib.getExe' pkgs.gawk "awk"} '
                 function rms(start, end, splitPercent) {
-                  return sqrt(splitPercent * start ^ 2 + (1 - splitPercent) * end ^ 2) * 100
+                  return sqrt((1 - splitPercent) * start ^ 2 + splitPercent * end ^ 2) * 100
                 }
                 BEGIN {
                   printf "rgb(%.6f%%,%.6f%%,%.6f%%),rgb(%.6f%%,%.6f%%,%.6f%%)",
