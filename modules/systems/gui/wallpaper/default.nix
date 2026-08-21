@@ -5,20 +5,22 @@
       { pkgs, config, ... }:
       let
         colors = config.lib.stylix.colors;
-        toFloat = value: builtins.fromJSON value;
-        sqrt = value: lib.foldl' (guess: _: (guess + value / guess) / 2.0) 1.0 (lib.range 1 12);
-        rms = a: b: sqrt ((a * a + b * b) / 2.0);
-        halfwayChannel =
-          channel: rms (toFloat colors."base00-dec-${channel}") (toFloat colors."base0D-dec-${channel}");
-        toPercent = value: "${toString (value * 100.0)}%";
-        halfway = "rgb(${toPercent (halfwayChannel "r")},${toPercent (halfwayChannel "g")},${toPercent (halfwayChannel "b")})";
       in
       {
         stylix = {
           image = pkgs.runCommandLocal "wallpaper.png" { } ''
+            halfway=$(
+              ${lib.getExe' pkgs.gawk "awk"} 'BEGIN {
+                printf "rgb(%.6f%%,%.6f%%,%.6f%%)",
+                  sqrt((${colors."base00-dec-r"} ^ 2 + ${colors."base0D-dec-r"} ^ 2) / 2) * 100,
+                  sqrt((${colors."base00-dec-g"} ^ 2 + ${colors."base0D-dec-g"} ^ 2) / 2) * 100,
+                  sqrt((${colors."base00-dec-b"} ^ 2 + ${colors."base0D-dec-b"} ^ 2) / 2) * 100
+              }'
+            )
+
             ${lib.getExe' pkgs.imagemagick "magick"} \
               ${./iceman.png} \
-              +level-colors "${colors.withHashtag.base00},${halfway}" \
+              +level-colors "${colors.withHashtag.base00},$halfway" \
               -colorspace sRGB \
               $out
           '';
