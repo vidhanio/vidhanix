@@ -53,3 +53,11 @@ end)
 hl.bind("SUPER + SHIFT + Tab", function()
 	cycleWorkspace("prev")
 end)
+
+-- Workspace gestures bypass binds.hide_special_on_workspace_change.
+hl.on("workspace.active", function(workspace)
+	local monitor = workspace.monitor
+	if monitor and monitor.active_special_workspace then
+		monitor:set_special_workspace({})
+	end
+end)
