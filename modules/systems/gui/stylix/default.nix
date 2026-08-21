@@ -23,13 +23,17 @@
       stylix.targets.kde.enable = false;
 
       specialisation = {
-        dark.configuration.stylix = {
-          polarity = "dark";
-          base16Scheme = "${inputs.tinted-schemes}/base16/catppuccin-mocha.yaml";
+        dark.configuration = {
+          stylix = {
+            polarity = "dark";
+            base16Scheme = "${inputs.tinted-schemes}/base16/catppuccin-mocha.yaml";
+          };
         };
-        light.configuration.stylix = {
-          polarity = "light";
-          base16Scheme = "${inputs.tinted-schemes}/base16/catppuccin-latte.yaml";
+        light.configuration = {
+          stylix = {
+            polarity = "light";
+            base16Scheme = "${inputs.tinted-schemes}/base16/catppuccin-latte.yaml";
+          };
         };
       };
     };
