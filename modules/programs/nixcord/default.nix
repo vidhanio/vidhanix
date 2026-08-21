@@ -94,13 +94,16 @@
           html,
           body,
           #app-mount,
-          [class*="app_"],
-          [class*="bg__"] {
+          [class*="app_"] {
             background: transparent !important;
           }
 
           html body {
             background: rgb(from var(--base00) r g b / var(--discord-window)) !important;
+          }
+
+          html body [class*="bg__"][class*="bg__"] {
+            background: transparent !important;
           }
 
           html body [class*="guilds_"][class*="guilds_"] {
