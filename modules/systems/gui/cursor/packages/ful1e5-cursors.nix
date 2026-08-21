@@ -107,10 +107,11 @@ let
     {
       lib,
       stdenvNoCC,
-      bibata-cursors,
+      fetchFromGitHub,
       cbmp,
       clickgen,
       zip,
+      nix-update-script,
 
       style ? "Modern",
       rightHand ? false,
@@ -132,9 +133,16 @@ let
       sourceDirectory = lib.toLower checkedStyle + lib.optionalString rightHand "-right";
       configDirectory = if rightHand then "right" else "normal";
     in
-    stdenvNoCC.mkDerivation {
+    stdenvNoCC.mkDerivation (finalAttrs: {
       pname = "bibata-cursor";
-      inherit (bibata-cursors) version src;
+      version = "2.0.7";
+
+      src = fetchFromGitHub {
+        owner = "ful1e5";
+        repo = "Bibata_Cursor";
+        tag = "v${finalAttrs.version}";
+        hash = "sha256-kIKidw1vditpuxO1gVuZeUPdWBzkiksO/q2R/+DUdEc=";
+      };
 
       nativeBuildInputs = [
         (cbmp.overrideAttrs (old: {
@@ -159,8 +167,18 @@ let
         runHook postBuild
       '';
 
-      inherit (bibata-cursors) meta;
-    };
+      passthru.updateScript = nix-update-script {
+        extraArgs = [ "--flake" ];
+      };
+
+      meta = {
+        description = "Material based cursor theme";
+        homepage = "https://github.com/ful1e5/Bibata_Cursor";
+        changelog = "https://github.com/ful1e5/Bibata_Cursor/releases/tag/${finalAttrs.src.tag}";
+        license = lib.licenses.gpl3Only;
+        platforms = lib.platforms.all;
+      };
+    });
 
   bibataHyprcursor =
     {
@@ -241,35 +259,82 @@ let
       };
     };
 
-  googleHyprcursor =
+  googleCursor =
     {
       lib,
+      stdenvNoCC,
+      fetchFromGitHub,
+      cbmp,
+      clickgen,
+      zip,
+      nix-update-script,
+
+      baseColor ? "#000000",
+      outlineColor ? "#FFFFFF",
+    }:
+    stdenvNoCC.mkDerivation (finalAttrs: {
+      pname = "google-cursor";
+      version = "2.0.0";
+
+      src = fetchFromGitHub {
+        owner = "ful1e5";
+        repo = "Google_Cursor";
+        tag = "v${finalAttrs.version}";
+        hash = "sha256-vzNtm3gwkGjHlC2G7dTsieQLOu67GnB3BIUSD6pZ6AA=";
+      };
+
+      nativeBuildInputs = [
+        (cbmp.overrideAttrs (old: {
+          patches = old.patches or [ ] ++ [
+            ./cbmp-disable-ora.patch
+          ];
+        }))
+        clickgen
+        zip
+      ];
+
+      buildPhase = ''
+        runHook preBuild
+
+        cbmp -d svg -n "Google Cursor" \
+          -bc ${lib.escapeShellArg baseColor} \
+          -oc ${lib.escapeShellArg outlineColor}
+        # cbmp cannot render the upstream animated SVGs.
+        cp bitmaps/GoogleDot-Black/{left_ptr_watch,wait}-*.png "bitmaps/Google Cursor"
+        ctgen build.toml -p x11 -d "bitmaps/Google Cursor" -o $out/share/icons \
+          -n "Google Cursor" -c "Opensource cursor theme inspired by Google"
+
+        runHook postBuild
+      '';
+
+      passthru.updateScript = nix-update-script {
+        extraArgs = [ "--flake" ];
+      };
+
+      meta = {
+        description = "Opensource cursor theme inspired by Google";
+        homepage = "https://github.com/ful1e5/Google_Cursor";
+        changelog = "https://github.com/ful1e5/Google_Cursor/releases/tag/${finalAttrs.src.tag}";
+        license = lib.licenses.gpl3Plus;
+        platforms = lib.platforms.all;
+      };
+    });
+
+  googleHyprcursor =
+    {
       google-cursor,
       mkHyprcursor,
 
-      color ? "Black",
+      baseColor ? "#000000",
+      outlineColor ? "#FFFFFF",
     }:
-    let
-      checkedColor =
-        if
-          lib.elem color [
-            "Black"
-            "Blue"
-            "Red"
-            "White"
-          ]
-        then
-          color
-        else
-          throw "unsupported Google cursor color: ${color}";
-      themeName = "GoogleDot-${checkedColor}";
-    in
     mkHyprcursor {
-      xcursor = google-cursor;
-      inherit themeName;
+      xcursor = google-cursor.override { inherit baseColor outlineColor; };
+      themeName = "Google Cursor";
       pname = "google-hyprcursor";
+      inherit (google-cursor) src;
       meta = google-cursor.meta // {
-        description = "${themeName} adapted for hyprcursor";
+        description = "Google Cursor theme adapted for hyprcursor";
       };
     };
 
@@ -279,16 +344,17 @@ let
       google-cursor,
       google-hyprcursor,
 
-      color ? "Black",
+      baseColor ? "#000000",
+      outlineColor ? "#FFFFFF",
     }:
     symlinkJoin {
       name = "google-combined-cursor";
       paths = [
-        google-cursor
-        (google-hyprcursor.override { inherit color; })
+        (google-cursor.override { inherit baseColor outlineColor; })
+        (google-hyprcursor.override { inherit baseColor outlineColor; })
       ];
       meta = google-cursor.meta // {
-        description = "Google cursor themes with a ${color} hyprcursor variant";
+        description = "Google Cursor theme combining both Xcursor and hyprcursor versions";
       };
     };
 in
@@ -318,7 +384,7 @@ in
           inherit (self'.packages) bibata-cursor bibata-hyprcursor;
         };
 
-        inherit (pkgs) google-cursor;
+        google-cursor = pkgs.callPackage googleCursor { };
         google-hyprcursor = pkgs.callPackage googleHyprcursor {
           inherit mkHyprcursor;
           inherit (self'.packages) google-cursor;

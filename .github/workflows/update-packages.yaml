@@ -42,8 +42,10 @@ jobs:
       fail-fast: false
       matrix:
         pkg:
+        - bibata-cursor
         - breezex-cursor
         - conventional-pre-commit
+        - google-cursor
 name: Update Packages
 'on':
   push:
