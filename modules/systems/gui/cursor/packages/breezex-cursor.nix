@@ -57,56 +57,30 @@ let
   hyprcursor =
     {
       lib,
-      stdenvNoCC,
       breezex-cursor,
-      hyprcursor,
+      mkHyprcursor,
       python3,
-      xcur2png,
 
       baseColor ? "#000000",
       outlineColor ? "#FFFFFF",
     }:
-    stdenvNoCC.mkDerivation (finalAttrs: {
+    mkHyprcursor {
+      xcursor = breezex-cursor;
+      themeName = "BreezeX Cursor";
       pname = "breezex-hyprcursor";
-      inherit (breezex-cursor) version src;
+      inherit (breezex-cursor) src;
 
-      nativeBuildInputs = [
-        hyprcursor
-        python3
-        xcur2png
-      ];
-
-      buildPhase = ''
-        runHook preBuild
-
-        theme="extracted_BreezeX Cursor"
-        hyprcursor-util -x "${breezex-cursor}/share/icons/BreezeX Cursor" -o .
-        python3 ${./prepare-hyprcursor.py} "$theme" ./svg \
+      extraNativeBuildInputs = [ python3 ];
+      postExtract = ''
+        python3 ${./prepare-hyprcursor.py} "$extractedTheme" ./svg \
           ${lib.escapeShellArg baseColor} ${lib.escapeShellArg outlineColor}
-
-        cat > "$theme/manifest.hl" << EOF
-        name = BreezeX Cursor
-        description = Extended KDE cursor
-        version = ${finalAttrs.version}
-        cursors_directory = hyprcursors
-        EOF
-
-        hyprcursor-util -c "$theme"
       '';
 
-      installPhase = ''
-        runHook preInstall
-
-        mkdir -p $out/share/icons
-        cp -r "./theme_BreezeX Cursor" "$out/share/icons/BreezeX Cursor"
-
-        runHook postInstall
-      '';
-
+      description = breezex-cursor.meta.description;
       meta = breezex-cursor.meta // {
         description = "BreezeX Cursor theme adapted for hyprcursor";
       };
-    });
+    };
 
   combined =
     {
@@ -145,6 +119,7 @@ in
         breezex-cursor = pkgs.callPackage cursor { };
         breezex-hyprcursor = pkgs.callPackage hyprcursor {
           inherit (self'.packages) breezex-cursor;
+          mkHyprcursor = pkgs.callPackage ./_mk-hyprcursor.nix { };
         };
         breezex-combined = pkgs.callPackage combined {
           inherit (self'.packages) breezex-cursor breezex-hyprcursor;
