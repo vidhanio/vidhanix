@@ -56,9 +56,11 @@ let
     });
   hyprcursor =
     {
+      lib,
       stdenvNoCC,
       breezex-cursor,
       hyprcursor,
+      python3,
       xcur2png,
 
       baseColor ? "#000000",
@@ -68,67 +70,28 @@ let
       pname = "breezex-hyprcursor";
       inherit (breezex-cursor) version src;
 
-      buildInputs = [
+      nativeBuildInputs = [
         hyprcursor
+        python3
         xcur2png
       ];
 
       buildPhase = ''
         runHook preBuild
 
+        theme="extracted_BreezeX Cursor"
         hyprcursor-util -x "${breezex-cursor}/share/icons/BreezeX Cursor" -o .
+        python3 ${./prepare-hyprcursor.py} "$theme" ./svg \
+          ${lib.escapeShellArg baseColor} ${lib.escapeShellArg outlineColor}
 
-        for dir in "extracted_BreezeX Cursor/hyprcursors"/*; do
-          cursor_name=$(basename "$dir")
-          rm "$dir"/*.png
-
-          if [ -d "./svg/$cursor_name" ]; then
-            cp -r "./svg/$cursor_name"/*.svg "$dir"
-          else
-            cp "./svg/$cursor_name.svg" "$dir"
-          fi
-
-          meta_file="$dir/meta.hl"
-
-          index=0
-          tmp=$(mktemp)
-
-          svgs=()
-          for svg in "$dir"/*.svg; do
-            sed -i "s/#00FF00/${baseColor}/g; s/#0000FF/${outlineColor}/g" "$svg"
-            svgs+=("$(basename "$svg")")
-          done
-
-          while read -r line; do
-            if [[ ! $line =~ ^define_size\ = ]]; then
-              echo $line 
-              continue
-            fi
-
-            args=$(echo $line | cut -d '=' -f 2 | tr -d ' ')
-            size=$(echo $args | cut -d, -f 1 | tr -d ' ')
-            delay=$(echo $args | cut -d, -f 3 | tr -d ' ')
-
-            if [ "$size" -ne 16 ]; then
-              continue
-            fi
-
-            echo "define_size = 0, ''${svgs[index]}, $delay"
-
-            index=$((index + 1))
-          done < "$meta_file" > "$tmp"
-
-          mv "$tmp" "$meta_file"
-        done
-
-        cat > "extracted_BreezeX Cursor/manifest.hl" << EOF
+        cat > "$theme/manifest.hl" << EOF
         name = BreezeX Cursor
         description = Extended KDE cursor
         version = ${finalAttrs.version}
         cursors_directory = hyprcursors
         EOF
 
-        hyprcursor-util -c "extracted_BreezeX Cursor"
+        hyprcursor-util -c "$theme"
       '';
 
       installPhase = ''
