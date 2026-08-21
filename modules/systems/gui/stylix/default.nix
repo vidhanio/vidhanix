@@ -22,5 +22,7 @@
         };
       };
     };
+
+    homeManager.stylix.targets.kde.enable = false;
   };
 }
