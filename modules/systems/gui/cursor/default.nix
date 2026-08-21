@@ -13,7 +13,7 @@
               }
             );
             name = "Bibata Cursor";
-            size = 32;
+            size = 24;
           };
         };
       };
