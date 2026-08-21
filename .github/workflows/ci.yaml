@@ -81,6 +81,24 @@ jobs:
         - pkg: generate-files
           runner: ubuntu-26.04-arm
           system: aarch64-linux
+        - pkg: google-combined
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: google-combined
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: google-cursor
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: google-cursor
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
+        - pkg: google-hyprcursor
+          runner: ubuntu-latest
+          system: x86_64-linux
+        - pkg: google-hyprcursor
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
         - pkg: google-sans-flex
           runner: ubuntu-latest
           system: x86_64-linux

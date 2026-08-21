@@ -240,6 +240,57 @@ let
         description = "Bibata Cursor theme combining both Xcursor and hyprcursor versions";
       };
     };
+
+  googleHyprcursor =
+    {
+      lib,
+      google-cursor,
+      mkHyprcursor,
+
+      color ? "Black",
+    }:
+    let
+      checkedColor =
+        if
+          lib.elem color [
+            "Black"
+            "Blue"
+            "Red"
+            "White"
+          ]
+        then
+          color
+        else
+          throw "unsupported Google cursor color: ${color}";
+      themeName = "GoogleDot-${checkedColor}";
+    in
+    mkHyprcursor {
+      xcursor = google-cursor;
+      inherit themeName;
+      pname = "google-hyprcursor";
+      meta = google-cursor.meta // {
+        description = "${themeName} adapted for hyprcursor";
+      };
+    };
+
+  googleCombined =
+    {
+      symlinkJoin,
+      google-cursor,
+      google-hyprcursor,
+
+      color ? "Black",
+    }:
+    symlinkJoin {
+      name = "google-combined-cursor";
+      paths = [
+        google-cursor
+        (google-hyprcursor.override { inherit color; })
+      ];
+      meta = google-cursor.meta // {
+        description = "Google cursor themes with a ${color} hyprcursor variant";
+      };
+    };
 in
 {
   perSystem =
@@ -265,6 +316,15 @@ in
         };
         bibata-combined = pkgs.callPackage bibataCombined {
           inherit (self'.packages) bibata-cursor bibata-hyprcursor;
+        };
+
+        inherit (pkgs) google-cursor;
+        google-hyprcursor = pkgs.callPackage googleHyprcursor {
+          inherit mkHyprcursor;
+          inherit (self'.packages) google-cursor;
+        };
+        google-combined = pkgs.callPackage googleCombined {
+          inherit (self'.packages) google-cursor google-hyprcursor;
         };
       };
     };
