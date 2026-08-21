@@ -33,7 +33,7 @@
 
               inner_color =
                 with config.lib.stylix.colors;
-                lib.mkForce "rgba(${toString base00-dec-r}, ${toString base00-dec-g}, ${toString base00-dec-b}, ${toString config.stylix.opacity.desktop})";
+                lib.mkForce "rgba(${toString base00-rgb-r}, ${toString base00-rgb-g}, ${toString base00-rgb-b}, ${toString config.stylix.opacity.desktop})";
 
               # match hyprland/noctalia
               inherit (decorationCfg) rounding;
