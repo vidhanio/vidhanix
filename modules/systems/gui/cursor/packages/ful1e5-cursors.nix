@@ -112,12 +112,14 @@ let
       clickgen,
       zip,
       nix-update-script,
+      python3,
 
       style ? "Modern",
       rightHand ? false,
       baseColor ? "#000000",
       outlineColor ? "#FFFFFF",
       watchBackgroundColor ? baseColor,
+      palette ? { },
     }:
     let
       checkedStyle =
@@ -132,6 +134,34 @@ let
           throw "unsupported Bibata cursor style: ${style}";
       sourceDirectory = lib.toLower checkedStyle + lib.optionalString rightHand "-right";
       configDirectory = if rightHand then "right" else "normal";
+      defaultPalette = {
+        spinnerBlue = "#32A0DA";
+        spinnerGreen = "#7EBA41";
+        spinnerRed = "#F05024";
+        spinnerYellow = "#FCB813";
+        copy = "#06B231";
+        pin = "#0A6857";
+        move = "#179DD8";
+        person = "#2C2C2C";
+        topLeftCorner = "#4FADDF";
+        contextMenu = "#5F3BE4";
+        link = "#606060";
+        bottomLeftCorner = "#96C865";
+        topRightCorner = "#F1613A";
+        ask = "#F27400";
+        bottomRightCorner = "#FDBE2A";
+        error = "#FE0000";
+      };
+      unsupportedPaletteColors = lib.subtractLists (lib.attrNames defaultPalette) (lib.attrNames palette);
+      resolvedPalette =
+        if unsupportedPaletteColors == [ ] then
+          defaultPalette // palette
+        else
+          throw "unsupported Bibata palette colors: ${lib.concatStringsSep ", " unsupportedPaletteColors}";
+      extraReplacements = lib.mapAttrs' (name: value: {
+        name = value;
+        value = resolvedPalette.${name};
+      }) defaultPalette;
     in
     stdenvNoCC.mkDerivation (finalAttrs: {
       pname = "bibata-cursor";
@@ -152,12 +182,15 @@ let
         }))
         clickgen
         zip
+        python3
       ];
 
       buildPhase = ''
         runHook preBuild
 
-        cbmp -d svg/${sourceDirectory} -o bitmaps \
+        cp -LR svg/${sourceDirectory} customized-svg
+        python3 ${./recolor-svg.py} customized-svg ${lib.escapeShellArg (builtins.toJSON extraReplacements)}
+        cbmp -d customized-svg -o bitmaps \
           -bc ${lib.escapeShellArg baseColor} \
           -oc ${lib.escapeShellArg outlineColor} \
           -wc ${lib.escapeShellArg watchBackgroundColor}
@@ -167,8 +200,11 @@ let
         runHook postBuild
       '';
 
-      passthru.updateScript = nix-update-script {
-        extraArgs = [ "--flake" ];
+      passthru = {
+        inherit resolvedPalette extraReplacements;
+        updateScript = nix-update-script {
+          extraArgs = [ "--flake" ];
+        };
       };
 
       meta = {
@@ -192,6 +228,7 @@ let
       baseColor ? "#000000",
       outlineColor ? "#FFFFFF",
       watchBackgroundColor ? baseColor,
+      palette ? { },
     }:
     let
       overrides = {
@@ -201,12 +238,14 @@ let
           baseColor
           outlineColor
           watchBackgroundColor
+          palette
           ;
       };
+      xcursor = bibata-cursor.override overrides;
       sourceDirectory = lib.toLower style + lib.optionalString rightHand "-right";
     in
     mkHyprcursor {
-      xcursor = bibata-cursor.override overrides;
+      inherit xcursor;
       themeName = "Bibata Cursor";
       pname = "bibata-hyprcursor";
       inherit (bibata-cursor) src;
@@ -216,7 +255,8 @@ let
         python3 ${./prepare-hyprcursor.py} "$extractedTheme" ./svg/${sourceDirectory} \
           ${lib.escapeShellArg baseColor} \
           ${lib.escapeShellArg outlineColor} \
-          ${lib.escapeShellArg watchBackgroundColor}
+          ${lib.escapeShellArg watchBackgroundColor} \
+          ${lib.escapeShellArg (builtins.toJSON xcursor.extraReplacements)}
       '';
 
       description = bibata-cursor.meta.description;
@@ -236,6 +276,7 @@ let
       baseColor ? "#000000",
       outlineColor ? "#FFFFFF",
       watchBackgroundColor ? baseColor,
+      palette ? { },
     }:
     let
       overrides = {
@@ -245,6 +286,7 @@ let
           baseColor
           outlineColor
           watchBackgroundColor
+          palette
           ;
       };
     in
@@ -375,13 +417,15 @@ in
           inherit (self'.packages) breezex-cursor breezex-hyprcursor;
         };
 
-        bibata-cursor = pkgs.callPackage bibataCursor { };
+        bibata-cursor = pkgs.callPackage bibataCursor { palette = { }; };
         bibata-hyprcursor = pkgs.callPackage bibataHyprcursor {
           inherit mkHyprcursor;
+          palette = { };
           inherit (self'.packages) bibata-cursor;
         };
         bibata-combined = pkgs.callPackage bibataCombined {
           inherit (self'.packages) bibata-cursor bibata-hyprcursor;
+          palette = { };
         };
 
         google-cursor = pkgs.callPackage googleCursor { };

@@ -8,8 +8,26 @@
             package = self'.packages.bibata-combined.override (
               with config.lib.stylix.colors.withHashtag;
               {
-                baseColor = base01;
-                outlineColor = base07;
+                baseColor = base00;
+                outlineColor = base05;
+                palette = {
+                  spinnerBlue = blue;
+                  spinnerGreen = green;
+                  spinnerRed = red;
+                  spinnerYellow = yellow;
+                  copy = green;
+                  pin = cyan;
+                  move = blue;
+                  person = base02;
+                  topLeftCorner = blue;
+                  contextMenu = magenta;
+                  link = base03;
+                  bottomLeftCorner = green;
+                  topRightCorner = orange;
+                  ask = orange;
+                  bottomRightCorner = yellow;
+                  error = red;
+                };
               }
             );
             name = "Bibata Cursor";

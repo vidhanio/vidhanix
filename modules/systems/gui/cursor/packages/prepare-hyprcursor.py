@@ -1,4 +1,5 @@
 import argparse
+import json
 import re
 import shutil
 from pathlib import Path
@@ -39,6 +40,7 @@ def prepare_cursor(
     base_color: str,
     outline_color: str,
     watch_background_color: str | None,
+    extra_replacements: dict[str, str],
 ) -> None:
     for png in cursor_directory.glob("*.png"):
         png.unlink()
@@ -47,13 +49,17 @@ def prepare_cursor(
     for source in svgs:
         destination = cursor_directory / source.name
         shutil.copy2(source, destination)
-        content = (
-            destination.read_text()
-            .replace("#00FF00", base_color)
-            .replace("#0000FF", outline_color)
-        )
+        replacements = {
+            "#00FF00": base_color,
+            "#0000FF": outline_color,
+            **extra_replacements,
+        }
         if watch_background_color is not None:
-            content = content.replace("#FF0000", watch_background_color)
+            replacements["#FF0000"] = watch_background_color
+
+        content = destination.read_text()
+        for original, replacement in replacements.items():
+            content = content.replace(original, replacement)
         destination.write_text(content)
 
     rewrite_metadata(cursor_directory / "meta.hl", svgs)
@@ -66,6 +72,7 @@ def main() -> None:
     parser.add_argument("base_color")
     parser.add_argument("outline_color")
     parser.add_argument("watch_background_color", nargs="?")
+    parser.add_argument("extra_replacements", nargs="?", type=json.loads, default={})
     args = parser.parse_args()
 
     for cursor_directory in sorted((args.theme / "hyprcursors").iterdir()):
@@ -75,6 +82,7 @@ def main() -> None:
             args.base_color,
             args.outline_color,
             args.watch_background_color,
+            args.extra_replacements,
         )
 
 
