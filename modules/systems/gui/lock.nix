@@ -1,4 +1,4 @@
-{
+{ lib, ... }: {
   flake.aspects.lock = {
     nixos = {
       security.pam.services.hyprlock = { };
@@ -13,12 +13,7 @@
       {
         hyprland.binds."SUPER + L".exec_cmd = "loginctl lock-session";
 
-        stylix.targets.hyprlock = {
-          image.enable = false;
-          colors.override = with config.lib.stylix.colors; {
-            base00 = "${toString base00-dec-r}, ${toString base00-dec-g}, ${toString base00-dec-b}, ${toString config.stylix.opacity.desktop}";
-          };
-        };
+        stylix.targets.hyprlock.image.enable = false;
 
         programs.hyprlock = {
           enable = true;
@@ -35,6 +30,10 @@
 
               size = "20%, 5%";
               placeholder_text = "";
+
+              inner_color =
+                with config.lib.stylix.colors;
+                lib.mkForce "rgba(${toString base00-dec-r}, ${toString base00-dec-g}, ${toString base00-dec-b}, ${toString config.stylix.opacity.desktop})";
 
               # match hyprland/noctalia
               inherit (decorationCfg) rounding;
