@@ -25,7 +25,11 @@
       };
 
     homeManager =
-      { config, ... }:
+      {
+        config,
+        pkgs,
+        ...
+      }:
       let
         msg = command: { exec_cmd = "noctalia msg ${command}"; };
         repeating =
@@ -38,6 +42,13 @@
             };
           };
         locked = bind: bind // { _flags.locked = true; };
+
+        switchTheme = pkgs.writeShellScript "noctalia-switch-theme" ''
+          mode="''${NOCTALIA_THEME_MODE:-}"
+          if [[ "$mode" == dark || "$mode" == light ]]; then
+            exec sudo /nix/var/nix/profiles/system/specialisation/$mode/bin/switch-to-configuration switch
+          fi
+        '';
 
         hyprlandCfg = config.wayland.windowManager.hyprland.settings.config;
         padding = hyprlandCfg.general.gaps_out;
@@ -83,6 +94,8 @@
             };
 
             location.auto_locate = true;
+
+            hooks.theme_mode_changed = switchTheme;
 
             bar.main = {
               background_opacity = 0;
