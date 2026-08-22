@@ -43,13 +43,6 @@
           };
         locked = bind: bind // { _flags.locked = true; };
 
-        switchTheme = pkgs.writeShellScript "noctalia-switch-theme" ''
-          mode="''${NOCTALIA_THEME_MODE:-}"
-          if [[ "$mode" == dark || "$mode" == light ]]; then
-            exec sudo /nix/var/nix/profiles/system/specialisation/$mode/bin/switch-to-configuration test
-          fi
-        '';
-
         hyprlandCfg = config.wayland.windowManager.hyprland.settings.config;
         padding = hyprlandCfg.general.gaps_out;
         radius = hyprlandCfg.decoration.rounding;
@@ -95,7 +88,12 @@
 
             location.auto_locate = true;
 
-            hooks.theme_mode_changed = switchTheme;
+            hooks.theme_mode_changed = pkgs.writeShellScript "noctalia-switch-theme" ''
+              mode="''${NOCTALIA_THEME_MODE:-}"
+              if [[ "$mode" == dark || "$mode" == light ]]; then
+                exec sudo /nix/var/nix/profiles/system/specialisation/$mode/bin/switch-to-configuration test
+              fi
+            '';
 
             bar.main = {
               background_opacity = 0;
