@@ -4,9 +4,12 @@
     {
       desktop.includes = with aspects; [
         gui
+
+        # keep-sorted start
+        boot.provides.desktop
         cachyos-kernel
         disk.provides.desktop
-        boot.provides.desktop
+        # keep-sorted end
       ];
     };
 }

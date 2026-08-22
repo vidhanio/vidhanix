@@ -4,59 +4,65 @@
     {
       gui.includes = with aspects; [
         core
-        audio
-        clipboard
-        cursor
-        fonts
-        gnome-keyring
-        greeter
-        hyprland
-        lock
-        noctalia
-        ozone
-        stylix
-        wallpaper
-        xdg-autostart
-        logind
-        udisks
-        upower
+
+        # keep-sorted start
         _1password
         agent-browser
-        helium
-        nixcord
-        nixvim
-        steam
-        mosh
+        alacritty
+        audio
         bat
         bb
         btop
+        clipboard
         comma
         crush
+        cursor
         direnv
         eza
         face
         fd
+        fonts
         fzf
         gh
-        herdr
+        ghostty
         git
+        gnome-keyring
+        greeter
+        helium
+        herdr
+        hyprland
         kitty
         lazygit
+        lock
+        logind
         minecraft
+        mosh
         nautilus
+        nixcord
+        nixvim
+        noctalia
         omp
         opencode2
+        ozone
         pi-coding-agent
         prime-agent
+        random-term
         ripgrep
         spicetify
         spotify-player
-        t3code
+        steam
+        stylix
         tmux
+        udisks
+        upower
         vacuum-tube
+        wallpaper
+        wezterm
+        xdg-autostart
         yazi
         yt-dlp
         zoxide
+        # keep-sorted end
       ];
     };
 }

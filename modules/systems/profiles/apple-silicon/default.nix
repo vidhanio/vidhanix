@@ -6,10 +6,13 @@
     { aspects, ... }:
     {
       apple-silicon = {
-        includes = [
-          aspects.gui
-          aspects.disk.provides.apple-silicon
-          aspects.steam.provides.apple-silicon
+        includes = with aspects; [
+          gui
+
+          # keep-sorted start
+          disk.provides.apple-silicon
+          steam.provides.apple-silicon
+          # keep-sorted end
         ];
         nixos = {
           imports = [ inputs.nixos-apple-silicon.nixosModules.default ];

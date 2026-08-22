@@ -3,23 +3,25 @@
     { aspects, ... }:
     {
       core.includes = with aspects; [
-        nix
-        home-manager
-        sops
-        disk
-        impermanence
-        swap
-        boot
-        locale
+        # keep-sorted start
         automatic-timezoned
+        boot
+        disk
+        fish
+        home-manager
+        impermanence
+        locale
         network
-        tailscale
+        nh
+        nix
+        run0
+        sops
         ssh-client
         ssh-server
-        run0
-        fish
-        nh
+        swap
         systemd
+        tailscale
+        # keep-sorted end
       ];
     };
 }

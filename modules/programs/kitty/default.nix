@@ -13,9 +13,6 @@
       ];
 
       wayland.windowManager.hyprland.autostartWorkspaces.kitty = 1;
-
-      # Open a new window in the autostarted instance when one is running.
-      wayland.windowManager.hyprland.binds."SUPER + T".exec_cmd = "kitty --single-instance";
     };
   };
 }
