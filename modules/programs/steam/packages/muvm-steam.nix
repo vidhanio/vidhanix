@@ -46,6 +46,24 @@ let
         ln -snf ${mesa32} /run/opengl-driver-32
       '';
 
+      # muvm forwards no D-Bus session bus into the guest, and AF_UNIX sockets
+      # don't cross virtiofs, so Steam can't register its tray icon. The
+      # muvm-dbus-bridge user service (see the steam module) exposes the host
+      # session bus on loopback TCP; passt routes guest traffic to the host's
+      # default gateway over to loopback, so the guest points at
+      # tcp:host=<host default gateway>. Keep the port in sync with the service.
+      dbusBridgePort = 49001;
+      dbusBridgeEnv = writeShellScript "muvm-steam-dbus-env.sh" ''
+        # /proc/net/route encodes the gateway in hex, little-endian
+        gw=$(awk '$2 == "00000000" { g = $3; exit } END { if (g != "") printf "%d.%d.%d.%d", strtonum("0x" substr(g, 7, 2)), strtonum("0x" substr(g, 5, 2)), strtonum("0x" substr(g, 3, 2)), strtonum("0x" substr(g, 1, 2)) }' /proc/net/route)
+        if [ -n "$gw" ]; then
+          export DBUS_SESSION_BUS_ADDRESS="tcp:host=$gw,port=${toString dbusBridgePort}"
+        else
+          # no default route: keep muvm's -e flag satisfiable, same as before
+          export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/muvm-host/run/user/1000/bus
+        fi
+      '';
+
       pulse-conf = writeText "pulse.conf" ''
         enable-shm=no
       '';
@@ -53,6 +71,7 @@ let
       muvmFlags = [
         "-x ${initScript}"
         "-e PULSE_CLIENTCONFIG=${pulse-conf}"
+        "-e DBUS_SESSION_BUS_ADDRESS"
       ]
       ++ lib.optional (memoryMiB != null) "--mem=${toString memoryMiB}";
 
@@ -73,6 +92,7 @@ let
               mv $out/bin/${program} $out/bin/.${program}-wrapped
 
               makeWrapper ${lib.getExe muvm} $out/bin/${program} \
+                --run ". ${dbusBridgeEnv}" \
                 --add-flags "${lib.concatStringsSep " " muvmFlags} $out/bin/.${program}-wrapped"
             '';
             inherit (pkg) meta;
