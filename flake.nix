@@ -34,10 +34,6 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
-    ghostty-shader-playground = {
-      url = "github:KroneCorylus/ghostty-shader-playground";
-      flake = false;
-    };
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     helium.url = "github:schembriaiden/helium-browser-nix-flake";
     home-manager.url = "github:nix-community/home-manager";

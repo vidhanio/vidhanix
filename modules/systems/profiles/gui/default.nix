@@ -39,8 +39,8 @@
         fzf
         gh
         herdr
-        ghostty
         git
+        kitty
         lazygit
         minecraft
         nautilus

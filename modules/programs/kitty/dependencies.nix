@@ -2,6 +2,6 @@
   flake.aspects =
     { aspects, ... }:
     {
-      ghostty.includes = [ aspects.xdg-autostart ];
+      kitty.includes = [ aspects.xdg-autostart ];
     };
 }
