@@ -69,6 +69,25 @@
             --discord-modal: 88%;
             --discord-modal-footer: 94%;
             --discord-floating: 92%;
+            --discord-text-secondary-mix: 78%;
+            --discord-text-muted-mix: 68%;
+            --discord-text-tertiary-mix: 58%;
+            --discord-text-primary: var(--base05);
+            --discord-text-secondary: color-mix(
+              in srgb,
+              var(--base05) var(--discord-text-secondary-mix),
+              var(--base00)
+            );
+            --discord-text-muted: color-mix(
+              in srgb,
+              var(--base05) var(--discord-text-muted-mix),
+              var(--base00)
+            );
+            --discord-text-tertiary: color-mix(
+              in srgb,
+              var(--base05) var(--discord-text-tertiary-mix),
+              var(--base00)
+            );
           }
 
           :is(.theme-light, .theme-dark, .theme-darker, .theme-midnight, .visual-refresh) {
@@ -105,6 +124,35 @@
             --background-floating: ${alpha "base00" "floating"};
           }
 
+          html:is(.theme-light, .theme-dark, .theme-darker, .theme-midnight, .visual-refresh),
+          html body :is(.theme-light, .theme-dark, .theme-darker, .theme-midnight, .visual-refresh) {
+            --text-strong: var(--discord-text-primary) !important;
+            --text-default: var(--discord-text-primary) !important;
+            --text-primary: var(--discord-text-primary) !important;
+            --text-normal: var(--discord-text-primary) !important;
+            --text-secondary: var(--discord-text-secondary) !important;
+            --text-muted: var(--discord-text-muted) !important;
+            --text-tertiary: var(--discord-text-tertiary) !important;
+            --header-primary: var(--discord-text-primary) !important;
+            --header-secondary: var(--discord-text-secondary) !important;
+            --channels-default: var(--discord-text-secondary) !important;
+            --channel-icon: var(--discord-text-secondary) !important;
+            --channel-text-area-placeholder: var(--discord-text-tertiary) !important;
+            --interactive-normal: var(--discord-text-primary) !important;
+            --interactive-hover: var(--discord-text-primary) !important;
+            --interactive-active: var(--discord-text-primary) !important;
+            --interactive-muted: var(--discord-text-tertiary) !important;
+            --icon-primary: var(--discord-text-primary) !important;
+            --icon-secondary: var(--discord-text-secondary) !important;
+            --icon-tertiary: var(--discord-text-tertiary) !important;
+            --mention-foreground: var(--discord-text-primary) !important;
+            --text-link: var(--base0D) !important;
+            --white: var(--discord-text-primary) !important;
+            --white-100: var(--discord-text-primary) !important;
+            --white-200: var(--discord-text-primary) !important;
+            --white-500: var(--discord-text-primary) !important;
+          }
+
           html,
           body,
           #app-mount,
@@ -114,6 +162,15 @@
 
           html body {
             background: ${alpha "base00" "window"};
+            color: var(--discord-text-primary) !important;
+          }
+
+          html body :is(
+            [class*="chat_"][class*="chat_"],
+            [class*="chatContent_"][class*="chatContent_"],
+            [class*="page_"][class*="page_"]
+          ) {
+            color: var(--discord-text-primary) !important;
           }
 
           html body [class*="bg__"][class*="bg__"] {
