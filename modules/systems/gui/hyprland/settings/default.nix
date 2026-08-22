@@ -51,10 +51,10 @@
             };
           };
           decoration = {
-            rounding = 8;
+            rounding = 16;
             blur =
               let
-                vibrancy = if config.stylix.polarity == "dark" then 0.5 else 0.2;
+                vibrancy = if config.stylix.polarity == "dark" then 0.5 else 0;
               in
               {
                 size = 2;
