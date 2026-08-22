@@ -18,29 +18,6 @@
         ) 3;
       };
 
-    provides.apple-silicon.homeManager =
-      { lib, pkgs, ... }:
-      {
-        # muvm guests can't reach the host session bus (no D-Bus transport
-        # over virtiofs), which is why Steam's tray icon fails to register.
-        # Expose the bus on loopback TCP; passt forwards guest traffic to the
-        # host's default gateway onto loopback. Port must match
-        # muvm-steam's dbusBridgePort.
-        systemd.user.services.muvm-dbus-bridge = {
-          Unit = {
-            Description = "bridge the D-Bus session bus to muvm guests";
-            After = [ "graphical-session.target" ];
-            PartOf = [ "graphical-session.target" ];
-          };
-          Service = {
-            ExecStart = "${lib.getExe pkgs.socat} TCP-LISTEN:49001,bind=127.0.0.1,reuseaddr,fork UNIX-CONNECT:%t/bus";
-            Restart = "on-failure";
-            RestartSec = 2;
-          };
-          Install.WantedBy = [ "graphical-session.target" ];
-        };
-      };
-
     provides.apple-silicon.nixos =
       { self', ... }:
       {

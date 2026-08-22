@@ -2,14 +2,14 @@ let
   pkg =
     {
       config,
-      iproute2,
       lib,
+      makeWrapper,
       muvm,
       path,
+      socat,
       writeShellScript,
       symlinkJoin,
       writeText,
-      makeWrapper,
 
       # MicroVM RAM ceiling in MiB (balloon-backed, not reserved); null = muvm's 80% default, no host headroom on 8GB.
       memoryMiB ? null,
@@ -27,14 +27,14 @@ let
         lib.removeAttrs args [
           "stdenvNoCC"
           "config"
-          "iproute2"
           "lib"
+          "makeWrapper"
           "muvm"
           "path"
+          "socat"
           "writeShellScript"
           "writeText"
           "symlinkJoin"
-          "makeWrapper"
           "memoryMiB"
 
           # Both are built from host config: they'd leak aarch64 libs into the x86_64 FHS env; the guest takes drivers from /run/opengl-driver and fonts from the host.
@@ -48,21 +48,39 @@ let
         ln -snf ${mesa32} /run/opengl-driver-32
       '';
 
-      # muvm forwards no D-Bus session bus into the guest, and AF_UNIX sockets
-      # don't cross virtiofs, so Steam can't register its tray icon. The
-      # muvm-dbus-bridge user service (see the steam module) exposes the host
-      # session bus on loopback TCP; passt routes guest traffic to the host's
-      # default gateway over to loopback, so the guest points at
-      # tcp:host=<host default gateway>. Keep the port in sync with the service.
-      dbusBridgePort = 49001;
-      dbusBridgeEnv = writeShellScript "muvm-steam-dbus-env.sh" ''
-        gw=$(${iproute2}/bin/ip -4 route show default | sed -n 's/^default via \([^ ]*\).*/\1/p' | head -n 1)
-        if [ -n "$gw" ]; then
-          export DBUS_SESSION_BUS_ADDRESS="tcp:host=$gw,port=${toString dbusBridgePort}"
-        else
-          # no default route: keep muvm's -e flag satisfiable, same as before
-          export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/muvm-host/run/user/1000/bus
-        fi
+      # Steam's tray clients (libappindicator, launcher-service) only accept
+      # EXTERNAL auth on unix sockets, so a tcp: session-bus address gets
+      # rejected. Bridge the host session bus to a unix socket inside the guest:
+      # this script (run via muvm -X) fronts the host half with a guest-local
+      # socket, and hostBridge (in the wrapper) listens on the matching krun
+      # dynamic vsock port, which muvm maps to $XDG_RUNTIME_DIR/krun/socket for
+      # every VM. Keep both halves on the same port.
+      vsockPort = 50001;
+      dbusBridgeScript = writeShellScript "muvm-steam-dbus-bridge.sh" ''
+        nohup ${lib.getExe socat} UNIX-LISTEN:/run/user/1000/muvm-bus,fork,reuseaddr VSOCK-CONNECT:2:${toString vsockPort} >/dev/null 2>&1 &
+      '';
+
+      # Host half of the D-Bus bridge, owned by the wrapper: listen on the
+      # krun dynamic vsock socket and forward to the session bus. If another
+      # Steam instance already serves it, let that one win (shared listener).
+      # The launching script (muvm + guest flags) is passed as the first
+      # argument by wrapMuvm.
+      bridgeScript = writeShellScript "muvm-steam-dbus-bridge.sh" ''
+        set -e
+        launcher=$1
+        shift
+        host_bus="$XDG_RUNTIME_DIR/krun/socket/port-${toString vsockPort}"
+        rm -f "$host_bus"
+        ${lib.getExe socat} UNIX-LISTEN:"$host_bus",fork,reuseaddr UNIX-CONNECT:"$XDG_RUNTIME_DIR/bus" &
+        bridge_pid=$!
+        cleanup() {
+          if kill -0 "$bridge_pid" 2>/dev/null; then
+            kill "$bridge_pid" 2>/dev/null || true
+            rm -f "$host_bus"
+          fi
+        }
+        trap cleanup EXIT
+        "$launcher" "$@"
       '';
 
       pulse-conf = writeText "pulse.conf" ''
@@ -71,8 +89,9 @@ let
 
       muvmFlags = [
         "-x ${initScript}"
+        "-X ${dbusBridgeScript}"
         "-e PULSE_CLIENTCONFIG=${pulse-conf}"
-        "-e DBUS_SESSION_BUS_ADDRESS"
+        "-e DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/muvm-bus"
       ]
       ++ lib.optional (memoryMiB != null) "--mem=${toString memoryMiB}";
 
@@ -92,9 +111,11 @@ let
             postBuild = ''
               mv $out/bin/${program} $out/bin/.${program}-wrapped
 
-              makeWrapper ${lib.getExe muvm} $out/bin/${program} \
-                --run ". ${dbusBridgeEnv}" \
+              makeWrapper ${lib.getExe muvm} $out/bin/.${program}-launcher \
                 --add-flags "${lib.concatStringsSep " " muvmFlags} $out/bin/.${program}-wrapped"
+
+              makeWrapper ${bridgeScript} $out/bin/${program} \
+                --add-flags "$out/bin/.${program}-launcher"
             '';
             inherit (pkg) meta;
           }
