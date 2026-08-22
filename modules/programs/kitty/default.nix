@@ -3,14 +3,9 @@
     homeManager = { config, ... }: {
       programs.kitty = {
         enable = true;
-        settings =
-          let
-            padding = 8;
-          in
-          {
-            # One value sets all four sides (kitty's padding option).
-            window_padding_width = padding;
-          };
+        settings = {
+          window_padding_width = 8;
+        };
       };
 
       xdg.autostart.entries = [

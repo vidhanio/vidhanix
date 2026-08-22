@@ -1,6 +1,6 @@
 {
   flake.aspects.hyprland = {
-    homeManager = {
+    homeManager = { config, ... }: {
       wayland.windowManager.hyprland.settings = {
         window_rule = [
           {
@@ -53,12 +53,16 @@
           };
           decoration = {
             rounding = 8;
-            blur = {
-              size = 2;
-              passes = 3;
-              vibrancy = 0.5;
-              vibrancy_darkness = 0.5;
-            };
+            blur =
+              let
+                vibrancy = if config.stylix.polarity == "dark" then 0.5 else 0.2;
+              in
+              {
+                size = 2;
+                passes = 3;
+                inherit vibrancy;
+                vibrancy_darkness = vibrancy;
+              };
             shadow.enabled = false;
           };
 

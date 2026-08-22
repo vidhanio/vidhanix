@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   flake-file = {
     inputs = {
@@ -151,6 +151,8 @@
             };
           };
         };
+
+        systemd.user.services.noctalia.Unit.X-Restart-Triggers = lib.mkForce [ ];
 
         persist.directories = [ ".local/state/noctalia" ];
         systemd.user.tmpfiles.rules = [

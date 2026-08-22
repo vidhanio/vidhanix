@@ -35,13 +35,25 @@
           };
         };
       };
-    homeManager = {
-      home.pointerCursor = {
-        enable = true;
-        hyprcursor.enable = true;
-      };
+    homeManager =
+      {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
+      {
+        home.pointerCursor = {
+          enable = true;
+          hyprcursor.enable = true;
+        };
 
-      wayland.windowManager.hyprland.settings.config.cursor.no_hardware_cursors = true;
-    };
+        wayland.windowManager.hyprland.settings.config.cursor.no_hardware_cursors = true;
+
+        # reload the running hyprcursor when the theme files are relinked
+        xdg.dataFile."icons/${config.home.pointerCursor.name}".onChange = ''
+          ${pkgs.hyprland}/bin/hyprctl setcursor ${lib.escapeShellArg config.home.pointerCursor.name} ${toString config.home.pointerCursor.hyprcursor.size} || true
+        '';
+      };
   };
 }
