@@ -46,7 +46,7 @@
         switchTheme = pkgs.writeShellScript "noctalia-switch-theme" ''
           mode="''${NOCTALIA_THEME_MODE:-}"
           if [[ "$mode" == dark || "$mode" == light ]]; then
-            exec sudo /nix/var/nix/profiles/system/specialisation/$mode/bin/switch-to-configuration switch
+            exec sudo /nix/var/nix/profiles/system/specialisation/$mode/bin/switch-to-configuration test
           fi
         '';
 
