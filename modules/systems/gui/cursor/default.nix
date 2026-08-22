@@ -52,7 +52,9 @@
 
         # reload the running hyprcursor when the theme files are relinked
         xdg.dataFile."icons/${config.home.pointerCursor.name}".onChange = ''
-          ${pkgs.hyprland}/bin/hyprctl setcursor ${lib.escapeShellArg config.home.pointerCursor.name} ${toString config.home.pointerCursor.hyprcursor.size} || true
+          for i in $(${pkgs.hyprland}/bin/hyprctl instances | sed -n 's/^instance \([^:]*\):/\1/p'); do
+            ${pkgs.hyprland}/bin/hyprctl -i "$i" setcursor ${lib.escapeShellArg config.home.pointerCursor.name} ${toString config.home.pointerCursor.hyprcursor.size} || true
+          done
         '';
       };
   };
