@@ -2,6 +2,7 @@ let
   pkg =
     {
       config,
+      iproute2,
       lib,
       muvm,
       path,
@@ -26,6 +27,7 @@ let
         lib.removeAttrs args [
           "stdenvNoCC"
           "config"
+          "iproute2"
           "lib"
           "muvm"
           "path"
@@ -54,8 +56,7 @@ let
       # tcp:host=<host default gateway>. Keep the port in sync with the service.
       dbusBridgePort = 49001;
       dbusBridgeEnv = writeShellScript "muvm-steam-dbus-env.sh" ''
-        # /proc/net/route encodes the gateway in hex, little-endian
-        gw=$(awk '$2 == "00000000" { g = $3; exit } END { if (g != "") printf "%d.%d.%d.%d", strtonum("0x" substr(g, 7, 2)), strtonum("0x" substr(g, 5, 2)), strtonum("0x" substr(g, 3, 2)), strtonum("0x" substr(g, 1, 2)) }' /proc/net/route)
+        gw=$(${iproute2}/bin/ip -4 route show default | sed -n 's/^default via \([^ ]*\).*/\1/p' | head -n 1)
         if [ -n "$gw" ]; then
           export DBUS_SESSION_BUS_ADDRESS="tcp:host=$gw,port=${toString dbusBridgePort}"
         else
