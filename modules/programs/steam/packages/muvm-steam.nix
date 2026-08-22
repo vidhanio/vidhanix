@@ -48,24 +48,19 @@ let
         ln -snf ${mesa32} /run/opengl-driver-32
       '';
 
-      # Steam's tray clients (libappindicator, launcher-service) only accept
-      # EXTERNAL auth on unix sockets, so a tcp: session-bus address gets
-      # rejected. Bridge the host session bus to a unix socket inside the guest:
-      # this script (run via muvm -X) fronts the host half with a guest-local
-      # socket, and hostBridge (in the wrapper) listens on the matching krun
-      # dynamic vsock port, which muvm maps to $XDG_RUNTIME_DIR/krun/socket for
-      # every VM. Keep both halves on the same port.
+      # steam's tray clients only accept EXTERNAL auth on unix sockets, so the
+      # host session bus (see hostBusScript) is fronted with a guest-local
+      # socket over this vsock port; muvm maps each such port to a host socket
+      # under $XDG_RUNTIME_DIR/krun/socket.
       vsockPort = 50001;
-      dbusBridgeScript = writeShellScript "muvm-steam-dbus-bridge.sh" ''
+      guestBusScript = writeShellScript "muvm-steam-guest-bus.sh" ''
         nohup ${lib.getExe socat} UNIX-LISTEN:/run/user/1000/muvm-bus,fork,reuseaddr VSOCK-CONNECT:2:${toString vsockPort} >/dev/null 2>&1 &
       '';
 
-      # Host half of the D-Bus bridge, owned by the wrapper: listen on the
-      # krun dynamic vsock socket and forward to the session bus. If another
-      # Steam instance already serves it, let that one win (shared listener).
-      # The launching script (muvm + guest flags) is passed as the first
-      # argument by wrapMuvm.
-      bridgeScript = writeShellScript "muvm-steam-dbus-bridge.sh" ''
+      # host half of the D-Bus bridge, owned by the wrapper: forward the krun
+      # vsock socket to the session bus, then run the launcher (muvm + guest
+      # flags) passed as $1. concurrent instances share the first listener.
+      hostBusScript = writeShellScript "muvm-steam-host-bus.sh" ''
         set -e
         launcher=$1
         shift
@@ -89,7 +84,7 @@ let
 
       muvmFlags = [
         "-x ${initScript}"
-        "-X ${dbusBridgeScript}"
+        "-X ${guestBusScript}"
         "-e PULSE_CLIENTCONFIG=${pulse-conf}"
         "-e DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/muvm-bus"
       ]
@@ -114,7 +109,7 @@ let
               makeWrapper ${lib.getExe muvm} $out/bin/.${program}-launcher \
                 --add-flags "${lib.concatStringsSep " " muvmFlags} $out/bin/.${program}-wrapped"
 
-              makeWrapper ${bridgeScript} $out/bin/${program} \
+              makeWrapper ${hostBusScript} $out/bin/${program} \
                 --add-flags "$out/bin/.${program}-launcher"
             '';
             inherit (pkg) meta;
