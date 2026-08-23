@@ -26,9 +26,9 @@ just build-system # optional, slow. only run if any packages were changed
 
 ## Adding Modules
 
-When asked to add a program, search before creating anything: look for an existing module under `modules/` (e.g. `modules/programs/<name>/`) and run `just search-nixos <option>` / `just search-hm <option>` to confirm NixOS/home-manager options exist for it.
+When asked to add a program or service, search before creating anything: look for an existing module under `modules/` (e.g. `modules/programs/<name>/`) and run `just search-nixos <option>` / `just search-hm <option>` to confirm NixOS/home-manager options exist for it.
 
-If no module exists, ask the user whether they want a plain `home.packages = [ ... ]` with the package, or a new module with their own `options.nix`/`default.nix`.
+If no module exists, ask the user whether they just want to configure it directly, or create a new module with their own `options.nix`/`default.nix`.
 
 ## Generated Files
 
