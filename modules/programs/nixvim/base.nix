@@ -11,6 +11,15 @@
       };
 
       # Colorscheme groups ship their own bg; clear it so they blend into the code background.
+      # Wrap long lines in prose, breaking at word boundaries.
+      autoCmd = [
+        {
+          event = [ "FileType" ];
+          pattern = [ "markdown" ];
+          command = "setlocal wrap linebreak";
+        }
+      ];
+
       extraConfigLuaPost = ''
         for _, name in ipairs({
           "SignColumn",
