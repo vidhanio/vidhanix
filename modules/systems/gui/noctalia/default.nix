@@ -115,6 +115,7 @@
                 "group:workspaces"
               ];
               end = [
+                "group:theme-mode"
                 "group:tray"
               ];
               capsule_group = [
@@ -129,11 +130,8 @@
                   "volume"
                 ])
                 (capsuleGroup "workspaces" [ "workspaces" ])
-                (capsuleGroup "tray" [
-                  "theme_mode"
-                  "spacer"
-                  "tray"
-                ])
+                (capsuleGroup "theme-mode" [ "theme_mode" ])
+                (capsuleGroup "tray" [ "tray" ])
               ];
             };
             dock.shadow = false;
