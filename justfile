@@ -61,6 +61,14 @@ update: generate
 @eval-hm option *flags: add
     nix eval {{ flags }} {{ hmConfig }}.{{ option }}
 
+# Search NixOS options, e.g. `just search-nixos services.tailscale`
+@search-nixos *query: add
+    nh search options --scope nixpkgs {{ query }}
+
+# Search home-manager options, e.g. `just search-hm programs.git`
+@search-hm *query: add
+    nh search options --scope home-manager {{ query }}
+
 # Evaluate a flake option's value, e.g. `just eval-flake files.generatedMessage.text`
 @eval-flake option *flags: add
     nix eval {{ flags }} .#debug.config.{{ option }}
