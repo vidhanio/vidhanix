@@ -29,6 +29,7 @@
         git
         gnome-keyring
         greeter
+        hardware
         helium
         herdr
         hyprland
@@ -36,6 +37,7 @@
         lazygit
         lock
         logind
+        mcp
         minecraft
         mosh
         nautilus
@@ -49,6 +51,7 @@
         prime-agent
         random-term
         ripgrep
+        skills
         spicetify
         spotify-player
         steam
@@ -57,6 +60,7 @@
         udisks
         upower
         vacuum-tube
+        wakatime
         wallpaper
         wezterm
         xdg-autostart
