@@ -28,7 +28,7 @@ just build-system # optional, slow. only run if any packages were changed
 
 When asked to add a program or service, search before creating anything: look for an existing module under `modules/` (e.g. `modules/programs/<name>/`) and run `just search-nixos <option>` / `just search-hm <option>` to confirm NixOS/home-manager options exist for it.
 
-If no module exists, ask the user whether they just want to configure it directly, or create a new module with their own `options.nix`/`default.nix`.
+If no module exists, ask the user whether they just want to configure it directly, or create a new module with their own `options.nix`/`default.nix`. Prefer home-manager level installs (e.g. `programs.<name>.enable` in a `homeManager` aspect) over nixos level ones, unless the program is system-level.
 
 ## Generated Files
 
