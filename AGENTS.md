@@ -1,38 +1,38 @@
-# Development Playbook
+# AGENTS.md
 
-## Cycle
+This repo is my NixOS config. It contains system preferences, programs, and program configurations.
+It uses Dendritic architecture, meaning every nix file in `modules/` is merged without ever needing manual `import`/`imports = []` statements.
+[Aspects](https://flake-aspects.denful.dev) may span one or more module classes (`nixos`, `homeManager`, etc.) and are then consumed via hosts, users, other aspects, etc.
 
-Work eval-first. Inspect the relevant module and its callers, make the smallest change, then run:
+# Development Cycle
+
+Run `just --list` to view the commands available to you via the `justfile`.
+Prefer `just` commands over raw shell invocations. They automatically handle quirks like files that need to be tracked via git for the flake to recognize them, etc.
+
+After making any change, run `just fmt` to keep it compliant with our formatter.
+
+After making any small focused changes, run `just eval-{nixos,hm,...} <option path>` to ensure the change didn't break anything.
+I would recommend evaluating the larger concept the option belongs to. For example, instead of evaluating `services.openssh.settings.PasswordAuthentication`, evaluate `services.openssh`.
+You may use the `just build-*` variants if testing a derivation/package build.
+
+When you are done with your unit of work, run our final set of commands to ensure that the larger system is still functional.
 
 ```sh
-just add
-just generate
 just fmt --ci
+just generate
 just eval-system
+just build-system # optional, slow. only run if any packages were changed
 ```
 
-Use `just eval-nixos <option>` and the other `eval-*` recipes for focused values, `just build-nixos <option>` and the other `build-*` recipes for relevant builds, and `prek` for repository checks. Use `nix flake check --no-build` when validating the complete flake. Read command output for inline `«error: ...»` values; a successful exit status alone is not enough.
+## Generated Files
 
-Run generation before reviewing a diff. Finish with both host evaluations and relevant builds when a change touches system or package configuration.
-
-## Source of Truth
-
-Generated files are outputs, not editing targets. Change their module source under `modules/flake/files/`, then run `just generate` and inspect the result. Keep generated output in the commit when it changes. Treat secrets and `.sops.yaml` as sensitive.
+Many of the files in this repository are automatically generated and marked with a `# @generated` marker at the top of the file.
+Never modify these files by hand. Figure out where the relevant code is in `modules/flake/files/` and edit it, then run `just generate` to update these files.
 
 ## Style
 
-Keep commit titles, comments, and CLI errors lowercase. Preserve required code and protocol spelling, including Nix option names and GitHub expressions. Write short comments only for non-obvious reasons. Declare each aspect attribute path once per source file, co-locate its classes and providers within that file, and use an `imports` list inside that declaration for multiple implementation pieces. Keep separate implementation files separate instead of folding them into a default file. Never inline a class configuration: use `flake.aspects.<name> = { <class> = ...; };` instead of `flake.aspects.<name>.<class> = ...`, even when the class has only one setting. Omit module argument lists when no arguments are used instead of writing `_:`. Format with `just fmt --ci`; keep the configured formatter set passing.
+Keep commit titles, comments, and CLI errors lowercase.
+Keep comments short, and only add them when absolutely needed and the intent of a piece of code isn't obvious.
+Never inline a class configuration: use `flake.aspects.<name> = { <class> = { ... }; };` instead of `flake.aspects.<name>.<class> = ...`, even when the class has only one setting.
 
-Use conventional commits. Commit each finished unit of work promptly, with no unrelated changes. Leave no staged or unstaged work after a finished unit.
-
-## Safety
-
-Preserve infrastructure behavior by default. Before changing boot, disks, persistence, networking, secrets, SSH, hosts, services, or CI, inspect dependencies and compare the relevant evaluated options. Ask for approval before an infrastructure-impacting behavior change that is not explicitly requested. Never hide an evaluation error or weaken a safety check to make validation pass.
-
-## Interface Map
-
-- `flake.aspects` defines the feature and profile graph; resolved modules are consumed through `inputs.self.modules`.
-- `hosts` registers hosts and produces NixOS configurations.
-- `users` registers identities and complete Home Manager aspects.
-- Generator sources live under `modules/flake/files/`.
-- Command entrypoints are the direct `justfile`, `just`, `nix`, and `prek`.
+Use conventional commits. Commit each finished unit of work promptly, with no unrelated changes. Leave no uncommitted work after a finished unit.
