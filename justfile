@@ -1,21 +1,22 @@
 set no-cd
 
-hmConfig := nixosConfig + ".home-manager.users." + user
-host := `hostname`
-nixosConfig := ".#nixosConfigurations." + host + ".config"
-perSystemConfig := ".#allSystems." + system + ".config"
 system := `nix eval --raw --impure --expr 'builtins.currentSystem'`
-systemPackage := nixosConfig + ".system.build.toplevel"
+host := `hostname`
 user := `whoami`
+
+perSystemConfig := ".#allSystems." + system + ".config"
+nixosConfig := ".#nixosConfigurations." + host + ".config"
+hmConfig := nixosConfig + ".home-manager.users." + user
+systemPackage := nixosConfig + ".system.build.toplevel"
+
 
 # List the available recipes
 @default:
     just --list
 
-# Record the intent to add each new file
-[private]
+# Add each new file
 @add:
-    git add -AN
+    git add -A
 
 # Regenerate the generated files
 @generate: add
@@ -23,7 +24,11 @@ user := `whoami`
 
 # Regenerate the files, then run `nh os` with the given action and flags
 @os action *flags: generate
-    if [ -t 1 ]; then nh os {{ action }} {{ flags }} .; else nh os {{ action }} --no-nom {{ flags }} .; fi
+    if [ -t 1 ]; \
+        then nh os {{ action }} {{ flags }} .; \
+    else \
+        nh os {{ action }} --no-nom {{ flags }} .; \
+    fi
 
 # Activate the configuration now, passing extra flags to `nh os`
 @switch *flags: (os "switch" flags)
@@ -70,7 +75,11 @@ update: generate
 
 # Build a flake path (or a Nix build expression) and print its output store paths
 @build-flake *args: add
-    if [ -t 1 ]; then nom build --no-link --print-out-paths {{ args }}; else nix build --no-link --print-out-paths {{ args }}; fi
+    if [ -t 1 ]; \
+        then nom build --no-link --print-out-paths {{ args }}; \
+    else \
+        nix build --print-build-logs --no-link --print-out-paths {{ args }}; \
+    fi
 
 # Build a NixOS config path, e.g. `just build-nixos system.build.toplevel`
 @build-nixos option *flags: (build-flake (nixosConfig + "." + option) flags)
