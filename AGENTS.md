@@ -7,7 +7,7 @@ It uses Dendritic architecture, meaning every nix file in `modules/` is merged w
 # Development Cycle
 
 Run `just --list` to view the commands available to you via the `justfile`.
-Prefer `just` commands over raw shell invocations. They automatically handle quirks like files that need to be tracked via git for the flake to recognize them, etc.
+Prefer `just` commands over raw shell invocations. They automatically stage changed files (`git add -A`) and handle quirks like files that need to be tracked via git for the flake to recognize them, etc.
 
 After making any change, run `just fmt` to keep it compliant with our formatter.
 
@@ -28,6 +28,9 @@ just build-system # optional, slow. only run if any packages were changed
 
 Many of the files in this repository are automatically generated and marked with a `# @generated` marker at the top of the file.
 Never modify these files by hand. Figure out where the relevant code is in `modules/flake/files/` and edit it, then run `just generate` to update these files.
+
+Flake inputs are declared with `flake-file.inputs.<name>` in the module that uses them.
+`just generate` aggregates them into the root `flake.nix` and prunes removed inputs from `flake.lock`.
 
 ## Style
 

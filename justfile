@@ -18,7 +18,7 @@ systemPackage := nixosConfig + ".system.build.toplevel"
 @add:
     git add -A
 
-# Regenerate the generated files
+# Regenerate the generated files and prune removed inputs from flake.lock
 @generate: add
     nix run .#generate-files
 
