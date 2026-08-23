@@ -27,7 +27,6 @@
     homeManager =
       {
         config,
-        pkgs,
         ...
       }:
       let
@@ -88,13 +87,6 @@
 
             location.auto_locate = true;
 
-            hooks.theme_mode_changed = pkgs.writeShellScript "noctalia-switch-theme" ''
-              mode="''${NOCTALIA_THEME_MODE:-}"
-              if [[ "$mode" == dark || "$mode" == light ]]; then
-                exec sudo /nix/var/nix/profiles/system/specialisation/$mode/bin/switch-to-configuration test
-              fi
-            '';
-
             bar.main = {
               background_opacity = 0;
               capsule_opacity = config.stylix.opacity.desktop;
@@ -115,7 +107,6 @@
                 "group:workspaces"
               ];
               end = [
-                "group:theme-mode"
                 "group:tray"
               ];
               capsule_group = [
@@ -130,7 +121,6 @@
                   "volume"
                 ])
                 (capsuleGroup "workspaces" [ "workspaces" ])
-                (capsuleGroup "theme-mode" [ "theme_mode" ])
                 (capsuleGroup "tray" [ "tray" ])
               ];
             };
