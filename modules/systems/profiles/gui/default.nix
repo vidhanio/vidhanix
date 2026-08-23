@@ -22,6 +22,7 @@
         face
         fd
         fonts
+        fx
         fzf
         gh
         ghostty
