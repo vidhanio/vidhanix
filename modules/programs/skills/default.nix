@@ -1,20 +1,7 @@
 {
-  inputs,
-  ...
-}:
-{
-  flake-file.inputs.mattpocock-skills = {
-    url = "github:mattpocock/skills";
-    flake = false;
-  };
-
   flake.aspects.skills = {
     homeManager = {
-      programs.agents.skills = {
-        enable = true;
-
-        skills.mattpocock = inputs.mattpocock-skills + "/skills";
-      };
+      programs.agents.skills.enable = true;
     };
   };
 }

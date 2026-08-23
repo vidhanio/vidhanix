@@ -539,22 +539,6 @@
         "type": "github"
       }
     },
-    "mattpocock-skills": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1787309793,
-        "narHash": "sha256-FPAAotNqA5aHrFDlj/XddoLs4TDKi+4J5H/mvevlOlk=",
-        "owner": "mattpocock",
-        "repo": "skills",
-        "rev": "5b15a47f2d7150f545fbcacbfe381787fc0230dc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mattpocock",
-        "repo": "skills",
-        "type": "github"
-      }
-    },
     "mcsr": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -1082,7 +1066,6 @@
         "impermanence": "impermanence",
         "import-tree": "import-tree",
         "llm-agents": "llm-agents",
-        "mattpocock-skills": "mattpocock-skills",
         "mcsr": "mcsr",
         "nix-auto-follow": "nix-auto-follow",
         "nix-cachyos-kernel": "nix-cachyos-kernel",

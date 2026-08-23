@@ -86,7 +86,6 @@
                 ''';
                 xlsx = ./skills/xlsx/SKILL.md;
                 data-analysis = ./skills/data-analysis;
-                mattpocock = inputs.mattpocock-skills + "/skills";
               }
             '';
             description = ''
