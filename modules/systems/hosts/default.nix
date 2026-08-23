@@ -78,7 +78,7 @@ in
                 system.stateVersion = config.system.nixos.release;
 
                 home-manager.sharedModules = [
-                  (aspects.${name}.resolve { class = "homeManager"; })
+                  inputs.self.modules.homeManager.${name}
                 ];
 
                 sops.secrets = lib.mapAttrs' (
@@ -97,6 +97,8 @@ in
                 }) activeUsers;
               };
             };
+
+          homeManager = { };
         }
       ) cfg;
   };
