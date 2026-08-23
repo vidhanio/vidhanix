@@ -49,7 +49,7 @@
           colors.base0C # bright cyan
           colors.base07 # bright white
         ];
-        # Readable text drawn on each ANSI background: white on the dark group,
+        # readable text drawn on each ANSI background: white on the dark group,
         # black on the bright group, like the bundled themes.
         ansiBgFgColors = [
           "#ffffff"
@@ -75,7 +75,7 @@
         ansiCss = lib.imap0 (i: color: prop (lib.elemAt ansiNames i) color) ansiColors;
         ansiBgFgCss = lib.imap0 (i: color: prop (lib.elemAt ansiBgFgNames i) color) ansiBgFgColors;
 
-        # The ANSI block lives in the light selector and applies in both modes
+        # the ANSI block lives in the light selector and applies in both modes
         # (terminal colors are mode-independent), mirroring the bundled themes.
         lightThemeCss = mkCssBlock ":root, .light" (
           [
@@ -102,7 +102,7 @@
           ++ ansiBgFgCss
         );
 
-        # Stylix here is pinned to dark polarity, so the light block above is an
+        # stylix here is pinned to dark polarity, so the light block above is an
         # inversion of the same base16 palette; base0x are the dark anchors.
         darkThemeCss = mkCssBlock ".dark" [
           (prop "canvas" colors.base00)

@@ -7,7 +7,7 @@ local function cycleWorkspace(direction)
 	end
 	local currentWorkspace = activeMonitor.active_workspace.id
 
-	-- Skip workspaces that are currently visible on other monitors.
+	-- skip workspaces that are currently visible on other monitors.
 	local blocked = {}
 	for _, monitor in ipairs(hl.get_monitors()) do
 		if not monitor.focused and monitor.active_workspace and monitor.active_workspace.id > 0 then
@@ -22,10 +22,10 @@ local function cycleWorkspace(direction)
 		end
 	end
 
-	-- Allow exactly one trailing empty workspace before wrapping.
+	-- allow exactly one trailing empty workspace before wrapping.
 	local cycleLimit = math.max(highestOccupied + 1, 1, currentWorkspace)
 
-	-- Build the ordered cycle list and locate the current workspace within it in one pass.
+	-- build the ordered cycle list and locate the current workspace within it in one pass.
 	local candidates = {}
 	local currentIndex = 1
 	for workspace = 1, cycleLimit do
@@ -54,7 +54,7 @@ hl.bind("SUPER + SHIFT + Tab", function()
 	cycleWorkspace("prev")
 end)
 
--- Workspace gestures bypass binds.hide_special_on_workspace_change.
+-- workspace gestures bypass binds.hide_special_on_workspace_change.
 hl.on("workspace.active", function(workspace)
 	local monitor = workspace.monitor
 	if monitor and monitor.active_special_workspace then

@@ -54,7 +54,7 @@
             steps = [ fetchMetadata ];
           };
 
-          # only dependabot github_actions PRs; the script treats the metadata as data.
+          # the script treats the metadata as data.
           sync-actions = {
             name = "Sync GitHub Actions Updates";
             needs = [ "metadata" ];
@@ -74,8 +74,7 @@
             ];
           };
 
-          # only dependabot nix PRs; `just generate` prunes the new lock and
-          # regenerates everything else from it.
+          # `just generate` prunes the new lock and regenerates everything from it.
           prune-lock = {
             name = "Prune Lock";
             needs = [ "metadata" ];

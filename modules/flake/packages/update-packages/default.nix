@@ -6,7 +6,7 @@ in
   perSystem =
     { self', pkgs, ... }:
     let
-      # Eval-time values (package lists, nix-update path), read from JSON so the .py stays valid before replaceVarsWith.
+      # eval-time values (package lists, nix-update path), read from JSON so the .py stays valid before replaceVarsWith.
       config = pkgs.writers.writeJSON "${name}-config.json" {
         known = lib.attrNames self'.packages;
 

@@ -1,5 +1,5 @@
 { lib, ... }: {
-  # Vendored from nix-community/stylix PR #2423 (modules/pi-coding-agent/hm.nix).
+  # vendored from nix-community/stylix PR #2423 (modules/pi-coding-agent/hm.nix).
   flake.aspects.pi-coding-agent = {
     homeManager =
       { config, ... }:

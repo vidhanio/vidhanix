@@ -6,7 +6,7 @@
 
         package = inputs'.llm-agents.packages.bb-app;
 
-        # Helper inference rides the pi stack: pi-ai's opencode-go route with
+        # helper inference rides the pi stack: pi-ai's opencode-go route with
         # the model pi defaults to (see the pi-coding-agent module), so bb's
         # server-side helpers use the same model as the `pi` thread provider.
         settings.config = {

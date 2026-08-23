@@ -1,5 +1,5 @@
 {
-  # Vendored from github:vidhanio/stylix (vidhanio) modules/crush/hm.nix.
+  # vendored from github:vidhanio/stylix (vidhanio) modules/crush/hm.nix.
   flake.aspects.crush = {
     homeManager =
       { config, ... }:

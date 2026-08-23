@@ -61,7 +61,6 @@
               }) (lib.range 1 9)
             )
             // {
-              # Scratchpad
               "SUPER + S"."workspace.toggle_special" = { };
               "SUPER + SHIFT + S"."window.move" = {
                 workspace = "special";

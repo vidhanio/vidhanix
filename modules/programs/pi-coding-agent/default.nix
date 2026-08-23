@@ -42,7 +42,7 @@
           };
         };
 
-        # Extensions load from the auto-discovered extensions dir, so symlink
+        # extensions load from the auto-discovered extensions dir, so symlink
         # them there instead of listing them in settings.extensions.
         home.file =
           builtins.listToAttrs (
@@ -52,7 +52,7 @@
             }) exampleExtensions
           )
           // {
-            # Patched copy: upstream todo.ts renderResult returns undefined for
+            # patched copy: upstream todo.ts renderResult returns undefined for
             # validation-failed results (`details: {}`), crashing the TUI.
             "${cfg.configDir}/extensions/todo.ts".source = ./todo.ts;
           };

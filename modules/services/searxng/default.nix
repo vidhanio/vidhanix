@@ -1,6 +1,6 @@
 {
-  # Local SearXNG instance for the machine's agents (omp search provider).
-  # Reachable from the tailnet at http://vortex:8080.
+  # local SearXNG instance for the machine's agents (omp search provider).
+  # reachable from the tailnet at http://vortex:8080.
   flake.aspects.searxng = {
     nixos =
       { config, ... }:
@@ -29,7 +29,7 @@
               public_instance = false;
             };
 
-            # The default is html-only; the json format powers the agents' API.
+            # the default is html-only; the json format powers the agents' API.
             search.formats = [
               "html"
               "json"

@@ -11,7 +11,7 @@ let
       symlinkJoin,
       writeText,
 
-      # MicroVM RAM ceiling in MiB (balloon-backed, not reserved); null = muvm's 80% default, no host headroom on 8GB.
+      # microVM RAM ceiling in MiB (balloon-backed, not reserved); null = muvm's 80% default, no host headroom on 8GB.
       memoryMiB ? null,
       ...
     }@args:
@@ -37,7 +37,7 @@ let
           "symlinkJoin"
           "memoryMiB"
 
-          # Both are built from host config: they'd leak aarch64 libs into the x86_64 FHS env; the guest takes drivers from /run/opengl-driver and fonts from the host.
+          # both are built from host config: they'd leak aarch64 libs into the x86_64 FHS env; the guest takes drivers from /run/opengl-driver and fonts from the host.
           "extraLibraries"
           "extraPkgs"
         ]
@@ -134,7 +134,7 @@ in
     }:
     {
       packages = {
-        # TODO: drop once https://github.com/NixOS/nixpkgs/pull/554106 lands (fex 2605 -> 2608)
+        # todo: drop once https://github.com/NixOS/nixpkgs/pull/554106 lands (fex 2605 -> 2608)
         muvm-steam =
           (pkgs.extend (
             _: prev: {

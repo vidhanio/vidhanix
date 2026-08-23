@@ -7,7 +7,7 @@
       ...
     }:
     let
-      # The check sandbox has no nix.conf; bake the experimental features the
+      # the check sandbox has no nix.conf; bake the experimental features the
       # justfile needs into a wrapper instead.
       nix-cli = pkgs.writeShellScriptBin "nix" ''
         exec ${pkgs.nix}/bin/nix --extra-experimental-features "nix-command flakes" "$@"
@@ -31,15 +31,13 @@
         '';
       };
 
-      # Run `just generate` instead of a pre-built binary: the hook then
-      # resolves `just` and rebuilds `generate-files` from the current flake
-      # state, instead of running a stale store path baked when the hook
-      # config was generated.
+      # run `just generate` instead of a pre-built binary, so the hook rebuilds
+      # from the current flake state rather than a stale baked store path.
       pre-commit.settings.hooks.generate-files = {
         enable = true;
         entry = "just generate";
         pass_filenames = false;
-        # The hook rebuilds flake outputs, so it needs nix (and just) on PATH;
+        # the hook rebuilds flake outputs, so it needs nix (and just) on PATH;
         # this also lets `nix flake check` run the hook in its sandbox.
         extraPackages = [
           pkgs.hostname

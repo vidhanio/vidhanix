@@ -12,7 +12,7 @@
             window-padding-y = padding;
             background-opacity-cells = true;
 
-            # Stay resident with no windows open; new windows then take the fast path.
+            # stay resident with no windows open; new windows then take the fast path.
             quit-after-last-window-closed = false;
           };
       };

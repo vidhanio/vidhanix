@@ -26,7 +26,7 @@
           )
         ];
 
-        # Bare value = one argument, `{ }` = none, `_args` = list spread (HM's hyprland convention).
+        # bare value = one argument, `{ }` = none, `_args` = list spread (HM's hyprland convention).
         renderArgs =
           params:
           if lib.isAttrs params && params ? _args then
