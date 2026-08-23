@@ -30,7 +30,7 @@ Many of the files in this repository are automatically generated and marked with
 Never modify these files by hand. Figure out where the relevant code is in `modules/flake/files/` and edit it, then run `just generate` to update these files.
 
 Flake inputs are declared with `flake-file.inputs.<name>` in the module that uses them.
-`just generate` aggregates them into the root `flake.nix` and prunes removed inputs from `flake.lock`.
+`just generate` aggregates them into the root `flake.nix`, brings `flake.lock` up to date, and removes duplicate inputs (via nix-auto-follow's `flake-file.prune-lock`).
 
 ## Style
 
