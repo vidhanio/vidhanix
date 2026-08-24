@@ -68,7 +68,7 @@ let
 
   checkout = {
     name = "Checkout";
-    uses = "actions/checkout@v5";
+    uses = "actions/checkout@v7";
   };
 
   # the composite action keeps the runner setup identical across workflows.

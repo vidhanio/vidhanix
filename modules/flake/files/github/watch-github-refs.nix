@@ -22,7 +22,7 @@
         steps = [
           {
             name = "Checkout";
-            uses = "actions/checkout@v5";
+            uses = "actions/checkout@v7";
           }
           {
             name = "Scan and Notify";
