@@ -8,7 +8,6 @@
         # keep-sorted start
         _1password
         agent-browser
-        alacritty
         audio
         bat
         bb
@@ -25,7 +24,6 @@
         fx
         fzf
         gh
-        ghostty
         git
         gnome-keyring
         greeter
@@ -49,7 +47,6 @@
         ozone
         pi-coding-agent
         prime-agent
-        random-term
         ripgrep
         skills
         spicetify
@@ -62,7 +59,6 @@
         vacuum-tube
         wakatime
         wallpaper
-        wezterm
         xdg-autostart
         yazi
         yt-dlp

@@ -13,6 +13,8 @@
       ];
 
       wayland.windowManager.hyprland.autostartWorkspaces.kitty = 1;
+
+      wayland.windowManager.hyprland.binds."SUPER + T".exec_cmd = "kitty --single-instance";
     };
   };
 }
