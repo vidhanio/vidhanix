@@ -66,6 +66,7 @@
         xdg-autostart
         yazi
         yt-dlp
+        zed-editor
         zoxide
         # keep-sorted end
       ];
