@@ -1,0 +1,12 @@
+{
+  "languages": {
+    "Nix": {
+      "formatter": {
+        "external": {
+          "command": "treefmt",
+          "arguments": ["--stdin", "{buffer_path}"]
+        }
+      }
+    }
+  }
+}

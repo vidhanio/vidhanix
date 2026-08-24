@@ -9,13 +9,11 @@
       "flakes"
     ];
     extra-substituters = [
-      "https://noctalia.cachix.org"
       "https://attic.xuyh0120.win/lantian"
       "https://cache.numtide.com"
       "https://nix-community.cachix.org"
     ];
     extra-trusted-public-keys = [
-      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -54,7 +52,6 @@
     nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
-    noctalia.url = "github:noctalia-dev/noctalia/cachix";
     sops-nix.url = "github:Mic92/sops-nix";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     stylix.url = "github:nix-community/stylix";

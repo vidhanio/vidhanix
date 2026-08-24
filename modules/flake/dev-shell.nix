@@ -25,7 +25,6 @@
           pkgs.hostname
           pkgs.just
           pkgs.nh
-          pkgs.nil
           pkgs.nix-output-monitor
           pkgs.sops
         ];

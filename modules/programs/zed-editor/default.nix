@@ -1,10 +1,54 @@
 {
   flake.aspects.zed-editor = {
-    homeManager = {
+    homeManager = { pkgs, ... }: {
       programs.zed-editor = {
         enable = true;
 
+        extensions = [ "nix" ];
+
+        extraPackages = with pkgs; [
+          nixd
+          nil
+        ];
+
         userSettings = {
+          format_on_save = "on";
+
+          edit_predictions = {
+            allow_data_collection = "no";
+            provider = "zed";
+          };
+
+          session.trust_all_worktrees = true;
+
+          telemetry = {
+            diagnostics = false;
+            metrics = false;
+            anthropic_retention = false;
+          };
+
+          agent_servers = {
+            pi-acp.type = "registry";
+            "Oh My Pi" = {
+              type = "custom";
+              command = "omp";
+              args = [ "acp" ];
+            };
+            "Prime Agent" = {
+              type = "custom";
+              command = "prime-agent";
+              args = [
+                "--mode"
+                "acp"
+              ];
+            };
+            "OpenCode 2" = {
+              type = "custom";
+              command = "opencode2";
+              args = [ "acp" ];
+            };
+          };
+
           vim_mode = true;
 
           vim = {
@@ -15,6 +59,11 @@
             toggle_relative_line_numbers = true;
           };
         };
+
+        mutableUserDebug = false;
+        mutableUserKeymaps = false;
+        mutableUserSettings = false;
+        mutableUserTasks = false;
       };
 
       persist.directories = [ ".local/share/zed" ];

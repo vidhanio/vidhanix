@@ -30,15 +30,6 @@
               Persistent defaults written to {file}`~/.agent-browser/config.json`,
               the user-level configuration agent-browser merges into every
               invocation.
-
-              Keys are the camelCase global launch, output, provider, and chat
-              flags documented at <https://agent-browser.dev/configuration>;
-              unknown keys are silently ignored, so stick to the documented
-              set. A `$schema` key is injected automatically and overridden by
-              an explicit one.
-
-              Project-level {file}`agent-browser.json`, `AGENT_BROWSER_*` env
-              variables, and CLI flags override these values in that order.
             '';
           };
         };
@@ -51,10 +42,6 @@
               { "$schema" = "https://agent-browser.dev/schema.json"; } // cfg.settings
             );
           };
-
-          programs.agents.skills.skills.agent-browser = lib.mkIf (
-            cfg.package != null
-          ) "${cfg.package.src}/skills/agent-browser";
         };
       };
   };

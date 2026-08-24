@@ -3,7 +3,6 @@
     homeManager =
       {
         inputs',
-        pkgs,
         config,
         ...
       }:
@@ -28,17 +27,12 @@
           enable = true;
 
           package = inputs'.llm-agents.packages.pi;
-          extraPackages = [ pkgs.nodejs ];
 
           settings = {
             defaultProvider = "opencode-go";
             defaultModel = "deepseek-v4-flash";
             defaultThinkingLevel = "max";
-            packages = [
-              "npm:pi-context-view"
-              "npm:pi-subagents"
-              "npm:pi-web-access"
-            ];
+            packages = [ "npm:pi-web-access" ];
           };
         };
 
@@ -52,13 +46,11 @@
             }) exampleExtensions
           )
           // {
-            # patched copy: upstream todo.ts renderResult returns undefined for
-            # validation-failed results (`details: {}`), crashing the TUI.
             "${cfg.configDir}/extensions/todo.ts".source = ./todo.ts;
           };
 
-        # pi-web-access reads its config from XDG_CONFIG_HOME when set.
         xdg.configFile."pi/web-search.json".text = builtins.toJSON {
+          workflow = "none";
           searxngBaseUrl = "http://vortex:8080";
           ssrf.allowRanges = [
             # vortex resolves to this loopback alias locally.

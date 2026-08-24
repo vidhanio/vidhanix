@@ -1,28 +1,11 @@
-{ inputs, lib, ... }:
-{
-  flake-file = {
-    inputs = {
-      noctalia.url = "github:noctalia-dev/noctalia/cachix";
-    };
-    nixConfig = {
-      extra-substituters = [ "https://noctalia.cachix.org" ];
-      extra-trusted-public-keys = [
-        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-      ];
-    };
-    prune-lock.ignore = [ "noctalia" ];
-  };
-
+_: {
   flake.aspects.noctalia = {
-    nixos =
-      { inputs', ... }:
-      {
-        programs.noctalia = {
-          enable = true;
-          package = inputs'.noctalia.packages.default;
-          recommendedServices.enable = true;
-        };
+    nixos = {
+      programs.noctalia = {
+        enable = true;
+        recommendedServices.enable = true;
       };
+    };
 
     homeManager =
       {
@@ -54,8 +37,6 @@
         };
       in
       {
-        imports = [ inputs.noctalia.homeModules.default ];
-
         stylix.targets.noctalia.image.enable = false;
 
         programs.noctalia = {
@@ -100,19 +81,20 @@
               inherit radius;
 
               start = [
-                "group:datetime"
-                "group:system"
-              ];
-              center = [
+                "group:tray"
                 "group:workspaces"
               ];
+              center = [
+                "group:datetime"
+              ];
               end = [
-                "group:tray"
+                "group:system"
               ];
               capsule_group = [
+                (capsuleGroup "tray" [ "tray" ])
+                (capsuleGroup "workspaces" [ "workspaces" ])
                 (capsuleGroup "datetime" [
-                  "date"
-                  "time"
+                  "datetime"
                 ])
                 (capsuleGroup "system" [
                   "battery"
@@ -120,27 +102,19 @@
                   "bluetooth"
                   "volume"
                 ])
-                (capsuleGroup "workspaces" [ "workspaces" ])
-                (capsuleGroup "tray" [ "tray" ])
               ];
             };
             dock.shadow = false;
             widget = {
-              date = {
+              datetime = {
                 type = "clock";
-                format = "{:%B %-d, %Y}";
-              };
-              time = {
-                type = "clock";
-                format = "{:%H:%M:%S}";
+                format = "{:%B %-d, %Y} {:%H:%M:%S}";
               };
               network.show_label = false;
               workspaces.style = "minimal";
             };
           };
         };
-
-        systemd.user.services.noctalia.Unit.X-Restart-Triggers = lib.mkForce [ ];
 
         persist.directories = [ ".local/state/noctalia" ];
         systemd.user.tmpfiles.rules = [

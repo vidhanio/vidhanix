@@ -1,16 +1,23 @@
 {
   flake.aspects.agent-browser = {
-    homeManager = { inputs', ... }: {
-      programs.agent-browser = {
-        enable = true;
+    homeManager =
+      { inputs', config, ... }:
+      let
+        cfg = config.programs.agent-browser;
+      in
+      {
+        programs.agent-browser = {
+          enable = true;
+          package = inputs'.llm-agents.packages.agent-browser;
+          settings = {
+            executablePath = "helium";
+          };
+        };
 
-        # the packaged input carries the agent-browser skill in its source,
-        # wired up by the options module.
-        package = inputs'.llm-agents.packages.agent-browser;
+        programs.agents.skills.skills.agent-browser = "${cfg.package.src}/skills/agent-browser";
+
+        # restore states and daemon state under ~/.agent-browser survive reboots
+        persist.directories = [ ".agent-browser" ];
       };
-
-      # restore states and daemon state under ~/.agent-browser survive reboots
-      persist.directories = [ ".agent-browser" ];
-    };
   };
 }
