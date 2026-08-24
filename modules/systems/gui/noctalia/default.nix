@@ -1,4 +1,4 @@
-_: {
+{
   flake.aspects.noctalia = {
     nixos = {
       programs.noctalia = {
@@ -97,10 +97,9 @@ _: {
                   "datetime"
                 ])
                 (capsuleGroup "system" [
-                  "battery"
-                  "network"
-                  "bluetooth"
                   "volume"
+                  "network"
+                  "battery"
                 ])
               ];
             };
@@ -110,8 +109,6 @@ _: {
                 type = "clock";
                 format = "{:%B %-d, %Y} {:%H:%M:%S}";
               };
-              network.show_label = false;
-              workspaces.style = "minimal";
             };
           };
         };

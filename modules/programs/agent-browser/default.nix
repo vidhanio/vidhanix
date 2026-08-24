@@ -10,7 +10,8 @@
           enable = true;
           package = inputs'.llm-agents.packages.agent-browser;
           settings = {
-            executablePath = "helium";
+            headed = true;
+            autoConnect = true;
           };
         };
 
