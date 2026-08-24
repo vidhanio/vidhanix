@@ -1,14 +1,16 @@
 {
   flake.aspects.agent-browser = {
-    homeManager =
-      { inputs', ... }:
-      let
-        pkg = inputs'.llm-agents.packages.agent-browser;
-      in
-      {
-        home.packages = [ pkg ];
+    homeManager = { inputs', ... }: {
+      programs.agent-browser = {
+        enable = true;
 
-        programs.agents.skills.skills.agent-browser = "${pkg.src}/skills/agent-browser";
+        # the packaged input carries the agent-browser skill in its source,
+        # wired up by the options module.
+        package = inputs'.llm-agents.packages.agent-browser;
       };
+
+      # restore states and daemon state under ~/.agent-browser survive reboots
+      persist.directories = [ ".agent-browser" ];
+    };
   };
 }
