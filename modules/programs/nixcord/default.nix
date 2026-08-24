@@ -34,7 +34,7 @@
           config = {
             useQuickCss = true;
             disableMinSize = true;
-            transparent = lib.mkIf (config.stylix.opacity.applications < 1.0) true;
+            transparent = lib.mkIf (config.stylix.opacity.applications != 1.0) true;
             plugins = {
               # keep-sorted start
               clearUrls.enable = true;
@@ -49,7 +49,7 @@
           };
         };
 
-        stylix.targets.nixcord.extraCss = lib.mkIf (config.stylix.opacity.applications < 1.0) ''
+        stylix.targets.nixcord.extraCss = lib.mkIf (config.stylix.opacity.applications != 1.0) ''
           :root {
             --window-opacity: ${toString config.stylix.opacity.applications};
             --discord-window: calc(var(--window-opacity) * 0.2);

@@ -3,24 +3,16 @@
     homeManager = { pkgs, ... }: {
       programs.zed-editor = {
         enable = true;
-
         extensions = [ "nix" ];
-
         extraPackages = with pkgs; [
           nixd
           nil
+          package-version-server
         ];
-
         userSettings = {
           format_on_save = "on";
-
-          edit_predictions = {
-            allow_data_collection = "no";
-            provider = "zed";
-          };
-
+          edit_predictions.allow_data_collection = "no";
           session.trust_all_worktrees = true;
-
           telemetry = {
             diagnostics = false;
             metrics = false;
@@ -64,6 +56,13 @@
         mutableUserKeymaps = false;
         mutableUserSettings = false;
         mutableUserTasks = false;
+      };
+
+      stylix.targets.zed.fonts.override = {
+        sizes = {
+          desktop = 8;
+          terminal = 10;
+        };
       };
 
       persist.directories = [ ".local/share/zed" ];
