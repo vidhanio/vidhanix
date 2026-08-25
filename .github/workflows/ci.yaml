@@ -69,12 +69,6 @@ jobs:
         - pkg: breezex-hyprcursor
           runner: ubuntu-26.04-arm
           system: aarch64-linux
-        - pkg: conventional-pre-commit
-          runner: ubuntu-latest
-          system: x86_64-linux
-        - pkg: conventional-pre-commit
-          runner: ubuntu-26.04-arm
-          system: aarch64-linux
         - pkg: generate-files
           runner: ubuntu-latest
           system: x86_64-linux

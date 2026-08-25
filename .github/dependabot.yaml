@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: nix
     directory: /
     commit-message:
-      prefix: chore(flake)
+      prefix: flake
     registries: "*"
     cooldown:
       exclude:
@@ -15,7 +15,7 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     commit-message:
-      prefix: chore(ci)
+      prefix: ci
     open-pull-requests-limit: 64
     schedule:
       interval: daily

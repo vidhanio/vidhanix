@@ -70,7 +70,7 @@
                 run = "python3 .github/scripts/sync-action-updates.py";
               }
               createAppToken
-              (commitToPrBranch "chore(ci): sync action updates")
+              (commitToPrBranch "ci: sync action updates")
             ];
           };
 
@@ -88,7 +88,7 @@
                 name = "Prune Lock";
                 run = "${just} generate";
               }
-              (commitToPrBranch "chore(flake): prune lock")
+              (commitToPrBranch "flake: prune lock")
             ];
           };
         };

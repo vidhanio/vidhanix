@@ -57,9 +57,9 @@
               "with" = {
                 token = ghExpr "steps.app-token.outputs.token";
                 branch = "packages/${ghExpr "matrix.pkg"}";
-                commit-message = "chore(packages): bump ${ghExpr "matrix.pkg"} from ${ghExpr "steps.update.outputs.before"} to ${ghExpr "steps.update.outputs.after"}";
+                commit-message = "packages: bump ${ghExpr "matrix.pkg"} from ${ghExpr "steps.update.outputs.before"} to ${ghExpr "steps.update.outputs.after"}";
                 delete-branch = true;
-                title = "chore(packages): bump ${ghExpr "matrix.pkg"} from ${ghExpr "steps.update.outputs.before"} to ${ghExpr "steps.update.outputs.after"}";
+                title = "packages: bump ${ghExpr "matrix.pkg"} from ${ghExpr "steps.update.outputs.before"} to ${ghExpr "steps.update.outputs.after"}";
                 body = ghExpr "steps.update.outputs.body";
                 sign-commits = true;
               };

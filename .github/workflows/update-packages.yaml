@@ -31,11 +31,11 @@ jobs:
       with:
         body: ${{ steps.update.outputs.body }}
         branch: packages/${{ matrix.pkg }}
-        commit-message: 'chore(packages): bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before
+        commit-message: 'packages: bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before
           }} to ${{ steps.update.outputs.after }}'
         delete-branch: true
         sign-commits: true
-        title: 'chore(packages): bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before
+        title: 'packages: bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before
           }} to ${{ steps.update.outputs.after }}'
         token: ${{ steps.app-token.outputs.token }}
     strategy:
@@ -44,7 +44,6 @@ jobs:
         pkg:
         - bibata-cursor
         - breezex-cursor
-        - conventional-pre-commit
         - google-cursor
 name: Update Packages
 'on':

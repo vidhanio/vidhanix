@@ -45,7 +45,7 @@ jobs:
       uses: planetscale/ghcommit-action@v0.2.22
       with:
         branch: ${{ github.event.pull_request.head.ref }}
-        commit_message: 'chore(flake): prune lock'
+        commit_message: 'flake: prune lock'
         repo: ${{ github.repository }}
   sync-actions:
     if: needs.metadata.outputs.ecosystem=='github_actions'
@@ -74,7 +74,7 @@ jobs:
       uses: planetscale/ghcommit-action@v0.2.22
       with:
         branch: ${{ github.event.pull_request.head.ref }}
-        commit_message: 'chore(ci): sync action updates'
+        commit_message: 'ci: sync action updates'
         repo: ${{ github.repository }}
 name: Sync Dependabot
 'on':
