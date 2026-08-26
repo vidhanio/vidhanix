@@ -8,6 +8,7 @@
         # keep-sorted start
         _1password
         agent-browser
+        agents
         audio
         bat
         bb
@@ -48,7 +49,6 @@
         pi-coding-agent
         prime-agent
         ripgrep
-        skills
         spicetify
         spotify-player
         steam
