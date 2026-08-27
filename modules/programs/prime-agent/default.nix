@@ -11,6 +11,8 @@
           enableMcpIntegration = true;
 
           package = pkg;
+
+          settings.telemetry.enabled = false;
         };
 
         persist.directories = [ ".prime/agent" ];
