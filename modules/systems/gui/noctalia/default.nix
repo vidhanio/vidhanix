@@ -92,22 +92,22 @@
 
               start = [
                 "group:tray"
+                "group:theme-mode"
                 "group:workspaces"
               ];
               center = [
                 "group:datetime"
               ];
               end = [
-                "group:theme-mode"
                 "group:system"
               ];
               capsule_group = [
                 (capsuleGroup "tray" [ "tray" ])
+                (capsuleGroup "theme-mode" [ "theme_mode" ])
                 (capsuleGroup "workspaces" [ "workspaces" ])
                 (capsuleGroup "datetime" [
                   "datetime"
                 ])
-                (capsuleGroup "theme-mode" [ "theme_mode" ])
                 (capsuleGroup "system" [
                   "volume"
                   "network"
