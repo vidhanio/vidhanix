@@ -11,7 +11,6 @@
         agents
         audio
         bat
-        bb
         btop
         clipboard
         codex
