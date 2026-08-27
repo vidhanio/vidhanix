@@ -69,8 +69,6 @@
 
             location.auto_locate = true;
 
-            theme.mode = config.stylix.polarity;
-
             hooks.theme_mode_changed = pkgs.writeShellScript "noctalia-switch-theme" ''
               mode="''${NOCTALIA_THEME_MODE:-}"
               if [[ "$mode" == dark || "$mode" == light ]]; then
