@@ -14,6 +14,7 @@
         bb
         btop
         clipboard
+        codex
         comma
         crush
         cursor
