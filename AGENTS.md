@@ -32,4 +32,4 @@ Never modify these files by hand. Figure out where the relevant code is in `modu
 Keep commit titles, comments, and CLI errors lowercase.
 Keep comments short, and only add them when absolutely needed and the intent of a piece of code isn't obvious.
 
-Use commit titles in the format `<scope>: <description>`, such as `kitty: disable close confirmation`. Commit each finished unit of work promptly, with no unrelated changes. Leave no uncommitted work after a finished unit.
+Use commit titles in the format `<scope>: <description>`, such as `kitty: disable close confirmation`. Commit each finished unit of work promptly, with no unrelated changes. Fold small follow-up changes into the current unit's commit instead of creating a series of tiny commits, and update the title when the unit's scope changes. Leave no uncommitted work after a finished unit.
