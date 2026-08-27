@@ -10,6 +10,7 @@
     homeManager =
       {
         config,
+        pkgs,
         ...
       }:
       let
@@ -68,6 +69,15 @@
 
             location.auto_locate = true;
 
+            theme.mode = config.stylix.polarity;
+
+            hooks.theme_mode_changed = pkgs.writeShellScript "noctalia-switch-theme" ''
+              mode="''${NOCTALIA_THEME_MODE:-}"
+              if [[ "$mode" == dark || "$mode" == light ]]; then
+                exec sudo /nix/var/nix/profiles/system/specialisation/$mode/bin/switch-to-configuration test
+              fi
+            '';
+
             bar.main = {
               background_opacity = 0;
               capsule_opacity = config.stylix.opacity.desktop;
@@ -88,6 +98,7 @@
                 "group:datetime"
               ];
               end = [
+                "group:theme-mode"
                 "group:system"
               ];
               capsule_group = [
@@ -96,6 +107,7 @@
                 (capsuleGroup "datetime" [
                   "datetime"
                 ])
+                (capsuleGroup "theme-mode" [ "theme_mode" ])
                 (capsuleGroup "system" [
                   "volume"
                   "network"
