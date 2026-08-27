@@ -11,13 +11,6 @@
           enableMcpIntegration = true;
 
           package = pkg;
-
-          settings = {
-            defaultProvider = "opencode-go";
-            defaultModel = "deepseek-v4-flash";
-            rlmMaxDepth = 2;
-            defaultThinkingLevel = "max";
-          };
         };
 
         persist.directories = [ ".prime/agent" ];

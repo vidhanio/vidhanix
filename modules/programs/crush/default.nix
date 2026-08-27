@@ -20,14 +20,6 @@
                 --add-flags "--yolo"
             '';
           };
-
-          settings = {
-            models.large = {
-              model = "deepseek-v4-flash";
-              provider = "opencode-go";
-              reasoning_effort = "max";
-            };
-          };
         };
 
         persist.directories = [ ".local/share/crush" ];

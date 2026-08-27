@@ -8,7 +8,7 @@
             package = self'.packages.bibata-combined.override (
               with config.lib.stylix.colors.withHashtag;
               {
-                baseColor = base00;
+                baseColor = base01;
                 outlineColor = base05;
                 palette = {
                   spinnerBlue = blue;
@@ -50,7 +50,6 @@
 
         wayland.windowManager.hyprland.settings.config.cursor.no_hardware_cursors = true;
 
-        # reload the running hyprcursor when the theme files are relinked
         xdg.dataFile."icons/${config.home.pointerCursor.name}".onChange = ''
           for i in $(${pkgs.hyprland}/bin/hyprctl instances | sed -n 's/^instance \([^:]*\):/\1/p'); do
             ${pkgs.hyprland}/bin/hyprctl -i "$i" setcursor ${lib.escapeShellArg config.home.pointerCursor.name} ${toString config.home.pointerCursor.hyprcursor.size} || true

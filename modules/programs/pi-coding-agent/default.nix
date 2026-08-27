@@ -29,15 +29,10 @@
           package = inputs'.llm-agents.packages.pi;
 
           settings = {
-            defaultProvider = "opencode-go";
-            defaultModel = "deepseek-v4-flash";
-            defaultThinkingLevel = "max";
             packages = [ "npm:pi-web-access" ];
           };
         };
 
-        # extensions load from the auto-discovered extensions dir, so symlink
-        # them there instead of listing them in settings.extensions.
         home.file =
           builtins.listToAttrs (
             map (ext: {

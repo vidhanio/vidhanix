@@ -134,23 +134,7 @@ in
     }:
     {
       packages = {
-        # todo: drop once https://github.com/NixOS/nixpkgs/pull/554106 lands (fex 2605 -> 2608)
-        muvm-steam =
-          (pkgs.extend (
-            _: prev: {
-              fex = prev.fex.overrideAttrs (old: {
-                version = "2608";
-                src = old.src.override {
-                  hash = "sha256-2NdkQpzqDkM/fEW8QYS05KU3JPJeLw4gliryqdOJ3vE=";
-                };
-                postInstall = (old.postInstall or "") + ''
-                  ln -s FEX $out/bin/FEXInterpreter
-                '';
-              });
-            }
-          )).callPackage
-            pkg
-            { };
+        muvm-steam = pkgs.callPackage pkg { };
       };
     };
 }

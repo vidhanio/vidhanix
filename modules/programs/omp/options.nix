@@ -136,19 +136,19 @@
             inherit (yaml) type;
             default = { };
             example = {
-              providers.opencode-go.modelOverrides.deepseek-v4-flash.thinking = {
-                mode = "effort";
-                efforts = [
-                  "low"
-                  "high"
-                  "max"
+              providers.local-openai = {
+                baseUrl = "http://127.0.0.1:8000/v1";
+                api = "openai-completions";
+                auth = "none";
+                models = [
+                  { id = "Qwen/Qwen2.5-Coder-32B-Instruct"; }
                 ];
               };
             };
             description = ''
               Model and provider configuration written to
               {file}`~/.omp/agent/models.yml`.
-              See <https://omp.sh/docs/models> for the documentation.
+              See <https://omp.sh/docs/providers> and <https://omp.sh/docs/custom-models> for the documentation.
             '';
           };
 
