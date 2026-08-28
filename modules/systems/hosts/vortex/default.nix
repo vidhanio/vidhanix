@@ -4,6 +4,7 @@
     {
       vortex = {
         includes = [
+          aspects.agentcord
           aspects.desktop
           aspects.searxng
           aspects.tailscale.provides.exit-node

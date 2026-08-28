@@ -21,6 +21,7 @@
   };
 
   inputs = {
+    agentcord.url = "github:vidhanio/agentcord";
     disko.url = "github:vidhanio/disko/feature/skip-partition-uuid";
     files = {
       url = "github:mightyiam/files";
