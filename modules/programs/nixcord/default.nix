@@ -42,6 +42,7 @@
               equibopStreamFixes.enable = true;
               fakeNitro.enable = true;
               spotifyCrack.enable = true;
+              viewRaw.enable = true;
               volumeBooster.enable = true;
               youtubeAdblock.enable = true;
               # keep-sorted end
