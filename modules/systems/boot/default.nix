@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   flake.aspects.boot = {
-    provides.desktop = {
+    _.desktop = {
       nixos =
         { pkgs, ... }:
         {

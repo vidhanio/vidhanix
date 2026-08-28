@@ -3,11 +3,14 @@
     { aspects, ... }:
     {
       vortex = {
-        includes = [
-          aspects.agentcord
-          aspects.desktop
-          aspects.searxng
-          aspects.tailscale.provides.exit-node
+        includes = with aspects; [
+          desktop
+
+          # keep-sorted start
+          agentcord
+          searxng
+          tailscale._.exit-node
+          # keep-sorted end
         ];
         nixos = {
           disko.devices.disk.main.device = "/dev/disk/by-id/nvme-SHPP41-2000GM_ASDAN54031240AV5V";

@@ -6,9 +6,9 @@
         gui
 
         # keep-sorted start
-        boot.provides.desktop
+        boot._.desktop
         cachyos-kernel
-        disk.provides.desktop
+        disk._.desktop
         # keep-sorted end
       ];
     };

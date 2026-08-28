@@ -50,7 +50,7 @@
         };
       };
 
-    provides.desktop.nixos = {
+    _.desktop.nixos = {
       disko.devices.disk.main.content.partitions.ESP = {
         start = "1M";
         end = "500M";
@@ -64,7 +64,7 @@
       };
     };
 
-    provides.apple-silicon.nixos = {
+    _.apple-silicon.nixos = {
       disko.devices.disk.main.content.partitions = {
         iBootSystemContainer = {
           label = "iBootSystemContainer";

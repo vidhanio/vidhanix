@@ -1,6 +1,6 @@
 {
   flake.aspects.disk = {
-    provides.apple-silicon = {
+    _.apple-silicon = {
       nixos =
         { config, ... }:
         {

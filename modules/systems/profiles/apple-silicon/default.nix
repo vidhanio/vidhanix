@@ -10,8 +10,8 @@
           gui
 
           # keep-sorted start
-          disk.provides.apple-silicon
-          steam.provides.apple-silicon
+          disk._.apple-silicon
+          steam._.apple-silicon
           # keep-sorted end
         ];
         nixos = {
