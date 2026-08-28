@@ -41,7 +41,7 @@
           };
         };
 
-        programs.agents.skills.skills.herdr = "${cfg.package.src}/skills/herdr";
+        programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
 
         persist = {
           directories = [ ".herdr/worktrees" ];

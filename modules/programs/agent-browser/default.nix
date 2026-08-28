@@ -15,7 +15,7 @@
           };
         };
 
-        programs.agents.skills.skills.agent-browser = "${cfg.package.src}/skills/agent-browser";
+        programs.agents.skills.agent-browser = "${cfg.package.src}/skills/agent-browser";
 
         # restore states and daemon state under ~/.agent-browser survive reboots
         persist.directories = [ ".agent-browser" ];

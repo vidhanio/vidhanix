@@ -31,50 +31,48 @@
             '';
           };
 
-          skills = {
-            skills = lib.mkOption {
-              type = lib.types.attrsOf (
-                lib.types.oneOf [
-                  lib.types.lines
-                  lib.types.path
-                  lib.types.str
-                ]
-              );
-              default = { };
-              example = lib.literalExpression ''
-                {
-                  pdf-processing = '''
-                    ---
-                    name: pdf-processing
-                    description: Extract text and tables from PDF files, fill forms, merge documents.
-                    ---
+          skills = lib.mkOption {
+            type = lib.types.attrsOf (
+              lib.types.oneOf [
+                lib.types.lines
+                lib.types.path
+                lib.types.str
+              ]
+            );
+            default = { };
+            example = lib.literalExpression ''
+              {
+                pdf-processing = '''
+                  ---
+                  name: pdf-processing
+                  description: Extract text and tables from PDF files, fill forms, merge documents.
+                  ---
 
-                    # PDF Processing
+                  # PDF Processing
 
-                    Use pdfplumber to extract text from PDFs.
-                  ''';
-                  xlsx = ./skills/xlsx/SKILL.md;
-                  data-analysis = ./skills/data-analysis;
-                }
-              '';
-              description = ''
-                Custom skills for the agents.
+                  Use pdfplumber to extract text from PDFs.
+                ''';
+                xlsx = ./skills/xlsx/SKILL.md;
+                data-analysis = ./skills/data-analysis;
+              }
+            '';
+            description = ''
+              Custom skills for the agents.
 
-                The attribute name becomes the skill directory name, and the
-                value is either:
-                - Inline content as a string (creates {file}`~/.agents/skills/<name>/SKILL.md`)
-                - A path to a file (creates {file}`~/.agents/skills/<name>/SKILL.md`)
-                - A path to a directory (creates {file}`~/.agents/skills/<name>/` with all files)
+              The attribute name becomes the skill directory name, and the
+              value is either:
+              - Inline content as a string (creates {file}`~/.agents/skills/<name>/SKILL.md`)
+              - A path to a file (creates {file}`~/.agents/skills/<name>/SKILL.md`)
+              - A path to a directory (creates {file}`~/.agents/skills/<name>/` with all files)
 
-                This also accepts Nix store paths, for example a skill directory
-                from a package.
+              This also accepts Nix store paths, for example a skill directory
+              from a package.
 
-                A directory that holds a whole collection of skills, such as a
-                skills repository, is symlinked under the attribute name as well;
-                each skill folder inside it stays reachable at
-                {file}`~/.agents/skills/<name>/<skill>/SKILL.md`.
-              '';
-            };
+              A directory that holds a whole collection of skills, such as a
+              skills repository, is symlinked under the attribute name as well;
+              each skill folder inside it stays reachable at
+              {file}`~/.agents/skills/<name>/<skill>/SKILL.md`.
+            '';
           };
         };
 
@@ -124,7 +122,7 @@
                     text = cfg.context;
                   };
             }
-            // lib.mapAttrs' mkSkillEntry cfg.skills.skills;
+            // lib.mapAttrs' mkSkillEntry cfg.skills;
           };
       };
   };
