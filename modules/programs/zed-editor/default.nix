@@ -1,3 +1,7 @@
+{ config, lib, ... }:
+let
+  sshConnections = lib.mapAttrsToList (hostname: _: { host = hostname; }) config.hosts;
+in
 {
   flake.aspects.zed-editor = {
     homeManager = { pkgs, ... }: {
@@ -10,6 +14,7 @@
           package-version-server
         ];
         userSettings = {
+          ssh_connections = sshConnections;
           format_on_save = "on";
           edit_predictions.allow_data_collection = "no";
           session.trust_all_worktrees = true;
