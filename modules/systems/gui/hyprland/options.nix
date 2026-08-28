@@ -86,8 +86,6 @@
 
                   "SUPER + Q"."window.close" = { };
 
-                  "SUPER + RETURN".exec_cmd = "ghostty";
-
                   "SUPER + mouse:272" = {
                     "window.drag" = { };
                     _flags.mouse = true;
