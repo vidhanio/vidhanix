@@ -46,7 +46,7 @@
           )
           // {
             "${cfg.configDir}/extensions/todo.ts".source = ./todo.ts;
-            "${cfg.configDir}/extensions/web-access".source =
+            "${cfg.configDir}/extensions/pi-web-access".source =
               "${self'.packages.pi-web-access}/lib/node_modules/pi-web-access";
           };
 
