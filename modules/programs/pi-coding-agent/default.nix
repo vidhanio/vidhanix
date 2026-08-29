@@ -3,6 +3,7 @@
     homeManager =
       {
         inputs',
+        self',
         config,
         ...
       }:
@@ -33,7 +34,6 @@
             defaultProvider = model.provider;
             defaultModel = model.model;
             defaultThinkingLevel = model.thinking;
-            packages = [ "npm:pi-web-access" ];
           };
         };
 
@@ -46,6 +46,8 @@
           )
           // {
             "${cfg.configDir}/extensions/todo.ts".source = ./todo.ts;
+            "${cfg.configDir}/extensions/web-access".source =
+              "${self'.packages.pi-web-access}/lib/node_modules/pi-web-access";
           };
 
         xdg.configFile."pi/web-search.json".text = builtins.toJSON {
