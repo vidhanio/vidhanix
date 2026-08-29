@@ -3,6 +3,10 @@
     url = "github:mattpocock/skills";
     flake = false;
   };
+  flake-file.inputs.ponytail-skills = {
+    url = "github:DietrichGebert/ponytail";
+    flake = false;
+  };
   flake.aspects.agents = {
     homeManager = {
       programs.agents = {
@@ -37,6 +41,12 @@
         skills = {
           grill-me = "${inputs.mattpocock-skills}/skills/productivity/grill-me";
           grilling = "${inputs.mattpocock-skills}/skills/productivity/grilling";
+          ponytail = "${inputs.ponytail-skills}/skills/ponytail";
+          ponytail-audit = "${inputs.ponytail-skills}/skills/ponytail-audit";
+          ponytail-debt = "${inputs.ponytail-skills}/skills/ponytail-debt";
+          ponytail-gain = "${inputs.ponytail-skills}/skills/ponytail-gain";
+          ponytail-help = "${inputs.ponytail-skills}/skills/ponytail-help";
+          ponytail-review = "${inputs.ponytail-skills}/skills/ponytail-review";
         };
       };
     };

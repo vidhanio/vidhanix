@@ -108,12 +108,6 @@ jobs:
         - pkg: pi-web-access
           runner: ubuntu-26.04-arm
           system: aarch64-linux
-        - pkg: ponytail
-          runner: ubuntu-latest
-          system: x86_64-linux
-        - pkg: ponytail
-          runner: ubuntu-26.04-arm
-          system: aarch64-linux
         - pkg: pragmata-pro-variable
           runner: ubuntu-latest
           system: x86_64-linux
