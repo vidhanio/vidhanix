@@ -24,6 +24,7 @@
     agentcord.url = "github:vidhanio/agentcord";
     auto-follow.url = "github:fzakaria/nix-auto-follow";
     disko.url = "github:vidhanio/disko/feature/skip-partition-uuid";
+    fastpotify.url = "github:crmne/fastpotify";
     files = {
       url = "github:mightyiam/files";
       flake = false;
@@ -58,12 +59,7 @@
     nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
-    ponytail-skills = {
-      url = "github:DietrichGebert/ponytail";
-      flake = false;
-    };
     sops-nix.url = "github:Mic92/sops-nix";
-    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     stylix.url = "github:nix-community/stylix";
     systems.url = "github:nix-systems/default-linux";
     tinted-schemes = {

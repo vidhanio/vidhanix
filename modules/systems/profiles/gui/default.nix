@@ -20,6 +20,7 @@
         direnv
         eza
         face
+        fastpotify
         fd
         fonts
         fx
@@ -49,8 +50,6 @@
         pi-coding-agent
         prime-agent
         ripgrep
-        spicetify
-        spotify-player
         steam
         stylix
         tmux
