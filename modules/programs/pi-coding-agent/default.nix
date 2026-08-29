@@ -34,6 +34,11 @@
             defaultProvider = model.provider;
             defaultModel = model.model;
             defaultThinkingLevel = model.thinking;
+            # load package manifests directly from the Nix store.
+            packages = [
+              "${self'.packages.pi-subagents}/lib/node_modules/pi-subagents"
+              "${self'.packages.pi-web-access}/lib/node_modules/pi-web-access"
+            ];
           };
         };
 
@@ -46,8 +51,6 @@
           )
           // {
             "${cfg.configDir}/extensions/todo.ts".source = ./todo.ts;
-            "${cfg.configDir}/extensions/pi-web-access".source =
-              "${self'.packages.pi-web-access}/lib/node_modules/pi-web-access";
           };
 
         xdg.configFile."pi/web-search.json".text = builtins.toJSON {
