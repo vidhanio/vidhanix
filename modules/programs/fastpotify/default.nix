@@ -4,9 +4,17 @@
 
   flake.aspects.fastpotify = {
     homeManager =
-      { config, pkgs, ... }:
       {
-        programs.fastpotify.enable = true;
+        config,
+        osConfig,
+        pkgs,
+        ...
+      }:
+      {
+        programs.fastpotify = {
+          enable = true;
+          settings.device_name = osConfig.networking.hostName;
+        };
 
         xdg.autostart.entries = lib.mkIf pkgs.stdenv.hostPlatform.isLinux [
           "${config.programs.fastpotify.package}/share/applications/fastpotify.desktop"

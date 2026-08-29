@@ -26,9 +26,6 @@
           settings = lib.mkOption {
             inherit (json) type;
             default = { };
-            example = {
-              theme = "dark";
-            };
             description = "Configuration written to {file}`~/.config/fastpotify/settings.json`.";
           };
         };
