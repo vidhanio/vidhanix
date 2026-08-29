@@ -8,6 +8,7 @@
       }:
       let
         cfg = config.programs.pi-coding-agent;
+        model = config.programs.agents.models.large;
 
         exampleExtensions = [
           # keep-sorted start
@@ -29,6 +30,9 @@
           package = inputs'.llm-agents.packages.pi;
 
           settings = {
+            defaultProvider = model.provider;
+            defaultModel = model.model;
+            defaultThinkingLevel = model.thinking;
             packages = [ "npm:pi-web-access" ];
           };
         };

@@ -22,13 +22,14 @@
 
   inputs = {
     agentcord.url = "github:vidhanio/agentcord";
+    auto-follow.url = "github:fzakaria/nix-auto-follow";
     disko.url = "github:vidhanio/disko/feature/skip-partition-uuid";
     files = {
       url = "github:mightyiam/files";
       flake = false;
     };
     flake-aspects.url = "github:denful/flake-aspects";
-    flake-file.url = "github:vidhanio/flake-file/fix/write-flake-mtime-churn";
+    flake-file.url = "github:denful/flake-file";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
@@ -48,7 +49,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-auto-follow = {
-      url = "github:vidhanio/nix-auto-follow/merge-fix-inputs-references";
+      url = "github:fzakaria/nix-auto-follow";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";

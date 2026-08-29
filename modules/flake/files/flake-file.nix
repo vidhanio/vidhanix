@@ -18,13 +18,12 @@
   };
 
   config = {
-    # todo: https://github.com/denful/flake-file/pull/130
-    flake-file.inputs.flake-file.url = "github:vidhanio/flake-file/fix/write-flake-mtime-churn";
+    flake-file.inputs = {
+      flake-file.url = "github:denful/flake-file";
+      auto-follow.url = "github:fzakaria/nix-auto-follow";
+    };
 
     flake-file.do-not-edit = config.files.generatedMessage.text;
-
-    # todo: https://github.com/fzakaria/nix-auto-follow/pull/34
-    flake-file.inputs.nix-auto-follow.url = "github:vidhanio/nix-auto-follow/merge-fix-inputs-references";
 
     # wrap upstream to bake in `--ignore` flags for prune-lock.ignore.
     flake-file.prune-lock.program =

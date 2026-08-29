@@ -9,9 +9,45 @@
       }:
       let
         cfg = config.programs.agents;
+
+        modelType = lib.types.submodule {
+          options = {
+            provider = lib.mkOption {
+              type = lib.types.str;
+              description = "Provider used for the model.";
+            };
+
+            model = lib.mkOption {
+              type = lib.types.str;
+              description = "Model identifier.";
+            };
+
+            thinking = lib.mkOption {
+              type = lib.types.str;
+              description = "Thinking level passed to the agent.";
+            };
+          };
+        };
       in
       {
         options.programs.agents = {
+          models = lib.mkOption {
+            type = lib.types.submodule {
+              options = {
+                large = lib.mkOption {
+                  type = modelType;
+                  description = "Model used for complex tasks.";
+                };
+
+                small = lib.mkOption {
+                  type = modelType;
+                  description = "Model used for simple tasks.";
+                };
+              };
+            };
+            description = "Models shared by the agents.";
+          };
+
           context = lib.mkOption {
             type = lib.types.either lib.types.lines lib.types.path;
             description = ''

@@ -6,6 +6,19 @@
   flake.aspects.agents = {
     homeManager = {
       programs.agents = {
+        models = {
+          large = {
+            provider = "openai-codex";
+            model = "gpt-5.6-sol";
+            thinking = "medium";
+          };
+          small = {
+            provider = "openai-codex";
+            model = "gpt-5.6-luna";
+            thinking = "max";
+          };
+        };
+
         context = ''
           # AGENTS.md
 

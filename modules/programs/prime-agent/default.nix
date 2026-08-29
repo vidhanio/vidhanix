@@ -1,8 +1,13 @@
 {
   flake.aspects.prime-agent = {
     homeManager =
-      { inputs', ... }:
+      {
+        inputs',
+        config,
+        ...
+      }:
       let
+        model = config.programs.agents.models.large;
         pkg = inputs'.llm-agents.packages.prime-agent;
       in
       {
@@ -12,7 +17,12 @@
 
           package = pkg;
 
-          settings.telemetry.enabled = false;
+          settings = {
+            defaultProvider = model.provider;
+            defaultModel = model.model;
+            defaultThinkingLevel = model.thinking;
+            telemetry.enabled = false;
+          };
         };
 
         persist.directories = [ ".prime/agent" ];
