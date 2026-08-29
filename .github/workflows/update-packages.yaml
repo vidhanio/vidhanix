@@ -46,6 +46,7 @@ jobs:
         - breezex-cursor
         - google-cursor
         - pi-web-access
+        - ponytail
 name: Update Packages
 'on':
   push:

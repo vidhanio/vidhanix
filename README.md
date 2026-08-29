@@ -28,6 +28,7 @@ Some of these packages provide a `passthru.updateScript`, all of which can be ru
 | [`google-sans-flex`](modules/systems/gui/fonts/vidhan-fonts.nix)                 | The next generation of Google's brand typeface                                                                                     |           |
 | [`muvm-steam`](modules/programs/steam/packages/muvm-steam.nix)                   | The Steam client, wrapped to run in muvm for Apple Silicon support                                                                 |           |
 | [`pi-web-access`](modules/programs/pi-coding-agent/extensions/pi-web-access.nix) | Web search and content extraction extension for Pi coding agent                                                                    |     ✓     |
+| [`ponytail`](modules/programs/pi-coding-agent/extensions/ponytail.nix)           | Minimalist coding guidance plugin for AI agents                                                                                    |     ✓     |
 | [`pragmata-pro-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)            | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |           |
 | [`update-packages`](modules/flake/packages/update-packages/default.nix)          | Update all packages in this flake that have an update script                                                                       |           |
 
