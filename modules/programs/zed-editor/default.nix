@@ -7,7 +7,10 @@ in
     homeManager = { pkgs, ... }: {
       programs.zed-editor = {
         enable = true;
-        extensions = [ "nix" ];
+        extensions = [
+          "nix"
+          "rust"
+        ];
         extraPackages = with pkgs; [
           nixd
           nil
