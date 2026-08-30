@@ -5,6 +5,7 @@
       {
         services.llama-cpp = {
           enable = true;
+          package = pkgs.llama-cpp-vulkan;
           settings.models-preset = pkgs.writeText "llama-models.ini" (
             lib.generators.toINI { } {
               "qwen3.8-27b" = {
