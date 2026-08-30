@@ -14,6 +14,10 @@
           hideMounts = true;
           allowTrash = true;
           directories = [
+            {
+              directory = "/var/cache/private";
+              mode = "0700";
+            }
             "/var/log"
             "/var/lib/nixos"
           ];

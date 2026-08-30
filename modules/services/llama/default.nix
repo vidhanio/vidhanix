@@ -43,8 +43,6 @@
             }
           );
         };
-
-        persist.directories = [ "/var/cache/llama-cpp" ];
       };
   };
 }
