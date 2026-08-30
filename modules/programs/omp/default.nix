@@ -4,10 +4,12 @@
       {
         inputs',
         config,
+        osConfig,
         ...
       }:
       let
         modelsCfg = config.programs.agents.models;
+        searxngCfg = osConfig.services.searx.settings.server;
       in
       {
         programs.omp = {
@@ -21,7 +23,7 @@
             };
 
             providers.webSearchOrder = [ "searxng" ];
-            searxng.endpoint = "http://vortex:8888";
+            searxng.endpoint = "http://${searxngCfg.bind_address}:${toString searxngCfg.port}";
 
             symbolPreset = "nerd";
             modelRoles = {

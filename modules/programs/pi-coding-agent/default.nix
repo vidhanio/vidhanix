@@ -5,11 +5,13 @@
         inputs',
         self',
         config,
+        osConfig,
         ...
       }:
       let
         cfg = config.programs.pi-coding-agent;
         model = config.programs.agents.models.large;
+        searxngCfg = osConfig.services.searx.settings.server;
 
         exampleExtensions = [
           # keep-sorted start
@@ -55,13 +57,8 @@
 
         xdg.configFile."pi/web-search.json".text = builtins.toJSON {
           workflow = "none";
-          searxngBaseUrl = "http://vortex:8888";
-          ssrf.allowRanges = [
-            # vortex resolves to this loopback alias locally.
-            "127.0.0.2/32"
-            # only needed when vortex resolves to a tailnet address.
-            "100.64.0.0/10"
-          ];
+          searxngBaseUrl = "http://${searxngCfg.bind_address}:${toString searxngCfg.port}";
+          ssrf.allowRanges = [ "${searxngCfg.bind_address}/32" ];
         };
 
         persist.directories = [ ".pi/agent" ];

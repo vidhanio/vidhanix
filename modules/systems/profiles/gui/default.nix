@@ -50,6 +50,7 @@
         pi-coding-agent
         prime-agent
         ripgrep
+        searxng
         steam
         stylix
         tmux

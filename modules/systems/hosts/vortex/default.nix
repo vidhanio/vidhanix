@@ -8,7 +8,6 @@
 
           # keep-sorted start
           agentcord
-          searxng
           tailscale._.exit-node
           # keep-sorted end
         ];
