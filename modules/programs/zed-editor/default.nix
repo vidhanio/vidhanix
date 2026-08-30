@@ -8,6 +8,7 @@ in
       programs.zed-editor = {
         enable = true;
         extensions = [
+          "mermaid"
           "nix"
           "rust"
         ];
