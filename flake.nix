@@ -40,6 +40,7 @@
     home-manager.url = "github:nix-community/home-manager";
     impermanence.url = "github:nix-community/impermanence";
     import-tree.url = "github:vic/import-tree";
+    llama-cpp.url = "github:ggml-org/llama.cpp";
     llm-agents.url = "github:numtide/llm-agents.nix";
     mattpocock-skills = {
       url = "github:mattpocock/skills";
