@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+_: {
   flake-file.inputs.fastpotify.url = "github:crmne/fastpotify";
 
   flake.aspects.fastpotify = {
@@ -7,7 +6,6 @@
       {
         config,
         osConfig,
-        pkgs,
         ...
       }:
       {
@@ -16,14 +14,13 @@
           settings.device_name = osConfig.networking.hostName;
         };
 
-        xdg.autostart.entries = lib.mkIf pkgs.stdenv.hostPlatform.isLinux [
+        xdg.autostart.entries = [
           "${config.programs.fastpotify.package}/share/applications/fastpotify.desktop"
         ];
 
         wayland.windowManager.hyprland.autostartWorkspaces.fastpotify = 2;
 
         persist.directories = [
-          ".config/fastpotify"
           ".local/state/fastpotify"
         ];
       };

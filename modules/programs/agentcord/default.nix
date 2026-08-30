@@ -4,7 +4,7 @@
 
   flake.aspects.agentcord = {
     homeManager =
-      { config, pkgs, ... }:
+      { config, inputs', ... }:
       {
         imports = [ inputs.agentcord.homeManagerModules.default ];
 
@@ -16,7 +16,7 @@
         };
 
         sops.templates."agentcord-env".content = ''
-          DISCORD_TOKEN=${config.sops.placeholder."agentcord/bot-token"}
+          BOT_TOKEN=${config.sops.placeholder."agentcord/bot-token"}
           GUILD_ID=${config.sops.placeholder."agentcord/guild-id"}
           ALLOWED_USER_ID=${config.sops.placeholder."agentcord/allowed-user-id"}
           FORUM_CHANNEL_ID=${config.sops.placeholder."agentcord/forum-channel-id"}
@@ -27,7 +27,7 @@
           environmentFile = config.sops.templates."agentcord-env".path;
           settings = {
             discord = {
-              bot_token = "\${DISCORD_TOKEN}";
+              bot_token = "\${BOT_TOKEN}";
               guild_id = "\${GUILD_ID}";
               allowed_user_id = "\${ALLOWED_USER_ID}";
               forum_channel_id = "\${FORUM_CHANNEL_ID}";
@@ -60,7 +60,7 @@
               };
               codex = {
                 display_name = "Codex";
-                command = lib.getExe pkgs.codex-acp;
+                command = lib.getExe inputs'.llm-agents.packages.codex-acp;
                 emoji = "🌀";
               };
             };
