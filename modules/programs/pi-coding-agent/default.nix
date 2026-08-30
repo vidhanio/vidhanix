@@ -43,6 +43,33 @@
               "${self'.packages.pi-web-access}/lib/node_modules/pi-web-access"
             ];
           };
+
+          models = {
+            providers."llama.cpp".modelOverrides."qwen3.8-27b" = {
+              reasoning = true;
+              thinkingLevelMap = {
+                off = "off";
+                minimal = null;
+                low = "low";
+                medium = "medium";
+                high = null;
+                xhigh = "xhigh";
+                max = null;
+              };
+              compat = {
+                thinkingFormat = "chat-template";
+                chatTemplateKwargs = {
+                  enable_thinking = {
+                    "$var" = "thinking.enabled";
+                  };
+                  reasoning_effort = {
+                    "$var" = "thinking.effort";
+                    omitWhenOff = true;
+                  };
+                };
+              };
+            };
+          };
         };
 
         home.file =
