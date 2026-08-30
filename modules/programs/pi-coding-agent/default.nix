@@ -46,7 +46,7 @@
           builtins.listToAttrs (
             map (ext: {
               name = "${cfg.configDir}/extensions/${ext}";
-              value.source = "${cfg.package.src}/packages/coding-agent/examples/extensions/${ext}";
+              value.source = "${cfg.package.src}/examples/extensions/${ext}";
             }) exampleExtensions
           )
           // {
