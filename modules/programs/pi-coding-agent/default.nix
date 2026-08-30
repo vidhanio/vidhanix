@@ -55,7 +55,7 @@
 
         xdg.configFile."pi/web-search.json".text = builtins.toJSON {
           workflow = "none";
-          searxngBaseUrl = "http://vortex:8080";
+          searxngBaseUrl = "http://vortex:8888";
           ssrf.allowRanges = [
             # vortex resolves to this loopback alias locally.
             "127.0.0.2/32"

@@ -21,7 +21,7 @@
             };
 
             providers.webSearchOrder = [ "searxng" ];
-            searxng.endpoint = "http://vortex:8080";
+            searxng.endpoint = "http://vortex:8888";
 
             symbolPreset = "nerd";
             modelRoles = {
