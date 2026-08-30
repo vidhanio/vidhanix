@@ -8,6 +8,7 @@
 
           # keep-sorted start
           agentcord
+          llama
           tailscale._.exit-node
           # keep-sorted end
         ];
