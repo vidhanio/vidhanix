@@ -22,7 +22,6 @@
           settings = {
             server = {
               secret_key = "$SEARXNG_SECRET_KEY";
-              bind_address = "0.0.0.0";
               port = 8888;
               limiter = false;
               public_instance = false;

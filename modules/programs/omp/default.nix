@@ -23,7 +23,7 @@
             };
 
             providers.webSearchOrder = [ "searxng" ];
-            searxng.endpoint = "http://${searxngCfg.bind_address}:${toString searxngCfg.port}";
+            searxng.endpoint = "http://${searxngCfg.bind_address or "127.0.0.1"}:${toString searxngCfg.port}";
 
             symbolPreset = "nerd";
             modelRoles = {
