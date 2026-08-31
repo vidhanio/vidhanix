@@ -34,7 +34,6 @@
             };
 
             projects.base_path = "~/Projects";
-            permissions.approve_all = true;
 
             agents = {
               omp = {

@@ -24,8 +24,6 @@
 
         programs.nix-index-database.comma.enable = true;
 
-        programs.agents.skills.comma = ./SKILL.md;
-
         programs.fish.completions = {
           comma = ''
             comma --print-completions fish 2>/dev/null | source
