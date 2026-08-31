@@ -34,6 +34,7 @@
         helium
         herdr
         hyprland
+        jq
         lazygit
         lock
         logind
@@ -49,6 +50,7 @@
         ozone
         pi-coding-agent
         prime-agent
+        python
         ripgrep
         searxng
         steam
