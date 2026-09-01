@@ -17,6 +17,7 @@
         comma
         crush
         cursor
+        delta-db
         direnv
         eza
         face
