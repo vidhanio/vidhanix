@@ -25,6 +25,7 @@
             providers.webSearchOrder = [ "searxng" ];
             searxng.endpoint = "http://${searxngCfg.bind_address or "127.0.0.1"}:${toString searxngCfg.port}";
 
+            composer.shape = "pi";
             symbolPreset = "nerd";
             modelRoles = {
               default = "${modelsCfg.large.provider}/${modelsCfg.large.model}:${modelsCfg.large.thinking}";
