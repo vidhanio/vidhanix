@@ -19,7 +19,9 @@
 
           settings = {
             startup = {
+              quiet = true;
               setupWizard = false;
+              checkUpdate = false;
             };
 
             providers.webSearchOrder = [ "searxng" ];
