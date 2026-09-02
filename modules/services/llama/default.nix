@@ -1,10 +1,7 @@
 {
-  flake-file.inputs.llama-cpp.url = "github:ggml-org/llama.cpp";
-
   flake.aspects.llama = {
     nixos =
       {
-        inputs',
         lib,
         pkgs,
         ...
@@ -12,7 +9,7 @@
       {
         services.llama-cpp = {
           enable = true;
-          package = inputs'.llama-cpp.packages.vulkan;
+          package = pkgs.llama-cpp-vulkan;
           settings.models-preset = pkgs.writeText "llama-models.ini" (
             lib.generators.toINI { } {
               "qwen3.8-27b" = {

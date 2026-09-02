@@ -1,4 +1,3 @@
-{ lib, ... }:
 {
   flake.aspects.fastpotify = {
     homeManager =
@@ -34,38 +33,15 @@
             "system"
           else
             "dark";
-
-        cmakeWithLibdir = pkgs.writeShellScript "cmake-fastpotify" ''
-          if [[ "$1" == "--build" ]]; then
-            exec ${pkgs.cmake}/bin/cmake "$@"
-          else
-            exec ${pkgs.cmake}/bin/cmake "$@" -DCMAKE_INSTALL_LIBDIR=lib
-          fi
-        '';
-
-        package = inputs'.fastpotify.packages.fastpotify.overrideAttrs (old: {
-          cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-            inherit (old) pname src version;
-            hash = "sha256-dgV3BWdD2Eli5pgaUJxkID41EuTNllWPDH0R23tyML8=";
-          };
-
-          buildInputs = (old.buildInputs or [ ]) ++ [
-            pkgs.libGL
-            pkgs.libx11
-          ];
-
-          env = (old.env or { }) // {
-            CMAKE = "${cmakeWithLibdir}";
-          };
-
-          patches = (old.patches or [ ]) ++ [ stylixPatch ];
-        });
       in
       {
         # fastpotify compiles its palette into the binary rather than reading a theme file.
         programs.fastpotify = {
-          package = lib.mkDefault package;
-          settings.theme = lib.mkDefault defaultTheme;
+
+          package = inputs'.fastpotify.packages.fastpotify.overrideAttrs (old: {
+            patches = (old.patches or [ ]) ++ [ stylixPatch ];
+          });
+          settings.theme = defaultTheme;
         };
       };
   };
