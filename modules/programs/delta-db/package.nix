@@ -7,7 +7,10 @@ let
       autoPatchelfHook,
       makeWrapper,
       libGL,
+      libxcb,
       libx11,
+      libxau,
+      libxdmcp,
       vulkan-loader,
       wayland,
       xkeyboard_config,
@@ -46,6 +49,12 @@ let
       nativeBuildInputs = [
         autoPatchelfHook
         makeWrapper
+      ];
+
+      buildInputs = lib.optionals stdenv.hostPlatform.isAarch64 [
+        libxcb
+        libxau
+        libxdmcp
       ];
 
       appendRunpaths = [
