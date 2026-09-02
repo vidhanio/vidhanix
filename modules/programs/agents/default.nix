@@ -1,16 +1,12 @@
-{ inputs, ... }: {
-  flake-file.inputs.mattpocock-skills = {
-    url = "github:mattpocock/skills";
-    flake = false;
-  };
+{
   flake.aspects.agents = {
     homeManager = {
       programs.agents = {
         models = {
           large = {
             provider = "openai-codex";
-            model = "gpt-5.6-sol";
-            thinking = "medium";
+            model = "gpt-5.6-luna";
+            thinking = "max";
           };
           small = {
             provider = "openai-codex";
@@ -22,22 +18,20 @@
         context = ''
           # AGENTS.md
 
-          ## NixOS Configuration
-          This NixOS machine is configured declaratively via the `vidhanix` flake
-          at `~/Projects/vidhanix`. Prefer declarative changes in that repo over
-          one-off system commands or manual configuration changes.
+          ## NixOS
 
-          ## Open Source Contributions
-          Always read `CONTRIBUTING.md` and other relevant documentation before
-          writing any code.
-          Never open issues or pull requests to others' repos yourself.
-          Use `gh issue create --web`/`gh pr create --web` with `--title`/`--body`
-          to prepare the content and have the user review and submit it.
+          This NixOS machine is configured declaratively via the `vidhanix` flake
+          at `~/Projects/vidhanix`.
+
+          Prefer declarative changes in that repo over one-off system commands or
+          manual configuration changes.
+
+          Use `nix shell nixpkgs#<pkg> -c <command>` to run any tools you can't
+          find in your `$PATH`.
+
+          If working on a project with a nix dev shell, ensure it is loaded by
+          running `direnv reload`.
         '';
-        skills = {
-          grill-me = "${inputs.mattpocock-skills}/skills/productivity/grill-me";
-          grilling = "${inputs.mattpocock-skills}/skills/productivity/grilling";
-        };
       };
     };
   };
