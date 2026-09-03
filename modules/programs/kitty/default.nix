@@ -1,6 +1,7 @@
 {
   flake.aspects.kitty = {
     homeManager = { config, ... }: {
+      home.sessionVariables.TERMINAL = "kitty";
       programs.kitty = {
         enable = true;
         settings = {
