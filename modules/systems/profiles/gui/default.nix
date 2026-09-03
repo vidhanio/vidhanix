@@ -32,6 +32,7 @@
         greeter
         hardware
         helium
+        helix
         herdr
         hyprland
         jq
@@ -44,7 +45,6 @@
         mosh
         nautilus
         nixcord
-        nixvim
         noctalia
         omp
         opencode2
