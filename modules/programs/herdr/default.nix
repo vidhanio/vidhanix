@@ -53,5 +53,13 @@
           ];
         };
       };
+
+    _.desktop.homeManager = {
+      wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd = "$TERMINAL herdr";
+    };
+
+    _.apple-silicon.homeManager = {
+      wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd = "$TERMINAL herdr --remote vortex";
+    };
   };
 }

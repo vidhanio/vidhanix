@@ -9,6 +9,7 @@
         boot._.desktop
         cachyos-kernel
         disk._.desktop
+        herdr._.desktop
         # keep-sorted end
       ];
     };

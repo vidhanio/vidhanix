@@ -11,6 +11,7 @@
 
           # keep-sorted start
           disk._.apple-silicon
+          herdr._.apple-silicon
           steam._.apple-silicon
           # keep-sorted end
         ];
