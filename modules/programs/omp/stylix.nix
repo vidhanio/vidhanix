@@ -79,6 +79,14 @@
               statusLineCost = base09;
               statusLineSubagents = base0E;
             };
+            symbols = {
+              overrides = {
+                "boxRound.topLeft" = "┌";
+                "boxRound.topRight" = "┐";
+                "boxRound.bottomLeft" = "└";
+                "boxRound.bottomRight" = "┘";
+              };
+            };
           };
         };
       };
