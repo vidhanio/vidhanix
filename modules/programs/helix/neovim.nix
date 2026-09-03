@@ -1,6 +1,12 @@
 {
   flake.aspects.helix = {
     homeManager = {
+      programs.helix.settings.editor.cursor-shape = {
+        insert = "bar";
+        normal = "block";
+        select = "underline";
+      };
+
       programs.helix.settings.keys = {
         normal = {
           "C-o" = ":config-open";
