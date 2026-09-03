@@ -27,7 +27,6 @@
         fx
         fzf
         gh
-        ghostty
         git
         gnome-keyring
         greeter
@@ -36,6 +35,7 @@
         herdr
         hyprland
         jq
+        kitty
         lazygit
         lock
         logind
