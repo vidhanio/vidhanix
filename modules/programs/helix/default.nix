@@ -7,6 +7,7 @@
           enable = true;
           defaultEditor = true;
           settings.editor.bufferline = "multiple";
+          settings.editor.file-picker.hidden = false;
 
           extraPackages = with pkgs; [
             nil
