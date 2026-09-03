@@ -6,8 +6,10 @@
         programs.helix = {
           enable = true;
           defaultEditor = true;
-          settings.editor.bufferline = "multiple";
-          settings.editor.file-picker.hidden = false;
+          settings.editor = {
+            bufferline = "multiple";
+            file-picker.hidden = false;
+          };
 
           extraPackages = with pkgs; [
             nil
