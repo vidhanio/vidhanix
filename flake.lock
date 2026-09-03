@@ -10,11 +10,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1788197902,
-        "narHash": "sha256-ou+XDVtlsmXcKOHUlej+r3ELU7JoIW47iFBozhTcMMU=",
+        "lastModified": 1788380436,
+        "narHash": "sha256-nWQYq1nhk4CmmcBLGpFMa78M9xETsAMeT2xS7TGW9dE=",
         "owner": "vidhanio",
         "repo": "agentcord",
-        "rev": "68f3dfdd640c60562e77ff2acef0378ccd7c5f43",
+        "rev": "b367fbc7a1a1063a476ab4b4f0d2ac8b566dbf34",
         "type": "github"
       },
       "original": {

@@ -12,7 +12,6 @@
         cfg = config.programs.pi-coding-agent;
         model = config.programs.agents.models.large;
         searxngCfg = osConfig.services.searx.settings.server;
-        searxngAddress = searxngCfg.bind_address or "127.0.0.1";
 
         exampleExtensions = [
           # keep-sorted start
@@ -85,8 +84,8 @@
 
         xdg.configFile."pi/web-search.json".text = builtins.toJSON {
           workflow = "none";
-          searxngBaseUrl = "http://${searxngAddress}:${toString searxngCfg.port}";
-          ssrf.allowRanges = [ "${searxngAddress}/32" ];
+          searxngBaseUrl = "http://${searxngCfg.bindAddress}:${toString searxngCfg.port}";
+          ssrf.allowRanges = [ "${searxngCfg.bindAddress}/32" ];
         };
 
         persist.directories = [ ".pi/agent" ];

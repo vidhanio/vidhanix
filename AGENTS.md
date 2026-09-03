@@ -4,7 +4,8 @@ This repo is my NixOS system config. It contains system preferences, programs, a
 
 ## Development
 
-Run `just --list` to view the commands available to you via the `justfile`. Prefer `just` commands where possible.
+Run `just --list` to view the commands available to you via the `justfile`.
+Prefer `just` commands over raw `git`/`nix` commands where possible.
 
 ## Style
 

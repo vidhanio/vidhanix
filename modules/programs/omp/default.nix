@@ -19,20 +19,23 @@
 
           settings = {
             startup = {
-              quiet = true;
               setupWizard = false;
               checkUpdate = false;
             };
 
-            providers.webSearchOrder = [ "searxng" ];
-            searxng.endpoint = "http://${searxngCfg.bind_address or "127.0.0.1"}:${toString searxngCfg.port}";
-
             composer.shape = "pi";
             symbolPreset = "nerd";
+
             modelRoles = {
               default = "${modelsCfg.large.provider}/${modelsCfg.large.model}:${modelsCfg.large.thinking}";
               smol = "${modelsCfg.small.provider}/${modelsCfg.small.model}:${modelsCfg.small.thinking}";
             };
+
+            task.isolation.mode = "auto";
+
+            providers.webSearchOrder = [ "searxng" ];
+            searxng.endpoint = "http://${searxngCfg.bindAddress}:${toString searxngCfg.port}";
+
           };
         };
 

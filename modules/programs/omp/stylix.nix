@@ -29,8 +29,8 @@
               customMessageText = "";
               customMessageLabel = base0D;
               toolPendingBg = base00;
-              toolSuccessBg = base01;
-              toolErrorBg = base01;
+              toolSuccessBg = base00;
+              toolErrorBg = base00;
               toolTitle = "";
               toolOutput = base04;
               mdHeading = base0E;
