@@ -55,11 +55,12 @@
       };
 
     _.desktop.homeManager = {
-      wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd = "$TERMINAL herdr";
+      wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd = "uwsm app -- $TERMINAL herdr";
     };
 
     _.apple-silicon.homeManager = {
-      wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd = "$TERMINAL herdr --remote vortex";
+      wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd =
+        "uwsm app -- $TERMINAL herdr --remote vortex";
     };
   };
 }
