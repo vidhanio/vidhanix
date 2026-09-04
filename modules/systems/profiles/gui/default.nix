@@ -18,6 +18,7 @@
         crush
         cursor
         delta-db
+        difftastic
         direnv
         eza
         face
@@ -36,6 +37,7 @@
         herdr
         hyprland
         jq
+        jujutsu
         kitty
         lazygit
         lock
