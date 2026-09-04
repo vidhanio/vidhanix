@@ -37,6 +37,14 @@
                 height = "80%";
                 description = "lazygit";
               }
+              {
+                key = "prefix+t";
+                type = "popup";
+                command = "exec \"$SHELL\"";
+                width = "80%";
+                height = "80%";
+                description = "open scratch terminal";
+              }
             ];
           };
         };
