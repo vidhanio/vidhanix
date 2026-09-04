@@ -26,17 +26,12 @@
             buildPhase = ''
               runHook preBuild
 
-              find -name \*.ttf -o -name \*.otf | parallel --will-cite nerd-font-patcher -c
+              find . -type f -name \*.ttf -print0 |
+                parallel --null --will-cite nerd-font-patcher -c -out "$out/share/fonts/truetype"
+              find . -type f -name \*.otf -print0 |
+                parallel --null --will-cite nerd-font-patcher -c -out "$out/share/fonts/opentype"
 
               runHook postBuild
-            '';
-
-            installPhase = ''
-              runHook preInstall
-
-              cp -a . $out
-
-              runHook postInstall
             '';
           };
 
