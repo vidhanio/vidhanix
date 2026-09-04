@@ -23,13 +23,15 @@
               pkgs.parallel
             ];
 
+            enableParallelBuilding = true;
+
             buildPhase = ''
               runHook preBuild
 
               find . -type f -name \*.ttf -print0 |
-                parallel --null --will-cite nerd-font-patcher -c -out "$out/share/fonts/truetype"  
+                parallel --null --will-cite --jobs="$NIX_BUILD_CORES" nerd-font-patcher -c -out "$out/share/fonts/truetype"
               find . -type f -name \*.otf -print0 |
-                parallel --null --will-cite nerd-font-patcher -c -out "$out/share/fonts/opentype"
+                parallel --null --will-cite --jobs="$NIX_BUILD_CORES" nerd-font-patcher -c -out "$out/share/fonts/opentype"
 
               runHook postBuild
             '';
