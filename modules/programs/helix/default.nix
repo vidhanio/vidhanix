@@ -11,6 +11,13 @@
             file-picker.hidden = false;
           };
 
+          languages.language = [
+            {
+              name = "markdown";
+              soft-wrap.enable = true;
+            }
+          ];
+
           extraPackages = with pkgs; [
             nil
             nixd
