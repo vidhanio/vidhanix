@@ -72,6 +72,7 @@
               margin_ends = 0;
               padding = hyprlandCfg.general.gaps_out;
               radius = 0;
+              capsule_radius = hyprlandCfg.decoration.rounding;
 
               start = [
                 "tray"
@@ -88,11 +89,11 @@
             };
             dock.shadow = false;
             widget = {
+              tray.drawer = true;
               datetime = {
                 type = "clock";
                 format = "{:%B %-d, %Y} {:%H:%M:%S}";
               };
-              workspaces.style = "minimal";
             };
           };
         };
