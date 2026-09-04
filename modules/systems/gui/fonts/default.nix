@@ -45,7 +45,10 @@
               name = "BerkeleyMono Nerd Font";
             };
             serif = cfg.fonts.monospace;
-            sansSerif = cfg.fonts.monospace;
+            sansSerif = {
+              package = pkgs.inter-nerdfont;
+              name = "Inter Nerd Font";
+            };
           };
         };
       };
