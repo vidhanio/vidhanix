@@ -64,7 +64,6 @@
             bar.main = {
               position = "top";
               background_opacity = 1.0;
-              border_width = hyprlandCfg.general.border_size;
               shadow = false;
               capsule = false;
 
