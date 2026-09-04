@@ -37,7 +37,6 @@
         herdr
         hyprland
         jq
-        jujutsu
         kitty
         lazygit
         lock
