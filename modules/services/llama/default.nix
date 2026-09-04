@@ -14,7 +14,6 @@
             lib.generators.toINI { } {
               "qwen3.8-27b" = {
                 hf = "unsloth/Qwen3.8-27B-GGUF:UD-Q3_K_XL";
-                alias = "qwen3.8-27b";
                 no-mmproj = true;
                 gpu-layers = "all";
                 gpu-layers-draft = "all";
