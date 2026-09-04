@@ -49,10 +49,7 @@
               name = "BerkeleyMono Nerd Font";
             };
             serif = cfg.fonts.monospace;
-            sansSerif = {
-              package = self'.packages.google-sans-flex;
-              name = "Google Sans Flex";
-            };
+            sansSerif = cfg.fonts.monospace;
           };
         };
       };
