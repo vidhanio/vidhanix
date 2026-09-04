@@ -26,7 +26,6 @@
         locked = bind: bind // { _flags.locked = true; };
 
         hyprlandCfg = config.wayland.windowManager.hyprland.settings.config;
-        barPadding = hyprlandCfg.general.gaps_out / 2;
       in
       {
         stylix.targets.noctalia.image.enable = false;
@@ -68,8 +67,8 @@
               capsule = false;
 
               margin_edge = 0;
-              margin_ends = barPadding;
-              padding = barPadding;
+              margin_ends = 0;
+              padding = hyprlandCfg.general.gaps_out;
               radius = 0;
 
               start = [
