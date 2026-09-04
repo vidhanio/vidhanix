@@ -10,6 +10,7 @@
     homeManager =
       {
         config,
+        lib,
         ...
       }:
       let
@@ -33,6 +34,7 @@
         programs.noctalia = {
           enable = true;
           systemd.enable = true;
+          customPalettes.stylix.dark.mSurface = lib.mkForce config.lib.stylix.colors.withHashtag.base00;
 
           settings = {
             lockscreen.enabled = false; # handled by hyprlock
