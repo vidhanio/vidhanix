@@ -1,4 +1,4 @@
-{ inputs, lib, ... }: {
+{ inputs, ... }: {
   flake-file.inputs = {
     stylix.url = "github:nix-community/stylix";
     tinted-schemes = {
@@ -13,8 +13,8 @@
 
       stylix = {
         enable = true;
-        polarity = lib.mkDefault "dark";
-        base16Scheme = lib.mkDefault "${inputs.tinted-schemes}/base16/catppuccin-mocha.yaml";
+        polarity = "dark";
+        base16Scheme = "${inputs.tinted-schemes}/base16/gruvbox-material-dark-hard.yaml";
       };
 
     };

@@ -72,7 +72,7 @@
               background_opacity = 0;
               capsule_opacity = config.stylix.opacity.desktop;
               capsule_thickness = 1.0;
-              border_width = 0;
+              border_width = hyprlandCfg.general.border_size;
               shadow = false;
 
               margin_edge = padding;
