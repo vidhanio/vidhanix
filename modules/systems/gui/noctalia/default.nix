@@ -26,15 +26,6 @@
         locked = bind: bind // { _flags.locked = true; };
 
         hyprlandCfg = config.wayland.windowManager.hyprland.settings.config;
-        padding = hyprlandCfg.general.gaps_out;
-        radius = hyprlandCfg.decoration.rounding;
-
-        capsuleGroup = id: members: {
-          inherit id members;
-          fill = "surface_variant";
-          opacity = config.stylix.opacity.desktop;
-          inherit padding radius;
-        };
       in
       {
         stylix.targets.noctalia.image.enable = false;
@@ -69,38 +60,28 @@
             location.auto_locate = true;
 
             bar.main = {
-              background_opacity = 0;
-              capsule_opacity = config.stylix.opacity.desktop;
-              capsule_thickness = 1.0;
+              position = "top";
+              background_opacity = 1.0;
               border_width = hyprlandCfg.general.border_size;
               shadow = false;
+              capsule = false;
 
-              margin_edge = padding;
-              margin_ends = padding;
+              margin_edge = 0;
+              margin_ends = 0;
               padding = 0;
-              inherit radius;
+              radius = 0;
 
               start = [
-                "group:tray"
-                "group:workspaces"
+                "tray"
+                "workspaces"
               ];
               center = [
-                "group:datetime"
+                "datetime"
               ];
               end = [
-                "group:system"
-              ];
-              capsule_group = [
-                (capsuleGroup "tray" [ "tray" ])
-                (capsuleGroup "workspaces" [ "workspaces" ])
-                (capsuleGroup "datetime" [
-                  "datetime"
-                ])
-                (capsuleGroup "system" [
-                  "volume"
-                  "network"
-                  "battery"
-                ])
+                "volume"
+                "network"
+                "battery"
               ];
             };
             dock.shadow = false;
@@ -109,6 +90,7 @@
                 type = "clock";
                 format = "{:%B %-d, %Y} {:%H:%M:%S}";
               };
+              workspaces.style = "minimal";
             };
           };
         };
