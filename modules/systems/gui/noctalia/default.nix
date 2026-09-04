@@ -68,7 +68,7 @@
 
               margin_edge = 0;
               margin_ends = 0;
-              padding = 0;
+              padding = hyprlandCfg.general.gaps_out / 2;
               radius = 0;
 
               start = [
