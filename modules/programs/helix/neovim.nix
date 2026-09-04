@@ -9,21 +9,13 @@
 
       programs.helix.settings.keys = {
         normal = {
-          "C-o" = ":config-open";
-          "C-r" = ":config-reload";
           "C-h" = "select_prev_sibling";
           "C-j" = "shrink_selection";
           "C-k" = "expand_selection";
           "C-l" = "select_next_sibling";
 
-          o = [
-            "open_below"
-            "normal_mode"
-          ];
-          O = [
-            "open_above"
-            "normal_mode"
-          ];
+          o = "open_below";
+          O = "open_above";
 
           "{" = [
             "goto_prev_paragraph"
