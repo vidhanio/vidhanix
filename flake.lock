@@ -1113,7 +1113,6 @@
         "sops-nix": "sops-nix",
         "stylix": "stylix",
         "systems": "systems_5",
-        "tinted-schemes": "tinted-schemes_2",
         "treefmt-nix": "treefmt-nix_4",
         "vidhan-fonts": "vidhan-fonts"
       }
@@ -1298,22 +1297,6 @@
       }
     },
     "tinted-schemes": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1786274241,
-        "narHash": "sha256-LMHxSQJIv6QJJkO9W7sAkJujlwusFf9/Ct0SYJ6GyHQ=",
-        "owner": "tinted-theming",
-        "repo": "schemes",
-        "rev": "fdca32a0d14ec80ad83a78a9ccb85592ca6cb9e1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tinted-theming",
-        "repo": "schemes",
-        "type": "github"
-      }
-    },
-    "tinted-schemes_2": {
       "flake": false,
       "locked": {
         "lastModified": 1786274241,

@@ -57,10 +57,6 @@
     sops-nix.url = "github:Mic92/sops-nix";
     stylix.url = "github:nix-community/stylix";
     systems.url = "github:nix-systems/default-linux";
-    tinted-schemes = {
-      url = "github:tinted-theming/schemes";
-      flake = false;
-    };
     treefmt-nix.url = "github:numtide/treefmt-nix";
     vidhan-fonts = {
       url = "git+ssh://git@github.com/vidhanio/fonts";
