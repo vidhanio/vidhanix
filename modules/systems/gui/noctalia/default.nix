@@ -41,6 +41,7 @@
             wallpaper.enabled = false; # handled by hyprpaper
 
             shell = {
+              corner_radius_scale = if hyprlandCfg.decoration.rounding == 0 then 0 else 1;
               popup_shadows = false;
               panel = {
                 control_center_placement = "floating";
