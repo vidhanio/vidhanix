@@ -73,8 +73,7 @@
               margin_ends = 0;
               padding = hyprlandCfg.general.gaps_out;
               widget_spacing = 10;
-              font_family = config.stylix.fonts.monospace.name;
-              radius = 0;
+              radius = hyprlandCfg.decoration.rounding;
               capsule_radius = hyprlandCfg.decoration.rounding;
 
               start = [
@@ -82,13 +81,13 @@
                 "workspaces"
               ];
               center = [
-                "datetime"
+                "clock"
                 "notifications"
               ];
               end = [
                 "volume"
-                "bluetooth"
                 "network"
+                "bluetooth"
                 "battery"
               ];
             };
@@ -97,17 +96,17 @@
               sidebar_section = "none";
             };
             widget = {
+              tray.drawer = true;
+
+              clock = {
+                anchor = true;
+                format = "{:%B %-d, %Y} {:%H:%M}";
+              };
+
+              volume.show_label = false;
+              network.show_label = false;
               bluetooth.show_label = false;
               battery.show_label = false;
-              datetime = {
-                type = "clock";
-                anchor = true;
-                format = "{:%B %-d, %Y} {:%H:%M:%S}";
-              };
-              network.show_label = false;
-              tray.drawer = true;
-              volume.show_label = false;
-              workspaces.style = "minimal";
             };
             dock.shadow = false;
           };
