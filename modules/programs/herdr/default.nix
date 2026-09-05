@@ -20,7 +20,6 @@
 
             ui = {
               tab_bar_position = "bottom";
-              show_agent_labels_on_pane_borders = true;
               toast.delivery = "system";
             };
 
