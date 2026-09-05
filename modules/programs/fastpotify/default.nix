@@ -1,5 +1,4 @@
 _: {
-  flake-file.inputs.fastpotify.url = "github:crmne/fastpotify";
 
   flake.aspects.fastpotify = {
     homeManager =

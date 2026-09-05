@@ -1,128 +1,41 @@
 {
-  flake-file.inputs.helium.url = "github:schembriaiden/helium-browser-nix-flake";
 
-  flake.aspects.helium = {
-    nixos = {
-      stylix.targets.chromium.enable = false;
-    };
-    homeManager =
-      {
-        config,
-        inputs',
-        lib,
-        pkgs,
-        ...
-      }:
-      let
-        lua = pkgs.formats.lua { };
+  flake.aspects.helium.homeManager =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    let
+      lua = pkgs.formats.lua { };
+      cfg = config.programs.helium;
+    in
+    {
+      programs.helium.enable = true;
 
-        colors = config.lib.stylix.colors;
-        rgbList =
-          name:
-          map (channel: lib.toInt colors."${name}-rgb-${channel}") [
-            "r"
-            "g"
-            "b"
-          ];
+      xdg.autostart.entries = lib.mkIf (cfg.finalPackage != null) [
+        "${cfg.finalPackage}/share/applications/helium.desktop"
+      ];
 
-        manifest = pkgs.writers.writeJSON "manifest.json" {
-          manifest_version = 3;
-          name = "Stylix";
-          version = "1.0.0";
+      wayland.windowManager.hyprland = {
+        autostartWorkspaces.helium = 1;
 
-          theme = {
-            colors = lib.mapAttrs (_: rgbList) {
-              # `frame` currently does nothing: https://github.com/imputnet/helium/issues/1459
-              frame = "base00";
-              frame_incognito = "base00";
-
-              frame_inactive = "base01";
-              frame_incognito_inactive = "base01";
-
-              toolbar = "base00";
-
-              tab_text = "base05";
-              bookmark_text = "base05";
-              toolbar_text = "base05";
-
-              background_tab = "base01";
-              background_tab_inactive = "base01";
-              background_tab_incognito = "base01";
-              background_tab_incognito_inactive = "base01";
-
-              tab_background_text = "base04";
-              tab_background_text_inactive = "base04";
-              tab_background_text_incognito = "base04";
-              tab_background_text_incognito_inactive = "base04";
-
-              button_background = "base00";
-
-              omnibox_text = "base0D";
-              omnibox_background = "base01";
-
-              ntp_background = "base00";
-              ntp_header = "base01";
-              ntp_link = "base04";
-              ntp_text = "base04";
-            };
-
-            tints =
-              let
-                identity = [
-                  (-1)
-                  (-1)
-                  (-1)
-                ];
-              in
-              {
-                background_tab = identity;
-                buttons = identity;
-                frame = identity;
-                frame_inactive = identity;
-                frame_incognito = identity;
-                frame_incognito_inactive = identity;
-              };
-          };
-        };
-        theme = pkgs.runCommandLocal "helium-theme" { } ''
-          mkdir $out
-          ln -s ${manifest} $out/manifest.json
-        '';
-        unwrapped = inputs'.helium.packages.default;
-        pkg = pkgs.symlinkJoin {
-          inherit (unwrapped) pname version meta;
-          paths = [ unwrapped ];
-          nativeBuildInputs = [ pkgs.makeWrapper ];
-          postBuild = ''
-            wrapProgram $out/bin/helium \
-              --add-flags ${lib.escapeShellArg "--load-extension=${theme}"}
-          '';
-        };
-      in
-      {
-        home.packages = [ pkg ];
-
-        xdg.autostart.entries = [ "${pkg}/share/applications/helium.desktop" ];
-
-        wayland.windowManager.hyprland = {
-          autostartWorkspaces.helium = 1;
-
-          binds = {
-            "SUPER + B" = lua.lib.mkRaw ''
-              function()
-                local window = hl.get_window("class:helium")
-                if window then
-                  hl.dispatch(hl.dsp.focus({ window = window }))
-                else
-                  hl.exec_cmd("uwsm app -- helium")
-                end
+        binds = {
+          "SUPER + B" = lua.lib.mkRaw ''
+            function()
+              local window = hl.get_window("class:helium")
+              if window then
+                hl.dispatch(hl.dsp.focus({ window = window }))
+              else
+                hl.exec_cmd("uwsm app -- helium")
               end
-            '';
-            "SUPER + SHIFT + B".exec_cmd = "uwsm app -- helium --new-window";
-          };
+            end
+          '';
+          "SUPER + SHIFT + B".exec_cmd = "uwsm app -- helium --new-window";
         };
-
-        persist.directories = [ ".config/net.imput.helium" ];
       };
-  };
+
+      persist.directories = [ ".config/net.imput.helium" ];
+    };
 }
