@@ -39,6 +39,10 @@
           settings = {
             lockscreen.enabled = false; # handled by hyprlock
             wallpaper.enabled = false; # handled by hyprpaper
+            screenshot = {
+              save_to_file = false;
+              copy_to_clipboard = true;
+            };
 
             shell = {
               corner_radius_scale = hyprlandCfg.decoration.rounding;

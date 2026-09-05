@@ -11,8 +11,10 @@
           "SUPER + J".layout = "togglesplit";
           "SUPER + F"."window.fullscreen" = { };
 
-          "Print".exec_cmd = "${lib.getExe pkgs.grimblast} --freeze copy area";
+          "Print".exec_cmd = "noctalia msg screenshot-region";
           "SHIFT + Print".exec_cmd = "${lib.getExe pkgs.hyprpicker} -a";
+          "SUPER + P".exec_cmd = "noctalia msg screenshot-region";
+          "SUPER + I".exec_cmd = "${lib.getExe pkgs.hyprpicker} -a";
 
           "SUPER + mouse:272" = {
             "window.drag" = { };
