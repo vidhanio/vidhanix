@@ -75,3 +75,7 @@ diff --git a/src/theme.rs b/src/theme.rs
              shadow: Color32::from_black_alpha(50),
          }
      }
+@@ -256,2 +256,2 @@ fn install_fonts(ctx: &egui::Context) {
+     let mut fonts = FontDefinitions::default();
+-    let inter = include_bytes!("../assets/fonts/InterVariable.ttf");
++    let inter = include_bytes!("@font@");
