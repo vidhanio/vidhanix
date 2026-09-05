@@ -43,7 +43,6 @@
             shell = {
               corner_radius_scale = hyprlandCfg.decoration.rounding;
               panel = {
-                control_center_placement = "floating";
                 open_near_click_control_center = true;
                 shadow = false;
                 transparency_mode =
