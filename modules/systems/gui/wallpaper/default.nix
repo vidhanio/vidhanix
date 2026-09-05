@@ -7,7 +7,7 @@
         colors = config.lib.stylix.colors;
         gradient = {
           black = "base00";
-          white = "base0C";
+          white = "base0D";
           blackSplit = 0;
           whiteSplit = 0.5;
         };
