@@ -11,6 +11,77 @@
     }:
     let
       cfg = config.programs.helium;
+      chromeWebStoreUpdateUrl = "https://clients2.google.com/service/update2/crx";
+
+      configDir =
+        if pkgs.stdenv.hostPlatform.isDarwin then
+          "Library/Application Support/net.imput.helium"
+        else
+          "${config.xdg.configHome}/net.imput.helium";
+
+      extensionType = lib.types.submodule {
+        options = {
+          id = lib.mkOption {
+            type = lib.types.strMatching "[a-zA-Z]{32}";
+            description = ''
+              The extension's ID from the Chrome Web Store url or the unpacked crx.
+            '';
+            default = "";
+          };
+
+          updateUrl = lib.mkOption {
+            type = lib.types.str;
+            default = chromeWebStoreUpdateUrl;
+            description = ''
+              URL of the extension's update manifest XML file.
+            '';
+          };
+
+          crxPath = lib.mkOption {
+            type = lib.types.nullOr lib.types.path;
+            default = null;
+            description = ''
+              Path to the extension's crx file.
+            '';
+          };
+
+          version = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = null;
+            description = ''
+              The extension's version, required for local installation.
+            '';
+          };
+        };
+      };
+
+      extensionJson =
+        ext:
+        assert ext.crxPath != null -> ext.version != null;
+        {
+          name = "${configDir}/External Extensions/${ext.id}.json";
+          value.text = builtins.toJSON (
+            if ext.crxPath != null then
+              {
+                external_crx = ext.crxPath;
+                external_version = ext.version;
+              }
+            else
+              {
+                external_update_url = ext.updateUrl;
+              }
+          );
+        };
+
+      dictionary = pkg: {
+        name = "${configDir}/Dictionaries/${pkg.passthru.dictFileName}";
+        value.source = pkg;
+      };
+
+      nativeMessagingHostsJoined = pkgs.symlinkJoin {
+        name = "helium-native-messaging-hosts";
+        paths = lib.unique cfg.nativeMessagingHosts;
+      };
     in
     {
       options.programs.helium = {
@@ -52,6 +123,61 @@
             [Chromium codesearch](https://source.chromium.org/search?q=file:switches.cc&ss=chromium%2Fchromium%2Fsrc).
           '';
         };
+
+        dictionaries = lib.mkOption {
+          type = lib.types.listOf lib.types.package;
+          default = [ ];
+          example = lib.literalExpression ''
+            [
+              pkgs.hunspellDictsChromium.en_US
+            ]
+          '';
+          description = "List of Helium dictionaries to install.";
+        };
+
+        nativeMessagingHosts = lib.mkOption {
+          type = lib.types.listOf lib.types.package;
+          default = [ ];
+          example = lib.literalExpression ''
+            [
+              pkgs.keepassxc
+            ]
+          '';
+          description = "List of Helium native messaging hosts to install.";
+        };
+
+        extensions = lib.mkOption {
+          type = lib.types.listOf (lib.types.coercedTo lib.types.str (v: { id = v; }) extensionType);
+          default = [ ];
+          example = lib.literalExpression ''
+            [
+              { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
+              {
+                id = "dcpihecpambacapedldabdbpakmachpb";
+                updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/updates.xml";
+              }
+              {
+                id = "aaaaaaaaaabbbbbbbbbbcccccccccc";
+                crxPath = "/home/share/extension.crx";
+                version = "1.0";
+              }
+            ]
+          '';
+          description = ''
+            List of Helium extensions to install.
+            To find the extension ID, check its URL on the
+            [Chrome Web Store](https://chrome.google.com/webstore/category/extensions).
+
+            To install extensions outside of the Chrome Web Store set
+            `updateUrl` or `crxPath` and `version` as explained in the
+            [Chrome
+            documentation](https://developer.chrome.com/docs/extensions/mv2/external_extensions).
+
+            When using Helium on Linux, prefer `crxPath` and `version`. The
+            default Chrome Web Store update URL is generally not sufficient
+            there.
+          '';
+        };
       };
 
       config = lib.mkIf cfg.enable {
@@ -79,6 +205,16 @@
             cfg.package;
 
         home.packages = lib.mkIf (cfg.finalPackage != null) [ cfg.finalPackage ];
+
+        home.file =
+          lib.listToAttrs (map extensionJson cfg.extensions)
+          // lib.listToAttrs (map dictionary cfg.dictionaries)
+          // {
+            "${configDir}/NativeMessagingHosts" = lib.mkIf (cfg.nativeMessagingHosts != [ ]) {
+              source = "${nativeMessagingHostsJoined}/etc/chromium/native-messaging-hosts";
+              recursive = true;
+            };
+          };
       };
     };
 }
