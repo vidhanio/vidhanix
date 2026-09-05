@@ -79,13 +79,11 @@
                 frame_incognito = identity;
                 frame_incognito_inactive = identity;
               };
-            images.theme_ntp_background = "wallpaper.png";
           };
         };
         theme = pkgs.runCommandLocal "helium-theme" { } ''
           mkdir $out
           ln -s ${manifest} $out/manifest.json
-          ln -s ${config.stylix.image} $out/wallpaper.png
         '';
         unwrapped = inputs'.helium.packages.default;
         pkg = pkgs.symlinkJoin {
