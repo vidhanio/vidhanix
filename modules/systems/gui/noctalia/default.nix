@@ -101,6 +101,7 @@
               battery.show_label = false;
               datetime = {
                 type = "clock";
+                anchor = true;
                 format = "{:%B %-d, %Y} {:%H:%M:%S}";
               };
               network.show_label = false;
