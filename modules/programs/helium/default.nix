@@ -2,6 +2,9 @@
   flake-file.inputs.helium.url = "github:schembriaiden/helium-browser-nix-flake";
 
   flake.aspects.helium = {
+    nixos = {
+      stylix.targets.chromium.enable = false;
+    };
     homeManager =
       {
         config,

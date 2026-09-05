@@ -8,7 +8,6 @@
       stylix = {
         enable = true;
         polarity = "dark";
-        targets.chromium.enable = false;
         base16Scheme = {
           scheme = "Vidhan";
           slug = "vidhan";
