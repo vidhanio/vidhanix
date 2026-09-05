@@ -4,7 +4,7 @@
 
   flake.aspects.disk = {
     nixos =
-      { config, ... }:
+      { ... }:
       {
         imports = [ inputs.disko.nixosModules.default ];
         disko.devices.disk.main = {
@@ -38,10 +38,6 @@
                         mountpoint = "/nix";
                         inherit mountOptions;
                       };
-                      persist = {
-                        mountpoint = config.persist.persistentStoragePath;
-                        inherit mountOptions;
-                      };
                     };
                 };
               };
@@ -50,42 +46,37 @@
         };
       };
 
-    _.desktop.nixos = {
-      disko.devices.disk.main.content.partitions.ESP = {
-        start = "1M";
-        end = "500M";
+    provides = {
+      desktop.nixos = {
+        disko.devices.disk.main.content.partitions.ESP = {
+          start = "1M";
+          end = "500M";
+        };
       };
-      disko.devices.nodev."/" = {
-        fsType = "tmpfs";
-        mountOptions = [
-          "mode=755"
-          "size=8G"
-        ];
-      };
-    };
 
-    _.apple-silicon.nixos = {
-      disko.devices.disk.main.content.partitions = {
-        iBootSystemContainer = {
-          label = "iBootSystemContainer";
-          priority = 1;
-          type = "AF0B";
-        };
-        Container = {
-          label = "Container";
-          priority = 2;
-          type = "AF0A";
-        };
-        NixOSContainer = {
-          label = "NixOSContainer";
-          priority = 3;
-          type = "AF0A";
-        };
-        ESP.priority = 4;
-        RecoveryOSContainer = {
-          label = "RecoveryOSContainer";
-          priority = 5;
-          type = "AF0C";
+      apple-silicon.nixos = {
+        disko.devices.disk.main.content.partitions = {
+          iBootSystemContainer = {
+            label = "iBootSystemContainer";
+            priority = 1;
+            type = "AF0B";
+          };
+          Container = {
+            label = "Container";
+            priority = 2;
+            type = "AF0A";
+          };
+          NixOSContainer = {
+            label = "NixOSContainer";
+            priority = 3;
+            type = "AF0A";
+          };
+          ESP.priority = 4;
+          RecoveryOSContainer = {
+            label = "RecoveryOSContainer";
+            priority = 5;
+            type = "AF0C";
+          };
         };
       };
     };

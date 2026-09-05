@@ -2,7 +2,7 @@
 {
   flake-file.inputs.impermanence.url = "github:nix-community/impermanence";
 
-  flake.aspects.impermanence = {
+  flake.aspects.disk.provides.impermanence = {
     nixos =
       { config, ... }:
       {
@@ -24,6 +24,14 @@
           files = [ "/etc/machine-id" ];
         };
         fileSystems.${config.persist.persistentStoragePath}.neededForBoot = true;
+
+        disko.devices.disk.main.content.partitions.root.content.subvolumes.persist = {
+          mountpoint = config.persist.persistentStoragePath;
+          mountOptions = [
+            "compress=zstd"
+            "noatime"
+          ];
+        };
       };
 
     homeManager =

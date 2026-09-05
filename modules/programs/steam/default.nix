@@ -18,7 +18,7 @@
         ) 3;
       };
 
-    _.apple-silicon.nixos =
+    provides.apple-silicon.nixos =
       { self', ... }:
       {
         programs.steam.package = self'.packages.muvm-steam;

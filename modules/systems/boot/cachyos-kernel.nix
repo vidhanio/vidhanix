@@ -12,14 +12,9 @@
 
   flake.aspects.cachyos-kernel = {
     nixos =
+      { inputs', ... }:
       {
-        inputs',
-        lib,
-        pkgs,
-        ...
-      }:
-      {
-        boot.kernelPackages = lib.mkIf pkgs.stdenv.hostPlatform.isx86_64 inputs'.nix-cachyos-kernel.legacyPackages.linuxPackages-cachyos-latest;
+        boot.kernelPackages = inputs'.nix-cachyos-kernel.legacyPackages.linuxPackages-cachyos-latest;
       };
   };
 }

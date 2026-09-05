@@ -7,9 +7,9 @@
         automatic-timezoned
         boot
         disk
+        disk.provides.impermanence
         fish
         home-manager
-        impermanence
         locale
         network
         nh

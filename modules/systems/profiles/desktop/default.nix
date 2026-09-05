@@ -6,10 +6,10 @@
         gui
 
         # keep-sorted start
-        boot._.desktop
         cachyos-kernel
-        disk._.desktop
-        herdr._.desktop
+        disk.provides.desktop
+        disk.provides.impermanence.provides.tmpfs
+        herdr.provides.vortex
         # keep-sorted end
       ];
     };

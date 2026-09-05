@@ -9,7 +9,7 @@
           # keep-sorted start
           agentcord
           llama
-          tailscale._.exit-node
+          tailscale.provides.exit-node
           # keep-sorted end
         ];
         nixos = {

@@ -45,7 +45,7 @@
         };
       };
 
-    _.exit-node.nixos = {
+    provides.exit-node.nixos = {
       services.tailscale.extraSetFlags = [ "--advertise-exit-node" ];
     };
   };

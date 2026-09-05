@@ -1,4 +1,4 @@
-{
+{ lib, ... }: {
   flake.aspects.herdr = {
     homeManager =
       {
@@ -32,6 +32,9 @@
 
         programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
 
+        wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd =
+          lib.mkDefault "uwsm app -- $TERMINAL herdr --remote vortex";
+
         persist = {
           directories = [ ".herdr/worktrees" ];
           files = [
@@ -43,13 +46,8 @@
         };
       };
 
-    provides.desktop.homeManager = {
+    provides.vortex.homeManager = {
       wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd = "uwsm app -- $TERMINAL herdr";
-    };
-
-    provides.apple-silicon.homeManager = {
-      wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd =
-        "uwsm app -- $TERMINAL herdr --remote vortex";
     };
   };
 }
