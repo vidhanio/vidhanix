@@ -7,9 +7,9 @@
         colors = config.lib.stylix.colors;
         gradient = {
           black = "base00";
-          white = "base0D";
+          white = "base0C";
           blackSplit = 0;
-          whiteSplit = 0.2;
+          whiteSplit = 0.5;
         };
         channel = color: component: colors."${color}-dec-${component}";
         rmsChannel =
