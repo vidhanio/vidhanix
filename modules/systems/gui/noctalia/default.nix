@@ -90,10 +90,7 @@
                 "battery"
               ];
             };
-            control_center = {
-              show_shortcut_labels = false;
-              sidebar_section = "none";
-            };
+            control_center.sidebar_section = "none";
             widget = {
               tray.drawer = true;
 
