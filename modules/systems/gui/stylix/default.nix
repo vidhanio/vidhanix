@@ -9,8 +9,11 @@
         enable = true;
         polarity = "dark";
         base16Scheme = {
-          scheme = "Default";
-          slug = "default";
+          scheme = "Vidhan";
+          slug = "vidhan";
+          author = "Vidhan Bhatt (https://vidhan.io)";
+          variant = "dark";
+
           base00 = "000000";
           base01 = "151515";
           base02 = "2b2b2b";

@@ -27,25 +27,6 @@
             experimental = {
               kitty_graphics = true;
             };
-
-            keys.command = [
-              {
-                key = "prefix+alt+g";
-                type = "popup";
-                command = "lazygit";
-                width = "80%";
-                height = "80%";
-                description = "lazygit";
-              }
-              {
-                key = "prefix+t";
-                type = "popup";
-                command = "exec \"$SHELL\"";
-                width = "80%";
-                height = "80%";
-                description = "open scratch terminal";
-              }
-            ];
           };
         };
 
@@ -62,11 +43,11 @@
         };
       };
 
-    _.desktop.homeManager = {
+    provides.desktop.homeManager = {
       wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd = "uwsm app -- $TERMINAL herdr";
     };
 
-    _.apple-silicon.homeManager = {
+    provides.apple-silicon.homeManager = {
       wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd =
         "uwsm app -- $TERMINAL herdr --remote vortex";
     };
