@@ -8,8 +8,8 @@
       {
         services.easyeffects = {
           enable = true;
-          preset = "masc-npr";
-          extraPresets.masc-npr = {
+          preset = "masc";
+          extraPresets.masc = {
             input = {
               blocklist = [ ];
               "compressor#0" = {
@@ -76,25 +76,6 @@
                 ratio = 3;
                 sc-listen = false;
                 threshold = -22;
-              };
-              "echo_canceller#0" = {
-                bypass = false;
-                echo-canceller = {
-                  automatic-gain-control = false;
-                  enable = true;
-                  enforce-high-pass = true;
-                  mobile-mode = false;
-                };
-                high-pass = {
-                  enable = true;
-                  full-band = true;
-                };
-                input-gain = 0;
-                noise-suppression = {
-                  enable = true;
-                  level = "Moderate";
-                };
-                output-gain = 0;
               };
               "equalizer#0" = {
                 balance = 0.1;
@@ -284,7 +265,6 @@
                 threshold = -1.5;
               };
               plugins_order = [
-                "echo_canceller#0"
                 "rnnoise#0"
                 "deepfilternet#0"
                 "gate#0"
