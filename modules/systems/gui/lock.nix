@@ -10,7 +10,7 @@ _: {
         decorationCfg = config.wayland.windowManager.hyprland.settings.config.decoration;
       in
       {
-        wayland.windowManager.hyprland.binds."SUPER + L".exec_cmd = "loginctl lock-session";
+        binds."SUPER + L".exec = "loginctl lock-session";
 
         programs.hyprlock = {
           enable = true;

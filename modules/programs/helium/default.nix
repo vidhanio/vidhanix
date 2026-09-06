@@ -18,22 +18,20 @@
         "${cfg.finalPackage}/share/applications/helium.desktop"
       ];
 
-      wayland.windowManager.hyprland = {
-        autostartWorkspaces.helium = 1;
+      wayland.windowManager.hyprland.autostartWorkspaces.helium = 1;
 
-        binds = {
-          "SUPER + B" = lua.lib.mkRaw ''
-            function()
-              local window = hl.get_window("class:helium")
-              if window then
-                hl.dispatch(hl.dsp.focus({ window = window }))
-              else
-                hl.exec_cmd("uwsm app -- helium")
-              end
+      binds = {
+        "SUPER + B".hyprland.luaRaw = lua.lib.mkRaw ''
+          function()
+            local window = hl.get_window("class:helium")
+            if window then
+              hl.dispatch(hl.dsp.focus({ window = window }))
+            else
+              hl.exec_cmd("uwsm app -- helium")
             end
-          '';
-          "SUPER + SHIFT + B".exec_cmd = "uwsm app -- helium --new-window";
-        };
+          end
+        '';
+        "SUPER + SHIFT + B".app = "helium --new-window";
       };
 
       persist.directories = [ ".config/net.imput.helium" ];

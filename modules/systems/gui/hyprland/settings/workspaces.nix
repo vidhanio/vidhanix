@@ -47,33 +47,34 @@
             config.binds.hide_special_on_workspace_change = true;
           };
 
-          binds =
-            lib.mergeAttrsList (
-              map (i: {
-                "SUPER + ${toString i}".focus = {
-                  workspace = i;
-                  on_current_monitor = true;
-                };
-                "SUPER + SHIFT + ${toString i}"."window.move" = {
-                  workspace = i;
-                  follow = false;
-                };
-              }) (lib.range 1 9)
-            )
-            // {
-              "SUPER + S"."workspace.toggle_special" = { };
-              "SUPER + SHIFT + S"."window.move" = {
-                workspace = "special";
+        };
+
+        binds =
+          lib.mergeAttrsList (
+            map (i: {
+              "SUPER + ${toString i}".hyprland.dsp.focus = {
+                workspace = i;
+                on_current_monitor = true;
+              };
+              "SUPER + SHIFT + ${toString i}".hyprland.dsp."window.move" = {
+                workspace = i;
                 follow = false;
               };
-
-              "SUPER + grave"."workspace.swap_monitors" = {
-                monitor1 = "current";
-                monitor2 = "+1";
-              };
-              "SUPER + SHIFT + grave".focus.monitor = "+1";
+            }) (lib.range 1 9)
+          )
+          // {
+            "SUPER + S".hyprland.dsp."workspace.toggle_special" = { };
+            "SUPER + SHIFT + S".hyprland.dsp."window.move" = {
+              workspace = "special";
+              follow = false;
             };
-        };
+
+            "SUPER + grave".hyprland.dsp."workspace.swap_monitors" = {
+              monitor1 = "current";
+              monitor2 = "+1";
+            };
+            "SUPER + SHIFT + grave".hyprland.dsp.focus.monitor = "+1";
+          };
       };
   };
 }

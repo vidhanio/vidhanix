@@ -52,8 +52,7 @@
             exec = "comma --picker ${picker} -- {query}";
           };
 
-        wayland.windowManager.hyprland.binds."SUPER + comma".exec_cmd =
-          "noctalia msg panel-toggle launcher '/, '";
+        binds."SUPER + comma".exec = "noctalia msg panel-toggle launcher '/, '";
 
         persist.files = [ ".local/state/comma/choices" ];
       };

@@ -14,17 +14,20 @@
         ...
       }:
       let
-        msg = command: { exec_cmd = "noctalia msg ${command}"; };
-        repeating =
-          bind:
-          bind
-          // {
-            _flags = {
-              repeating = true;
-              locked = true;
-            };
+        msg = command: {
+          exec = "noctalia msg ${command}";
+        };
+        hyprlandMsg = flags: command: {
+          hyprland.dsp = {
+            exec_cmd = "noctalia msg ${command}";
+            _flags = flags;
           };
-        locked = bind: bind // { _flags.locked = true; };
+        };
+        repeating = hyprlandMsg {
+          repeating = true;
+          locked = true;
+        };
+        locked = hyprlandMsg { locked = true; };
 
         hyprlandCfg = config.wayland.windowManager.hyprland.settings.config;
       in
@@ -118,23 +121,23 @@
           "r %h/.local/state/noctalia/settings.toml" # get rid of imperative settings
         ];
 
-        wayland.windowManager.hyprland.binds = {
+        binds = {
           "SUPER + e" = msg "panel-toggle launcher";
 
-          "XF86AudioRaiseVolume" = repeating (msg "volume-up");
-          "XF86AudioLowerVolume" = repeating (msg "volume-down");
-          "XF86AudioMute" = repeating (msg "volume-mute");
-          "XF86AudioMicMute" = repeating (msg "mic-mute");
+          "XF86AudioRaiseVolume" = repeating "volume-up";
+          "XF86AudioLowerVolume" = repeating "volume-down";
+          "XF86AudioMute" = repeating "volume-mute";
+          "XF86AudioMicMute" = repeating "mic-mute";
 
-          "XF86MonBrightnessUp" = repeating (msg "brightness-up");
-          "XF86MonBrightnessDown" = repeating (msg "brightness-down");
-          "SHIFT + XF86MonBrightnessUp" = repeating (msg "keyboard-backlight-up");
-          "SHIFT + XF86MonBrightnessDown" = repeating (msg "keyboard-backlight-down");
+          "XF86MonBrightnessUp" = repeating "brightness-up";
+          "XF86MonBrightnessDown" = repeating "brightness-down";
+          "SHIFT + XF86MonBrightnessUp" = repeating "keyboard-backlight-up";
+          "SHIFT + XF86MonBrightnessDown" = repeating "keyboard-backlight-down";
 
-          "XF86AudioPlay" = locked (msg "media toggle");
-          "XF86AudioPause" = locked (msg "media toggle");
-          "XF86AudioNext" = locked (msg "media next");
-          "XF86AudioPrev" = locked (msg "media previous");
+          "XF86AudioPlay" = locked "media toggle";
+          "XF86AudioPause" = locked "media toggle";
+          "XF86AudioNext" = locked "media next";
+          "XF86AudioPrev" = locked "media previous";
         };
 
         wayland.windowManager.hyprland.settings = {

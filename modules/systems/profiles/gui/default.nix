@@ -11,6 +11,7 @@
         agents
         audio
         bat
+        binds
         btop
         clipboard
         codex

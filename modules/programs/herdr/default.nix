@@ -31,8 +31,7 @@
 
         programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
 
-        wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd =
-          lib.mkDefault "uwsm app -- $TERMINAL herdr --remote vortex";
+        binds."SUPER + H".app = lib.mkDefault "$TERMINAL herdr --remote vortex";
 
         persist = {
           directories = [ ".herdr/worktrees" ];
@@ -46,7 +45,7 @@
       };
 
     provides.vortex.homeManager = {
-      wayland.windowManager.hyprland.binds."SUPER + H".exec_cmd = "uwsm app -- $TERMINAL herdr";
+      binds."SUPER + H".app = "$TERMINAL herdr";
     };
   };
 }
