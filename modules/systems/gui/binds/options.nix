@@ -16,6 +16,18 @@
               default = null;
               description = "Application launched by the bind.";
             };
+
+            locked = lib.mkOption {
+              type = lib.types.bool;
+              default = false;
+              description = "Whether the bind remains active while the session is locked.";
+            };
+
+            repeating = lib.mkOption {
+              type = lib.types.bool;
+              default = false;
+              description = "Whether holding the bind repeats its action.";
+            };
           };
         }
       );

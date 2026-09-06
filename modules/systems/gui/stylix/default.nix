@@ -33,5 +33,13 @@
         };
       };
     };
+
+    homeManager = {
+      stylix = {
+        cornerRadius = 0;
+        borderThickness = 2;
+        padding = 8;
+      };
+    };
   };
 }

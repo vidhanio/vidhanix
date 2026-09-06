@@ -6,9 +6,6 @@ _: {
 
     homeManager =
       { osConfig, config, ... }:
-      let
-        decorationCfg = config.wayland.windowManager.hyprland.settings.config.decoration;
-      in
       {
         binds."SUPER + L".exec = "loginctl lock-session";
 
@@ -21,9 +18,8 @@ _: {
             size = "20%, 5%";
             placeholder_text = "";
 
-            # match hyprland/noctalia
-            inherit (decorationCfg) rounding;
-            outline_thickness = 0;
+            rounding = config.stylix.cornerRadius;
+            outline_thickness = config.stylix.borderThickness;
           };
         };
 
@@ -31,7 +27,12 @@ _: {
           enable = true;
           settings =
             let
-              dpms = action: "hyprctl dispatch 'hl.dsp.dpms({ action = \"${action}\" })'";
+              dpms =
+                action:
+                let
+                  niriCommand = if action == "disable" then "niri msg action power-off-monitors" else "true";
+                in
+                "case \"$XDG_CURRENT_DESKTOP\" in *niri*) ${niriCommand} ;; *) hyprctl dispatch 'hl.dsp.dpms({ action = \"${action}\" })' ;; esac";
             in
             {
               general = {

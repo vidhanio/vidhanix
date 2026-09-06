@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+_: {
   flake.aspects.hyprland = {
     homeManager =
       { pkgs, ... }:
@@ -49,32 +48,31 @@
 
         };
 
-        binds =
-          lib.mergeAttrsList (
-            map (i: {
-              "SUPER + ${toString i}".hyprland.dsp.focus = {
-                workspace = i;
-                on_current_monitor = true;
-              };
-              "SUPER + SHIFT + ${toString i}".hyprland.dsp."window.move" = {
-                workspace = i;
-                follow = false;
-              };
-            }) (lib.range 1 9)
-          )
-          // {
-            "SUPER + S".hyprland.dsp."workspace.toggle_special" = { };
-            "SUPER + SHIFT + S".hyprland.dsp."window.move" = {
+        binds = {
+          "SUPER + S" = {
+            hyprland.dsp."workspace.toggle_special" = { };
+            niri.enable = false;
+          };
+          "SUPER + SHIFT + S" = {
+            hyprland.dsp."window.move" = {
               workspace = "special";
               follow = false;
             };
+            niri.enable = false;
+          };
 
-            "SUPER + grave".hyprland.dsp."workspace.swap_monitors" = {
+          "SUPER + grave" = {
+            hyprland.dsp."workspace.swap_monitors" = {
               monitor1 = "current";
               monitor2 = "+1";
             };
-            "SUPER + SHIFT + grave".hyprland.dsp.focus.monitor = "+1";
+            niri.enable = false;
           };
+          "SUPER + SHIFT + grave" = {
+            hyprland.dsp.focus.monitor = "+1";
+            niri.enable = false;
+          };
+        };
       };
   };
 }

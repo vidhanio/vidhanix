@@ -21,16 +21,21 @@
       wayland.windowManager.hyprland.autostartWorkspaces.helium = 1;
 
       binds = {
-        "SUPER + B".hyprland.luaRaw = lua.lib.mkRaw ''
-          function()
-            local window = hl.get_window("class:helium")
-            if window then
-              hl.dispatch(hl.dsp.focus({ window = window }))
-            else
-              hl.exec_cmd("uwsm app -- helium")
-            end
-          end
-        '';
+        "SUPER + B" = {
+          app = "helium";
+          hyprland = {
+            luaRaw = lua.lib.mkRaw ''
+              function()
+                local window = hl.get_window("class:helium")
+                if window then
+                  hl.dispatch(hl.dsp.focus({ window = window }))
+                else
+                  hl.exec_cmd("uwsm app -- helium")
+                end
+              end
+            '';
+          };
+        };
         "SUPER + SHIFT + B".app = "helium --new-window";
       };
 

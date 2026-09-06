@@ -46,6 +46,7 @@
         minecraft
         mosh
         nautilus
+        niri
         nixcord
         noctalia
         omp

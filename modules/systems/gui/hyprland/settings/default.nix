@@ -41,9 +41,9 @@
 
         config = {
           general = {
-            border_size = 2;
-            gaps_in = 4;
-            gaps_out = 8;
+            border_size = config.stylix.borderThickness;
+            gaps_in = builtins.div config.stylix.padding 2;
+            gaps_out = config.stylix.padding;
 
             snap = {
               enabled = true;
@@ -51,7 +51,7 @@
             };
           };
           decoration = {
-            rounding = 0;
+            rounding = config.stylix.cornerRadius;
             blur =
               let
                 vibrancy = if config.stylix.polarity == "dark" then 0.5 else 0;

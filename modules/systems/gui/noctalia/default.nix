@@ -13,27 +13,7 @@
         lib,
         ...
       }:
-      let
-        msg = command: {
-          exec = "noctalia msg ${command}";
-        };
-        hyprlandMsg = flags: command: {
-          hyprland.dsp = {
-            exec_cmd = "noctalia msg ${command}";
-            _flags = flags;
-          };
-        };
-        repeating = hyprlandMsg {
-          repeating = true;
-          locked = true;
-        };
-        locked = hyprlandMsg { locked = true; };
-
-        hyprlandCfg = config.wayland.windowManager.hyprland.settings.config;
-      in
       {
-        stylix.targets.noctalia.image.enable = false;
-
         programs.noctalia = {
           enable = true;
           systemd.enable = true;
@@ -41,14 +21,13 @@
 
           settings = {
             lockscreen.enabled = false; # handled by hyprlock
-            wallpaper.enabled = false; # handled by hyprpaper
             screenshot = {
               save_to_file = false;
               copy_to_clipboard = true;
             };
 
             shell = {
-              corner_radius_scale = hyprlandCfg.decoration.rounding;
+              corner_radius_scale = config.stylix.cornerRadius;
               popup_shadows = false;
               panel = {
                 open_near_click_control_center = true;
@@ -78,10 +57,10 @@
 
               margin_edge = 0;
               margin_ends = 0;
-              padding = hyprlandCfg.general.gaps_out;
+              padding = config.stylix.padding;
               widget_spacing = 10;
-              radius = hyprlandCfg.decoration.rounding;
-              capsule_radius = hyprlandCfg.decoration.rounding;
+              radius = config.stylix.cornerRadius;
+              capsule_radius = config.stylix.cornerRadius;
 
               start = [
                 "tray"
@@ -120,25 +99,6 @@
         systemd.user.tmpfiles.rules = [
           "r %h/.local/state/noctalia/settings.toml" # get rid of imperative settings
         ];
-
-        binds = {
-          "SUPER + e" = msg "panel-toggle launcher";
-
-          "XF86AudioRaiseVolume" = repeating "volume-up";
-          "XF86AudioLowerVolume" = repeating "volume-down";
-          "XF86AudioMute" = repeating "volume-mute";
-          "XF86AudioMicMute" = repeating "mic-mute";
-
-          "XF86MonBrightnessUp" = repeating "brightness-up";
-          "XF86MonBrightnessDown" = repeating "brightness-down";
-          "SHIFT + XF86MonBrightnessUp" = repeating "keyboard-backlight-up";
-          "SHIFT + XF86MonBrightnessDown" = repeating "keyboard-backlight-down";
-
-          "XF86AudioPlay" = locked "media toggle";
-          "XF86AudioPause" = locked "media toggle";
-          "XF86AudioNext" = locked "media next";
-          "XF86AudioPrev" = locked "media previous";
-        };
 
         wayland.windowManager.hyprland.settings = {
           window_rule = [
