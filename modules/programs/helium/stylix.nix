@@ -41,15 +41,15 @@
               bookmark_text = "base05";
               toolbar_text = "base05";
 
-              background_tab = "base01";
-              background_tab_inactive = "base01";
-              background_tab_incognito = "base01";
-              background_tab_incognito_inactive = "base01";
+              background_tab = "base00";
+              background_tab_inactive = "base00";
+              background_tab_incognito = "base00";
+              background_tab_incognito_inactive = "base00";
 
-              tab_background_text = "base04";
-              tab_background_text_inactive = "base04";
-              tab_background_text_incognito = "base04";
-              tab_background_text_incognito_inactive = "base04";
+              tab_background_text = "base03";
+              tab_background_text_inactive = "base03";
+              tab_background_text_incognito = "base03";
+              tab_background_text_incognito_inactive = "base03";
 
               button_background = "base00";
 
