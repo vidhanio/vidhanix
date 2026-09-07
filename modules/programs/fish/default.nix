@@ -4,6 +4,9 @@
       { config, ... }:
       {
         programs.fish.enable = true;
+        programs.fish.shellInit = ''
+          fish_vi_key_bindings
+        '';
         users.defaultUserShell = config.programs.fish.package;
       };
     homeManager =
