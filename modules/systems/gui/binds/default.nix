@@ -57,15 +57,23 @@
           };
 
           "SUPER + mouse_down" = {
+            hyprland.dsp."window.cycle_next" = { };
+            niri.action.focus-column-right = { };
+          };
+          "SUPER + mouse_up" = {
+            hyprland.dsp."window.cycle_next" = {
+              next = false;
+            };
+            niri.action.focus-column-left = { };
+          };
+          "SUPER + SHIFT + mouse_down" = {
             hyprland.lua = ''hs.dsp.focus({ workspace = "r+1" })'';
             niri.action.focus-workspace-down = { };
           };
-          "SUPER + mouse_up" = {
+          "SUPER + SHIFT + mouse_up" = {
             hyprland.lua = ''hs.dsp.focus({ workspace = "r-1" })'';
             niri.action.focus-workspace-up = { };
           };
-          "SUPER + SHIFT + mouse_down".niri.action.focus-column-right = { };
-          "SUPER + SHIFT + mouse_up".niri.action.focus-column-left = { };
 
           "Print".cmd = msg "screenshot-region";
           "SUPER + p".cmd = msg "screenshot-region";
