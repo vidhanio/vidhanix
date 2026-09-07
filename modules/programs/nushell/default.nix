@@ -7,14 +7,33 @@
         users.defaultUserShell = config.programs.nushell.package;
       };
     homeManager =
-      { pkgs, ... }:
+      { lib, pkgs, ... }:
       {
         programs.nushell = {
           enable = true;
           settings = {
             show_banner = false;
             edit_mode = "vi";
+            cursor_shape = {
+              vi_insert = "line";
+              vi_normal = "block";
+            };
+            table.mode = "thin";
           };
+          environmentVariables.PROMPT_COMMAND_RIGHT = lib.hm.nushell.mkNushellInline ''
+            {||
+              let fail_color = if (config use-colors) {
+                ansi red_bold
+              } else {
+                ""
+              }
+              if ($env.LAST_EXIT_CODE != 0) {
+                ([$fail_color $env.LAST_EXIT_CODE] | str join)
+              } else {
+                ""
+              }
+            }
+          '';
         };
 
         programs.carapace = {
