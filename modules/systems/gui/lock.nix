@@ -7,7 +7,7 @@ _: {
     homeManager =
       { osConfig, config, ... }:
       {
-        binds."SUPER + L".exec = "loginctl lock-session";
+        binds."SUPER + L".cmd = "loginctl lock-session";
 
         programs.hyprlock = {
           enable = true;

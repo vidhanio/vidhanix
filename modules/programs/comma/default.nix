@@ -52,7 +52,7 @@
             exec = "comma --picker ${picker} -- {query}";
           };
 
-        binds."SUPER + comma".exec = "noctalia msg panel-toggle launcher '/, '";
+        binds."SUPER + comma".cmd = "noctalia msg panel-toggle launcher '/, '";
 
         persist.files = [ ".local/state/comma/choices" ];
       };

@@ -21,10 +21,6 @@
 
           settings = {
             lockscreen.enabled = false; # handled by hyprlock
-            screenshot = {
-              save_to_file = false;
-              copy_to_clipboard = true;
-            };
 
             shell = {
               corner_radius_scale = config.stylix.cornerRadius;
@@ -40,7 +36,7 @@
                   else
                     "glass";
               };
-
+              screenshot.save_to_file = false;
               launch_apps_custom_command = "uwsm app -- $CMD";
               setup_wizard_enabled = false;
               external_ip_enabled = true;

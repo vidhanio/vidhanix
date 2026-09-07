@@ -10,7 +10,7 @@
       lua = pkgs.formats.lua { };
       toLua = lib.generators.toLua { multiline = false; };
 
-      dispatcherOf = dsp: lib.removeAttrs dsp [ "_flags" ];
+      dispatcherOf = lib.id;
 
       dspType =
         lib.types.addCheck (lib.types.attrsOf lua.type) (
@@ -43,39 +43,46 @@
               description = "Whether holding the Hyprland bind repeats its action.";
             };
 
-            exec = lib.mkOption {
+            cmd = lib.mkOption {
               type = lib.types.nullOr lib.types.str;
-              default = if config.app != null then "uwsm app -- ${config.app}" else config.exec;
-              defaultText = lib.literalExpression ''if config.app != null then "uwsm app -- ''${config.app}" else config.exec'';
+              default = if config.app != null then "uwsm app -- ${config.app}" else config.cmd;
+              defaultText = lib.literalExpression ''if config.app != null then "uwsm app -- ''${config.app}" else config.cmd'';
               description = "Command run by the Hyprland bind.";
+            };
+
+            flags = lib.mkOption {
+              type = lib.types.attrsOf lua.type;
+              default = { };
+              description = "Flags passed to the Hyprland bind.";
             };
 
             dsp = lib.mkOption {
               type = lib.types.nullOr dspType;
-              description = ''
-                Hyprland dispatcher called by the bind. The optional `_flags`
-                attribute is passed to `hl.bind` as its flag table.
-              '';
+              description = "Hyprland dispatcher called by the bind.";
             };
 
-            luaRaw = lib.mkOption {
-              type = lib.types.nullOr lib.types.luaInline;
-              description = "Raw Lua dispatcher expression used by the Hyprland bind.";
+            lua = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              description = "Inline Lua expression used by the Hyprland bind.";
             };
           };
 
           config = {
-            hyprland.dsp = lib.mkDerivedConfig options.hyprland.exec (
-              exec: if exec == null then null else { exec_cmd = exec; }
+            hyprland.dsp = lib.mkIf (config.hyprland.cmd != null) (
+              lib.mkDerivedConfig options.hyprland.cmd (cmd: {
+                exec_cmd = cmd;
+              })
             );
-            hyprland.luaRaw = lib.mkDerivedConfig options.hyprland.dsp (
-              dsp: if dsp == null then null else renderDsp dsp
+            hyprland.lua = lib.mkIf (config.hyprland.dsp != null) (
+              lib.mkDerivedConfig options.hyprland.dsp renderDsp
             );
           };
         }
       );
 
-      enabledBinds = lib.filterAttrs (_: bind: bind.hyprland.enable) config.binds;
+      enabledBinds = lib.filterAttrs (
+        _: bind: bind.hyprland.enable && bind.hyprland.lua != null
+      ) config.binds;
 
       renderArgs =
         params:
@@ -92,26 +99,23 @@
           dispatcher = dispatcherOf dsp;
           name = lib.head (lib.attrNames dispatcher);
         in
-        lua.lib.mkRaw "hl.dsp.${name}(${renderArgs dispatcher.${name}})";
+        "hl.dsp.${name}(${renderArgs dispatcher.${name}})";
 
       renderBind =
         keys: bind:
         let
           cfg = bind.hyprland;
           flags =
-            lib.removeAttrs (if cfg.dsp != null && cfg.dsp ? _flags then cfg.dsp._flags else { }) [
-              "locked"
-              "repeating"
-            ]
+            cfg.flags
             // lib.optionalAttrs cfg.locked { locked = true; }
             // lib.optionalAttrs cfg.repeating { repeating = true; };
         in
         {
           _args = [
             keys
-            cfg.luaRaw
+            (lua.lib.mkRaw cfg.lua)
           ]
-          ++ lib.optional (flags != { }) (lua.lib.mkRaw (toLua flags));
+          ++ lib.optional (flags != { }) flags;
         };
     in
     {
@@ -120,11 +124,6 @@
       };
 
       config = {
-        assertions = lib.mapAttrsToList (keys: bind: {
-          assertion = !bind.hyprland.enable || bind.hyprland.luaRaw != null;
-          message = "binds.${lib.escapeNixIdentifier keys}.hyprland must resolve to raw Lua";
-        }) config.binds;
-
         wayland.windowManager.hyprland.settings.bind = lib.mapAttrsToList renderBind enabledBinds;
       };
     };

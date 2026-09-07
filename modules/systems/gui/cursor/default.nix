@@ -44,11 +44,9 @@
       }:
       {
         home.pointerCursor = {
-          enable = true;
           hyprcursor.enable = true;
+          x11.enable = true;
         };
-
-        wayland.windowManager.hyprland.settings.config.cursor.no_hardware_cursors = true;
 
         xdg.dataFile."icons/${config.home.pointerCursor.name}".onChange = ''
           for i in $(${pkgs.hyprland}/bin/hyprctl instances | sed -n 's/^instance \([^:]*\):/\1/p'); do

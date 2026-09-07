@@ -1,11 +1,11 @@
 { lib, ... }:
 {
   flake.aspects.binds.homeManager =
-    _:
+    { pkgs, ... }:
     let
       msg = command: "noctalia msg ${command}";
       mediaBind = flags: command: {
-        exec = msg command;
+        cmd = msg command;
         locked = flags.locked or false;
         repeating = flags.repeating or false;
       };
@@ -20,17 +20,11 @@
         lib.mergeAttrsList (
           map (i: {
             "SUPER + ${toString i}" = {
-              hyprland.dsp.focus = {
-                workspace = i;
-                on_current_monitor = true;
-              };
+              hyprland.lua = "hs.dsp.focus({ workspace = ${toString i} })";
               niri.action.focus-workspace = i;
             };
             "SUPER + SHIFT + ${toString i}" = {
-              hyprland.dsp."window.move" = {
-                workspace = i;
-                follow = false;
-              };
+              hyprland.lua = "hs.dsp.window.move({ workspace = ${toString i}, follow = false })";
               niri.action.move-column-to-workspace = i;
             };
           }) (lib.range 1 9)
@@ -42,31 +36,32 @@
           };
           "SUPER + M" = {
             hyprland.dsp.exec_cmd = "uwsm stop";
-            niri.action.quit._props.skip-confirmation = true;
+            niri.props.skip-confirmation = true;
           };
-          "SUPER + V".exec = msg "panel-toggle clipboard";
-          "SUPER + J" = {
-            hyprland.dsp.layout = "togglesplit";
-            niri.action.toggle-column-tabbed-display = { };
-          };
+          "SUPER + V".cmd = msg "panel-toggle clipboard";
           "SUPER + F" = {
             hyprland.dsp."window.fullscreen" = { };
             niri.action.fullscreen-window = { };
           };
-
+          "SUPER + SHIFT + F" = {
+            hyprland.dsp."window.float".action = "toggle";
+            niri.action.toggle-window-floating = { };
+          };
           "SUPER + Tab" = {
-            hyprland.enable = false;
+            hyprland.lua = ''hs.dsp.focus({ workspace = "r+1" })'';
             niri.action.focus-workspace-down = { };
           };
           "SUPER + SHIFT + Tab" = {
-            hyprland.enable = false;
+            hyprland.lua = ''hs.dsp.focus({ workspace = "r-1" })'';
             niri.action.focus-workspace-up = { };
           };
 
-          "Print".exec = msg "screenshot-region";
-          "SUPER + P".exec = msg "screenshot-region";
+          "Print".cmd = msg "screenshot-region";
+          "SUPER + p".cmd = msg "screenshot-region";
 
-          "SUPER + e".exec = msg "panel-toggle launcher";
+          "SUPER + I".cmd = "${lib.getExe pkgs.hyprpicker} -a";
+
+          "SUPER + e".cmd = msg "panel-toggle launcher";
 
           "XF86AudioRaiseVolume" = repeating "volume-up";
           "XF86AudioLowerVolume" = repeating "volume-down";

@@ -14,12 +14,8 @@
         ]
       );
 
-      actionOf = action: lib.removeAttrs action [ "_props" ];
-
       actionType =
-        lib.types.addCheck (lib.types.attrsOf kdlType) (
-          action: lib.length (lib.attrNames (actionOf action)) == 1
-        )
+        lib.types.addCheck (lib.types.attrsOf kdlType) (action: lib.length (lib.attrNames action) == 1)
         // {
           description = "Niri bind naming exactly one action";
           descriptionClass = "noun";
@@ -47,11 +43,17 @@
               description = "Whether holding the Niri bind repeats its action.";
             };
 
-            exec = lib.mkOption {
+            cmd = lib.mkOption {
               type = lib.types.nullOr lib.types.str;
-              default = if config.app != null then config.app else config.exec;
-              defaultText = lib.literalExpression "if config.app != null then config.app else config.exec";
+              default = if config.app != null then config.app else config.cmd;
+              defaultText = lib.literalExpression "if config.app != null then config.app else config.cmd";
               description = "Command run by the Niri bind.";
+            };
+
+            props = lib.mkOption {
+              type = lib.types.attrsOf kdlType;
+              default = { };
+              description = "Properties applied to the Niri bind.";
             };
 
             action = lib.mkOption {
@@ -60,13 +62,15 @@
             };
           };
 
-          config.niri.action = lib.mkDerivedConfig options.niri.exec (
-            exec: if exec == null then null else { spawn-sh = exec; }
+          config.niri.action = lib.mkIf (config.niri.cmd != null) (
+            lib.mkDerivedConfig options.niri.cmd (cmd: {
+              spawn-sh = cmd;
+            })
           );
         }
       );
 
-      enabledBinds = lib.filterAttrs (_: bind: bind.niri.enable) config.binds;
+      enabledBinds = lib.filterAttrs (_: bind: bind.niri.enable && bind.niri.action != null) config.binds;
 
       normalizeKey =
         key:
@@ -86,10 +90,7 @@
         let
           cfg = bind.niri;
           props =
-            lib.removeAttrs (cfg.action._props or { }) [
-              "allow-when-locked"
-              "repeat"
-            ]
+            cfg.props
             // lib.optionalAttrs cfg.locked { allow-when-locked = true; }
             // {
               repeat = cfg.repeating;
@@ -108,11 +109,6 @@
       };
 
       config = {
-        assertions = lib.mapAttrsToList (keys: bind: {
-          assertion = !bind.niri.enable || bind.niri.action != null;
-          message = "binds.${lib.escapeNixIdentifier keys}.niri must define an action";
-        }) config.binds;
-
         wayland.windowManager.niri.settings.binds = lib.mapAttrs' renderBind enabledBinds;
       };
     };

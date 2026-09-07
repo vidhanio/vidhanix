@@ -1,4 +1,4 @@
-_: {
+{
   flake.aspects.hyprland = {
     homeManager =
       { pkgs, ... }:
@@ -7,12 +7,14 @@ _: {
       in
       {
         wayland.windowManager.hyprland = {
-          extraLuaFiles."cycle-workspace" = {
-            content = ./cycle-workspace.lua;
-            autoLoad = true;
+          extraLuaFiles."hyprsplit/init" = {
+            autoLoad = false;
+            content = "${pkgs.hyprlandPlugins.hyprsplit.src}/init.lua";
           };
 
           settings = {
+            hs._var = ''require("hyprsplit")'';
+
             gesture = [
               {
                 fingers = 3;
@@ -45,33 +47,16 @@ _: {
 
             config.binds.hide_special_on_workspace_change = true;
           };
-
         };
 
         binds = {
-          "SUPER + S" = {
-            hyprland.dsp."workspace.toggle_special" = { };
-            niri.enable = false;
+          "SUPER + S".hyprland.dsp."workspace.toggle_special" = { };
+          "SUPER + SHIFT + S".hyprland.dsp."window.move" = {
+            workspace = "special";
+            follow = false;
           };
-          "SUPER + SHIFT + S" = {
-            hyprland.dsp."window.move" = {
-              workspace = "special";
-              follow = false;
-            };
-            niri.enable = false;
-          };
-
-          "SUPER + grave" = {
-            hyprland.dsp."workspace.swap_monitors" = {
-              monitor1 = "current";
-              monitor2 = "+1";
-            };
-            niri.enable = false;
-          };
-          "SUPER + SHIFT + grave" = {
-            hyprland.dsp.focus.monitor = "+1";
-            niri.enable = false;
-          };
+          "SUPER + grave".hyprland.lua =
+            ''hs.dsp.workspace.swap_monitors({ monitor1 = "current", monitor2 = "+1" })'';
         };
       };
   };

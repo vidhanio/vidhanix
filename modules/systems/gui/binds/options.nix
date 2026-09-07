@@ -5,7 +5,7 @@
       type = lib.types.attrsOf (
         lib.types.submodule {
           options = {
-            exec = lib.mkOption {
+            cmd = lib.mkOption {
               type = lib.types.nullOr lib.types.str;
               default = null;
               description = "Command run by the bind.";
