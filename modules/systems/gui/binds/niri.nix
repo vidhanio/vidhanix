@@ -64,7 +64,10 @@
 
           config = {
             niri = {
-              cmd = lib.mkIf (config.cmd != null) (lib.mkDerivedConfig options.cmd lib.id);
+              cmd = lib.mkMerge [
+                (lib.mkIf (config.cmd != null) (lib.mkDerivedConfig options.cmd lib.id))
+                (lib.mkIf (config.app != null) (lib.mkDerivedConfig options.app lib.id))
+              ];
               action = lib.mkIf (config.niri.cmd != null) (
                 lib.mkDerivedConfig options.niri.cmd (cmd: {
                   spawn-sh = cmd;

@@ -52,8 +52,8 @@
         };
 
         binds = {
-          "SUPER + S".hyprland.dsp."workspace.toggle_special" = { };
-          "SUPER + SHIFT + S".hyprland.dsp."window.move" = {
+          "SUPER + s".hyprland.dsp."workspace.toggle_special" = { };
+          "SUPER + SHIFT + s".hyprland.dsp."window.move" = {
             workspace = "special";
             follow = false;
           };

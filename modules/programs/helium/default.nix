@@ -18,7 +18,7 @@
 
       wayland.windowManager.hyprland.autostartWorkspaces.helium = 1;
 
-      binds."SUPER + B".app = "helium";
+      binds."SUPER + b".app = "helium";
 
       persist.directories = [ ".config/net.imput.helium" ];
     };

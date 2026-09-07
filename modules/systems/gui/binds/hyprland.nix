@@ -70,7 +70,10 @@
 
           config = {
             hyprland = {
-              cmd = lib.mkIf (config.cmd != null) (lib.mkDerivedConfig options.cmd lib.id);
+              cmd = lib.mkMerge [
+                (lib.mkIf (config.cmd != null) (lib.mkDerivedConfig options.cmd lib.id))
+                (lib.mkIf (config.app != null) (lib.mkDerivedConfig options.app (app: "uwsm app -- ${app}")))
+              ];
               dsp = lib.mkIf (config.hyprland.cmd != null) (
                 lib.mkDerivedConfig options.hyprland.cmd (cmd: {
                   exec_cmd = cmd;

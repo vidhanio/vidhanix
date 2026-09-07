@@ -30,20 +30,20 @@
           }) (lib.range 1 9)
         )
         // {
-          "SUPER + Q" = {
+          "SUPER + q" = {
             hyprland.dsp."window.close" = { };
             niri.action.close-window = { };
           };
-          "SUPER + M" = {
+          "SUPER + m" = {
             hyprland.cmd = "uwsm stop";
             niri.action.quit.skip-confirmation = true;
           };
-          "SUPER + V".cmd = msg "panel-toggle clipboard";
-          "SUPER + F" = {
+          "SUPER + v".cmd = msg "panel-toggle clipboard";
+          "SUPER + f" = {
             hyprland.dsp."window.fullscreen" = { };
             niri.action.fullscreen-window = { };
           };
-          "SUPER + SHIFT + F" = {
+          "SUPER + SHIFT + f" = {
             hyprland.dsp."window.float".action = "toggle";
             niri.action.toggle-window-floating = { };
           };
@@ -70,7 +70,7 @@
           "Print".cmd = msg "screenshot-region";
           "SUPER + p".cmd = msg "screenshot-region";
 
-          "SUPER + I".cmd = "${lib.getExe pkgs.hyprpicker} -a";
+          "SUPER + i".cmd = "${lib.getExe pkgs.hyprpicker} -a";
 
           "SUPER + e".cmd = msg "panel-toggle launcher";
 
