@@ -4,13 +4,35 @@
 
   flake.aspects.comma = {
     homeManager =
-      { pkgs, ... }:
+      { inputs', pkgs, ... }:
+      let
+        binNames =
+          pkgs.runCommand "comma-fish-bin-names"
+            {
+              nativeBuildInputs = [
+                inputs'.nix-index-database.packages.nix-index-with-db
+              ];
+            }
+            ''
+              nix-locate --at-root "/bin/" | sed -E 's#.*/##' | sort -u > $out
+            '';
+      in
       {
         imports = [
           inputs.nix-index-database.homeModules.default
         ];
 
         programs.nix-index-database.comma.enable = true;
+
+        programs.fish.completions = {
+          comma = ''
+            comma --print-completions fish 2>/dev/null | source
+
+            complete -c comma -n "__fish_comma_needs_command" -a "(cat ${binNames})"
+          '';
+
+          "," = "complete -c , -w comma";
+        };
 
         programs.noctalia.settings.shell.launcher.dmenu.entry.comma =
           let
