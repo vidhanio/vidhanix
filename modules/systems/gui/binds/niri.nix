@@ -81,6 +81,8 @@
             CTRL = "Ctrl";
             CONTROL = "Control";
             ALT = "Alt";
+            mouse_down = "WheelScrollDown";
+            mouse_up = "WheelScrollUp";
           };
         in
         lib.concatStringsSep "+" (map (part: modifiers.${part} or part) (lib.splitString " + " key));

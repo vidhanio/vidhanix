@@ -56,6 +56,24 @@
             niri.action.focus-workspace-up = { };
           };
 
+          "SUPER + mouse_down" = {
+            hyprland.lua = ''hs.dsp.focus({ workspace = "r+1" })'';
+            niri.action.focus-workspace-down = { };
+          };
+          "SUPER + mouse_up" = {
+            hyprland.lua = ''hs.dsp.focus({ workspace = "r-1" })'';
+            niri.action.focus-workspace-up = { };
+          };
+
+          "SUPER + SHIFT + mouse_down" = {
+            hyprland.enable = false;
+            niri.action.focus-column-right = { };
+          };
+          "SUPER + SHIFT + mouse_up" = {
+            hyprland.enable = false;
+            niri.action.focus-column-left = { };
+          };
+
           "Print".cmd = msg "screenshot-region";
           "SUPER + p".cmd = msg "screenshot-region";
 
