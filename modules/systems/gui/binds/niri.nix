@@ -79,7 +79,6 @@
             SUPER = "Super";
             SHIFT = "Shift";
             CTRL = "Ctrl";
-            CONTROL = "Control";
             ALT = "Alt";
             mouse_down = "WheelScrollDown";
             mouse_up = "WheelScrollUp";
