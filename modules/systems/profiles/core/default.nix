@@ -8,12 +8,12 @@
         boot
         disk
         disk.provides.impermanence
-        fish
         home-manager
         locale
         network
         nh
         nix
+        nushell
         run0
         sops
         ssh-client
