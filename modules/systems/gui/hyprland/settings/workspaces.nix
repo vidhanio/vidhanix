@@ -6,14 +6,16 @@
         lua = pkgs.formats.lua { };
       in
       {
+        xdg.configFile."hypr/hyprsplit/init.lua".source = "${pkgs.hyprlandPlugins.hyprsplit.src}/init.lua";
         wayland.windowManager.hyprland = {
-          extraLuaFiles."hyprsplit/init" = {
-            autoLoad = false;
-            content = "${pkgs.hyprlandPlugins.hyprsplit.src}/init.lua";
-          };
+          # TODO: https://github.com/nix-community/home-manager/pull/9918
+          # extraLuaFiles."hyprsplit/init" = {
+          #   autoLoad = false;
+          #   path = "${pkgs.hyprlandPlugins.hyprsplit.src}/init.lua";
+          # };
 
           settings = {
-            hs._var = ''require("hyprsplit")'';
+            hs._var = lua.lib.mkRaw ''require("hyprsplit")'';
 
             gesture = [
               {
