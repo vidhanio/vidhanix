@@ -45,9 +45,20 @@
 
             cmd = lib.mkOption {
               type = lib.types.nullOr lib.types.str;
-              default = if config.app != null then "uwsm app -- ${config.app}" else config.cmd;
-              defaultText = lib.literalExpression ''if config.app != null then "uwsm app -- ''${config.app}" else config.cmd'';
+              default = null;
               description = "Command run by the Hyprland bind.";
+            };
+
+            dsp = lib.mkOption {
+              type = lib.types.nullOr dspType;
+              default = null;
+              description = "Hyprland dispatcher called by the bind.";
+            };
+
+            lua = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              default = null;
+              description = "Inline Lua expression used by the Hyprland bind.";
             };
 
             flags = lib.mkOption {
@@ -55,27 +66,18 @@
               default = { };
               description = "Flags passed to the Hyprland bind.";
             };
-
-            dsp = lib.mkOption {
-              type = lib.types.nullOr dspType;
-              description = "Hyprland dispatcher called by the bind.";
-            };
-
-            lua = lib.mkOption {
-              type = lib.types.nullOr lib.types.str;
-              description = "Inline Lua expression used by the Hyprland bind.";
-            };
           };
 
           config = {
-            hyprland.dsp = lib.mkIf (config.hyprland.cmd != null) (
-              lib.mkDerivedConfig options.hyprland.cmd (cmd: {
-                exec_cmd = cmd;
-              })
-            );
-            hyprland.lua = lib.mkIf (config.hyprland.dsp != null) (
-              lib.mkDerivedConfig options.hyprland.dsp renderDsp
-            );
+            hyprland = {
+              cmd = lib.mkIf (config.cmd != null) (lib.mkDerivedConfig options.cmd lib.id);
+              dsp = lib.mkIf (config.hyprland.cmd != null) (
+                lib.mkDerivedConfig options.hyprland.cmd (cmd: {
+                  exec_cmd = cmd;
+                })
+              );
+              lua = lib.mkIf (config.hyprland.dsp != null) (lib.mkDerivedConfig options.hyprland.dsp renderDsp);
+            };
           };
         }
       );

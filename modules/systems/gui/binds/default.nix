@@ -35,8 +35,8 @@
             niri.action.close-window = { };
           };
           "SUPER + M" = {
-            hyprland.dsp.exec_cmd = "uwsm stop";
-            niri.props.skip-confirmation = true;
+            hyprland.cmd = "uwsm stop";
+            niri.action.quit.skip-confirmation = true;
           };
           "SUPER + V".cmd = msg "panel-toggle clipboard";
           "SUPER + F" = {
@@ -64,15 +64,8 @@
             hyprland.lua = ''hs.dsp.focus({ workspace = "r-1" })'';
             niri.action.focus-workspace-up = { };
           };
-
-          "SUPER + SHIFT + mouse_down" = {
-            hyprland.enable = false;
-            niri.action.focus-column-right = { };
-          };
-          "SUPER + SHIFT + mouse_up" = {
-            hyprland.enable = false;
-            niri.action.focus-column-left = { };
-          };
+          "SUPER + SHIFT + mouse_down".niri.action.focus-column-right = { };
+          "SUPER + SHIFT + mouse_up".niri.action.focus-column-left = { };
 
           "Print".cmd = msg "screenshot-region";
           "SUPER + p".cmd = msg "screenshot-region";

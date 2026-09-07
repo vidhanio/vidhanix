@@ -45,9 +45,14 @@
 
             cmd = lib.mkOption {
               type = lib.types.nullOr lib.types.str;
-              default = if config.app != null then config.app else config.cmd;
-              defaultText = lib.literalExpression "if config.app != null then config.app else config.cmd";
+              default = null;
               description = "Command run by the Niri bind.";
+            };
+
+            action = lib.mkOption {
+              type = lib.types.nullOr actionType;
+              default = null;
+              description = "Action run by the Niri bind.";
             };
 
             props = lib.mkOption {
@@ -55,18 +60,18 @@
               default = { };
               description = "Properties applied to the Niri bind.";
             };
-
-            action = lib.mkOption {
-              type = lib.types.nullOr actionType;
-              description = "Action run by the Niri bind.";
-            };
           };
 
-          config.niri.action = lib.mkIf (config.niri.cmd != null) (
-            lib.mkDerivedConfig options.niri.cmd (cmd: {
-              spawn-sh = cmd;
-            })
-          );
+          config = {
+            niri = {
+              cmd = lib.mkIf (config.cmd != null) (lib.mkDerivedConfig options.cmd lib.id);
+              action = lib.mkIf (config.niri.cmd != null) (
+                lib.mkDerivedConfig options.niri.cmd (cmd: {
+                  spawn-sh = cmd;
+                })
+              );
+            };
+          };
         }
       );
 
@@ -86,6 +91,18 @@
         in
         lib.concatStringsSep "+" (map (part: modifiers.${part} or part) (lib.splitString " + " key));
 
+      renderAction =
+        action:
+        lib.mapAttrs (
+          _: value:
+          if lib.isAttrs value && lib.attrNames value != [ ] then
+            {
+              _props = value;
+            }
+          else
+            value
+        ) action;
+
       renderBind =
         keys: bind:
         let
@@ -98,7 +115,7 @@
             };
         in
         lib.nameValuePair (normalizeKey keys) (
-          cfg.action
+          renderAction cfg.action
           // {
             _props = props;
           }
