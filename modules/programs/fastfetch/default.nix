@@ -6,7 +6,7 @@
         settings = {
           display = {
             key = {
-              width = 7;
+              width = 8;
             };
             separator = " ";
           };
