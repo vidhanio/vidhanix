@@ -1,7 +1,40 @@
 {
   flake.aspects.fastfetch = {
     homeManager = {
-      programs.fastfetch.enable = true;
+      programs.fastfetch = {
+        enable = true;
+        settings = {
+          display = {
+            separator = " ";
+          };
+          logo = {
+            source = "nixos_small";
+          };
+          modules = [
+            "title"
+            {
+              type = "os";
+              key = "os";
+            }
+            {
+              type = "host";
+              key = "host";
+            }
+            {
+              type = "kernel";
+              key = "kernel";
+            }
+            {
+              type = "uptime";
+              key = "uptime";
+            }
+            {
+              type = "memory";
+              key = "memory";
+            }
+          ];
+        };
+      };
     };
   };
 }
