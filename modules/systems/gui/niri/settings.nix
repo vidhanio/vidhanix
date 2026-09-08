@@ -76,6 +76,7 @@
         };
 
         prefer-no-csd = { };
+        hotkey-overlay.skip-at-startup = { };
 
         _children = [
           (renderOutput true monitors.main)
