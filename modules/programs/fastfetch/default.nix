@@ -5,6 +5,9 @@
         enable = true;
         settings = {
           display = {
+            key = {
+              width = 6;
+            };
             separator = " ";
           };
           logo = {
