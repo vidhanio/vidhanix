@@ -11,7 +11,7 @@
             separator = " ";
           };
           logo = {
-            source = "nixos_small";
+            source = "nixos_old_small";
           };
           modules = [
             "title"
