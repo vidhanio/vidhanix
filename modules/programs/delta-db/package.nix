@@ -19,11 +19,11 @@ let
       sources = {
         aarch64-linux = {
           name = "delta-linux-aarch64.tar.gz";
-          hash = "sha256-Rg9KBSSmUR3LJIDp4F6dOnEX5zhcLVtmXJjPupvsNcc=";
+          hash = "sha256-v8vQVR/29O6GxnDz/WeaiIi3LhKux/HPQSouhaIL3Lw=";
         };
         x86_64-linux = {
           name = "delta-linux-x86_64.tar.gz";
-          hash = "sha256-suIRakJGD7O6eyJmyceERZlFJ7tNQW7Z2gfiHcEryoI=";
+          hash = "sha256-rMAoIUNevuoKAbO4nFgK9v431+WXAsvZncNu6r+zCmk=";
         };
       };
       source = sources.${stdenv.hostPlatform.system};

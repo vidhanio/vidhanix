@@ -6,9 +6,10 @@
       let
         ssids = [
           "EMC2-5G"
-          "Vidhan's iPhone"
+          "vega"
           "Spongebob"
           "Big388"
+          "BELL671"
         ];
 
         pskVar =
