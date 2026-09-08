@@ -27,20 +27,45 @@
             psk = "\$${pskVar ssid}";
           };
         };
+
+        macWifiProfile = {
+          connection = {
+            id = "Mac-WiFi";
+            type = "wifi";
+          };
+          wifi = {
+            ssid = "Mac-WiFi";
+          };
+          wifi-security.key-mgmt = "wpa-eap";
+          "802-1x" = {
+            eap = "peap;";
+            identity = "\$MAC_WIFI_USERNAME";
+            password = "\$MAC_WIFI_PASSWORD";
+            phase2-auth = "mschapv2";
+          };
+        };
       in
       {
         sops = {
-          secrets = lib.listToAttrs (map (ssid: lib.nameValuePair "networks/${ssid}" { }) ssids);
+          secrets = lib.listToAttrs (map (ssid: lib.nameValuePair "networks/${ssid}" { }) ssids) // {
+            "networks/Mac-WiFi/username" = { };
+            "networks/Mac-WiFi/password" = { };
+          };
 
-          templates."network-manager.env".content = lib.concatMapStrings (
-            ssid: "${pskVar ssid}=${config.sops.placeholder."networks/${ssid}"}\n"
-          ) ssids;
+          templates."network-manager.env".content =
+            lib.concatMapStrings (ssid: "${pskVar ssid}=${config.sops.placeholder."networks/${ssid}"}\n") ssids
+            + ''
+              MAC_WIFI_USERNAME=${config.sops.placeholder."networks/Mac-WiFi/username"}
+              MAC_WIFI_PASSWORD=${config.sops.placeholder."networks/Mac-WiFi/password"}
+            '';
         };
 
         networking.networkmanager = {
           enable = true;
           ensureProfiles = {
-            profiles = lib.listToAttrs (map (ssid: lib.nameValuePair ssid (mkWifiProfile ssid)) ssids);
+            profiles = lib.listToAttrs (map (ssid: lib.nameValuePair ssid (mkWifiProfile ssid)) ssids) // {
+              "Mac-WiFi" = macWifiProfile;
+            };
             environmentFiles = [ config.sops.templates."network-manager.env".path ];
           };
         };
