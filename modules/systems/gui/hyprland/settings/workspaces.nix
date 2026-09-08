@@ -20,30 +20,8 @@
             gesture = [
               {
                 fingers = 3;
-                direction = "horizontal";
+                direction = "vertical";
                 action = "workspace";
-              }
-              {
-                fingers = 3;
-                direction = "down";
-                action = lua.lib.mkRaw ''
-                  function()
-                    if hl.get_active_special_workspace() == nil then
-                      hl.dispatch(hl.dsp.workspace.toggle_special())
-                    end
-                  end
-                '';
-              }
-              {
-                fingers = 3;
-                direction = "up";
-                action = lua.lib.mkRaw ''
-                  function()
-                    if hl.get_active_special_workspace() ~= nil then
-                      hl.dispatch(hl.dsp.workspace.toggle_special())
-                    end
-                  end
-                '';
               }
             ];
 

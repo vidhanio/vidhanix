@@ -30,6 +30,27 @@
             bezier = "easeOutQuint";
           }
           {
+            leaf = "workspaces";
+            enabled = true;
+            speed = 2.5;
+            bezier = "easeOutQuint";
+            style = "slidevert";
+          }
+          {
+            leaf = "workspacesIn";
+            enabled = true;
+            speed = 2.5;
+            bezier = "easeOutQuint";
+            style = "slidevert";
+          }
+          {
+            leaf = "workspacesOut";
+            enabled = true;
+            speed = 2.5;
+            bezier = "easeOutQuint";
+            style = "slidevert";
+          }
+          {
             leaf = "specialWorkspaceIn";
             enabled = true;
             speed = 2.5;
