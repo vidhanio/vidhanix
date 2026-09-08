@@ -6,6 +6,7 @@
       msg = command: "noctalia msg ${command}";
       mediaBind = flags: command: {
         cmd = msg command;
+        gnome.enable = false;
         locked = flags.locked or false;
         repeating = flags.repeating or false;
       };
@@ -22,10 +23,12 @@
             "SUPER + ${toString i}" = {
               hyprland.lua = "hs.dsp.focus({ workspace = ${toString i} })";
               niri.action.focus-workspace = i;
+              gnome.wm = "switch-to-workspace-${toString i}";
             };
             "SUPER + SHIFT + ${toString i}" = {
               hyprland.lua = "hs.dsp.window.move({ workspace = ${toString i}, follow = false })";
               niri.action.move-column-to-workspace = i;
+              gnome.wm = "move-to-workspace-${toString i}";
             };
           }) (lib.range 1 9)
         )
@@ -33,15 +36,21 @@
           "SUPER + q" = {
             hyprland.dsp."window.close" = { };
             niri.action.close-window = { };
+            gnome.wm = "close";
           };
           "SUPER + m" = {
             hyprland.cmd = "uwsm stop";
             niri.action.quit.skip-confirmation = true;
+            gnome.enable = false;
           };
-          "SUPER + v".cmd = msg "panel-toggle clipboard";
+          "SUPER + v" = {
+            cmd = msg "panel-toggle clipboard";
+            gnome.enable = false;
+          };
           "SUPER + f" = {
             hyprland.dsp."window.fullscreen" = { };
             niri.action.fullscreen-window = { };
+            gnome.wm = "toggle-fullscreen";
           };
           "SUPER + SHIFT + f" = {
             hyprland.dsp."window.float".action = "toggle";
@@ -50,10 +59,12 @@
           "SUPER + Tab" = {
             hyprland.lua = ''hs.dsp.focus({ workspace = "r+1" })'';
             niri.action.focus-workspace-down = { };
+            gnome.wm = "switch-to-workspace-down";
           };
           "SUPER + SHIFT + Tab" = {
             hyprland.lua = ''hs.dsp.focus({ workspace = "r-1" })'';
             niri.action.focus-workspace-up = { };
+            gnome.wm = "switch-to-workspace-up";
           };
 
           "SUPER + h" = {
@@ -89,12 +100,24 @@
             niri.action.move-column-right = { };
           };
 
-          "SUPER + space".cmd = msg "panel-toggle launcher";
+          "SUPER + space" = {
+            cmd = msg "panel-toggle launcher";
+            gnome.enable = false;
+          };
 
-          "Print".cmd = msg "screenshot-region";
-          "SUPER + p".cmd = msg "screenshot-region";
+          "Print" = {
+            cmd = msg "screenshot-region";
+            gnome.enable = false;
+          };
+          "SUPER + p" = {
+            cmd = msg "screenshot-region";
+            gnome.enable = false;
+          };
 
-          "SUPER + i".cmd = "${lib.getExe pkgs.hyprpicker} -a";
+          "SUPER + i" = {
+            cmd = "${lib.getExe pkgs.hyprpicker} -a";
+            gnome.enable = false;
+          };
 
           "SUPER + e".app = "nautilus";
           "XF86AudioRaiseVolume" = repeating "volume-up";

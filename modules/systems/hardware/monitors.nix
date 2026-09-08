@@ -6,6 +6,21 @@ let
         type = lib.types.str;
         description = "The connector name for the monitor.";
       };
+      vendor = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "The monitor vendor from its EDID.";
+      };
+      product = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "The monitor product from its EDID.";
+      };
+      serial = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "The monitor serial number from its EDID.";
+      };
       mode = lib.mkOption {
         type = lib.types.nullOr (
           lib.types.submodule (

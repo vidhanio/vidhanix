@@ -30,6 +30,7 @@
         fzf
         gh
         git
+        gnome
         gnome-keyring
         greeter
         hardware
@@ -63,6 +64,7 @@
         udisks
         upower
         vacuum-tube
+        valent
         wakatime
         wallpaper
         xdg-autostart

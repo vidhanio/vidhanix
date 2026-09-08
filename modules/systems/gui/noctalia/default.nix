@@ -87,7 +87,7 @@
               bluetooth.show_label = false;
               battery.show_label = false;
             };
-            dock.shadow = false;
+            dock.enabled = false;
           };
         };
 
