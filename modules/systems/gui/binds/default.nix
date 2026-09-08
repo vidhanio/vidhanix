@@ -56,35 +56,35 @@
             niri.action.focus-workspace-up = { };
           };
 
-          "ALT + h" = {
+          "SUPER + h" = {
             hyprland.dsp.focus.direction = "l";
             niri.action.focus-column-left = { };
           };
-          "ALT + j" = {
+          "SUPER + j" = {
             hyprland.dsp.focus.direction = "d";
             niri.action.focus-window-or-workspace-down = { };
           };
-          "ALT + k" = {
+          "SUPER + k" = {
             hyprland.dsp.focus.direction = "u";
             niri.action.focus-window-or-workspace-up = { };
           };
-          "ALT + l" = {
+          "SUPER + l" = {
             hyprland.dsp.focus.direction = "r";
             niri.action.focus-column-right = { };
           };
-          "ALT + SHIFT + h" = {
+          "SUPER + SHIFT + h" = {
             hyprland.dsp."window.move".direction = "l";
             niri.action.move-column-left = { };
           };
-          "ALT + SHIFT + j" = {
+          "SUPER + SHIFT + j" = {
             hyprland.dsp."window.move".direction = "d";
             niri.action.move-window-down = { };
           };
-          "ALT + SHIFT + k" = {
+          "SUPER + SHIFT + k" = {
             hyprland.dsp."window.move".direction = "u";
             niri.action.move-window-up = { };
           };
-          "ALT + SHIFT + l" = {
+          "SUPER + SHIFT + l" = {
             hyprland.dsp."window.move".direction = "r";
             niri.action.move-column-right = { };
           };
