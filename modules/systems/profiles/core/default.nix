@@ -8,6 +8,7 @@
         boot
         disk
         disk.provides.impermanence
+        fastfetch
         fish
         home-manager
         locale

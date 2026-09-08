@@ -10,12 +10,12 @@
         users.defaultUserShell = config.programs.fish.package;
       };
     homeManager =
-      { lib, pkgs, ... }:
+      { pkgs, ... }:
       {
         programs.fish.enable = true;
 
         programs.fish.functions = {
-          fish_greeting = lib.getExe pkgs.pfetch;
+          fish_greeting = "fastfetch";
           fish_prompt = ''
             set -l last_pipestatus $pipestatus
             set -lx __fish_last_status $status
