@@ -22,16 +22,12 @@
               tab_bar_position = "bottom";
               toast.delivery = "system";
             };
-
-            experimental = {
-              kitty_graphics = true;
-            };
           };
         };
 
         programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
 
-        binds."SUPER + SHIFT + t".app = lib.mkDefault "$TERMINAL herdr --remote vortex";
+        binds."SUPER + SHIFT + t".app = lib.mkDefault "$TERMINAL herdr";
 
         persist = {
           directories = [ ".herdr/worktrees" ];
@@ -43,9 +39,5 @@
           ];
         };
       };
-
-    provides.vortex.homeManager = {
-      binds."SUPER + SHIFT + t".app = "$TERMINAL herdr";
-    };
   };
 }
