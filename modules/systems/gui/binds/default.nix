@@ -56,32 +56,47 @@
             niri.action.focus-workspace-up = { };
           };
 
-          "SUPER + mouse_down" = {
-            hyprland.dsp."window.cycle_next" = { };
-            niri.action.focus-column-right = { };
-          };
-          "SUPER + mouse_up" = {
-            hyprland.dsp."window.cycle_next" = {
-              next = false;
-            };
+          "ALT + h" = {
+            hyprland.dsp.focus.direction = "l";
             niri.action.focus-column-left = { };
           };
-          "SUPER + SHIFT + mouse_down" = {
-            hyprland.lua = ''hs.dsp.focus({ workspace = "r+1" })'';
-            niri.action.focus-workspace-down = { };
+          "ALT + j" = {
+            hyprland.dsp.focus.direction = "d";
+            niri.action.focus-window-or-workspace-down = { };
           };
-          "SUPER + SHIFT + mouse_up" = {
-            hyprland.lua = ''hs.dsp.focus({ workspace = "r-1" })'';
-            niri.action.focus-workspace-up = { };
+          "ALT + k" = {
+            hyprland.dsp.focus.direction = "u";
+            niri.action.focus-window-or-workspace-up = { };
           };
+          "ALT + l" = {
+            hyprland.dsp.focus.direction = "r";
+            niri.action.focus-column-right = { };
+          };
+          "ALT + SHIFT + h" = {
+            hyprland.dsp."window.move".direction = "l";
+            niri.action.move-column-left = { };
+          };
+          "ALT + SHIFT + j" = {
+            hyprland.dsp."window.move".direction = "d";
+            niri.action.move-window-down = { };
+          };
+          "ALT + SHIFT + k" = {
+            hyprland.dsp."window.move".direction = "u";
+            niri.action.move-window-up = { };
+          };
+          "ALT + SHIFT + l" = {
+            hyprland.dsp."window.move".direction = "r";
+            niri.action.move-column-right = { };
+          };
+
+          "SUPER + space".cmd = msg "panel-toggle launcher";
 
           "Print".cmd = msg "screenshot-region";
           "SUPER + p".cmd = msg "screenshot-region";
 
           "SUPER + i".cmd = "${lib.getExe pkgs.hyprpicker} -a";
 
-          "SUPER + e".cmd = msg "panel-toggle launcher";
-
+          "SUPER + e".app = "nautilus";
           "XF86AudioRaiseVolume" = repeating "volume-up";
           "XF86AudioLowerVolume" = repeating "volume-down";
           "XF86AudioMute" = repeating "volume-mute";
@@ -96,6 +111,7 @@
           "XF86AudioPause" = locked "media toggle";
           "XF86AudioNext" = locked "media next";
           "XF86AudioPrev" = locked "media previous";
+
         };
     };
 }

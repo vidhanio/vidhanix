@@ -31,7 +31,7 @@
 
         programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
 
-        binds."SUPER + h".app = lib.mkDefault "$TERMINAL herdr --remote vortex";
+        binds."SUPER + SHIFT + t".app = lib.mkDefault "$TERMINAL herdr --remote vortex";
 
         persist = {
           directories = [ ".herdr/worktrees" ];
@@ -45,7 +45,7 @@
       };
 
     provides.vortex.homeManager = {
-      binds."SUPER + h".app = "$TERMINAL herdr";
+      binds."SUPER + SHIFT + t".app = "$TERMINAL herdr";
     };
   };
 }
