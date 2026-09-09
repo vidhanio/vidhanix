@@ -59,6 +59,7 @@
         searxng
         steam
         stylix
+        teams-for-linux
         tmux
         udisks
         upower
