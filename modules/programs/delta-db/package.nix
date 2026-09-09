@@ -23,7 +23,7 @@ let
         };
         x86_64-linux = {
           name = "delta-linux-x86_64.tar.gz";
-          hash = "sha256-rMAoIUNevuoKAbO4nFgK9v431+WXAsvZncNu6r+zCmk=";
+          hash = "sha256-V/wGmt5iKk+bmEsFLAS4SWDj6PGdTW7PN1b6mOk/j0M=";
         };
       };
       source = sources.${stdenv.hostPlatform.system};
