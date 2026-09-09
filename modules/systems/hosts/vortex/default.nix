@@ -30,6 +30,7 @@
             };
             others = [
               {
+                name = "HDMI-A-1";
                 mode = {
                   width = 2560;
                   height = 1080;
