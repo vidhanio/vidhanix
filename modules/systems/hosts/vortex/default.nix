@@ -17,9 +17,6 @@
           hardware.monitors = {
             main = {
               name = "DP-1";
-              vendor = "MSI";
-              product = "MAG 275QF X30";
-              serial = "CE8M405900140";
               mode = {
                 width = 2560;
                 height = 1440;
@@ -33,10 +30,6 @@
             };
             others = [
               {
-                name = "HDMI-A-1";
-                vendor = "GSM";
-                product = "LG ULTRAWIDE";
-                serial = "0x00069958";
                 mode = {
                   width = 2560;
                   height = 1080;

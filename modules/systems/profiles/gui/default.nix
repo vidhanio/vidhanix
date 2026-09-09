@@ -30,7 +30,6 @@
         fzf
         gh
         git
-        gnome
         gnome-keyring
         greeter
         hardware

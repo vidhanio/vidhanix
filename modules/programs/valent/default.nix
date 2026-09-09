@@ -4,10 +4,6 @@
     {
       home.packages = [ pkgs.valent ];
 
-      programs.gnome-shell.extensions = [
-        { package = pkgs.gnomeExtensions.valent; }
-      ];
-
       systemd.user.services.valent = {
         Unit = {
           Description = "Connect, control, and sync devices";
