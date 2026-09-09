@@ -56,7 +56,7 @@
         };
 
         services.greetd.settings.initial_session = {
-          command = "uwsm start hyprland.desktop";
+          command = "niri";
           user = config.users.primaryUser;
         };
       };
