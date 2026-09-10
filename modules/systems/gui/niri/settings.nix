@@ -74,6 +74,7 @@
 
           shadow.off = { };
         };
+        overview.backdrop-color = colors.base00;
 
         prefer-no-csd = { };
         hotkey-overlay.skip-at-startup = { };

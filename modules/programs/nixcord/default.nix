@@ -49,6 +49,7 @@
             };
           };
         };
+        binds."SUPER + d".app = "equibop";
 
         stylix.targets.nixcord.extraCss = lib.mkIf (config.stylix.opacity.applications != 1.0) ''
           :root {

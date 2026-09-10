@@ -12,6 +12,7 @@ _: {
           enable = true;
           settings.device_name = osConfig.networking.hostName;
         };
+        binds."SUPER + s".app = "fastpotify";
 
         xdg.autostart.entries = [
           "${config.programs.fastpotify.package}/share/applications/fastpotify.desktop"
