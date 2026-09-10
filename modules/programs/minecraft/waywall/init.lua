@@ -66,10 +66,6 @@ mode_manager:define("wide", {
 })
 
 local actions = Keys.actions({
-	["*-Alt_L"] = function()
-		return mode_manager:toggle("thin")
-	end,
-
 	["*-F4"] = function()
 		if not waywall.get_key("F3") then
 			return mode_manager:toggle("tall")
@@ -78,7 +74,15 @@ local actions = Keys.actions({
 		end
 	end,
 
-	["*-Shift-V"] = function()
+	["*-B"] = function()
+		if not waywall.get_key("F3") then
+			return mode_manager:toggle("thin")
+		else
+			return false
+		end
+	end,
+
+	["*-N"] = function()
 		return mode_manager:toggle("wide")
 	end,
 
