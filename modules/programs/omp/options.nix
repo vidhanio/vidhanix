@@ -112,25 +112,6 @@
       in
       {
         options.programs.omp = {
-          enable = lib.mkEnableOption "Oh My Pi";
-
-          package = lib.mkPackageOption pkgs "omp" { nullable = true; };
-
-          settings = lib.mkOption {
-            inherit (yaml) type;
-            default = { };
-            example = {
-              theme.dark = "titanium";
-              symbolPreset = "nerd";
-              modelRoles.default = "anthropic/claude-sonnet-4-5";
-              tools.approvalMode = "write";
-              memory.backend = "off";
-            };
-            description = ''
-              Configuration written to {file}`~/.omp/agent/config.yml`.
-              See <https://omp.sh/docs/settings> for the documentation.
-            '';
-          };
 
           models = lib.mkOption {
             inherit (yaml) type;
@@ -326,12 +307,8 @@
         };
 
         config = lib.mkIf cfg.enable {
-          home.packages = lib.mkIf (cfg.package != null) [ cfg.package ];
 
           home.file = {
-            ".omp/agent/config.yml" = lib.mkIf (cfg.settings != { }) {
-              source = yaml.generate "omp-config.yml" cfg.settings;
-            };
 
             ".omp/agent/models.yml" = lib.mkIf (cfg.models != { }) {
               source = yaml.generate "omp-models.yml" cfg.models;

@@ -54,6 +54,7 @@
     nixcord.url = "github:4evy/nixcord";
     nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    omp.url = "github:can1357/oh-my-pi";
     sops-nix.url = "github:Mic92/sops-nix";
     stylix.url = "github:nix-community/stylix";
     systems.url = "github:nix-systems/default-linux";
