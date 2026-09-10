@@ -1,4 +1,4 @@
-_: {
+{ lib, ... }: {
   flake.aspects.lock = {
     nixos = {
       security.pam.services.hyprlock = { };
@@ -9,6 +9,8 @@ _: {
       {
         binds."ALT + l".cmd = "loginctl lock-session";
 
+        stylix.targets.hyprlock.image.enable = false;
+
         programs.hyprlock = {
           enable = true;
 
@@ -17,9 +19,11 @@ _: {
 
             size = "20%, 5%";
             placeholder_text = "";
+            fade_on_empty = false;
 
             rounding = config.stylix.cornerRadius;
-            outline_thickness = config.stylix.borderThickness;
+            outline_thickness = config.stylix.borderThickness * 2;
+            outer_color = lib.mkForce "rgb(${config.lib.stylix.colors.base0D})";
           };
         };
 

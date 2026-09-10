@@ -1,4 +1,4 @@
-{
+{ lib, ... }: {
   flake.aspects.noctalia = {
     nixos = {
       programs.noctalia = {
@@ -10,7 +10,6 @@
     homeManager =
       {
         config,
-        lib,
         ...
       }:
       {
