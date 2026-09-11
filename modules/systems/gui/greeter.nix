@@ -56,7 +56,7 @@
         };
 
         services.greetd.settings.initial_session = {
-          command = "niri";
+          command = "niri-session";
           user = config.users.primaryUser;
         };
       };
