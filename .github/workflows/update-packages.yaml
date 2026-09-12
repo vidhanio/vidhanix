@@ -45,6 +45,7 @@ jobs:
         - bibata-cursor
         - breezex-cursor
         - google-cursor
+        - linux-asahi-fairydust
         - pi-subagents
         - pi-web-access
 name: Update Packages

@@ -15,10 +15,20 @@
           steam.provides.apple-silicon
           # keep-sorted end
         ];
-        nixos = {
-          imports = [ inputs.nixos-apple-silicon.nixosModules.default ];
-          hardware.asahi.enable = true;
-        };
+        nixos =
+          {
+            lib,
+            pkgs,
+            self',
+            ...
+          }:
+          {
+            imports = [ inputs.nixos-apple-silicon.nixosModules.default ];
+            hardware.asahi.enable = true;
+            boot.kernelPackages = lib.mkForce (
+              pkgs.linuxPackagesFor self'.packages.linux-asahi-fairydust.kernel
+            );
+          };
       };
     };
 }

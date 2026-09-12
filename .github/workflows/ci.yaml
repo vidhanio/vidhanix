@@ -105,6 +105,9 @@ jobs:
         - pkg: google-sans-flex
           runner: ubuntu-26.04-arm
           system: aarch64-linux
+        - pkg: linux-asahi-fairydust
+          runner: ubuntu-26.04-arm
+          system: aarch64-linux
         - pkg: muvm-steam
           runner: ubuntu-26.04-arm
           system: aarch64-linux
