@@ -39,7 +39,7 @@
     helium.url = "github:schembriaiden/helium-browser-nix-flake";
     home-manager.url = "github:nix-community/home-manager";
     impermanence.url = "github:nix-community/impermanence";
-    import-tree.url = "github:vic/import-tree";
+    import-tree.url = "github:denful/import-tree";
     llm-agents.url = "github:numtide/llm-agents.nix";
     mcsr = {
       url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
