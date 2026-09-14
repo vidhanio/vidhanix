@@ -1,6 +1,6 @@
 _: {
 
-  flake.aspects.fastpotify = {
+  flake.aspects.spotifast = {
     homeManager =
       {
         config,
@@ -8,18 +8,19 @@ _: {
         ...
       }:
       {
-        programs.fastpotify = {
+        programs.spotifast = {
           enable = true;
           settings.device_name = osConfig.networking.hostName;
         };
-        binds."SUPER + s".app = "fastpotify";
+        binds."SUPER + s".app = "spotifast";
 
         xdg.autostart.entries = [
-          "${config.programs.fastpotify.package}/share/applications/fastpotify.desktop"
+          "${config.programs.spotifast.package}/share/applications/spotifast.desktop"
         ];
 
-        wayland.windowManager.hyprland.autostartWorkspaces.fastpotify = 2;
+        wayland.windowManager.hyprland.autostartWorkspaces.spotifast = 2;
 
+        # upstream keeps the pre-rename state directory.
         persist.directories = [
           ".local/state/fastpotify"
         ];

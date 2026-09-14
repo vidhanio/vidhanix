@@ -23,7 +23,6 @@
         direnv
         eza
         face
-        fastpotify
         fd
         fonts
         fx
@@ -57,6 +56,7 @@
         python
         ripgrep
         searxng
+        spotifast
         steam
         stylix
         teams-for-linux

@@ -24,7 +24,6 @@
     agentcord.url = "github:vidhanio/agentcord";
     auto-follow.url = "github:fzakaria/nix-auto-follow";
     disko.url = "github:vidhanio/disko/feature/skip-partition-uuid";
-    fastpotify.url = "github:crmne/fastpotify";
     files = {
       url = "github:mightyiam/files";
       flake = false;
@@ -56,6 +55,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     omp.url = "github:can1357/oh-my-pi";
     sops-nix.url = "github:Mic92/sops-nix";
+    spotifast.url = "github:crmne/spotifast";
     stylix.url = "github:nix-community/stylix";
     systems.url = "github:nix-systems/default-linux";
     treefmt-nix.url = "github:numtide/treefmt-nix";
