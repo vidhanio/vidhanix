@@ -105,7 +105,7 @@ in
   perSystem =
     { inputs', pkgs, ... }:
     {
-      packages = pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isAarch64 {
+      packages = {
         linux-asahi-fairydust =
           (pkgs.callPackage pkg {
             linux-asahi = inputs'.nixos-apple-silicon.packages.linux-asahi;
