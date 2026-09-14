@@ -7,7 +7,7 @@
         "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       ];
     };
-    prune-lock.ignore = [ "nix-cachyos-kernel" ];
+    inputs.nix-cachyos-kernel.inputs.nixpkgs.autoFollow = false;
   };
 
   flake.aspects.cachyos-kernel = {

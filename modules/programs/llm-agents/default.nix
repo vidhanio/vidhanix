@@ -1,6 +1,10 @@
 {
   flake-file = {
-    inputs.llm-agents.url = "github:numtide/llm-agents.nix";
+    inputs.llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.autoFollow = false;
+      inputs.bun2nix.inputs.nixpkgs.autoFollow = false;
+    };
 
     nixConfig = {
       extra-substituters = [ "https://cache.numtide.com" ];
@@ -8,7 +12,5 @@
         "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       ];
     };
-
-    prune-lock.ignore = [ "llm-agents" ];
   };
 }
