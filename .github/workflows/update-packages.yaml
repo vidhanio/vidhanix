@@ -44,6 +44,7 @@ jobs:
         pkg:
         - bibata-cursor
         - breezex-cursor
+        - cider
         - google-cursor
         - linux-asahi-fairydust
         - pi-subagents
