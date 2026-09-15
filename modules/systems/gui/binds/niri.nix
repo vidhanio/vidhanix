@@ -94,21 +94,6 @@
         in
         lib.concatStringsSep "+" (map (part: modifiers.${part} or part) (lib.splitString " + " key));
 
-      renderAction =
-        action:
-        lib.mapAttrs (
-          _: value:
-          if lib.isAttrs value && lib.attrNames value != [ ] then
-            if value ? _args || value ? _props || value ? _children then
-              value
-            else
-              {
-                _props = value;
-              }
-          else
-            value
-        ) action;
-
       renderBind =
         keys: bind:
         let
@@ -121,7 +106,7 @@
             };
         in
         lib.nameValuePair (normalizeKey keys) (
-          renderAction cfg.action
+          cfg.action
           // {
             _props = props;
           }

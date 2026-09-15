@@ -39,7 +39,7 @@
           };
           "SUPER + m" = {
             hyprland.cmd = "uwsm stop";
-            niri.action.quit.skip-confirmation = true;
+            niri.action.quit._props.skip-confirmation = true;
           };
           "SUPER + v".cmd = msg "panel-toggle clipboard";
           "SUPER + f" = {
