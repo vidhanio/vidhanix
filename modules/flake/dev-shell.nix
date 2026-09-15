@@ -17,7 +17,8 @@
 
         inherit (config.pre-commit) shellHook;
 
-        packages = config.pre-commit.settings.enabledPackages ++ [
+        packages = [
+          config.pre-commit.settings.package
           pkgs.coreutils
           pkgs.findutils
           pkgs.git
