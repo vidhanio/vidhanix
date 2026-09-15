@@ -111,6 +111,7 @@ let
         let
           curlExe = lib.getExe curl;
           grepExe = lib.getExe gnugrep;
+          headExe = lib.getExe' coreutils "head";
           nixExe = lib.getExe nix;
           prefetchExe = lib.getExe' nix "nix-prefetch-url";
           sedExe = lib.getExe' gnused "sed";
@@ -121,12 +122,20 @@ let
           set -euo pipefail
 
           package_file=modules/programs/cider/package.nix
-          latest_version="$(
+          latest_deb="$(
             ${curlExe} --fail --silent --show-error --location ${packageIndex} |
-              ${grepExe} --only-matching --extended-regexp 'cider-v[0-9]+([.][0-9]+){2,3}-linux-(arm64|x64)[.]deb' |
-              ${sedExe} -nE 's/^cider-v([0-9]+([.][0-9]+){2,3})-linux-(arm64|x64)[.]deb$/\1/p' |
-              ${sortExe} --version-sort |
-              ${sedExe} -n '$p'
+              ${grepExe} --only-matching --perl-regexp 'cider-v(\d+\.\d+\.\d+(?:\.\d+)?)-linux-x64\.deb' |
+              ${sortExe} --reverse --version-sort |
+              ${headExe} --lines=1
+          )"
+
+          if [[ -z "$latest_deb" ]]; then
+            echo "Could not find the latest Cider .deb" >&2
+            exit 1
+          fi
+
+          latest_version="$(
+            ${sedExe} --regexp-extended 's|cider-v([0-9.]+)-linux-x64[.]deb|\1|' <<< "$latest_deb"
           )"
 
           if [[ -z "$latest_version" ]]; then
