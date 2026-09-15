@@ -25,7 +25,10 @@
             };
             "SUPER + SHIFT + ${toString i}" = {
               hyprland.lua = "hs.dsp.window.move({ workspace = ${toString i}, follow = false })";
-              niri.action.move-column-to-workspace = i;
+              niri.action.move-column-to-workspace = {
+                _args = [ i ];
+                _props.focus = false;
+              };
             };
           }) (lib.range 1 9)
         )

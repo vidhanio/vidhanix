@@ -99,9 +99,12 @@
         lib.mapAttrs (
           _: value:
           if lib.isAttrs value && lib.attrNames value != [ ] then
-            {
-              _props = value;
-            }
+            if value ? _args || value ? _props || value ? _children then
+              value
+            else
+              {
+                _props = value;
+              }
           else
             value
         ) action;
