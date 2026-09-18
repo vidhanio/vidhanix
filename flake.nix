@@ -74,6 +74,13 @@
     import-tree = {
       url = "github:denful/import-tree";
     };
+    llama-cpp = {
+      url = "github:PrismML-Eng/llama.cpp";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs = {

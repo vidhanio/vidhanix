@@ -493,6 +493,29 @@
         "type": "github"
       }
     },
+    "llama-cpp": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789665198,
+        "narHash": "sha256-P/TrseqTkqQwD6wGgsznCl1P/bhZZT6e0K1+WBZXGLY=",
+        "owner": "PrismML-Eng",
+        "repo": "llama.cpp",
+        "rev": "5d80cff0b8cb9f2bf823cfc4e71e3abb97f290d6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PrismML-Eng",
+        "repo": "llama.cpp",
+        "type": "github"
+      }
+    },
     "llm-agents": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -508,11 +531,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789422023,
-        "narHash": "sha256-idUmZFCDKa3dI8TGkWXQAxCQ+i6DYUu3r/rmhdvz4Sw=",
+        "lastModified": 1789552626,
+        "narHash": "sha256-uLUOUASz1t+YvEu6e1l71d/5eTnWC7psI+rRxTpj514=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "f68eadd29a94b7bac2ee2aa1456fd3301b58b68f",
+        "rev": "cbfe11b1e27e0bfde1ce9f221fcc9c88940f0602",
         "type": "github"
       },
       "original": {
@@ -833,6 +856,7 @@
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "import-tree": "import-tree",
+        "llama-cpp": "llama-cpp",
         "llm-agents": "llm-agents",
         "mcsr": "mcsr",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
