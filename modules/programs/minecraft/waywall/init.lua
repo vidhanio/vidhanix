@@ -74,23 +74,19 @@ local actions = Keys.actions({
 		end
 	end,
 
-	["*-B"] = function()
-		if not waywall.get_key("F3") then
-			return mode_manager:toggle("thin")
-		else
-			return false
-		end
+	["*-Alt-B"] = function()
+		return mode_manager:toggle("thin")
 	end,
 
-	["*-N"] = function()
+	["*-Alt-N"] = function()
 		return mode_manager:toggle("wide")
 	end,
 
-	["*-apostrophe"] = function()
+	["*-Alt-apostrophe"] = function()
 		waywall.exec(programs.ninjabrain_bot)
 		waywall.show_floating(true)
 	end,
-	["*-semicolon"] = function()
+	["*-Alt-semicolon"] = function()
 		helpers.toggle_floating()
 	end,
 })
