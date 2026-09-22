@@ -8,17 +8,18 @@ let
     }:
     buildNpmPackage (finalAttrs: {
       pname = "pi-subagents";
-      version = "0.67.0";
+      version = "0.70.1";
 
       src = fetchFromGitHub {
         owner = "nicobailon";
         repo = "pi-subagents";
         tag = "v${finalAttrs.version}";
-        hash = "sha256-XXqK6RnalPPxoOkW+RY81xRzOnB2VYfoFP47pGcHzEI=";
+        hash = "sha256-ssjBUCPE+nsZp0e4i+KfwI4dRKjeH8EJ+BPiymsyJIY=";
       };
 
-      npmDepsHash = "sha256-Bto6gZcATd4R2ilK4fYlYzfiVaToLxR/6uCPSPqTuuI=";
+      npmDepsHash = "sha256-tRFkjldbzfn5pjgsH3fssGh3PTECdKBRi1wDRtL5JBM=";
       npmFlags = [ "--legacy-peer-deps" ];
+      makeCacheWritable = true;
 
       # the extension runs from source typescript; there is nothing to build.
       dontNpmBuild = true;
