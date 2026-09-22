@@ -17,7 +17,7 @@
           base = if config.stylix.polarity == "dark" then "dark" else "light";
           colors = with colors; {
             window = base00;
-            panel = base01;
+            panel = base00;
             surface = base02;
             surface_hover = base03;
             surface_active = base04;
