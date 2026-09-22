@@ -28,16 +28,15 @@
           settings = lib.mkOption {
             inherit (json) type;
             default = { };
-            description = "Configuration written to {file}`~/.config/fastpotify/settings.json`.";
+            description = "Configuration written to {file}`~/.config/spotifast/settings.json`.";
           };
         };
 
         config = lib.mkIf cfg.enable {
           home.packages = [ cfg.package ];
 
-          # upstream keeps the pre-rename config directory.
-          xdg.configFile."fastpotify/settings.json" = lib.mkIf (cfg.settings != { }) {
-            source = json.generate "fastpotify-settings.json" cfg.settings;
+          xdg.configFile."spotifast/settings.json" = lib.mkIf (cfg.settings != { }) {
+            source = json.generate "spotifast-settings.json" cfg.settings;
           };
         };
       };

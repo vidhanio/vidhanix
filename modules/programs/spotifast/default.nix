@@ -20,9 +20,8 @@ _: {
 
         wayland.windowManager.hyprland.autostartWorkspaces.spotifast = 2;
 
-        # upstream keeps the pre-rename state directory.
         persist.directories = [
-          ".local/state/fastpotify"
+          ".local/state/spotifast"
         ];
       };
   };
