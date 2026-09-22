@@ -9,13 +9,13 @@ let
     }:
     buildNpmPackage (finalAttrs: {
       pname = "pi-web-access";
-      version = "0.29.0";
+      version = "0.30.0";
 
       src = fetchFromGitHub {
         owner = "nicobailon";
         repo = "pi-web-access";
         tag = "v${finalAttrs.version}";
-        hash = "sha256-5YMwE44pyMmCapGt9kFLxT61Qg3OCzuJCIATRhMBv6M=";
+        hash = "sha256-B8Ca1AH0OGM8nOKoWLI8Xukx0NNwU8FN84WzADa0v7c=";
       };
 
       # pi provides these peer dependencies itself.
@@ -26,7 +26,7 @@ let
         mv package-lock.json.tmp package-lock.json
       '';
 
-      npmDepsHash = "sha256-2JNFeY3KP6gqXC7npvBw781Sl8Oc3DsdZCdUGu5Ykh8=";
+      npmDepsHash = "sha256-35zF88VshuAuPWWNpCbEhslck68tVNz1MtamRxju4+Q=";
       npmFlags = [ "--legacy-peer-deps" ];
 
       # the extension runs from source typescript; there is nothing to build.
