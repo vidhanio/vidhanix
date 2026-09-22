@@ -23,13 +23,13 @@
           base06 = "eaeaea";
           base07 = "ffffff";
           base08 = "ff8080";
-          base09 = "ffd280";
+          base09 = "ffc080";
           base0A = "ffff80";
-          base0B = "408040";
+          base0B = "80ff80";
           base0C = "80ffff";
           base0D = "8080ff";
           base0E = "ff80ff";
-          base0F = "a55353";
+          base0F = "c08040";
         };
       };
     };
