@@ -8,9 +8,11 @@ in
       programs.zed-editor = {
         enable = true;
         extensions = [
+          "git-firefly"
           "mermaid"
           "nix"
           "rust"
+          "toml"
         ];
         extraPackages = with pkgs; [
           nixd
