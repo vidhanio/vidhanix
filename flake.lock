@@ -963,11 +963,11 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1790182341,
-        "narHash": "sha256-a2K7f9XRMNIZVpcLNnbaozskFDwj6gTINV72j35nx1o=",
+        "lastModified": 1790200599,
+        "narHash": "sha256-8x1u+4AgCs26c/G4mIZYtTX6JdGVxBcbqBYzio/gRIk=",
         "owner": "crmne",
         "repo": "spotifast",
-        "rev": "3bfd3f4fc1f38ac565c61862790acc7ce951ee3c",
+        "rev": "84347dd1e8c663479ca23e47fa6657b9bcc96989",
         "type": "github"
       },
       "original": {
