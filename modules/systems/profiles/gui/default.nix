@@ -51,7 +51,6 @@
         omp
         opencode2
         ozone
-        pi-coding-agent
         prime-agent
         python
         ripgrep
