@@ -9,24 +9,38 @@ let
     }:
     buildNpmPackage (finalAttrs: {
       pname = "pi-web-access";
-      version = "0.30.0";
+      version = "0.31.0";
 
       src = fetchFromGitHub {
         owner = "nicobailon";
         repo = "pi-web-access";
         tag = "v${finalAttrs.version}";
-        hash = "sha256-B8Ca1AH0OGM8nOKoWLI8Xukx0NNwU8FN84WzADa0v7c=";
+        hash = "sha256-ykR2slh8MkxxbP660h0rvk2Y7SaKv+Cw/lJC21JqGW8=";
       };
 
-      # pi provides these peer dependencies itself.
+      # pi provides the package's peer dependencies itself.
       postPatch = ''
         ${lib.getExe jq} '
-          .packages |= with_entries(select(.value.peer != true))
+          .peerDependencies = {}
+          | .devDependencies |= with_entries(
+              select(.key | startswith("@earendil-works/pi-") | not)
+            )
+        ' package.json > package.json.tmp
+        mv package.json.tmp package.json
+
+        ${lib.getExe jq} '
+          .packages[""].peerDependencies = {}
+          | .packages[""].devDependencies |= with_entries(
+              select(.key | startswith("@earendil-works/pi-") | not)
+            )
+          | .packages |= with_entries(
+              select(.key | startswith("node_modules/@earendil-works/pi-") | not)
+            )
         ' package-lock.json > package-lock.json.tmp
         mv package-lock.json.tmp package-lock.json
       '';
 
-      npmDepsHash = "sha256-35zF88VshuAuPWWNpCbEhslck68tVNz1MtamRxju4+Q=";
+      npmDepsHash = "sha256-hgBPVN/BY2R5ZPO7na7wtGg9te03xWU9/0DpYgLkicY=";
       npmFlags = [ "--legacy-peer-deps" ];
 
       # the extension runs from source typescript; there is nothing to build.

@@ -8,16 +8,16 @@ let
     }:
     buildNpmPackage (finalAttrs: {
       pname = "pi-subagents";
-      version = "0.70.1";
+      version = "0.71.0";
 
       src = fetchFromGitHub {
         owner = "nicobailon";
         repo = "pi-subagents";
         tag = "v${finalAttrs.version}";
-        hash = "sha256-ssjBUCPE+nsZp0e4i+KfwI4dRKjeH8EJ+BPiymsyJIY=";
+        hash = "sha256-KUnrfinRPiEPPdj0pd06MWnYncQmjiQvGySmGqdvwEg=";
       };
 
-      npmDepsHash = "sha256-tRFkjldbzfn5pjgsH3fssGh3PTECdKBRi1wDRtL5JBM=";
+      npmDepsHash = "sha256-IwQZju9R2n0XxcPVVHzQejQ/Gihijy30Pq7cZ4kqN8E=";
       npmFlags = [ "--legacy-peer-deps" ];
       makeCacheWritable = true;
 
