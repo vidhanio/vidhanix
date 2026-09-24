@@ -357,6 +357,27 @@
         "type": "github"
       }
     },
+    "flake-utils": {
+      "inputs": {
+        "systems": [
+          "niri-scratchpad",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "fromYaml": {
       "flake": false,
       "locked": {
@@ -560,6 +581,30 @@
       "original": {
         "type": "tarball",
         "url": "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz"
+      }
+    },
+    "niri-scratchpad": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1762334439,
+        "narHash": "sha256-3PVc17NWTE7O5IS6/wT4V7M9moIC035vJZ0vFi7DQ0Q=",
+        "owner": "gvolpe",
+        "repo": "niri-scratchpad",
+        "rev": "d12bf51846777a245d16ca89cbf7e67a256064a5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gvolpe",
+        "repo": "niri-scratchpad",
+        "type": "github"
       }
     },
     "nix-bun": {
@@ -859,6 +904,7 @@
         "llama-cpp": "llama-cpp",
         "llm-agents": "llm-agents",
         "mcsr": "mcsr",
+        "niri-scratchpad": "niri-scratchpad",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nix-index-database": "nix-index-database",
         "nixcord": "nixcord",

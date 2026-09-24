@@ -93,6 +93,13 @@
       url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    niri-scratchpad = {
+      url = "github:gvolpe/niri-scratchpad";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
+    };
     nix-cachyos-kernel = {
       url = "github:xddxdd/nix-cachyos-kernel/release";
       inputs.flake-parts.follows = "flake-parts";

@@ -82,9 +82,19 @@
         _children = [
           (renderOutput true monitors.main)
           {
+            workspace._args = [ "scratch" ];
+          }
+          {
             window-rule = {
               geometry-corner-radius = config.stylix.cornerRadius;
               clip-to-geometry = true;
+            };
+          }
+          {
+            window-rule = {
+              match._props.app-id = "^herdr$";
+              open-on-workspace = "scratch";
+              open-floating = true;
             };
           }
           {

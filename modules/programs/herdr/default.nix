@@ -26,8 +26,9 @@
         };
 
         programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
-
-        binds."SUPER + SHIFT + t".app = lib.mkDefault "$TERMINAL herdr";
+        binds."SUPER + t".niri.cmd = lib.mkForce ''
+          nscratch -id herdr -s "$TERMINAL --app-id=herdr herdr"
+        '';
 
         persist = {
           directories = [ ".herdr/worktrees" ];
