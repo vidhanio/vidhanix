@@ -18,7 +18,6 @@
         comma
         crush
         cursor
-        delta-db
         difftastic
         direnv
         eza
