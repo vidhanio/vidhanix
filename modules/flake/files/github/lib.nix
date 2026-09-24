@@ -45,7 +45,8 @@ let
           "with".nix_path = "nixpkgs=channel:nixos-unstable";
           "with".extra_nix_config = ''
             build-dir = /nix/build
-            extra-platforms = x86_64-linux aarch64-linux
+            accept-flake-config = true
+            extra-platforms = x86_64-linux aarch64-linux i686-linux
           '';
         }
         {
@@ -55,7 +56,7 @@ let
             name = "vidhanio";
             authToken = ghExpr "inputs.cachix-auth-token";
             skipPush = ghExpr "inputs.cachix-auth-token == ''";
-            pushFilter = "(-source$|berkeley-mono|pragmata-pro-variable)";
+            pushFilter = "((\\.(tar\\.gz|tar\\.xz|tgz|deb)|-source(-patched)?)$|berkeley-mono|pragmata-pro-variable)";
           };
         }
       ];

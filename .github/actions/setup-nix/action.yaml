@@ -26,13 +26,15 @@ runs:
   - name: Install Nix
     uses: cachix/install-nix-action@v31
     with:
-      extra_nix_config: "build-dir = /nix/build\nextra-platforms = x86_64-linux aarch64-linux\n"
+      extra_nix_config: "build-dir = /nix/build\naccept-flake-config = true\nextra-platforms
+        = x86_64-linux aarch64-linux i686-linux\n"
       nix_path: nixpkgs=channel:nixos-unstable
   - name: Set Up Cachix
     uses: cachix/cachix-action@v17
     with:
       authToken: ${{ inputs.cachix-auth-token }}
       name: vidhanio
-      pushFilter: (-source$|berkeley-mono|pragmata-pro-variable)
+      pushFilter: 
+        ((\.(tar\.gz|tar\.xz|tgz|deb)|-source(-patched)?)$|berkeley-mono|pragmata-pro-variable)
       skipPush: ${{ inputs.cachix-auth-token == '' }}
   using: composite
