@@ -32,6 +32,10 @@ let
           };
         }
         {
+          name = "Set Up QEMU";
+          uses = "docker/setup-qemu-action@v3";
+        }
+        {
           name = "Free Disk Space";
           uses = "wimpysworld/nothing-but-nix@v9";
           "with".hatchet-protocol = "carve";
@@ -39,8 +43,10 @@ let
         {
           name = "Install Nix";
           uses = "cachix/install-nix-action@v31";
+          "with".nix_path = "nixpkgs=channel:nixos-unstable";
           "with".extra_nix_config = ''
             build-dir = /nix/build
+            extra-platforms = x86_64-linux aarch64-linux
           '';
         }
         {
