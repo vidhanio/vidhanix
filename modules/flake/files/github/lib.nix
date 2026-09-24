@@ -92,7 +92,7 @@ let
     uses = "./.github/actions/setup-nix";
     "with".ssh-private-key = ghExpr "secrets.FONTS_SSH_KEY";
     "with".cachix-auth-token =
-      ghExpr "(github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && secrets.CACHIX_AUTH_TOKEN) || ''";
+      ghExpr "((github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) || (github.event_name == 'push' && contains(fromJSON('[\"vidhanio\",\"vidhanix[bot]\",\"dependabot[bot]\"]'), github.actor)) || (github.event_name == 'pull_request' && contains(fromJSON('[\"vidhanio\",\"vidhanix[bot]\",\"dependabot[bot]\"]'), github.event.pull_request.user.login))) && secrets.CACHIX_AUTH_TOKEN || ''";
   };
 
   checkoutHead = checkout // {
