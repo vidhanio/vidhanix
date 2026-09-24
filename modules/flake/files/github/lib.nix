@@ -16,6 +16,11 @@ let
       description = "SSH key for private flake inputs";
       required = true;
     };
+    inputs.cachix-auth-token = {
+      description = "Token for pushing build outputs to Cachix";
+      required = false;
+      default = "";
+    };
     runs = {
       using = "composite";
       steps = [
@@ -54,6 +59,16 @@ let
             restore-prefixes-first-match = "nix-${ghExpr "runner.arch"}-";
           };
         }
+        {
+          name = "Set Up Cachix";
+          uses = "cachix/cachix-action@v17";
+          "with" = {
+            name = "vidhanio";
+            authToken = ghExpr "inputs.cachix-auth-token";
+            skipPush = ghExpr "inputs.cachix-auth-token == ''";
+            pushFilter = "(-source$|berkeley-mono|pragmata-pro-variable)";
+          };
+        }
       ];
     };
   };
@@ -76,6 +91,8 @@ let
     name = "Set Up Nix";
     uses = "./.github/actions/setup-nix";
     "with".ssh-private-key = ghExpr "secrets.FONTS_SSH_KEY";
+    "with".cachix-auth-token =
+      ghExpr "(github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && secrets.CACHIX_AUTH_TOKEN) || ''";
   };
 
   checkoutHead = checkout // {

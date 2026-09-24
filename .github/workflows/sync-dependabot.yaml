@@ -30,6 +30,10 @@ jobs:
     - name: Set Up Nix
       uses: ./.github/actions/setup-nix
       with:
+        cachix-auth-token: ${{ (github.ref == 'refs/heads/main' && 
+          (github.event_name == 'push' || github.event_name == 'schedule' || 
+          github.event_name == 'workflow_dispatch') && 
+          secrets.CACHIX_AUTH_TOKEN) || '' }}
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
     - id: app-token
       name: Create GitHub App Token

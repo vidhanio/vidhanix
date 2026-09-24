@@ -14,6 +14,10 @@ jobs:
     - name: Set Up Nix
       uses: ./.github/actions/setup-nix
       with:
+        cachix-auth-token: ${{ (github.ref == 'refs/heads/main' && 
+          (github.event_name == 'push' || github.event_name == 'schedule' || 
+          github.event_name == 'workflow_dispatch') && 
+          secrets.CACHIX_AUTH_TOKEN) || '' }}
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
     - name: Build Package
       run: nix build .#${{ matrix.pkg }} --print-build-logs
@@ -132,6 +136,10 @@ jobs:
     - name: Set Up Nix
       uses: ./.github/actions/setup-nix
       with:
+        cachix-auth-token: ${{ (github.ref == 'refs/heads/main' && 
+          (github.event_name == 'push' || github.event_name == 'schedule' || 
+          github.event_name == 'workflow_dispatch') && 
+          secrets.CACHIX_AUTH_TOKEN) || '' }}
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
     - name: Check Formatting
       run: nix develop -c just fmt --ci
@@ -144,6 +152,10 @@ jobs:
     - name: Set Up Nix
       uses: ./.github/actions/setup-nix
       with:
+        cachix-auth-token: ${{ (github.ref == 'refs/heads/main' && 
+          (github.event_name == 'push' || github.event_name == 'schedule' || 
+          github.event_name == 'workflow_dispatch') && 
+          secrets.CACHIX_AUTH_TOKEN) || '' }}
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
     - name: Generate Files
       run: nix develop -c just generate
@@ -158,6 +170,10 @@ jobs:
     - name: Set Up Nix
       uses: ./.github/actions/setup-nix
       with:
+        cachix-auth-token: ${{ (github.ref == 'refs/heads/main' && 
+          (github.event_name == 'push' || github.event_name == 'schedule' || 
+          github.event_name == 'workflow_dispatch') && 
+          secrets.CACHIX_AUTH_TOKEN) || '' }}
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
     - name: Evaluate System
       run: nix eval .#${{ matrix.attr }} --raw

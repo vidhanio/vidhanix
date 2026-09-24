@@ -3,6 +3,10 @@
 ---
 description: Install Nix and prepare the runner for a Nix job
 inputs:
+  cachix-auth-token:
+    default: ''
+    description: Token for pushing build outputs to Cachix
+    required: false
   ssh-private-key:
     description: SSH key for private flake inputs
     required: true
@@ -29,4 +33,11 @@ runs:
     with:
       primary-key: nix-${{ runner.arch }}-${{ hashFiles('**/flake.lock') }}
       restore-prefixes-first-match: nix-${{ runner.arch }}-
+  - name: Set Up Cachix
+    uses: cachix/cachix-action@v17
+    with:
+      authToken: ${{ inputs.cachix-auth-token }}
+      name: vidhanio
+      pushFilter: (-source$|berkeley-mono|pragmata-pro-variable)
+      skipPush: ${{ inputs.cachix-auth-token == '' }}
   using: composite
