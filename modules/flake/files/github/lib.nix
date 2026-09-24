@@ -1,5 +1,4 @@
 {
-  config,
   flake-parts-lib,
   lib,
   ...
@@ -62,14 +61,6 @@ let
       ];
     };
   };
-
-  # hosts come from the built NixOS configurations, so the eval matrix tracks
-  # `hosts.<hostname>`; eval runs on any platform, only builds need a matching
-  # runner. drvPath keeps the run line short so remarshal won't fold `${{ }}`.
-  hosts = lib.mapAttrsToList (name: _cfg: {
-    inherit name;
-    attr = "nixosConfigurations.${name}.config.system.build.toplevel.drvPath";
-  }) config.flake.nixosConfigurations;
 
   checkout = {
     name = "Checkout";
@@ -142,7 +133,6 @@ in
           createAppToken
           fetchMetadata
           ghExpr
-          hosts
           just
           setupNix
           setupNixAction
