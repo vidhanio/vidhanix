@@ -3,6 +3,7 @@ let
     {
       callPackage,
       curl,
+      git,
       gnused,
       jq,
       lib,
@@ -17,6 +18,7 @@ let
       extraArgs = lib.removeAttrs args [
         "callPackage"
         "curl"
+        "git"
         "gnused"
         "jq"
         "lib"
@@ -66,6 +68,7 @@ let
           updateScript =
             let
               curlExe = lib.getExe curl;
+              gitExe = lib.getExe' git "git";
               jqExe = lib.getExe jq;
               nixPrefetchGitHubExe = lib.getExe nix-prefetch-github;
               sedExe = lib.getExe' gnused "sed";
@@ -74,7 +77,20 @@ let
               set -euo pipefail
 
               package_file=modules/systems/profiles/apple-silicon/kernel.nix
-              metadata="$(${nixPrefetchGitHubExe} AsahiLinux linux --rev fairydust)"
+              remote_ref="$(${gitExe} ls-remote --exit-code --heads https://github.com/AsahiLinux/linux.git fairydust)"
+              rev="$(printf '%s\n' "$remote_ref" | ${sedExe} -n 's/^\([0-9a-f]\{40\}\)[[:space:]].*/\1/p')"
+              current_rev="$(${sedExe} -n -E 's/^[[:space:]]*rev = "([0-9a-f]+)";/\1/p' "$package_file")"
+
+              if [[ ! "$rev" =~ ^[0-9a-f]{40}$ ]]; then
+                echo "invalid fairydust revision: $rev" >&2
+                exit 1
+              fi
+
+              if [[ "$rev" == "$current_rev" ]]; then
+                exit 0
+              fi
+
+              metadata="$(${nixPrefetchGitHubExe} AsahiLinux linux --rev "$rev")"
               rev="$(${jqExe} --raw-output .rev <<<"$metadata")"
               hash="$(${jqExe} --raw-output .hash <<<"$metadata")"
               makefile="$(${curlExe} --fail --silent --show-error --location "https://raw.githubusercontent.com/AsahiLinux/linux/$rev/Makefile")"
