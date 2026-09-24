@@ -1,5 +1,44 @@
-{ flake-parts-lib, ... }:
 {
+  config,
+  flake-parts-lib,
+  lib,
+  ...
+}:
+let
+  buildRunners = {
+    "x86_64-linux" = "ubuntu-latest";
+    "aarch64-linux" = "ubuntu-26.04-arm";
+  };
+
+  packageBuilds = lib.concatLists (
+    lib.mapAttrsToList (
+      system: packages:
+      lib.mapAttrsToList (pkg: package: {
+        inherit pkg system;
+        runner = buildRunners.${system};
+        inherit (package) drvPath;
+      }) (lib.filterAttrs (_pkg: package: lib.elem system (package.meta.platforms or [ ])) packages)
+    ) (lib.filterAttrs (system: _packages: builtins.hasAttr system buildRunners) config.flake.packages)
+  );
+
+  systemBuilds = lib.mapAttrsToList (
+    name: host:
+    let
+      system = host.config.nixpkgs.hostPlatform.system;
+    in
+    {
+      inherit name system;
+      attr = "nixosConfigurations." + name + ".config.system.build.toplevel";
+      runner = buildRunners.${system};
+      drvPath = host.config.system.build.toplevel.drvPath;
+    }
+  ) config.flake.nixosConfigurations;
+in
+{
+  config.flake.ciBuildMatrices = {
+    packages = packageBuilds;
+    systems = systemBuilds;
+  };
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
@@ -9,7 +48,7 @@
         checkout
         setupNix
         ;
-      # System closures can include licensed fonts; never publish those closures.
+      # Matrix evaluation never builds outputs, so it needs no cache push token.
       setupNixReadOnly = setupNix // {
         "with" = setupNix."with" // {
           cachix-auth-token = "";
@@ -48,45 +87,8 @@
                 name = "Build Matrices";
                 id = "build-matrices";
                 run = ''
-                  printf 'packages=%s\n' "$(
-                    nix eval --json .#packages --apply '
-                      packages:
-                      builtins.concatLists (builtins.map (system:
-                        let systemPackages = builtins.getAttr system packages;
-                        in builtins.map (pkg:
-                          let package = builtins.getAttr pkg systemPackages;
-                          in {
-                            inherit pkg system;
-                            runner = builtins.getAttr system {
-                              "x86_64-linux" = "ubuntu-latest";
-                              "aarch64-linux" = "ubuntu-26.04-arm";
-                            };
-                            drvPath = package.drvPath;
-                          }
-                        ) (builtins.filter (pkg:
-                          let package = builtins.getAttr pkg systemPackages;
-                          in builtins.elem system (package.meta.platforms or [ ])
-                        ) (builtins.attrNames systemPackages))
-                      ) [ "x86_64-linux" "aarch64-linux" ])'
-                  )" >> "$GITHUB_OUTPUT"
-                  printf 'systems=%s\n' "$(
-                    nix eval --json .#nixosConfigurations --apply '
-                      hosts:
-                      builtins.map (name:
-                        let
-                          host = builtins.getAttr name hosts;
-                          system = host.config.nixpkgs.hostPlatform.system;
-                        in {
-                          inherit name system;
-                          attr = "nixosConfigurations." + name + ".config.system.build.toplevel";
-                          runner = builtins.getAttr system {
-                            "x86_64-linux" = "ubuntu-latest";
-                            "aarch64-linux" = "ubuntu-26.04-arm";
-                          };
-                          drvPath = host.config.system.build.toplevel.drvPath;
-                        }
-                      ) (builtins.attrNames hosts)'
-                  )" >> "$GITHUB_OUTPUT"
+                  printf 'packages=%s\n' "$(nix eval --json .#ciBuildMatrices.packages)" >> "$GITHUB_OUTPUT"
+                  printf 'systems=%s\n' "$(nix eval --json .#ciBuildMatrices.systems)" >> "$GITHUB_OUTPUT"
                 '';
               }
             ];
@@ -136,7 +138,7 @@
             };
             steps = [
               checkout
-              setupNixReadOnly
+              setupNix
               {
                 name = "Build System";
                 run = "nix build .#${ghExpr "matrix.attr"} --print-build-logs";

@@ -46,7 +46,15 @@ jobs:
     - name: Set Up Nix
       uses: ./.github/actions/setup-nix
       with:
-        cachix-auth-token: ''
+        cachix-auth-token: ${{ ((github.ref == 'refs/heads/main' && 
+          (github.event_name == 'push' || github.event_name == 'schedule' || 
+          github.event_name == 'workflow_dispatch')) || (github.event_name == 
+          'push' && 
+          contains(fromJSON('["vidhanio","vidhanix[bot]","dependabot[bot]"]'), 
+          github.actor)) || (github.event_name == 'pull_request' && 
+          contains(fromJSON('["vidhanio","vidhanix[bot]","dependabot[bot]"]'), 
+          github.event.pull_request.user.login))) && secrets.CACHIX_AUTH_TOKEN 
+          || '' }}
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
     - name: Build System
       run: nix build .#${{ matrix.attr }} --print-build-logs
@@ -114,25 +122,9 @@ jobs:
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
     - id: build-matrices
       name: Build Matrices
-      run: "printf 'packages=%s\\n' \"$(\n  nix eval --json .#packages --apply '\n\
-        \    packages:\n    builtins.concatLists (builtins.map (system:\n      let
-        systemPackages = builtins.getAttr system packages;\n      in builtins.map
-        (pkg:\n        let package = builtins.getAttr pkg systemPackages;\n      \
-        \  in {\n          inherit pkg system;\n          runner = builtins.getAttr
-        system {\n            \"x86_64-linux\" = \"ubuntu-latest\";\n            \"\
-        aarch64-linux\" = \"ubuntu-26.04-arm\";\n          };\n          drvPath =
-        package.drvPath;\n        }\n      ) (builtins.filter (pkg:\n        let package
-        = builtins.getAttr pkg systemPackages;\n        in builtins.elem system (package.meta.platforms
-        or [ ])\n      ) (builtins.attrNames systemPackages))\n    ) [ \"x86_64-linux\"\
-        \ \"aarch64-linux\" ])'\n)\" >> \"$GITHUB_OUTPUT\"\nprintf 'systems=%s\\n'
-        \"$(\n  nix eval --json .#nixosConfigurations --apply '\n    hosts:\n    builtins.map
-        (name:\n      let\n        host = builtins.getAttr name hosts;\n        system
-        = host.config.nixpkgs.hostPlatform.system;\n      in {\n        inherit name
-        system;\n        attr = \"nixosConfigurations.\" + name + \".config.system.build.toplevel\"\
-        ;\n        runner = builtins.getAttr system {\n          \"x86_64-linux\"\
-        \ = \"ubuntu-latest\";\n          \"aarch64-linux\" = \"ubuntu-26.04-arm\"\
-        ;\n        };\n        drvPath = host.config.system.build.toplevel.drvPath;\n\
-        \      }\n    ) (builtins.attrNames hosts)'\n)\" >> \"$GITHUB_OUTPUT\"\n"
+      run: "printf 'packages=%s\\n' \"$(nix eval --json .#ciBuildMatrices.packages)\"\
+        \ >> \"$GITHUB_OUTPUT\"\nprintf 'systems=%s\\n' \"$(nix eval --json .#ciBuildMatrices.systems)\"\
+        \ >> \"$GITHUB_OUTPUT\"\n"
 name: CI
 'on':
   pull_request: {}
