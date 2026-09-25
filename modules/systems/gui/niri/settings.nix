@@ -92,13 +92,6 @@
           }
           {
             window-rule = {
-              match._props.app-id = "^herdr$";
-              open-on-workspace = "stash";
-              open-floating = true;
-            };
-          }
-          {
-            window-rule = {
               match._props.app-id = "^dev\\.noctalia\\.Noctalia$";
               open-floating = true;
               default-column-width.fixed = 1080;

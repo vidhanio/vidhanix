@@ -26,9 +26,20 @@
         };
 
         programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
-        binds."SUPER + t".niri.cmd = lib.mkForce ''
+        binds."SUPER + t".niri.cmd = ''
           ${lib.getExe' inputs'.niri-scratchpad.packages.default "niri-scratchpad"} target --spawn "$TERMINAL --app-id=herdr herdr" appid herdr
         '';
+
+        wayland.windowManager.niri.settings._children = [
+          {
+            window-rule = {
+              match._props.app-id = "^herdr$";
+              open-floating = true;
+              default-column-width.proportion = 1.0;
+              default-window-height.proportion = 1.0;
+            };
+          }
+        ];
 
         persist = {
           directories = [ ".herdr/worktrees" ];

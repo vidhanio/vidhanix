@@ -16,9 +16,6 @@
 
       wayland.windowManager.hyprland.autostartWorkspaces.kitty = 1;
 
-      binds."SUPER + t" = {
-        app = "kitty --single-instance";
-      };
       binds."SUPER + SHIFT + t".app = "kitty --single-instance";
     };
   };
