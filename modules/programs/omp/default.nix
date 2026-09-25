@@ -31,6 +31,9 @@
             composer.shape = "pi";
             symbolPreset = "nerd";
 
+            completion.notify = "off";
+            ask.notify = "off";
+
             modelRoles = {
               default = "${modelsCfg.large.provider}/${modelsCfg.large.model}:${modelsCfg.large.thinking}";
               smol = "${modelsCfg.small.provider}/${modelsCfg.small.model}:${modelsCfg.small.thinking}";
