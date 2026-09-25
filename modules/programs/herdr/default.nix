@@ -55,7 +55,6 @@
             onboarding = false;
 
             ui = {
-              tab_bar_position = "bottom";
               toast.delivery = "system";
             };
 
@@ -65,8 +64,8 @@
                 type = "popup";
                 command = lib.getExe pkgs.lazygit;
                 description = "run lazygit";
-                width = "80%";
-                height = "80%";
+                width = "90%";
+                height = "90%";
               }
             ];
           };
