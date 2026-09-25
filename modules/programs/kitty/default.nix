@@ -36,7 +36,6 @@
             edge = "center";
             layer = "overlay";
             background_opacity = 0.95;
-            start_as_hidden = true;
             margin_top = margin;
             margin_left = margin;
             margin_right = margin;

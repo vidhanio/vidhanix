@@ -9,8 +9,6 @@
       }:
       let
         cfg = config.programs.herdr;
-
-        quickAccess = "${config.programs.kitty.package}/bin/kitten quick-access-terminal ${lib.getExe cfg.package}";
       in
       {
         programs.herdr = {
@@ -39,23 +37,8 @@
         };
 
         programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
-        binds."SUPER + t".cmd = quickAccess;
-
-        systemd.user.services.herdr-quick-access = {
-          Unit = {
-            Description = "Herdr quick access terminal";
-            After = [ "graphical-session.target" ];
-            PartOf = [ "graphical-session.target" ];
-          };
-
-          Install.WantedBy = [ "graphical-session.target" ];
-
-          Service = {
-            ExecStart = quickAccess;
-            Restart = "always";
-            RestartSec = 1;
-          };
-        };
+        binds."SUPER + t".cmd =
+          "${config.programs.kitty.package}/bin/kitten quick-access-terminal ${lib.getExe cfg.package}";
 
         persist = {
           directories = [ ".herdr/worktrees" ];
