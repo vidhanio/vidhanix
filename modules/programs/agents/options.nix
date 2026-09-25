@@ -34,14 +34,19 @@
           models = lib.mkOption {
             type = lib.types.submodule {
               options = {
-                large = lib.mkOption {
+                default = lib.mkOption {
                   type = modelType;
-                  description = "Model used for complex tasks.";
+                  description = "Model used by default.";
                 };
 
                 small = lib.mkOption {
                   type = modelType;
                   description = "Model used for simple tasks.";
+                };
+
+                large = lib.mkOption {
+                  type = modelType;
+                  description = "Model used for complex tasks.";
                 };
               };
             };

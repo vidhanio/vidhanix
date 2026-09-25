@@ -3,15 +3,20 @@
     homeManager = {
       programs.agents = {
         models = {
-          large = {
-            provider = "openai-codex";
-            model = "gpt-5.6-luna";
+          default = {
+            provider = "opencode-go";
+            model = "deepseek-v4.1-flash";
             thinking = "max";
           };
           small = {
-            provider = "openai-codex";
-            model = "gpt-5.6-luna";
+            provider = "opencode-go";
+            model = "deepseek-v4.1-flash";
             thinking = "max";
+          };
+          large = {
+            provider = "openai-codex";
+            model = "gpt-6-sol";
+            thinking = "medium";
           };
         };
 

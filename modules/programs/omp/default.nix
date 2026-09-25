@@ -35,8 +35,9 @@
             ask.notify = "off";
 
             modelRoles = {
-              default = "${modelsCfg.large.provider}/${modelsCfg.large.model}:${modelsCfg.large.thinking}";
+              default = "${modelsCfg.default.provider}/${modelsCfg.default.model}:${modelsCfg.default.thinking}";
               smol = "${modelsCfg.small.provider}/${modelsCfg.small.model}:${modelsCfg.small.thinking}";
+              slow = "${modelsCfg.large.provider}/${modelsCfg.large.model}:${modelsCfg.large.thinking}";
             };
 
             providers.webSearchOrder = [ "searxng" ];
