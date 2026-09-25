@@ -82,9 +82,6 @@
         _children = [
           (renderOutput true monitors.main)
           {
-            workspace._args = [ "stash" ];
-          }
-          {
             window-rule = {
               geometry-corner-radius = config.stylix.cornerRadius;
               clip-to-geometry = true;
