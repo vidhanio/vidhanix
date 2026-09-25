@@ -37,19 +37,6 @@ in
               command = "omp";
               args = [ "acp" ];
             };
-            "Prime Agent" = {
-              type = "custom";
-              command = "prime-agent";
-              args = [
-                "--mode"
-                "acp"
-              ];
-            };
-            "OpenCode 2" = {
-              type = "custom";
-              command = "opencode2";
-              args = [ "acp" ];
-            };
           };
 
           vim_mode = true;

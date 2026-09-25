@@ -16,7 +16,6 @@
         clipboard
         codex
         comma
-        crush
         cursor
         difftastic
         direnv
@@ -48,9 +47,7 @@
         nixcord
         noctalia
         omp
-        opencode2
         ozone
-        prime-agent
         python
         ripgrep
         searxng

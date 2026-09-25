@@ -42,21 +42,6 @@
                 args = [ "acp" ];
                 emoji = "🥧";
               };
-              opencode = {
-                display_name = "OpenCode 2";
-                command = "opencode2";
-                args = [ "acp" ];
-                emoji = "🧩";
-              };
-              prime = {
-                display_name = "Prime Agent";
-                command = "prime-agent";
-                args = [
-                  "--mode"
-                  "acp"
-                ];
-                emoji = "👑";
-              };
               codex = {
                 display_name = "Codex";
                 command = lib.getExe inputs'.llm-agents.packages.codex-acp;
