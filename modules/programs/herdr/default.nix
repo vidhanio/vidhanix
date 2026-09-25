@@ -10,40 +10,7 @@
       let
         cfg = config.programs.herdr;
 
-        toggle = pkgs.writeShellApplication {
-          name = "herdr-toggle";
-          runtimeInputs = [
-            pkgs.jq
-            pkgs.niri
-            config.programs.kitty.package
-          ];
-          text = ''
-            windows=$(niri msg --json windows | jq -c '[.[] | select(.app_id == "herdr")]')
-
-            if [[ $(jq 'length' <<<"$windows") == 0 ]]; then
-              niri msg action spawn-sh -- "kitty --app-id=herdr herdr"
-              exit 0
-            fi
-
-            focused=$(jq -r '[.[] | select(.is_focused) | .id] | first // empty' <<<"$windows")
-
-            if [[ -n $focused ]]; then
-              niri msg action close-window --id "$focused"
-              exit 0
-            fi
-
-            window=$(jq -r '.[0].id' <<<"$windows")
-            output=$(niri msg --json focused-output | jq -r '.name')
-            workspace=$(niri msg --json workspaces | jq -r '[.[] | select(.is_focused) | .idx] | first')
-
-            niri msg action move-window-to-monitor --id "$window" "$output"
-            niri msg action move-window-to-workspace --window-id "$window" "$workspace"
-            niri msg action move-window-to-floating --id "$window"
-            niri msg action set-window-width --id "$window" 90%
-            niri msg action set-window-height --id "$window" 90%
-            niri msg action focus-window --id "$window"
-          '';
-        };
+        quickAccess = "${config.programs.kitty.package}/bin/kitten quick-access-terminal ${lib.getExe cfg.package}";
       in
       {
         programs.herdr = {
@@ -72,18 +39,23 @@
         };
 
         programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
-        binds."SUPER + t".niri.cmd = lib.getExe toggle;
+        binds."SUPER + t".cmd = quickAccess;
 
-        wayland.windowManager.niri.settings._children = [
-          {
-            window-rule = {
-              match._props.app-id = "^herdr$";
-              open-floating = true;
-              default-column-width.proportion = 0.9;
-              default-window-height.proportion = 0.9;
-            };
-          }
-        ];
+        systemd.user.services.herdr-quick-access = {
+          Unit = {
+            Description = "Herdr quick access terminal";
+            After = [ "graphical-session.target" ];
+            PartOf = [ "graphical-session.target" ];
+          };
+
+          Install.WantedBy = [ "graphical-session.target" ];
+
+          Service = {
+            ExecStart = quickAccess;
+            Restart = "always";
+            RestartSec = 1;
+          };
+        };
 
         persist = {
           directories = [ ".herdr/worktrees" ];
