@@ -1,12 +1,24 @@
+{ lib, ... }:
 {
   flake.aspects.lazygit = {
-    homeManager = {
-      programs.lazygit = {
-        enable = true;
-        settings.gui.border = "single";
-      };
+    homeManager =
+      { pkgs, ... }:
+      {
+        programs.lazygit = {
+          enable = true;
+          settings = {
+            gui.border = "single";
 
-      persist.directories = [ ".local/state/lazygit" ];
-    };
+            git.diffRenderers = [
+              {
+                type = "extDiff";
+                command = "${lib.getExe pkgs.difftastic} --color=always --context={{diffContext}}";
+              }
+            ];
+          };
+        };
+
+        persist.directories = [ ".local/state/lazygit" ];
+      };
   };
 }
