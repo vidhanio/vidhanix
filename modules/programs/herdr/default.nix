@@ -27,7 +27,7 @@
 
         programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
         binds."SUPER + t".niri.cmd = lib.mkForce ''
-          nscratch -id herdr -s "$TERMINAL --app-id=herdr herdr"
+          ${lib.getExe' inputs'.niri-scratchpad.packages.default "niri-scratchpad"} target --spawn "$TERMINAL --app-id=herdr herdr" appid herdr
         '';
 
         persist = {

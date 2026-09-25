@@ -96,10 +96,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri-scratchpad = {
-      url = "github:gvolpe/niri-scratchpad";
+      url = "github:argosnothing/niri-scratchpad-rs";
       inputs = {
+        flake-utils.inputs.systems.follows = "systems";
         nixpkgs.follows = "nixpkgs";
-        systems.follows = "systems";
+        rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
       };
     };
     nix-cachyos-kernel = {

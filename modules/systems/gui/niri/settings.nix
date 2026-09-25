@@ -82,7 +82,7 @@
         _children = [
           (renderOutput true monitors.main)
           {
-            workspace._args = [ "scratch" ];
+            workspace._args = [ "stash" ];
           }
           {
             window-rule = {
@@ -93,7 +93,7 @@
           {
             window-rule = {
               match._props.app-id = "^herdr$";
-              open-on-workspace = "scratch";
+              open-on-workspace = "stash";
               open-floating = true;
             };
           }
