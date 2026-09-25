@@ -15,12 +15,13 @@
           runtimeInputs = [
             pkgs.jq
             pkgs.niri
+            config.programs.kitty.package
           ];
           text = ''
             windows=$(niri msg --json windows | jq -c '[.[] | select(.app_id == "herdr")]')
 
             if [[ $(jq 'length' <<<"$windows") == 0 ]]; then
-              niri msg action spawn-sh -- "$TERMINAL --app-id=herdr herdr"
+              niri msg action spawn-sh -- "kitty --app-id=herdr herdr"
               exit 0
             fi
 
