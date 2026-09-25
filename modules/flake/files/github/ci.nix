@@ -13,10 +13,9 @@ let
   packageBuilds = lib.concatLists (
     lib.mapAttrsToList (
       system: packages:
-      lib.mapAttrsToList (pkg: package: {
+      lib.mapAttrsToList (pkg: _package: {
         inherit pkg system;
         runner = buildRunners.${system};
-        inherit (package) drvPath;
       }) (lib.filterAttrs (_pkg: package: lib.elem system (package.meta.platforms or [ ])) packages)
     ) (lib.filterAttrs (system: _packages: builtins.hasAttr system buildRunners) config.flake.packages)
   );
@@ -30,15 +29,10 @@ let
       inherit name system;
       attr = "nixosConfigurations." + name + ".config.system.build.toplevel";
       runner = buildRunners.${system};
-      drvPath = host.config.system.build.toplevel.drvPath;
     }
   ) config.flake.nixosConfigurations;
 in
 {
-  config.flake.ciBuildMatrices = {
-    packages = packageBuilds;
-    systems = systemBuilds;
-  };
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
@@ -48,13 +42,6 @@ in
         checkout
         setupNix
         ;
-      # Matrix evaluation never builds outputs, so it needs no cache push token.
-      setupNixReadOnly = setupNix // {
-        "with" = setupNix."with" // {
-          cachix-auth-token = "";
-        };
-      };
-
     in
     {
       config.files.github.workflows.ci = {
@@ -72,27 +59,6 @@ in
         };
 
         jobs = {
-
-          plan-builds = {
-            name = "Plan Builds";
-            runs-on = "ubuntu-latest";
-            outputs = {
-              packages = ghExpr "steps.build-matrices.outputs.packages";
-              systems = ghExpr "steps.build-matrices.outputs.systems";
-            };
-            steps = [
-              checkout
-              setupNixReadOnly
-              {
-                name = "Build Matrices";
-                id = "build-matrices";
-                run = ''
-                  printf 'packages=%s\n' "$(nix eval --json .#ciBuildMatrices.packages)" >> "$GITHUB_OUTPUT"
-                  printf 'systems=%s\n' "$(nix eval --json .#ciBuildMatrices.systems)" >> "$GITHUB_OUTPUT"
-                '';
-              }
-            ];
-          };
           check-formatting = {
             name = "Check Formatting";
             runs-on = "ubuntu-latest";
@@ -126,13 +92,12 @@ in
           build-systems = {
             name = "Build System (${ghExpr "matrix.system"}): ${ghExpr "matrix.name"}";
             runs-on = ghExpr "matrix.runner";
-            needs = "plan-builds";
             strategy = {
-              matrix.include = ghExpr "fromJSON(needs.plan-builds.outputs.systems)";
+              matrix.include = systemBuilds;
               fail-fast = false;
             };
             concurrency = {
-              group = ghExpr "format('nix-{0}', matrix.drvPath)";
+              group = ghExpr "format('nix-{0}', matrix.name)";
               cancel-in-progress = false;
               queue = "max";
             };
@@ -149,13 +114,12 @@ in
           build-packages = {
             name = "Build Package (${ghExpr "matrix.system"}): ${ghExpr "matrix.pkg"}";
             runs-on = ghExpr "matrix.runner";
-            needs = "plan-builds";
             strategy = {
-              matrix.include = ghExpr "fromJSON(needs.plan-builds.outputs.packages)";
+              matrix.include = packageBuilds;
               fail-fast = false;
             };
             concurrency = {
-              group = ghExpr "format('nix-{0}', matrix.drvPath)";
+              group = ghExpr "format('nix-{0}', matrix.pkg)";
               cancel-in-progress = false;
               queue = "max";
             };
