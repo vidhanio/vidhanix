@@ -9,7 +9,7 @@
       }:
       let
         cfg = config.programs.kitty;
-        margin = config.stylix.padding * 2;
+        margin = config.stylix.padding;
       in
       {
         home.sessionVariables.TERMINAL = "kitty";
