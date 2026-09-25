@@ -12,6 +12,10 @@ updates:
     open-pull-requests-limit: 64
     schedule:
       interval: daily
+    groups:
+      flake-inputs:
+        patterns:
+          - "*"
   - package-ecosystem: github-actions
     directory: /
     commit-message:
