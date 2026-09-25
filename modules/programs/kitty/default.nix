@@ -9,7 +9,7 @@
       }:
       let
         cfg = config.programs.kitty;
-        innerPadding = builtins.div config.stylix.padding 2;
+        margin = config.stylix.padding * 2;
       in
       {
         home.sessionVariables.TERMINAL = "kitty";
@@ -33,15 +33,14 @@
           };
 
           quickAccessTerminalConfig = {
-            edge = "top";
-            lines = "720px";
+            edge = "center";
             layer = "overlay";
-            background_opacity = 0.85;
-            hide_on_focus_loss = true;
+            background_opacity = 0.95;
             start_as_hidden = true;
-            margin_top = innerPadding;
-            margin_left = innerPadding;
-            margin_right = innerPadding;
+            margin_top = margin;
+            margin_left = margin;
+            margin_right = margin;
+            margin_bottom = margin;
           };
         };
 
