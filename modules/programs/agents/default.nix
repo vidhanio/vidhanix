@@ -11,7 +11,7 @@
           small = {
             provider = "opencode-go";
             model = "deepseek-v4.1-flash";
-            thinking = "max";
+            thinking = "low";
           };
           large = {
             provider = "openai-codex";
