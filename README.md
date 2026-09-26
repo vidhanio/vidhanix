@@ -41,7 +41,6 @@ Most of the non-Nix files in this repository (including this very README) are ge
 - [`.github/workflows/ci.yaml`](.github/workflows/ci.yaml)
 - [`.github/workflows/sync-dependabot.yaml`](.github/workflows/sync-dependabot.yaml)
 - [`.github/workflows/update-packages.yaml`](.github/workflows/update-packages.yaml)
-- [`.github/workflows/watch-github-refs.yaml`](.github/workflows/watch-github-refs.yaml)
 - [`.gitignore`](.gitignore)
 - [`LICENSE`](LICENSE)
 - [`README.md`](README.md)
