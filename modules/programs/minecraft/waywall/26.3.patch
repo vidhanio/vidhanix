@@ -1,0 +1,65 @@
+diff --git a/README.md b/README.md
+index 0b6a06c..fe1f0ea 100644
+--- a/README.md
++++ b/README.md
+@@ -9,6 +9,10 @@ successor to [resetti](https://github.com/tesselslate/resetti).
+ > waywall is still under development. Some features are missing or may
+ > not work as expected.
+ 
++Minecraft 26.3 uses SDL's Wayland backend by default. waywall accepts its
++startup request to clear the XDG toplevel parent and applies configured mouse
++sensitivity to raw relative motion.
++
+ # Installation
+ 
+ waywall is available through some package managers, and prebuilt binary packages
+diff --git a/doc/01_options_input.md b/doc/01_options_input.md
+index 67a7862..75f35ab 100644
+--- a/doc/01_options_input.md
++++ b/doc/01_options_input.md
+@@ -96,7 +96,8 @@ half as fast.
+ 
+ > [!IMPORTANT]
+ > This option only affects your camera movement, *not* your mouse movement in
+-> menus. Additionally, it only takes effect **when Raw Input is disabled ingame.**
++> menus. It also applies to raw mouse motion in 26.3's Wayland/SDL backend.
++> On older versions using X11, disable Raw Input ingame for this option to work.
+ 
+ ## Pointer confinement
+ 
+diff --git a/waywall/server/wp_relative_pointer.c b/waywall/server/wp_relative_pointer.c
+index 254ed83..8a0b734 100644
+--- a/waywall/server/wp_relative_pointer.c
++++ b/waywall/server/wp_relative_pointer.c
+@@ -35,8 +35,11 @@ on_relative_pointer_relative_motion(void *data, struct zwp_relative_pointer_v1 *
+     double y = trunc(relative_pointer->acc_y);
+     relative_pointer->acc_y -= y;
+ 
+-    relative_pointer->acc_x_unaccel += wl_fixed_to_double(dx_unaccel);
+-    relative_pointer->acc_y_unaccel += wl_fixed_to_double(dy_unaccel);
++    // SDL uses unaccelerated motion for relative mouse input by default (including 26.3).
++    // Apply the same multiplier here so sensitivity works regardless of which deltas the
++    // client consumes.
++    relative_pointer->acc_x_unaccel += wl_fixed_to_double(dx_unaccel) * relative_pointer->config.sens;
++    relative_pointer->acc_y_unaccel += wl_fixed_to_double(dy_unaccel) * relative_pointer->config.sens;
+ 
+     double x_unaccel = trunc(relative_pointer->acc_x_unaccel);
+     relative_pointer->acc_x_unaccel -= x_unaccel;
+diff --git a/waywall/server/xdg_shell.c b/waywall/server/xdg_shell.c
+index 4499f05..c274206 100644
+--- a/waywall/server/xdg_shell.c
++++ b/waywall/server/xdg_shell.c
+@@ -245,8 +245,11 @@ xdg_toplevel_set_min_size(struct wl_client *client, struct wl_resource *resource
+ static void
+ xdg_toplevel_set_parent(struct wl_client *client, struct wl_resource *resource,
+                         struct wl_resource *toplevel_resource) {
+-    // Unused.
+-    wl_client_post_implementation_error(client, "xdg_toplevel.set_parent is not supported");
++    // SDL sends xdg_toplevel::set_parent(null) on startup,
++    // which is a no-op if no parent is already set.
++    if (toplevel_resource != nullptr) {
++        wl_client_post_implementation_error(client, "xdg_toplevel.set_parent is not supported");
++    }
+ }
+ 
+ static void

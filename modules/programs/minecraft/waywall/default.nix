@@ -129,12 +129,7 @@
           programs.waywall = {
             enable = true;
             package = pkgs.waywall.overrideAttrs (old: {
-              patches = (old.patches or [ ]) ++ [
-                (pkgs.fetchurl {
-                  url = "https://github.com/tesselslate/waywall/pull/74.patch";
-                  hash = "sha256-Gx78v2MHu0KR0rfM5eLiyqUdNAx1XJChRXlV5EesGgs=";
-                })
-              ];
+              patches = (old.patches or [ ]) ++ [ ./26.3.patch ];
             });
             config = {
               enableWaywork = true;
