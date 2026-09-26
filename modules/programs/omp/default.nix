@@ -38,6 +38,7 @@
               default = "${modelsCfg.default.provider}/${modelsCfg.default.model}:${modelsCfg.default.thinking}";
               smol = "${modelsCfg.small.provider}/${modelsCfg.small.model}:${modelsCfg.small.thinking}";
               slow = "${modelsCfg.large.provider}/${modelsCfg.large.model}:${modelsCfg.large.thinking}";
+              web = "web/searxng";
             };
 
             providers.webSearchOrder = [ "searxng" ];
