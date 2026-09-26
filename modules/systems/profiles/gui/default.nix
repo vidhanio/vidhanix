@@ -48,6 +48,7 @@
         noctalia
         omp
         ozone
+        podman
         python
         ripgrep
         searxng
