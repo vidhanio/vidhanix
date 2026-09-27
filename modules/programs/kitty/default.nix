@@ -9,7 +9,6 @@
       }:
       let
         cfg = config.programs.kitty;
-        margin = config.stylix.padding;
       in
       {
         home.sessionVariables.TERMINAL = "kitty";
@@ -30,16 +29,6 @@
           settings = {
             confirm_os_window_close = 0;
             window_padding_width = config.stylix.padding;
-          };
-
-          quickAccessTerminalConfig = {
-            edge = "center";
-            layer = "overlay";
-            background_opacity = 0.95;
-            margin_top = margin;
-            margin_left = margin;
-            margin_right = margin;
-            margin_bottom = margin;
           };
         };
 
