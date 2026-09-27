@@ -48,6 +48,7 @@
         noctalia
         omp
         ozone
+        pi-coding-agent
         podman
         python
         ripgrep
