@@ -1,10 +1,10 @@
-{ inputs, lib, ... }:
+{ inputs, ... }:
 {
   flake-file.inputs.agentcord.url = "github:vidhanio/agentcord";
 
   flake.aspects.agentcord = {
     homeManager =
-      { config, inputs', ... }:
+      { config, ... }:
       {
         imports = [ inputs.agentcord.homeManagerModules.default ];
 
@@ -35,18 +35,11 @@
 
             projects.base_path = "~/Projects";
 
-            agents = {
-              omp = {
-                display_name = "Oh My Pi";
-                command = "omp";
-                args = [ "acp" ];
-                emoji = "🥧";
-              };
-              codex = {
-                display_name = "Codex";
-                command = lib.getExe inputs'.llm-agents.packages.codex-acp;
-                emoji = "🌀";
-              };
+            agents.omp = {
+              display_name = "Oh My Pi";
+              command = "omp";
+              args = [ "acp" ];
+              emoji = "🥧";
             };
           };
         };

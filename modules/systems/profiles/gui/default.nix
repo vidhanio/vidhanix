@@ -14,7 +14,6 @@
         binds
         btop
         clipboard
-        codex
         comma
         cursor
         difftastic
