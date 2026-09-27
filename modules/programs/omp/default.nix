@@ -27,7 +27,7 @@
               checkUpdate = false;
             };
 
-            task.isolation.mode = "auto";
+            task.isolation.enabled = true;
             composer.shape = "pi";
             symbolPreset = "nerd";
 
@@ -41,9 +41,7 @@
               web = "web/searxng";
             };
 
-            providers.webSearchOrder = [ "searxng" ];
             searxng.endpoint = "http://${searxngCfg.bindAddress}:${toString searxngCfg.port}";
-
           };
         };
 
