@@ -18,7 +18,7 @@
 
       wayland.windowManager.hyprland.autostartWorkspaces.helium = 1;
 
-      binds."SUPER + b".app = "helium";
+      binds."SUPER + b".niri.cmd = "niri-pop helium helium";
 
       persist.directories = [ ".config/net.imput.helium" ];
     };
