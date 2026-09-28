@@ -18,81 +18,79 @@
             appid=$1
             shift
 
-            mkdir -p "$XDG_RUNTIME_DIR/niri-pop"
-            state="$XDG_RUNTIME_DIR/niri-pop/$appid.json"
-            saved=$(jq -r '.window // empty' "$state" 2>/dev/null || true)
-
-            if [[ -z $saved ]]; then
-              saved=null
-            fi
+            dir="$XDG_RUNTIME_DIR/niri-pop"
+            state="$dir/$appid.json"
 
             windows=$(niri msg --json windows)
-            window=$(jq -r --arg appid "$appid" --argjson saved "$saved" '
-              ([.[] | select(.app_id == $appid and .id == $saved)] | first | .id)
-              // ([.[] | select(.app_id == $appid)] | first | .id)
-              // empty' <<<"$windows")
+            workspaces=$(niri msg --json workspaces)
+            focused=$(jq -c '[.[] | select(.is_focused)] | first // {}' <<<"$windows")
+            target=$(jq -c --arg appid "$appid" '[.[] | select(.app_id == $appid)] | first // {}' <<<"$windows")
+            focused_id=$(jq -r '.id // empty' <<<"$focused")
+            target_id=$(jq -r '.id // empty' <<<"$target")
+            output=
 
-            if [[ -z $window ]]; then
-              rm -f "$state"
-              niri msg action spawn -- "$@"
-              exit 0
+            if [[ -n $focused_id ]]; then
+              output=$(jq -r --argjson id "$(jq -r '.workspace_id' <<<"$focused")" '[.[] | select(.id == $id) | .output] | first // empty' <<<"$workspaces")
             fi
 
-            if [[ -f $state ]] && [[ $(jq -r --argjson id "$window" 'any(.id == $id and .is_focused)' <<<"$windows") == true ]]; then
-              previous=$(jq -r '.previous // empty' "$state")
+            if [[ $(jq -r '.app_id // empty' <<<"$focused") == "$appid" ]]; then
+              home=$(jq -r '.output // empty' "$state" 2>/dev/null || true)
+              stored=$(jq -r '.window // empty' "$state" 2>/dev/null || true)
+              previous=$(jq -r '.previous // empty' "$state" 2>/dev/null || true)
+
+              if [[ -n $home ]] && [[ $home != "$output" ]] && [[ $stored == "$focused_id" ]]; then
+                niri msg action move-workspace-to-monitor "$home" || true
+              fi
 
               if [[ -n $previous ]]; then
                 niri msg action focus-window --id "$previous" || true
               fi
 
-              output=$(jq -r '.output' "$state")
-
-              if [[ $output != $(niri msg --json focused-output | jq -r '.name') ]]; then
-                niri msg action move-window-to-monitor --id "$window" "$output"
-              fi
-
-              index=$(jq -r '.workspace' "$state")
-              current=$(niri msg --json workspaces | jq -r --argjson id "$(jq -r '.workspace_id' "$state")" '[.[] | select(.id == $id) | .idx] | first // empty')
-
-              if [[ -n $current ]]; then
-                index=$current
-              fi
-
-              niri msg action move-window-to-workspace --window-id "$window" "$index" --focus false
-              niri msg action move-window-to-tiling --id "$window"
               rm -f "$state"
               exit 0
             fi
 
-            workspaces=$(niri msg --json workspaces)
-            read -r index output <<<"$(jq -r '.[] | select(.is_focused) | "\(.idx) \(.output)"' <<<"$workspaces")"
+            mkdir -p "$dir"
 
-            if [[ ! -f $state ]]; then
-              previous=$(niri msg --json focused-window | jq -r --argjson id "$window" 'if .id == $id then empty else (.id // empty) end')
+            if [[ -z $focused_id ]]; then
+              focused_id=null
+            fi
 
-              if [[ -z $previous ]]; then
-                previous=null
-              fi
+            if [[ -z $target_id ]]; then
+              target_id=null
+            fi
 
-              jq -n --argjson window "$window" --argjson previous "$previous" --argjson windows "$windows" --argjson workspaces "$workspaces" '
-                ($windows | map(select(.id == $window)) | first) as $win
-                | ($workspaces | map(select(.id == $win.workspace_id)) | first) as $home
+            target_output=
+
+            if [[ $target_id != null ]]; then
+              target_output=$(jq -r --argjson id "$(jq -r '.workspace_id' <<<"$target")" '[.[] | select(.id == $id) | .output] | first // empty' <<<"$workspaces")
+            fi
+
+            stored=$(jq -r '.window // empty' "$state" 2>/dev/null || true)
+
+            if [[ $target_id != null ]] && [[ $stored == "$target_id" ]]; then
+              jq --argjson previous "$focused_id" '.previous = $previous' "$state" >"$state.tmp"
+              mv "$state.tmp" "$state"
+            else
+              jq -n --argjson target "$target" --argjson previous "$focused_id" --argjson workspaces "$workspaces" '
+                ($workspaces | map(select(.id == $target.workspace_id)) | first) as $ws
                 | {
-                  window: $window,
+                  window: ($target.id // null),
                   previous: $previous,
-                  output: $home.output,
-                  workspace: $home.idx,
-                  workspace_id: $home.id,
+                  output: ($ws.output // null),
                 }' >"$state"
             fi
 
-            niri msg action move-window-to-monitor --id "$window" "$output"
-            niri msg action move-window-to-workspace --window-id "$window" "$index"
-            niri msg action move-window-to-floating --id "$window"
-            niri msg action set-window-width --id "$window" 95%
-            niri msg action set-window-height --id "$window" 95%
-            niri msg action center-window --id "$window"
-            niri msg action focus-window --id "$window"
+            if [[ $target_id == null ]]; then
+              niri msg action spawn -- "$@"
+              exit 0
+            fi
+
+            niri msg action focus-window --id "$target_id"
+
+            if [[ -n $target_output ]] && [[ -n $output ]] && [[ $target_output != "$output" ]]; then
+              niri msg action move-workspace-to-monitor "$output"
+            fi
           '';
         })
       ];
