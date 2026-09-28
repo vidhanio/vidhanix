@@ -127,9 +127,14 @@
               };
             };
             description = ''
-              Model and provider configuration written to
+              Custom model providers written to
               {file}`~/.omp/agent/models.yml`.
-              See <https://omp.sh/docs/providers> and <https://omp.sh/docs/custom-models> for the documentation.
+
+              Each provider entry may contain `baseUrl`, `api`, `apiKey`,
+              `auth`, `compat`, and a `models` list with `id`, `name`,
+              `reasoning`, etc.
+
+              See <https://omp.sh/docs/providers> for the documentation.
             '';
           };
 
@@ -174,7 +179,8 @@
               "app.history.search" = [ ];
             };
             description = ''
-              Keybinding remaps written to {file}`~/.omp/agent/keybindings.yml`.
+              Keybindings configuration written to
+              {file}`~/.omp/agent/keybindings.yml`.
               See <https://omp.sh/docs/keybindings> for the documentation.
             '';
           };
@@ -189,9 +195,10 @@
               - Inline content as a string
               - A path to a file containing the content
 
-              The configured content is written to {file}`~/.omp/agent/AGENTS.md`.
+              The configured content is written to
+              {file}`~/.omp/agent/AGENTS.md`.
             '';
-            example = "Prefer the project-local AGENTS.md; escalate to the user before editing system files.";
+            example = lib.literalExpression "./omp-context.md";
           };
 
           themes = lib.mkOption {
@@ -235,8 +242,8 @@
 
               If an attribute set is used, the attribute name becomes the command filename,
               and the value is either:
-              - Inline content as a string (creates `opencode/commands/<name>.md`)
-              - A path to a file (creates `opencode/commands/<name>.md`)
+              - Inline content as a string (creates `~/.omp/agent/commands/<name>.md`)
+              - A path to a file (creates `~/.omp/agent/commands/<name>.md`)
 
               If a path is used, it is expected to contain commands files.
               The directory is symlinked to {file}`~/.omp/agent/commands/`.
@@ -278,8 +285,8 @@
 
               If an attribute set is used, the attribute name becomes the prompt template filename,
               and the value is either:
-              - Inline content as a string (creates `opencode/prompts/<name>.md`)
-              - A path to a file (creates `opencode/prompts/<name>.md`)
+              - Inline content as a string (creates `~/.omp/agent/prompts/<name>.md`)
+              - A path to a file (creates `~/.omp/agent/prompts/<name>.md`)
 
               If a path is used, it is expected to contain prompt templates files.
               The directory is symlinked to {file}`~/.omp/agent/prompts/`.
@@ -297,8 +304,8 @@
 
               If an attribute set is used, the attribute name becomes the tool filename,
               and the value is either:
-              - Inline content as a string (creates `opencode/tools/<name>.ts`)
-              - A path to a file (creates `opencode/tools/<name>.ts`)
+              - Inline content as a string (creates `~/.omp/agent/tools/<name>.ts`)
+              - A path to a file (creates `~/.omp/agent/tools/<name>.ts`)
 
               If a path is used, it is expected to contain tools files.
               The directory is symlinked to {file}`~/.omp/agent/tools/`.
