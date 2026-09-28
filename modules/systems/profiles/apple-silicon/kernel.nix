@@ -4,6 +4,7 @@ let
       callPackage,
       curl,
       git,
+      fetchpatch,
       gnused,
       jq,
       lib,
@@ -18,6 +19,7 @@ let
       extraArgs = lib.removeAttrs args [
         "callPackage"
         "curl"
+        "fetchpatch"
         "git"
         "gnused"
         "jq"
@@ -56,7 +58,18 @@ let
               rev = "ce9f2eba72c061a50b2d790450e90af3439d8c24";
               hash = "sha256-W3yMSUe6xa+M/X0k86kbCS4g3d7jJmO3WV9L/5rQRhI=";
             };
-            kernelPatches = linux-asahi.kernelPatches ++ _kernelPatches;
+            kernelPatches =
+              linux-asahi.kernelPatches
+              ++ [
+                {
+                  name = "brcmfmac-report-port-authorized";
+                  patch = fetchpatch {
+                    url = "https://patchwork.kernel.org/project/linux-wireless/patch/20260912-brcmfmac-4way-handshake-offload-authenticated-event-v1-1-e41a6a8281a2@jannau.net/raw/";
+                    hash = "sha256-8duu89ISi9H0gD36/f+5dpNjD4Vt5GlRDg3XsbBTqdg=";
+                  };
+                }
+              ]
+              ++ _kernelPatches;
           } extraArgs
         );
       kernel = callPackage linuxFairydustPkg { };
