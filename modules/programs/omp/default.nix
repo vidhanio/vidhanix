@@ -21,6 +21,10 @@
           enableMcpIntegration = true;
           package = inputs'.llm-agents.packages.omp;
 
+          models = {
+            providers.opencode-go.modelOverrides."deepseek-v4.1-flash".contextWindow = 200000;
+          };
+
           settings = {
             startup = {
               setupWizard = false;
