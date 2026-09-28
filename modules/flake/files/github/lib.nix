@@ -25,18 +25,18 @@ let
       steps = [
         {
           name = "Set Up SSH Agent";
-          uses = "webfactory/ssh-agent@v0.9.0";
+          uses = "webfactory/ssh-agent@v0.10.0";
           "with" = {
             ssh-private-key = ghExpr "inputs.ssh-private-key";
           };
         }
         {
           name = "Set Up QEMU";
-          uses = "docker/setup-qemu-action@v3";
+          uses = "docker/setup-qemu-action@v4";
         }
         {
           name = "Free Disk Space";
-          uses = "wimpysworld/nothing-but-nix@v9";
+          uses = "wimpysworld/nothing-but-nix@v10";
           "with".hatchet-protocol = "carve";
         }
         {
