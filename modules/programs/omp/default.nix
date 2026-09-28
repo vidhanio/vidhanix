@@ -6,11 +6,12 @@
       {
         inputs',
         config,
+        lib,
         osConfig,
         ...
       }:
       let
-        modelsCfg = config.programs.agents.models;
+        presets = config.programs.agents.models.presets;
         searxngCfg = osConfig.services.searx.settings.server;
       in
       {
@@ -21,8 +22,10 @@
           enableMcpIntegration = true;
           package = inputs'.llm-agents.packages.omp;
 
-          models = {
-            providers.opencode-go.modelOverrides."deepseek-v4.1-flash".contextWindow = 200000;
+          models = lib.mkIf (config.programs.agents.models.override != { }) {
+            providers = lib.mapAttrs (_: models: {
+              modelOverrides = lib.mapAttrs (_: model: { contextWindow = model.context; }) models;
+            }) config.programs.agents.models.override;
           };
 
           settings = {
@@ -39,9 +42,9 @@
             ask.notify = "off";
 
             modelRoles = {
-              default = "${modelsCfg.default.provider}/${modelsCfg.default.model}:${modelsCfg.default.thinking}";
-              smol = "${modelsCfg.small.provider}/${modelsCfg.small.model}:${modelsCfg.small.thinking}";
-              slow = "${modelsCfg.large.provider}/${modelsCfg.large.model}:${modelsCfg.large.thinking}";
+              default = "${presets.default.provider}/${presets.default.model}:${presets.default.thinking}";
+              smol = "${presets.small.provider}/${presets.small.model}:${presets.small.thinking}";
+              slow = "${presets.large.provider}/${presets.large.model}:${presets.large.thinking}";
               web = "web/searxng";
             };
 

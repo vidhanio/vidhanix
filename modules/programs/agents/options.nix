@@ -31,26 +31,47 @@
       in
       {
         options.programs.agents = {
-          models = lib.mkOption {
-            type = lib.types.submodule {
-              options = {
-                default = lib.mkOption {
-                  type = modelType;
-                  description = "Model used by default.";
-                };
+          models = {
+            presets = {
+              default = lib.mkOption {
+                type = modelType;
+                description = "Model used by default.";
+              };
 
-                small = lib.mkOption {
-                  type = modelType;
-                  description = "Model used for simple tasks.";
-                };
+              small = lib.mkOption {
+                type = modelType;
+                description = "Model used for simple tasks.";
+              };
 
-                large = lib.mkOption {
-                  type = modelType;
-                  description = "Model used for complex tasks.";
-                };
+              large = lib.mkOption {
+                type = modelType;
+                description = "Model used for complex tasks.";
               };
             };
-            description = "Models shared by the agents.";
+
+            override = lib.mkOption {
+              type = lib.types.attrsOf (
+                lib.types.attrsOf (
+                  lib.types.submodule {
+                    options.context = lib.mkOption {
+                      type = lib.types.ints.positive;
+                      description = "Context window size in tokens.";
+                      example = 200000;
+                    };
+                  }
+                )
+              );
+              default = { };
+              example = lib.literalExpression ''
+                {
+                  opencode-go.deepseek-v4.1-flash.context = 200000;
+                }
+              '';
+              description = ''
+                Per-model context window overrides, keyed by provider and then
+                model id, applied to every agent's model configuration.
+              '';
+            };
           };
 
           context = lib.mkOption {

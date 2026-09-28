@@ -4,10 +4,11 @@
       {
         inputs',
         config,
+        lib,
         ...
       }:
       let
-        model = config.programs.agents.models.default;
+        presets = config.programs.agents.models.presets;
       in
       {
         programs.pi-coding-agent = {
@@ -15,10 +16,16 @@
 
           package = inputs'.llm-agents.packages.pi;
 
+          models = lib.mkIf (config.programs.agents.models.override != { }) {
+            providers = lib.mapAttrs (_: models: {
+              modelOverrides = lib.mapAttrs (_: model: { contextWindow = model.context; }) models;
+            }) config.programs.agents.models.override;
+          };
+
           settings = {
-            defaultProvider = model.provider;
-            defaultModel = model.model;
-            defaultThinkingLevel = model.thinking;
+            defaultProvider = presets.default.provider;
+            defaultModel = presets.default.model;
+            defaultThinkingLevel = presets.default.thinking;
           };
         };
 
