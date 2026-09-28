@@ -8,7 +8,6 @@
 
           # keep-sorted start
           agentcord
-          hermes.provides.gateway
           llama
           tailscale.provides.exit-node
           # keep-sorted end

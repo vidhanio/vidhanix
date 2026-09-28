@@ -3,10 +3,7 @@
     { aspects, ... }:
     {
       voyager = {
-        includes = with aspects; [
-          apple-silicon
-          hermes.provides.remote
-        ];
+        includes = with aspects; [ apple-silicon ];
         nixos = {
           disko.devices.disk.main.device = "/dev/disk/by-id/nvme-APPLE_SSD_AP0256Q_0ba0148a012cb231";
           hardware.monitors.main = {

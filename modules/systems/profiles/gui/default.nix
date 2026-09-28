@@ -32,7 +32,6 @@
         helium
         helix
         herdr
-        hermes
         hyprland
         jq
         kitty
