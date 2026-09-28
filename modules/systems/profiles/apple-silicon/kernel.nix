@@ -65,7 +65,7 @@ let
                   name = "brcmfmac-report-port-authorized";
                   patch = fetchpatch {
                     url = "https://patchwork.kernel.org/project/linux-wireless/patch/20260912-brcmfmac-4way-handshake-offload-authenticated-event-v1-1-e41a6a8281a2@jannau.net/raw/";
-                    hash = "sha256-8duu89ISi9H0gD36/f+5dpNjD4Vt5GlRDg3XsbBTqdg=";
+                    hash = "sha256-7kjcbhCOjGpGpBzQlyhbVvJtM+uLV90AhUuRXLZPPT8=";
                   };
                 }
               ]
