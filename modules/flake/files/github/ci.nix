@@ -15,7 +15,6 @@ let
       system: packages:
       lib.mapAttrsToList (pkg: _package: {
         inherit pkg system;
-        runner = buildRunners.${system};
       }) (lib.filterAttrs (_pkg: package: lib.elem system (package.meta.platforms or [ ])) packages)
     ) (lib.filterAttrs (system: _packages: builtins.hasAttr system buildRunners) config.flake.packages)
   );
@@ -28,7 +27,6 @@ let
     {
       inherit name system;
       attr = "nixosConfigurations." + name + ".config.system.build.toplevel";
-      runner = buildRunners.${system};
     }
   ) config.flake.nixosConfigurations;
 in
@@ -42,6 +40,12 @@ in
         checkout
         setupNix
         ;
+
+      runner = ghExpr "case(${
+        lib.concatStrings (
+          lib.mapAttrsToList (system: tool: "matrix.system == '${system}', '${tool}', ") buildRunners
+        )
+      }null)";
     in
     {
       config.files.github.workflows.ci = {
@@ -91,7 +95,7 @@ in
 
           build-systems = {
             name = "Build System (${ghExpr "matrix.system"}): ${ghExpr "matrix.name"}";
-            runs-on = ghExpr "matrix.runner";
+            runs-on = runner;
             strategy = {
               matrix.include = systemBuilds;
               fail-fast = false;
@@ -113,13 +117,13 @@ in
 
           build-packages = {
             name = "Build Package (${ghExpr "matrix.system"}): ${ghExpr "matrix.pkg"}";
-            runs-on = ghExpr "matrix.runner";
+            runs-on = runner;
             strategy = {
               matrix.include = packageBuilds;
               fail-fast = false;
             };
             concurrency = {
-              group = ghExpr "format('nix-{0}', matrix.pkg)";
+              group = ghExpr "format('nix-{0}-{1}', matrix.pkg, matrix.system)";
               cancel-in-progress = false;
               queue = "max";
             };

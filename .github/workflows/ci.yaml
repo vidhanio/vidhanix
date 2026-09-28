@@ -5,10 +5,11 @@ jobs:
   build-packages:
     concurrency:
       cancel-in-progress: false
-      group: ${{ format('nix-{0}', matrix.pkg) }}
+      group: ${{ format('nix-{0}-{1}', matrix.pkg, matrix.system) }}
       queue: max
     name: 'Build Package (${{ matrix.system }}): ${{ matrix.pkg }}'
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ case(matrix.system == 'aarch64-linux', 'ubuntu-26.04-arm', 
+      matrix.system == 'x86_64-linux', 'ubuntu-latest', null) }}
     steps:
     - name: Checkout
       uses: actions/checkout@v7
@@ -32,100 +33,68 @@ jobs:
       matrix:
         include:
         - pkg: berkeley-mono
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: berkeley-mono-variable
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: bibata-combined
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: bibata-cursor
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: bibata-hyprcursor
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: breezex-combined
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: breezex-cursor
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: breezex-hyprcursor
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: cider
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: generate-files
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: google-combined
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: google-cursor
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: google-hyprcursor
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: google-sans-flex
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: linux-asahi-fairydust
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: muvm-steam
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: pragmata-pro-variable
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
         - pkg: berkeley-mono
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: berkeley-mono-variable
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: bibata-combined
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: bibata-cursor
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: bibata-hyprcursor
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: breezex-combined
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: breezex-cursor
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: breezex-hyprcursor
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: cider
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: generate-files
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: google-combined
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: google-cursor
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: google-hyprcursor
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: google-sans-flex
-          runner: ubuntu-latest
           system: x86_64-linux
         - pkg: pragmata-pro-variable
-          runner: ubuntu-latest
           system: x86_64-linux
   build-systems:
     concurrency:
@@ -133,7 +102,8 @@ jobs:
       group: ${{ format('nix-{0}', matrix.name) }}
       queue: max
     name: 'Build System (${{ matrix.system }}): ${{ matrix.name }}'
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ case(matrix.system == 'aarch64-linux', 'ubuntu-26.04-arm', 
+      matrix.system == 'x86_64-linux', 'ubuntu-latest', null) }}
     steps:
     - name: Checkout
       uses: actions/checkout@v7
@@ -158,11 +128,9 @@ jobs:
         include:
         - attr: nixosConfigurations.vortex.config.system.build.toplevel
           name: vortex
-          runner: ubuntu-latest
           system: x86_64-linux
         - attr: nixosConfigurations.voyager.config.system.build.toplevel
           name: voyager
-          runner: ubuntu-26.04-arm
           system: aarch64-linux
   check-formatting:
     name: Check Formatting
