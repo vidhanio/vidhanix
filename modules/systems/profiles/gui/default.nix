@@ -21,6 +21,7 @@
         eza
         face
         fd
+        focus-or-launch
         fonts
         fx
         fzf

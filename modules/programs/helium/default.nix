@@ -16,7 +16,7 @@
         "${cfg.finalPackage}/share/applications/helium.desktop"
       ];
 
-      binds."SUPER + b".niri.cmd = "niri-pop helium helium";
+      binds."SUPER + b".cmd = "focus-or-launch helium helium";
 
       persist.directories = [ ".config/net.imput.helium" ];
     };

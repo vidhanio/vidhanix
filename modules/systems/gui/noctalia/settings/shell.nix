@@ -7,6 +7,7 @@
 
         settings.shell = {
           corner_radius_scale = config.stylix.cornerRadius;
+          polkit_agent = true;
           popup_shadows = false;
           panel = {
             open_near_click_control_center = true;
