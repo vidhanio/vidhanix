@@ -13,9 +13,6 @@
         xdg.autostart.entries = lib.mkIf (osConfig.networking.hostName == "vortex") [
           "${osConfig.programs.steam.package}/share/applications/steam.desktop"
         ];
-        wayland.windowManager.hyprland.autostartWorkspaces.steam = lib.mkIf (
-          osConfig.networking.hostName == "vortex"
-        ) 3;
       };
 
     provides.apple-silicon.nixos =

@@ -21,8 +21,6 @@ _: {
           "${config.programs.spotifast.package}/share/applications/spotifast.desktop"
         ];
 
-        wayland.windowManager.hyprland.autostartWorkspaces.spotifast = 2;
-
         persist.directories = [
           ".local/state/spotifast"
         ];

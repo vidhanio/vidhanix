@@ -243,8 +243,6 @@
           "${config.programs.nixcord.equibop.package}/share/applications/equibop.desktop"
         ];
 
-        wayland.windowManager.hyprland.autostartWorkspaces.equibop = 2;
-
         persist.directories = [ ".config/equibop/sessionData/Local Storage" ];
       };
   };
