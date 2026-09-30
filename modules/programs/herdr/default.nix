@@ -38,7 +38,7 @@
         };
 
         programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
-        binds."SUPER + t".cmd = "focus-or-launch herdr kitty --app-id=herdr herdr";
+        binds."SUPER + t".cmd = "focus-or-launch dev.herdr ghostty --class=dev.herdr -e herdr";
 
         persist = {
           directories = [ ".herdr/worktrees" ];
