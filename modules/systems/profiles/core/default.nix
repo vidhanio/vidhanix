@@ -6,7 +6,6 @@
         # keep-sorted start
         automatic-timezoned
         boot
-        cachix
         disk
         disk.provides.impermanence
         fastfetch
