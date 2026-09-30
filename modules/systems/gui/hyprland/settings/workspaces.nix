@@ -21,6 +21,11 @@
                 direction = "vertical";
                 action = "workspace";
               }
+              {
+                fingers = 3;
+                direction = "horizontal";
+                action = "scroll_move";
+              }
             ];
 
             config.binds.hide_special_on_workspace_change = true;

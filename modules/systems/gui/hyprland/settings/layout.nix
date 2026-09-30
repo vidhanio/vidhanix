@@ -5,6 +5,7 @@
         border_size = config.stylix.borderThickness;
         gaps_in = builtins.div config.stylix.padding 2;
         gaps_out = config.stylix.padding;
+        layout = "scrolling";
 
         snap = {
           enabled = true;

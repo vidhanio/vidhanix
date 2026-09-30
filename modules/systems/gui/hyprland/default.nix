@@ -15,6 +15,7 @@
 
         wayland.windowManager.hyprland = {
           enable = true;
+          extraLuaFiles.scroll_drag = ./scroll_drag.lua;
           # conflicts with UWSM
           systemd.enable = false;
           xdph.settings.screencopy.allow_token_by_default = true;
