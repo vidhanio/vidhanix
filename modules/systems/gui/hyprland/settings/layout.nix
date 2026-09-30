@@ -6,11 +6,6 @@
         gaps_in = builtins.div config.stylix.padding 2;
         gaps_out = config.stylix.padding;
         layout = "scrolling";
-
-        snap = {
-          enabled = true;
-          respect_gaps = true;
-        };
       };
       decoration = {
         rounding = config.stylix.cornerRadius;

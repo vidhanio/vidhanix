@@ -92,6 +92,15 @@
             niri.action.move-column-right = { };
           };
 
+          "SUPER + mouse_up" = {
+            hyprland.dsp.layout = "move -col";
+            niri.action.focus-column-left = { };
+          };
+          "SUPER + mouse_down" = {
+            hyprland.dsp.layout = "move +col";
+            niri.action.focus-column-right = { };
+          };
+
           "SUPER + space".cmd = msg "panel-toggle launcher";
 
           "Print".cmd = msg "screenshot-region";
