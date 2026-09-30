@@ -6,13 +6,11 @@
         channel.enable = false;
 
         settings = {
+          auto-optimise-store = true;
           warn-dirty = false;
           allowed-users = [ "@wheel" ];
           trusted-users = [ "@wheel" ];
         };
-
-        optimise.automatic = true;
-
         registry = {
           self.flake = self;
           nixpkgs.flake = inputs.nixpkgs;
