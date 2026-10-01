@@ -28,9 +28,11 @@ Some of these packages provide a `passthru.updateScript`, all of which can be ru
 | [`google-hyprcursor`](modules/systems/gui/cursor/packages/ful1e5-cursors.nix)  | Google Cursor theme adapted for hyprcursor                                                                                         |           |
 | [`google-sans-flex`](modules/systems/gui/fonts/vidhan-fonts.nix)               | The next generation of Google's brand typeface                                                                                     |           |
 | [`linux-asahi-fairydust`](modules/systems/profiles/apple-silicon/kernel.nix)   | Experimental Asahi Linux kernel with DisplayPort Alt Mode support                                                                  |     ✓     |
-| [`muvm-steam`](modules/programs/steam/packages/muvm-steam.nix)                 | The Steam client, wrapped to run in muvm for Apple Silicon support                                                                 |           |
+| [`muvm-steam`](modules/programs/steam/packages/muvm-steam.nix)                 | Native ARM64 Steam beta client in muvm for Apple Silicon                                                                           |           |
 | [`pragmata-pro-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)          | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |           |
 | [`update-packages`](modules/flake/packages/update-packages/default.nix)        | Update all packages in this flake that have an update script                                                                       |           |
+
+On Apple Silicon, `muvm-steam` starts Valve's ARM64 public beta client inside muvm. The first launch seeds `~/.local/share/Steam/steamrtarm64`, opts into `publicbeta`, and moves an existing `steamrt64` directory to `steamrt64-x86` before linking the native client. The x86 `steam-run` guest remains available for x86 games.
 
 ## Generated Files
 

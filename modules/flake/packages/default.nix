@@ -53,6 +53,8 @@
               ]
             ) packageDefinitions;
           }}
+
+          On Apple Silicon, `muvm-steam` starts Valve's ARM64 public beta client inside muvm. The first launch seeds `~/.local/share/Steam/steamrtarm64`, opts into `publicbeta`, and moves an existing `steamrt64` directory to `steamrt64-x86` before linking the native client. The x86 `steam-run` guest remains available for x86 games.
         '';
     };
 }
