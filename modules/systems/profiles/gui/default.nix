@@ -47,6 +47,7 @@
         nixcord
         noctalia
         omp
+        osu-lazer
         ozone
         pi-coding-agent
         podman
