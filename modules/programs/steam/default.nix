@@ -16,9 +16,12 @@
       };
 
     provides.apple-silicon.nixos =
-      { self', ... }:
+      { pkgs, self', ... }:
       {
-        programs.steam.package = self'.packages.muvm-steam;
+        programs.steam = {
+          package = self'.packages.muvm-steam;
+          extraCompatPackages = [ pkgs.proton-ge-bin ];
+        };
         # steam asserts 32-bit graphics on x86; the guest gets them from muvm-steam.
         hardware.graphics.enable32Bit = lib.mkForce false;
       };
