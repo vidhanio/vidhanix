@@ -13,10 +13,13 @@ in
           "nix"
           "rust"
           "toml"
+          "ty"
         ];
         extraPackages = with pkgs; [
           nixd
           nil
+          ruff
+          ty
           package-version-server
         ];
         userSettings = {
@@ -29,6 +32,11 @@ in
             metrics = false;
             anthropic_retention = false;
           };
+
+          languages.Python.language_servers = [
+            "!basedpyright"
+            "ty"
+          ];
 
           agent_servers = {
             pi-acp.type = "registry";
