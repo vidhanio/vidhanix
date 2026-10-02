@@ -32,7 +32,6 @@
         greeter
         hardware
         helium
-        helix
         herdr
         hyprland
         jq
@@ -45,6 +44,7 @@
         nautilus
         niri
         nixcord
+        nixvim
         noctalia
         omp
         osu-lazer

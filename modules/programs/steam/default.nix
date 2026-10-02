@@ -1,9 +1,12 @@
 { lib, ... }:
 {
   flake.aspects.steam = {
-    nixos = {
+    nixos = { pkgs, ... }: {
+      programs.steam = {
+        enable = true;
+        extraCompatPackages = [ pkgs.proton-ge-bin ];
+      };
       hardware.steam-hardware.enable = true;
-      programs.steam.enable = true;
     };
 
     homeManager =
@@ -16,12 +19,9 @@
       };
 
     provides.apple-silicon.nixos =
-      { pkgs, self', ... }:
+      { self', ... }:
       {
-        programs.steam = {
-          package = self'.packages.muvm-steam;
-          extraCompatPackages = [ pkgs.proton-ge-bin ];
-        };
+        programs.steam.package = self'.packages.muvm-steam;
         # steam asserts 32-bit graphics on x86; the guest gets them from muvm-steam.
         hardware.graphics.enable32Bit = lib.mkForce false;
       };

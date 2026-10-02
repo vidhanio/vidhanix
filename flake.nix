@@ -118,6 +118,14 @@
     nixpkgs = {
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
+    };
     omp = {
       url = "github:can1357/oh-my-pi";
       inputs = {

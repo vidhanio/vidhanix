@@ -810,6 +810,32 @@
         "type": "github"
       }
     },
+    "nixvim": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790928658,
+        "narHash": "sha256-EeMn6SmrBe4gnxaMyb3NZYMXG8FPF9PY0OCcbPDFFNI=",
+        "owner": "nix-community",
+        "repo": "nixvim",
+        "rev": "1cdfef1a6eb583d65b606b04fc97687491479d62",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixvim",
+        "type": "github"
+      }
+    },
     "nur": {
       "inputs": {
         "flake-parts": [
@@ -881,6 +907,7 @@
         "nixcord": "nixcord",
         "nixos-apple-silicon": "nixos-apple-silicon",
         "nixpkgs": "nixpkgs_3",
+        "nixvim": "nixvim",
         "omp": "omp",
         "sops-nix": "sops-nix",
         "spotifast": "spotifast",
