@@ -53,6 +53,10 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+    ghostty-cursor-shaders = {
+      url = "github:sahaj-b/ghostty-cursor-shaders";
+      flake = false;
+    };
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
