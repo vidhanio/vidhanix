@@ -4,7 +4,6 @@
       plugins = {
         sleuth.enable = true;
         todo-comments.enable = true;
-        ts-comments.enable = true;
 
         mini.modules = {
           ai = { };
@@ -25,7 +24,6 @@
             };
           };
           bufremove = { };
-          comment = { };
           icons = { };
           pairs = { };
           surround = { };
