@@ -101,7 +101,6 @@
             }
           ];
         };
-        indentscope = { };
         notify = { };
         tabline = { };
 
