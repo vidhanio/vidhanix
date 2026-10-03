@@ -9,12 +9,14 @@
       "flakes"
     ];
     extra-substituters = [
+      "https://hyprland.cachix.org"
       "https://attic.xuyh0120.win/lantian"
       "https://cache.numtide.com"
       "https://nix-community.cachix.org"
       "https://vidhanio.cachix.org"
     ];
     extra-trusted-public-keys = [
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -65,6 +67,23 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs = {
+        aquamarine.inputs.nixpkgs.follows = "nixpkgs";
+        hyprcursor.inputs.nixpkgs.follows = "nixpkgs";
+        hyprgraphics.inputs.nixpkgs.follows = "nixpkgs";
+        hyprland-guiutils.inputs.nixpkgs.follows = "nixpkgs";
+        hyprland-protocols.inputs.nixpkgs.follows = "nixpkgs";
+        hyprlang.inputs.nixpkgs.follows = "nixpkgs";
+        hyprutils.inputs.nixpkgs.follows = "nixpkgs";
+        hyprwayland-scanner.inputs.nixpkgs.follows = "nixpkgs";
+        hyprwire.inputs.nixpkgs.follows = "nixpkgs";
+        pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+        xdph.inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
     impermanence = {
       url = "github:nix-community/impermanence";
