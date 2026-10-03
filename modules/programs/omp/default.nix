@@ -1,6 +1,4 @@
-{ inputs, ... }:
 {
-  flake-file.inputs.omp.url = "github:can1357/oh-my-pi";
   flake.aspects.omp = {
     homeManager =
       {
@@ -15,8 +13,6 @@
         searxngCfg = osConfig.services.searx.settings.server;
       in
       {
-        imports = [ inputs.omp.homeManagerModules.default ];
-
         programs.omp = {
           enable = true;
           enableMcpIntegration = true;

@@ -113,6 +113,31 @@
       {
         options.programs.omp = {
 
+          enable = lib.mkEnableOption "Oh My Pi";
+
+          package = lib.mkPackageOption pkgs "omp" { nullable = true; };
+
+          settings = lib.mkOption {
+            type = lib.types.nullOr yaml.type;
+            default = null;
+            example = {
+              theme.dark = "titanium";
+              symbolPreset = "nerd";
+              modelRoles.default = "anthropic/claude-sonnet-4-5";
+              tools.approvalMode = "write";
+              memory.backend = "off";
+            };
+            description = ''
+              Configuration written to {file}`~/.omp/agent/config.yml`.
+
+              The declared settings are copied into place as a writable
+              regular file on each activation, so OMP can rewrite it when
+              persisting runtime changes; declared values overwrite those
+              changes again on the next activation. See
+              <https://omp.sh/docs/settings> for the documentation.
+            '';
+          };
+
           models = lib.mkOption {
             inherit (yaml) type;
             default = { };
@@ -314,6 +339,19 @@
         };
 
         config = lib.mkIf cfg.enable {
+
+          home.packages = lib.mkIf (cfg.package != null) [ cfg.package ];
+
+          # omp locks and rewrites config.yml at runtime, so it must be a
+          # writable file rather than a read-only `home.file` symlink.
+          home.activation.ompConfig = lib.mkIf (cfg.settings != null) {
+            before = [ ];
+            after = [ "writeBoundary" ];
+            data = ''
+              run mkdir -p "$HOME/.omp/agent"
+              run install -m 600 ${yaml.generate "omp-config.yml" cfg.settings} "$HOME/.omp/agent/config.yml"
+            '';
+          };
 
           home.file = {
 
