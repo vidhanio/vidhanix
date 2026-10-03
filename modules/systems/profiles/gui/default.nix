@@ -23,7 +23,6 @@
         fd
         focus-or-launch
         fonts
-        fx
         fzf
         gh
         ghostty
