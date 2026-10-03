@@ -106,24 +106,6 @@
             }
             {
               mode = "n";
-              key = "<S-h>";
-              action = "<cmd>bprevious<CR>";
-              options = {
-                silent = true;
-                desc = "Previous buffer";
-              };
-            }
-            {
-              mode = "n";
-              key = "<S-l>";
-              action = "<cmd>bnext<CR>";
-              options = {
-                silent = true;
-                desc = "Next buffer";
-              };
-            }
-            {
-              mode = "n";
               key = "<leader>bd";
               action.__raw = "function() require('mini.bufremove').delete() end";
               options = {

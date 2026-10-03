@@ -19,38 +19,6 @@
         # keep-sorted end
       };
 
-      # registered while a language server is attached.
-      lsp.keymaps = [
-        {
-          key = "K";
-          lspBufAction = "hover";
-          options = {
-            silent = true;
-            desc = "Hover documentation";
-          };
-        }
-        {
-          key = "<leader>rn";
-          lspBufAction = "rename";
-          options = {
-            silent = true;
-            desc = "Rename symbol";
-          };
-        }
-        {
-          key = "<leader>ca";
-          lspBufAction = "code_action";
-          mode = [
-            "n"
-            "v"
-          ];
-          options = {
-            silent = true;
-            desc = "Code action";
-          };
-        }
-      ];
-
       diagnostic.settings = {
         virtual_text.prefix = "";
         signs.numhl.__raw = ''
@@ -63,35 +31,6 @@
         '';
       };
 
-      keymaps = [
-        {
-          mode = "n";
-          key = "<leader>d";
-          action.__raw = "vim.diagnostic.open_float";
-          options = {
-            silent = true;
-            desc = "Show diagnostics";
-          };
-        }
-        {
-          mode = "n";
-          key = "[d";
-          action.__raw = "function() vim.diagnostic.jump({ count = -1, float = true }) end";
-          options = {
-            silent = true;
-            desc = "Previous diagnostic";
-          };
-        }
-        {
-          mode = "n";
-          key = "]d";
-          action.__raw = "function() vim.diagnostic.jump({ count = 1, float = true }) end";
-          options = {
-            silent = true;
-            desc = "Next diagnostic";
-          };
-        }
-      ];
     };
   };
 }
