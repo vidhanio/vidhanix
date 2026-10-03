@@ -5,7 +5,6 @@
         enable = true;
         settings.cmdline.enabled = false;
       };
-      lazydev.enable = true;
     };
   };
 }
