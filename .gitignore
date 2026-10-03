@@ -7,4 +7,3 @@ result.*
 __pycache__
 
 .pre-commit-config.yaml
-Session.vim

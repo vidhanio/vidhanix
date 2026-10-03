@@ -94,11 +94,6 @@
               keys = "<leader>r";
               desc = "Rename";
             }
-            {
-              mode = "n";
-              keys = "<leader>S";
-              desc = "Session";
-            }
           ];
         };
         notify = { };
