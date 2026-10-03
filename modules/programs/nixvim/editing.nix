@@ -1,35 +1,45 @@
 {
-  flake.aspects.nixvim.homeManager = {
-    programs.nixvim = {
-      plugins = {
-        sleuth.enable = true;
-        todo-comments.enable = true;
+  flake.aspects.nixvim.homeManager =
+    { self', ... }:
+    {
+      programs.nixvim = {
+        plugins = {
+          jupynvim = {
+            enable = true;
 
-        mini.modules = {
-          ai = { };
-          basics = {
-            options = {
-              basic = true;
-              extra_ui = true;
-              win_borders = "auto";
-            };
-            mappings = {
-              basic = true;
-              windows = true;
-              move_with_alt = true;
-            };
-            autocommands = {
-              basic = true;
-              relnum_in_visual_mode = true;
-            };
+            package = self'.packages.jupynvim;
+
+            settings.core_path = "${self'.packages.jupynvim}/bin/jupynvim-core";
           };
-          bufremove = { };
-          icons = { };
-          pairs = { };
-          surround = { };
-          trailspace = { };
+
+          sleuth.enable = true;
+          todo-comments.enable = true;
+
+          mini.modules = {
+            ai = { };
+            basics = {
+              options = {
+                basic = true;
+                extra_ui = true;
+                win_borders = "auto";
+              };
+              mappings = {
+                basic = true;
+                windows = true;
+                move_with_alt = true;
+              };
+              autocommands = {
+                basic = true;
+                relnum_in_visual_mode = true;
+              };
+            };
+            bufremove = { };
+            icons = { };
+            pairs = { };
+            surround = { };
+            trailspace = { };
+          };
         };
       };
     };
-  };
 }

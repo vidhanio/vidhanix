@@ -55,6 +55,7 @@ jobs:
         - breezex-cursor
         - cider
         - google-cursor
+        - jupynvim
         - linux-asahi-fairydust
 name: Update Packages
 'on':

@@ -60,6 +60,8 @@ jobs:
           system: aarch64-linux
         - pkg: google-sans-flex
           system: aarch64-linux
+        - pkg: jupynvim
+          system: aarch64-linux
         - pkg: linux-asahi-fairydust
           system: aarch64-linux
         - pkg: muvm-steam
@@ -93,6 +95,8 @@ jobs:
         - pkg: google-hyprcursor
           system: x86_64-linux
         - pkg: google-sans-flex
+          system: x86_64-linux
+        - pkg: jupynvim
           system: x86_64-linux
         - pkg: pragmata-pro-variable
           system: x86_64-linux
