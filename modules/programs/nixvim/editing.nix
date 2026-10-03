@@ -27,28 +27,11 @@
           bufremove = { };
           comment = { };
           icons = { };
-          jump2d = { };
           pairs = { };
           surround = { };
           trailspace = { };
         };
       };
-
-      keymaps = [
-        {
-          mode = [
-            "n"
-            "x"
-            "o"
-          ];
-          key = "s";
-          action.__raw = "function() require('mini.jump2d').start(require('mini.jump2d').builtin_opts.word_start) end";
-          options = {
-            silent = true;
-            desc = "Jump";
-          };
-        }
-      ];
     };
   };
 }
