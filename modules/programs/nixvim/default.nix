@@ -63,7 +63,7 @@
             undolevels = 10000;
             updatetime = 200;
             virtualedit = "block";
-            winborder = "rounded";
+            winborder = "single";
             winminwidth = 5;
           };
 
