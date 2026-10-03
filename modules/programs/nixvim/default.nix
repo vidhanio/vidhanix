@@ -43,7 +43,6 @@
             sidescrolloff = 8;
             smoothscroll = true;
             tabstop = 2;
-            termguicolors = true;
             timeoutlen = 300;
             undolevels = 10000;
             updatetime = 200;
