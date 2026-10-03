@@ -1,6 +1,10 @@
 {
   flake.aspects.nixvim.homeManager = {
     programs.nixvim = {
+      extraConfigLuaPre = ''
+        require('vim._core.ui2').enable({ enable = true })
+      '';
+
       plugins.mini.modules = {
         cmdline = { };
         clue = {
@@ -86,25 +90,12 @@
             }
           ];
         };
-        notify = { };
         statusline = { };
         tabline = { };
       };
 
       # nixvim has no mini.input module.
       extraConfigLua = "require('mini.input').setup()";
-
-      keymaps = [
-        {
-          mode = "n";
-          key = "<leader>n";
-          action.__raw = "function() require('mini.notify').show_history() end";
-          options = {
-            silent = true;
-            desc = "Notification history";
-          };
-        }
-      ];
     };
   };
 }
