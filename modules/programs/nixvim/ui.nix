@@ -81,18 +81,8 @@
             }
             {
               mode = "n";
-              keys = "<leader>c";
-              desc = "Code";
-            }
-            {
-              mode = "n";
               keys = "<leader>f";
               desc = "Find";
-            }
-            {
-              mode = "n";
-              keys = "<leader>r";
-              desc = "Rename";
             }
           ];
         };
