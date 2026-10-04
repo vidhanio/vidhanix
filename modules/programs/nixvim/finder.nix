@@ -7,6 +7,8 @@
         pick = { };
       };
 
+      extraFiles."lua/smartpick.lua".source = ./lua/smartpick.lua;
+
       # netrw owns the FileExplorer event that mini.files clears; load it first.
       extraConfigLuaPre = "vim.cmd('runtime! plugin/netrwPlugin.vim')";
 
@@ -14,10 +16,10 @@
         {
           mode = "n";
           key = "<leader><space>";
-          action.__raw = "function() require('mini.pick').builtin.files() end";
+          action.__raw = "function() require('smartpick').picker() end";
           options = {
             silent = true;
-            desc = "Find files";
+            desc = "Smart find files";
           };
         }
         {
