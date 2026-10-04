@@ -1,8 +1,71 @@
 local MiniPick = require("mini.pick")
+local MiniExtra = require("mini.extra")
 
 local M = {}
-
 local H = {}
+
+M.centered = function()
+	local height = math.floor(0.618 * vim.o.lines)
+	local width = math.floor(0.618 * vim.o.columns)
+	return {
+		anchor = "NW",
+		row = math.floor(0.5 * (vim.o.lines - height)),
+		col = math.floor(0.5 * (vim.o.columns - width)),
+		height = height,
+		width = width,
+	}
+end
+
+M.at_cursor = function()
+	local state = MiniPick.get_picker_state()
+	local target = (state ~= nil and state.windows ~= nil and state.windows.target ~= nil) and state.windows.target
+		or vim.api.nvim_get_current_win()
+
+	local cursor = vim.api.nvim_win_get_cursor(target)
+	local pos = vim.fn.screenpos(target, cursor[1], cursor[2] + 1)
+
+	local height = math.min(20, vim.o.lines - 4)
+	local width = math.min(80, math.floor(0.618 * vim.o.columns))
+
+	local row = pos.row
+	if row + height + 2 > vim.o.lines then
+		row = math.max(0, pos.row - height - 3)
+	end
+
+	local col = pos.col - 1
+	if col + width + 2 > vim.o.columns then
+		col = math.max(0, vim.o.columns - width - 2)
+	end
+
+	return {
+		relative = "editor",
+		anchor = "NW",
+		row = row,
+		col = col,
+		height = height,
+		width = width,
+	}
+end
+
+M.buffers = function()
+	MiniPick.builtin.buffers(nil, { window = { config = M.centered } })
+end
+
+M.files = function()
+	MiniPick.builtin.files(nil, { window = { config = M.centered } })
+end
+
+M.grep = function()
+	MiniPick.builtin.grep_live(nil, { window = { config = M.centered } })
+end
+
+M.diagnostics = function()
+	MiniExtra.pickers.diagnostic({ scope = "all" }, { window = { config = M.at_cursor } })
+end
+
+M.symbols = function()
+	MiniExtra.pickers.lsp({ scope = "document_symbol" }, { window = { config = M.at_cursor } })
+end
 
 H.filename = function(text)
 	return text:match("([^/]+)$") or text
@@ -95,12 +158,13 @@ H.match = function(stritems, inds, query)
 	end, matched)
 end
 
-function M.picker()
+M.smart = function()
 	return MiniPick.builtin.cli({
 		command = { "rg", "--files", "--hidden", "--glob", "!.git" },
 		postprocess = H.postprocess,
 	}, {
 		source = { name = "Smart Open", show = H.show, match = H.match },
+		window = { config = M.centered },
 	})
 end
 
