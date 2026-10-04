@@ -163,10 +163,15 @@
         flake-parts.follows = "flake-parts";
         nixpkgs.follows = "nixpkgs";
         systems.follows = "systems";
+        tinted-schemes.follows = "tinted-schemes";
       };
     };
     systems = {
       url = "github:nix-systems/default-linux";
+    };
+    tinted-schemes = {
+      url = "github:tinted-theming/schemes";
+      flake = false;
     };
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
