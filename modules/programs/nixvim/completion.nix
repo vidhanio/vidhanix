@@ -3,7 +3,10 @@
     programs.nixvim.plugins = {
       blink-cmp = {
         enable = true;
-        settings.cmdline.enabled = false;
+        settings = {
+          cmdline.enabled = false;
+          keymap.preset = "super-tab";
+        };
       };
     };
   };
