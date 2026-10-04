@@ -46,7 +46,6 @@
             timeoutlen = 300;
             undolevels = 10000;
             updatetime = 200;
-            # mini.nvim draws a 'single' border when winborder is empty.
             winborder = "none";
             winminwidth = 5;
           };
