@@ -15,7 +15,8 @@ _: {
             web_client_id = "429622441b094d4f92367a58c033d77a";
           };
         };
-        binds."SUPER + s".app = "spotifast";
+        desktop.binds."SUPER + s".app = "spotifast";
+        desktop.workspaces.social.apps = [ "spotifast" ];
 
         xdg.autostart.entries = [
           "${config.programs.spotifast.package}/share/applications/spotifast.desktop"

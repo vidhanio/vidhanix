@@ -11,17 +11,16 @@
         agents
         audio
         bat
-        binds
         btop
         clipboard
         comma
         cursor
+        desktop
         difftastic
         direnv
         eza
         face
         fd
-        focus-or-launch
         fonts
         fzf
         gh

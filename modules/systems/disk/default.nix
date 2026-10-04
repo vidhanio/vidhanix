@@ -47,7 +47,7 @@
       };
 
     provides = {
-      desktop.nixos = {
+      workstation.nixos = {
         disko.devices.disk.main.content.partitions.ESP = {
           start = "1M";
           end = "500M";

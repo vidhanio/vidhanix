@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.aspects.binds.homeManager =
+  flake.aspects.desktop.homeManager =
     { config, ... }:
     let
       kdlType = lib.types.nullOr (
@@ -78,7 +78,9 @@
         }
       );
 
-      enabledBinds = lib.filterAttrs (_: bind: bind.niri.enable && bind.niri.action != null) config.binds;
+      enabledBinds = lib.filterAttrs (
+        _: bind: bind.niri.enable && bind.niri.action != null
+      ) config.desktop.binds;
 
       normalizeKey =
         key:
@@ -113,7 +115,7 @@
         );
     in
     {
-      options.binds = lib.mkOption {
+      options.desktop.binds = lib.mkOption {
         type = lib.types.attrsOf bindType;
       };
 

@@ -4,7 +4,7 @@
     {
       vortex = {
         includes = with aspects; [
-          desktop
+          workstation
 
           # keep-sorted start
           agentcord
@@ -47,6 +47,20 @@
           hardware.facter.reportPath = ./facter.json;
           boot.loader.systemd-boot.windows."11".efiDeviceHandle = "HD0d";
           environment.shellAliases.reboot-windows = "systemctl reboot --boot-loader-entry windows_11.conf";
+        };
+        homeManager.desktop.workspaces = {
+          work = {
+            output = "DP-1";
+            index = 1;
+          };
+          gaming = {
+            output = "DP-1";
+            index = 2;
+          };
+          social = {
+            output = "HDMI-A-1";
+            index = 1;
+          };
         };
       };
     };

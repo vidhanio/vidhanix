@@ -13,6 +13,7 @@
       { osConfig, ... }:
       {
         persist.directories = [ ".local/share/Steam" ];
+        desktop.workspaces.gaming.apps = [ "steam" ];
         xdg.autostart.entries = lib.mkIf (osConfig.networking.hostName == "vortex") [
           "${osConfig.programs.steam.package}/share/applications/steam.desktop"
         ];

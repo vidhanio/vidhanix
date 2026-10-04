@@ -38,7 +38,14 @@
         };
 
         programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
-        binds."SUPER + t".cmd = "focus-or-launch dev.herdr ghostty --class=dev.herdr -e herdr";
+        desktop.binds."SUPER + t" = {
+          niri.cmd = "ghostty --class=dev.herdr -e herdr";
+          hyprland.dsp."workspace.toggle_special"._args = [ "herdr" ];
+        };
+        desktop.workspaces.herdr = {
+          special = true;
+          onCreatedEmpty = "ghostty --class=dev.herdr -e herdr";
+        };
 
         persist = {
           directories = [ ".herdr/worktrees" ];

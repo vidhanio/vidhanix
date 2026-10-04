@@ -16,6 +16,11 @@
           };
           hardware.asahi.peripheralFirmwareDirectory = ./firmware;
         };
+        homeManager.desktop.workspaces = {
+          work.index = 1;
+          social.index = 2;
+          gaming.index = 3;
+        };
       };
     };
 

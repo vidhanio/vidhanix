@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.aspects.binds.homeManager =
+  flake.aspects.desktop.homeManager =
     {
       config,
       pkgs,
@@ -87,7 +87,7 @@
 
       enabledBinds = lib.filterAttrs (
         _: bind: bind.hyprland.enable && bind.hyprland.lua != null
-      ) config.binds;
+      ) config.desktop.binds;
 
       renderArgs =
         params:
@@ -124,7 +124,7 @@
         };
     in
     {
-      options.binds = lib.mkOption {
+      options.desktop.binds = lib.mkOption {
         type = lib.types.attrsOf bindType;
       };
 

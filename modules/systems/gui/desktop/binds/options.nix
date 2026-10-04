@@ -1,7 +1,7 @@
 { lib, ... }:
 {
-  flake.aspects.binds.homeManager = {
-    options.binds = lib.mkOption {
+  flake.aspects.desktop.homeManager = {
+    options.desktop.binds = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule {
           options = {

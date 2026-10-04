@@ -49,7 +49,8 @@
             };
           };
         };
-        binds."SUPER + d".app = "equibop";
+        desktop.binds."SUPER + d".app = "equibop";
+        desktop.workspaces.social.apps = [ "equibop" ];
 
         stylix.targets.nixcord.extraCss = lib.mkIf (config.stylix.opacity.applications != 1.0) ''
           :root {

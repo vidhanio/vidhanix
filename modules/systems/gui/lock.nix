@@ -7,7 +7,7 @@
     homeManager =
       { osConfig, config, ... }:
       {
-        binds."ALT + l".cmd = "loginctl lock-session";
+        desktop.binds."ALT + l".cmd = "loginctl lock-session";
 
         stylix.targets.hyprlock.image.enable = false;
 

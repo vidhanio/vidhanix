@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.aspects.binds.homeManager =
+  flake.aspects.desktop.homeManager =
     { pkgs, ... }:
     let
       msg = command: "noctalia msg ${command}";
@@ -16,7 +16,7 @@
       locked = mediaBind { locked = true; };
     in
     {
-      binds =
+      desktop.binds =
         lib.mergeAttrsList (
           map (i: {
             "SUPER + ${toString i}" = {
