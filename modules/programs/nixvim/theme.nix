@@ -1,26 +1,92 @@
-_: {
-  flake.aspects.nixvim.homeManager = {
-    # Same :highlight calls stylix's own neovim target makes for its transparent
-    # backgrounds. nixvim's highlightOverride can't be used here: it replaces
-    # the group wholesale and drops the sign colours with the background.
-    programs.nixvim.extraConfigLuaPost = ''
-      -- mini.base16 points the diagnostic signs at their floating-window
-      -- variants, which carry a background; nvim's own default targets don't.
-      for _, severity in ipairs({ "Error", "Warn", "Info", "Hint", "Ok" }) do
-        vim.cmd.highlight({ "link", "DiagnosticSign" .. severity, "Diagnostic" .. severity })
-      end
+{
+  flake.aspects.nixvim.homeManager =
+    { config, ... }:
+    let
+      inherit (config.lib.stylix.colors.withHashtag)
+        base01
+        base02
+        base03
+        base05
+        base08
+        base0A
+        base0B
+        base0E
+        ;
+    in
+    {
+      programs.nixvim.highlightOverride = {
+        # base16 swaps fg/bg for selection; lighten the background instead.
+        PmenuSel = {
+          fg = base05;
+          bg = base02;
+        };
+        PmenuMatchSel = {
+          fg = base05;
+          bg = base02;
+          bold = true;
+        };
+        MiniTablineModifiedCurrent = {
+          fg = base0A;
+          bg = base02;
+          bold = true;
+        };
+        MiniTablineModifiedHidden = {
+          fg = base0A;
+          bg = base01;
+        };
+        MiniTablineModifiedVisible = {
+          fg = base0A;
+          bg = base01;
+          bold = true;
+        };
 
-      for _, name in ipairs({
-        "SignColumn",
-        "LineNr",
-        "LineNrAbove",
-        "LineNrBelow",
-        "MiniDiffSignAdd",
-        "MiniDiffSignChange",
-        "MiniDiffSignDelete",
-      }) do
-        vim.cmd.highlight({ name, "guibg=NONE", "ctermbg=NONE" })
-      end
-    '';
-  };
+        # Transparent sign columns.
+        SignColumn = {
+          fg = base03;
+          bg = "NONE";
+        };
+        LineNr = {
+          fg = base03;
+          bg = "NONE";
+        };
+        LineNrAbove = {
+          fg = base03;
+          bg = "NONE";
+        };
+        LineNrBelow = {
+          fg = base03;
+          bg = "NONE";
+        };
+        MiniDiffSignAdd = {
+          fg = base0B;
+          bg = "NONE";
+        };
+        MiniDiffSignChange = {
+          fg = base0E;
+          bg = "NONE";
+        };
+        MiniDiffSignDelete = {
+          fg = base08;
+          bg = "NONE";
+        };
+
+        # mini.base16 points the diagnostic signs at their floating-window
+        # variants, which carry a background; nvim's own defaults don't.
+        DiagnosticSignError = {
+          link = "DiagnosticError";
+        };
+        DiagnosticSignWarn = {
+          link = "DiagnosticWarn";
+        };
+        DiagnosticSignInfo = {
+          link = "DiagnosticInfo";
+        };
+        DiagnosticSignHint = {
+          link = "DiagnosticHint";
+        };
+        DiagnosticSignOk = {
+          link = "DiagnosticOk";
+        };
+      };
+    };
 }
