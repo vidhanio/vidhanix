@@ -36,7 +36,6 @@
             expandtab = true;
             foldlevelstart = 99;
             laststatus = 3;
-            relativenumber = true;
             scrolloff = 8;
             shiftround = true;
             shiftwidth = 2;
