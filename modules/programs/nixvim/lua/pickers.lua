@@ -5,8 +5,8 @@ local M = {}
 local H = {}
 
 M.centered = function()
-	local height = math.floor(0.618 * vim.o.lines)
-	local width = math.floor(0.618 * vim.o.columns)
+	local height = math.floor(0.5 * vim.o.lines)
+	local width = math.floor(0.5 * vim.o.columns)
 	return {
 		anchor = "NW",
 		row = math.floor(0.5 * (vim.o.lines - height)),
