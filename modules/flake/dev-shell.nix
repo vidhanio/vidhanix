@@ -12,21 +12,13 @@
       '';
 
       devShells.default = pkgs.mkShell {
-        preferLocalBuild = true;
-        allowSubstitutes = false;
-
         inherit (config.pre-commit) shellHook;
 
         packages = [
           config.pre-commit.settings.package
-          pkgs.coreutils
-          pkgs.findutils
-          pkgs.git
-          pkgs.direnv
-          pkgs.hostname
+          config.treefmt.build.wrapper
           pkgs.just
           pkgs.nh
-          pkgs.nix-output-monitor
           pkgs.sops
         ];
       };
