@@ -35,6 +35,7 @@
             expandtab = true;
             foldlevelstart = 99;
             laststatus = 3;
+            pumblend = 0;
             scrolloff = 8;
             shiftround = true;
             shiftwidth = 2;
@@ -44,6 +45,7 @@
             timeoutlen = 300;
             undolevels = 10000;
             updatetime = 200;
+            winblend = 0;
             winborder = "solid";
             winminwidth = 5;
           };

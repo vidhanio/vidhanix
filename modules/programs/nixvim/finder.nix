@@ -3,7 +3,9 @@
     programs.nixvim = {
       plugins.mini.modules = {
         extra = { };
-        files = { };
+        files = {
+          windows.preview = true;
+        };
         pick = { };
       };
 
