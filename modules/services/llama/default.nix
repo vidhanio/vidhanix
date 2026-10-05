@@ -1,18 +1,15 @@
 {
-  flake-file.inputs.llama-cpp.url = "github:PrismML-Eng/llama.cpp";
-
   flake.aspects.llama = {
     nixos =
       {
         lib,
         pkgs,
-        inputs',
         ...
       }:
       {
         services.llama-cpp = {
           enable = true;
-          package = inputs'.llama-cpp.packages.rocm.override { rocmGpuTargets = "gfx1200"; };
+          package = pkgs.llama-cpp-vulkan;
           settings = {
             sleep-idle-seconds = 30;
             models-max = 1;

@@ -81,6 +81,7 @@
         hyprland-guiutils.inputs.nixpkgs.follows = "nixpkgs";
         hyprland-protocols.inputs.nixpkgs.follows = "nixpkgs";
         hyprlang.inputs.nixpkgs.follows = "nixpkgs";
+        hyprtoolkit.inputs.nixpkgs.follows = "nixpkgs";
         hyprutils.inputs.nixpkgs.follows = "nixpkgs";
         hyprwayland-scanner.inputs.nixpkgs.follows = "nixpkgs";
         hyprwire.inputs.nixpkgs.follows = "nixpkgs";
@@ -98,13 +99,6 @@
     };
     import-tree = {
       url = "github:denful/import-tree";
-    };
-    llama-cpp = {
-      url = "github:PrismML-Eng/llama.cpp";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        nixpkgs.follows = "nixpkgs";
-      };
     };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
