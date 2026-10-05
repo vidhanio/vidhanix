@@ -31,7 +31,6 @@
           };
 
           opts = {
-            conceallevel = 2;
             confirm = true;
             expandtab = true;
             foldlevelstart = 99;
