@@ -2,7 +2,6 @@
   flake-file = {
     inputs.hyprland = {
       url = "github:hyprwm/Hyprland";
-      # follow upstream's nixpkgs so the cachix cache is not invalidated
       inputs.nixpkgs.autoFollow = false;
     };
 
@@ -20,9 +19,11 @@
       {
         programs.hyprland = {
           enable = true;
-          withUWSM = true;
+
           package = inputs'.hyprland.packages.hyprland;
           portalPackage = inputs'.hyprland.packages.xdg-desktop-portal-hyprland;
+
+          withUWSM = true;
         };
       };
     homeManager =
@@ -34,10 +35,13 @@
 
         wayland.windowManager.hyprland = {
           enable = true;
+
           package = inputs'.hyprland.packages.hyprland;
           portalPackage = inputs'.hyprland.packages.xdg-desktop-portal-hyprland;
-          # conflicts with UWSM
+
+          # conflicts with uwsm
           systemd.enable = false;
+
           xdph.settings.screencopy.allow_token_by_default = true;
         };
       };
