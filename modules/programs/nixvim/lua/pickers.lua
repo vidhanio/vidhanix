@@ -60,11 +60,17 @@ M.grep = function()
 end
 
 M.diagnostics = function()
-	MiniExtra.pickers.diagnostic({ scope = "all" }, { window = { config = M.at_cursor } })
+	MiniExtra.pickers.diagnostic({ scope = "all" }, { window = { config = M.centered } })
 end
 
 M.symbols = function()
-	MiniExtra.pickers.lsp({ scope = "document_symbol" }, { window = { config = M.at_cursor } })
+	MiniExtra.pickers.lsp({ scope = "document_symbol" }, { window = { config = M.centered } })
+end
+
+M.setup = function()
+	vim.ui.select = function(items, opts, on_choice)
+		return MiniPick.ui_select(items, opts, on_choice, { window = { config = M.at_cursor } })
+	end
 end
 
 H.filename = function(text)

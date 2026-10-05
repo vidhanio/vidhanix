@@ -9,6 +9,8 @@
 
       extraFiles."lua/pickers.lua".source = ./lua/pickers.lua;
 
+      extraConfigLua = "require('pickers').setup()";
+
       # netrw owns the FileExplorer event that mini.files clears; load it first.
       extraConfigLuaPre = "vim.cmd('runtime! plugin/netrwPlugin.vim')";
 

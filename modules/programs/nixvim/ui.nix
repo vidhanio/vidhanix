@@ -85,6 +85,11 @@
             }
             {
               mode = "n";
+              keys = "<leader>c";
+              desc = "Code";
+            }
+            {
+              mode = "n";
               keys = "<leader>f";
               desc = "Find";
             }

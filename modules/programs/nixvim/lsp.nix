@@ -20,6 +20,22 @@
         yamlls.enable = true;
         # keep-sorted end
       };
+
+      # registered while a language server is attached.
+      lsp.keymaps = [
+        {
+          key = "<leader>ca";
+          lspBufAction = "code_action";
+          mode = [
+            "n"
+            "v"
+          ];
+          options = {
+            silent = true;
+            desc = "Code action";
+          };
+        }
+      ];
     };
   };
 }
