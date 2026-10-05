@@ -13,6 +13,7 @@ _: {
           settings = {
             device_name = osConfig.networking.hostName;
             web_client_id = "429622441b094d4f92367a58c033d77a";
+            accent_from_art = false;
           };
         };
         desktop.binds."SUPER + s".app = "spotifast";
