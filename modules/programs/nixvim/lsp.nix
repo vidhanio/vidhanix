@@ -8,6 +8,7 @@
         # keep-sorted start
         bashls.enable = true;
         jsonls.enable = true;
+        lua_ls.enable = true;
         nil_ls.enable = true;
         nixd.enable = true;
         ruff.enable = true;

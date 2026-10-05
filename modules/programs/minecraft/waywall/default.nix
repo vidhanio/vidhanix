@@ -9,7 +9,6 @@
   flake.aspects.minecraft = {
     homeManager =
       {
-        inputs',
         config,
         pkgs,
         ...
@@ -130,7 +129,7 @@
             });
             config = {
               enableWaywork = true;
-              programs = [ inputs'.mcsr.packages.ninjabrain-bot ];
+              programs = [ pkgs.ninjabrain-bot ];
               files = {
                 eye_overlay = ./eye_overlay.png;
               };
