@@ -21,6 +21,11 @@
         # keep-sorted end
       };
 
+      diagnostic.settings.virtual_text = {
+        prefix = "●";
+        source = "if_many";
+      };
+
       # registered while a language server is attached.
       lsp.keymaps = [
         {
