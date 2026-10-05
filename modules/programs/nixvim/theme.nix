@@ -40,6 +40,12 @@
           bold = true;
         };
 
+        # Hide the mini.pick footer (source name and match counts).
+        MiniPickBorderText = {
+          fg = base01;
+          bg = base01;
+        };
+
         # Transparent sign columns.
         SignColumn = {
           fg = base03;
