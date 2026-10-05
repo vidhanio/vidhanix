@@ -44,7 +44,7 @@
             timeoutlen = 300;
             undolevels = 10000;
             updatetime = 200;
-            winborder = "none";
+            winborder = "solid";
             winminwidth = 5;
           };
 
