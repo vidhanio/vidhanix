@@ -7,7 +7,7 @@
 
   flake.aspects.nixvim = {
     homeManager =
-      { pkgs, ... }:
+      { ... }:
       {
         imports = [ inputs.nixvim.homeModules.nixvim ];
 
@@ -148,15 +148,6 @@
                 desc = "Move up";
               };
             }
-          ];
-
-          extraPackages = with pkgs; [
-            # keep-sorted start
-            shfmt
-            stylua
-            treefmt
-            wakatime-cli
-            # keep-sorted end
           ];
         };
 

@@ -6,8 +6,10 @@
 
       lsp.servers = {
         # keep-sorted start
+        bashls.enable = true;
         jsonls.enable = true;
         nil_ls.enable = true;
+        nixd.enable = true;
         ruff.enable = true;
         rust_analyzer.enable = true;
         statix.enable = true;
@@ -18,19 +20,6 @@
         yamlls.enable = true;
         # keep-sorted end
       };
-
-      diagnostic.settings = {
-        virtual_text.prefix = "";
-        signs.numhl.__raw = ''
-          {
-            [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
-            [vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
-            [vim.diagnostic.severity.INFO] = "DiagnosticSignInfo",
-            [vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
-          }
-        '';
-      };
-
     };
   };
 }
