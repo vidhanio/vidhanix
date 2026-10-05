@@ -11,7 +11,7 @@
           output =
             if workspace.output == null then osConfig.hardware.monitors.main.name else workspace.output;
         }
-      ) (lib.filterAttrs (_: workspace: !workspace.special) config.desktop.workspaces);
+      ) config.desktop.workspaces;
       ordered = lib.sort (
         a: b: if a.output == b.output then a.index < b.index else a.output < b.output
       ) workspaces;

@@ -22,16 +22,6 @@
               default = 1;
               description = "Workspace index within its output's ten-workspace block.";
             };
-            special = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-              description = "Whether this is a Hyprland-only special workspace.";
-            };
-            onCreatedEmpty = lib.mkOption {
-              type = lib.types.nullOr lib.types.str;
-              default = null;
-              description = "Application command run when Hyprland creates this workspace empty.";
-            };
           };
         }
       );

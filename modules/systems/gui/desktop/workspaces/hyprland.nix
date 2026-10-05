@@ -14,25 +14,17 @@
         workspace
         // {
           inherit name output;
-          selector =
-            if workspace.special then "special:${name}" else toString (monitorIndex * 10 + workspace.index);
+          selector = toString (monitorIndex * 10 + workspace.index);
         }
       ) config.desktop.workspaces;
       toLua = lib.generators.toLua { };
-      renderRule =
-        workspace:
-        {
-          workspace = workspace.selector;
-        }
-        // lib.optionalAttrs (!workspace.special) {
-          monitor = workspace.output;
-          default_name = workspace.name;
-          persistent = true;
-          default = workspace.index == 1;
-        }
-        // lib.optionalAttrs (workspace.onCreatedEmpty != null) {
-          on_created_empty = "uwsm app -- ${workspace.onCreatedEmpty}";
-        };
+      renderRule = workspace: {
+        workspace = workspace.selector;
+        monitor = workspace.output;
+        default_name = workspace.name;
+        persistent = true;
+        default = workspace.index == 1;
+      };
       startupRules = lib.concatMap (
         workspace:
         map (app: {

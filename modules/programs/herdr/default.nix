@@ -2,20 +2,44 @@
   flake.aspects.herdr = {
     homeManager =
       {
-        config,
         pkgs,
         inputs',
         ...
       }:
       let
-        cfg = config.programs.herdr;
+        herdr = inputs'.llm-agents.packages.herdr;
+        launch = "ghostty --class=dev.herdr -e herdr";
+        desktopItem = pkgs.makeDesktopItem {
+          name = "herdr";
+          desktopName = "Herdr";
+          comment = herdr.meta.description;
+          exec = launch;
+          icon = "herdr";
+          terminal = false;
+          categories = [ "Development" ];
+          startupWMClass = "dev.herdr";
+        };
+        icon = pkgs.runCommandLocal "herdr-icon" { } ''
+          install -Dm644 ${herdr.src}/assets/logo.svg \
+            $out/share/icons/hicolor/scalable/apps/herdr.svg
+        '';
+        package = pkgs.symlinkJoin {
+          inherit (herdr) meta;
+          inherit (herdr) name;
+          passthru.src = herdr.src;
+          paths = [
+            herdr
+            desktopItem
+            icon
+          ];
+        };
 
       in
       {
         programs.herdr = {
           enable = true;
 
-          package = inputs'.llm-agents.packages.herdr;
+          inherit package;
 
           settings = {
             onboarding = false;
@@ -38,15 +62,13 @@
           };
         };
 
-        programs.agents.skills.herdr = "${cfg.package.src}/skills/herdr";
-        desktop.binds."SUPER + t" = {
-          niri.cmd = "ghostty --class=dev.herdr -e herdr";
-          hyprland.dsp."workspace.toggle_special"._args = [ "herdr" ];
-        };
-        desktop.workspaces.herdr = {
-          special = true;
-          onCreatedEmpty = "ghostty --class=dev.herdr -e herdr";
-        };
+        programs.agents.skills.herdr = "${herdr.src}/skills/herdr";
+
+        desktop.binds."SUPER + t".cmd = "focus-or-launch dev.herdr ${launch}";
+        desktop.binds."SUPER + SHIFT + t".app = launch;
+        desktop.workspaces.work.apps = [ "dev.herdr" ];
+
+        xdg.autostart.entries = [ "${package}/share/applications/herdr.desktop" ];
 
         persist = {
           directories = [ ".herdr/worktrees" ];

@@ -24,7 +24,5 @@
 
     xdg.configFile."systemd/user/graphical-session.target.wants/app-com.mitchellh.ghostty.service".source =
       "${config.programs.ghostty.package}/share/systemd/user/app-com.mitchellh.ghostty.service";
-
-    desktop.binds."SUPER + SHIFT + t".app = "ghostty";
   };
 }
