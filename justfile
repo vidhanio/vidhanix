@@ -4,7 +4,6 @@ system := `nix eval --raw --impure --expr 'builtins.currentSystem'`
 host := `hostname`
 user := `whoami`
 
-perSystemConfig := ".#allSystems." + system + ".config"
 nixosConfig := ".#nixosConfigurations." + host + ".config"
 hmConfig := nixosConfig + ".home-manager.users." + user
 systemPackage := nixosConfig + ".system.build.toplevel"
