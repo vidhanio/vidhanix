@@ -1,5 +1,5 @@
 { lib, ... }: {
-  flake.aspects.noctalia.homeManager =
+  profiles.pc.homeModule =
     { config, ... }:
     {
       programs.noctalia = {

@@ -1,5 +1,5 @@
 {
-  flake.aspects.noctalia.homeManager = {
+  profiles.pc.homeModule = {
     programs.noctalia.settings.widget = {
       tray.drawer = true;
 

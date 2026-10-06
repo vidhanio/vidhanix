@@ -81,10 +81,10 @@ let
           updateScript =
             let
               curlExe = lib.getExe curl;
-              gitExe = lib.getExe' git "git";
+              gitExe = lib.getExe git;
               jqExe = lib.getExe jq;
               nixPrefetchGitHubExe = lib.getExe nix-prefetch-github;
-              sedExe = lib.getExe' gnused "sed";
+              sedExe = lib.getExe gnused;
             in
             writeShellScript "update-linux-asahi-fairydust" ''
               set -euo pipefail

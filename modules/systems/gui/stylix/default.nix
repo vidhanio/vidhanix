@@ -7,10 +7,8 @@
     };
   };
 
-  flake.aspects.stylix = {
-    nixos = {
-      imports = [ inputs.stylix.nixosModules.default ];
-
+  profiles.pc = {
+    module = {
       stylix = {
         enable = true;
         polarity = "dark";
@@ -18,7 +16,7 @@
       };
     };
 
-    homeManager = {
+    homeModule = {
       stylix = {
         cornerRadius = 0;
         borderThickness = 2;

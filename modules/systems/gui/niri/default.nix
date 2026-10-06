@@ -1,10 +1,10 @@
 {
-  flake.aspects.niri = {
-    nixos = {
+  profiles.pc = {
+    module = {
       programs.niri.enable = true;
     };
 
-    homeManager = {
+    homeModule = {
       wayland.windowManager.niri.enable = true;
     };
   };

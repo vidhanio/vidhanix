@@ -3,7 +3,7 @@
   ...
 }:
 {
-  flake.aspects.osu-lazer.homeManager =
+  profiles.pc.homeModule =
     { pkgs, ... }:
     {
       # only distributed for x86_64; the source build has no score submission or multiplayer

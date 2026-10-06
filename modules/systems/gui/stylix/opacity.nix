@@ -1,6 +1,6 @@
 {
-  flake.aspects.stylix = {
-    nixos = {
+  profiles.pc = {
+    module = {
       stylix.opacity = {
       };
     };

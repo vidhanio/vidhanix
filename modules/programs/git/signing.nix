@@ -1,6 +1,6 @@
 {
-  flake.aspects.git = {
-    homeManager = {
+  profiles.base = {
+    homeModule = {
       programs.git = {
         signing = {
           format = "ssh";

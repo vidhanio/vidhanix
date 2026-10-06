@@ -1,6 +1,6 @@
 {
-  flake.aspects.swap = {
-    nixos = {
+  profiles.base = {
+    module = {
       disko.devices.disk.main.content.partitions.root.content.subvolumes.swap = {
         mountpoint = "/swap";
         swap.swapfile.size = "16G";

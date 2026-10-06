@@ -1,6 +1,6 @@
 {
-  flake.aspects.btop = {
-    homeManager = {
+  profiles.base = {
+    homeModule = {
       programs.btop.enable = true;
     };
   };

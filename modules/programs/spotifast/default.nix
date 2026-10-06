@@ -1,15 +1,18 @@
-_: {
+{
+  flake-file.inputs.spotifast.url = "github:crmne/spotifast";
 
-  flake.aspects.spotifast = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       {
         config,
+        inputs',
         osConfig,
         ...
       }:
       {
         programs.spotifast = {
           enable = true;
+          package = inputs'.spotifast.packages.spotifast;
           settings = {
             device_name = osConfig.networking.hostName;
             web_client_id = "429622441b094d4f92367a58c033d77a";

@@ -1,6 +1,6 @@
 {
-  flake.aspects.pi-coding-agent = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       {
         inputs',
         config,

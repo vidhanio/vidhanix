@@ -1,17 +1,14 @@
-{
-  lib,
-  config,
-  ...
-}:
+{ lib, config, ... }:
 let
-  hostsCfg = config.hosts;
-  flakeUsers = config.users;
+  inherit (config) hosts;
 in
 {
   options.users = lib.mkOption {
+    description = "User identities and their Home Manager configurations.";
+    default = { };
     type = lib.types.attrsOf (
       lib.types.submodule (
-        { name, ... }:
+        { name, config, ... }:
         {
           options = {
             fullName = lib.mkOption {
@@ -24,35 +21,31 @@ in
             };
             publicKeys = lib.mkOption {
               type = lib.types.listOf lib.types.str;
-              description = "A list of SSH public keys for the user.";
+              default = [ ];
+              description = "SSH public keys for the user, including their enabled hosts.";
             };
             face = lib.mkOption {
               type = lib.types.nullOr lib.types.path;
               default = null;
-              description = "Path to a PNG image to use as the user's face, linked to ~/.face.";
+              description = "Path to a PNG image linked to ~/.face.";
+            };
+            module = lib.mkOption {
+              type = lib.types.deferredModule;
+              default = { };
+              description = "Home Manager configuration for this user.";
             };
           };
 
           config = {
-            publicKeys = lib.mapAttrsToList (_: c: c.users.${name}.publicKey) (
-              lib.filterAttrs (_: c: c.users.${name}.enable) hostsCfg
+            publicKeys = lib.mapAttrsToList (_: host: host.users.${name}.publicKey) (
+              lib.filterAttrs (_: host: host.users.${name}.enable) hosts
             );
+            module.home.file.".face" = lib.mkIf (config.face != null) {
+              source = config.face;
+            };
           };
         }
       )
     );
-  };
-
-  config.flake.aspects.face = {
-    homeManager =
-      { config, ... }:
-      let
-        face = flakeUsers.${config.home.username}.face;
-      in
-      {
-        home.file.".face" = lib.mkIf (face != null) {
-          source = face;
-        };
-      };
   };
 }

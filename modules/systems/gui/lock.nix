@@ -1,10 +1,10 @@
 { lib, ... }: {
-  flake.aspects.lock = {
-    nixos = {
+  profiles.pc = {
+    module = {
       security.pam.services.hyprlock = { };
     };
 
-    homeManager =
+    homeModule =
       { osConfig, config, ... }:
       {
         desktop.binds."ALT + l".cmd = "loginctl lock-session";

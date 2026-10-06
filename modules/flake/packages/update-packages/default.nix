@@ -29,7 +29,7 @@ in
         isExecutable = true;
 
         replacements = {
-          python = "${pkgs.python3.withPackages (ps: [ ps.rich ])}/bin/python3";
+          python = lib.getExe (pkgs.python3.withPackages (ps: [ ps.rich ]));
           config = "${config}";
         };
 

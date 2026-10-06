@@ -4,7 +4,7 @@
 
   perSystem.treefmt.settings.excludes = [ "secrets.yaml" ];
 
-  flake.aspects.sops =
+  profiles.base =
     let
       mkSopsConfig = key: {
         defaultSopsFile = ../../secrets.yaml;
@@ -14,13 +14,13 @@
       };
     in
     {
-      nixos =
+      module =
         { config, ... }:
         {
           imports = [ inputs.sops-nix.nixosModules.default ];
           sops = mkSopsConfig "${config.persist.persistentStoragePath}/etc/ssh/ssh_host_ed25519_key";
         };
-      homeManager =
+      homeModule =
         { config, ... }:
         {
           imports = [ inputs.sops-nix.homeManagerModules.default ];

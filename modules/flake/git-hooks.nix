@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   flake-file.inputs.git-hooks-nix.url = "github:cachix/git-hooks.nix";
 
@@ -19,9 +19,9 @@
           ty = {
             enable = true;
             name = "ty";
-            entry = "${pkgs.ty}/bin/ty check --python ${
-              pkgs.python3.withPackages (ps: [ ps.rich ])
-            }/bin/python3";
+            entry = "${lib.getExe pkgs.ty} check --python ${
+              lib.getExe (pkgs.python3.withPackages (ps: [ ps.rich ]))
+            }";
             types = [ "python" ];
           };
         };

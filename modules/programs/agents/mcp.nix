@@ -1,6 +1,6 @@
 {
-  flake.aspects.mcp = {
-    homeManager = {
+  profiles.pc = {
+    homeModule = {
       programs.mcp.enable = true;
     };
   };

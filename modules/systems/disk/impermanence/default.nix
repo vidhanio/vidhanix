@@ -2,8 +2,8 @@
 {
   flake-file.inputs.impermanence.url = "github:nix-community/impermanence";
 
-  flake.aspects.disk.provides.impermanence = {
-    nixos =
+  profiles.base = {
+    module =
       { config, ... }:
       {
         imports = [
@@ -34,7 +34,7 @@
         };
       };
 
-    homeManager =
+    homeModule =
       { osConfig, ... }:
       {
         imports = [

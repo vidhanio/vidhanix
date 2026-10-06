@@ -1,6 +1,6 @@
 {
-  flake.aspects.zoxide = {
-    homeManager = {
+  profiles.base = {
+    homeModule = {
       programs.zoxide = {
         enable = true;
         options = [

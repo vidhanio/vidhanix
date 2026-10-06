@@ -1,6 +1,6 @@
 {
-  flake.aspects.nixvim.homeManager =
-    { self', ... }:
+  profiles.pc.homeModule =
+    { lib, self', ... }:
     {
       programs.nixvim = {
         plugins = {
@@ -9,7 +9,7 @@
 
             package = self'.packages.jupynvim;
 
-            settings.core_path = "${self'.packages.jupynvim}/bin/jupynvim-core";
+            settings.core_path = lib.getExe self'.packages.jupynvim;
           };
 
           sleuth.enable = true;

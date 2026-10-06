@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.aspects.desktop.homeManager =
+  profiles.pc.homeModule =
     { pkgs, ... }:
     let
       msg = command: "noctalia msg ${command}";

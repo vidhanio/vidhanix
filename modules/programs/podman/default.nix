@@ -1,6 +1,6 @@
 {
-  flake.aspects.podman = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { pkgs, ... }:
       {
         services.podman.enable = true;

@@ -1,11 +1,6 @@
 {
-  flake.aspects.vidhanio = {
-    homeManager = {
-      programs.gh.username = "vidhanio";
-    };
-  };
-
   users.vidhanio = {
+    module.programs.gh.username = "vidhanio";
     fullName = "Vidhan Bhatt";
     email = "me@vidhan.io";
     publicKeys = [

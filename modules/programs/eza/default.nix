@@ -1,6 +1,6 @@
 {
-  flake.aspects.eza = {
-    homeManager = {
+  profiles.base = {
+    homeModule = {
       programs.eza = {
         enable = true;
         git = true;

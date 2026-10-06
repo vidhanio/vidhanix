@@ -1,6 +1,6 @@
 {
-  flake.aspects.hardware = {
-    nixos = {
+  profiles.pc = {
+    module = {
       hardware.logitech.wireless.enable = true;
     };
   };

@@ -1,13 +1,13 @@
 { lib, ... }:
 {
-  flake.aspects.udisks = {
-    nixos = {
+  profiles.pc = {
+    module = {
       services.udisks2 = {
         enable = true;
         mountOnMedia = true;
       };
     };
-    homeManager =
+    homeModule =
       { pkgs, ... }:
       {
         services.udiskie = {

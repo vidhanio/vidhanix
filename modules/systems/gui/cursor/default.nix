@@ -1,6 +1,6 @@
 {
-  flake.aspects.cursor = {
-    nixos =
+  profiles.pc = {
+    module =
       { self', config, ... }:
       {
         stylix = {
@@ -35,7 +35,7 @@
           };
         };
       };
-    homeManager =
+    homeModule =
       {
         config,
         lib,
@@ -49,8 +49,8 @@
         };
 
         xdg.dataFile."icons/${config.home.pointerCursor.name}".onChange = ''
-          for i in $(${pkgs.hyprland}/bin/hyprctl instances | sed -n 's/^instance \([^:]*\):/\1/p'); do
-            ${pkgs.hyprland}/bin/hyprctl -i "$i" setcursor ${lib.escapeShellArg config.home.pointerCursor.name} ${toString config.home.pointerCursor.hyprcursor.size} || true
+          for i in $(${lib.getExe' pkgs.hyprland "hyprctl"} instances | sed -n 's/^instance \([^:]*\):/\1/p'); do
+            ${lib.getExe' pkgs.hyprland "hyprctl"} -i "$i" setcursor ${lib.escapeShellArg config.home.pointerCursor.name} ${toString config.home.pointerCursor.hyprcursor.size} || true
           done
         '';
       };

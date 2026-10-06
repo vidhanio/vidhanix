@@ -1,5 +1,5 @@
 {
-  flake.aspects.nixvim.homeManager =
+  profiles.pc.homeModule =
     { config, ... }:
     let
       inherit (config.lib.stylix.colors.withHashtag)

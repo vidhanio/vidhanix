@@ -5,8 +5,8 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  flake.aspects.nixvim = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { ... }:
       {
         imports = [ inputs.nixvim.homeModules.nixvim ];

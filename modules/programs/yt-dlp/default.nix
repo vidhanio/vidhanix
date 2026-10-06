@@ -1,6 +1,6 @@
 {
-  flake.aspects.yt-dlp = {
-    homeManager = {
+  profiles.pc = {
+    homeModule = {
       programs.yt-dlp.enable = true;
     };
   };

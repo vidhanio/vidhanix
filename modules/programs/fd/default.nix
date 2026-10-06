@@ -1,6 +1,6 @@
 {
-  flake.aspects.fd = {
-    homeManager = {
+  profiles.base = {
+    homeModule = {
       programs.fd.enable = true;
     };
   };

@@ -1,6 +1,6 @@
 {
-  flake.aspects.agents = {
-    homeManager = {
+  profiles.pc = {
+    homeModule = {
       programs.agents = {
         models = {
           presets = {

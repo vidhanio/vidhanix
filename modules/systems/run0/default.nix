@@ -1,6 +1,6 @@
 {
-  flake.aspects.run0 = {
-    nixos = {
+  profiles.base = {
+    module = {
       security.sudo.enable = false;
 
       security.run0 = {

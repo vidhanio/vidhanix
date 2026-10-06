@@ -1,6 +1,6 @@
 {
-  flake.aspects.fzf = {
-    homeManager =
+  profiles.base = {
+    homeModule =
       let
         fd = type: "fd --type ${type} --strip-cwd-prefix --hidden --follow --exclude .git";
       in

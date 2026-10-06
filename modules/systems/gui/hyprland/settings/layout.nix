@@ -1,5 +1,5 @@
 {
-  flake.aspects.hyprland.homeManager = { config, ... }: {
+  profiles.pc.homeModule = { config, ... }: {
     wayland.windowManager.hyprland.settings.config = {
       general = {
         border_size = config.stylix.borderThickness;

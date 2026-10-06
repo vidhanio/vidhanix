@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.aspects.desktop.homeManager =
+  profiles.pc.homeModule =
     { config, ... }:
     let
       kdlType = lib.types.nullOr (

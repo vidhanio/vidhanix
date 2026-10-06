@@ -1,6 +1,6 @@
 {
-  flake.aspects.audio = {
-    nixos = {
+  profiles.pc = {
+    module = {
       security.rtkit.enable = true;
     };
   };

@@ -60,19 +60,15 @@ let
   };
 in
 {
-  flake.aspects.hardware = {
-    nixos = {
-      options.hardware.monitors = {
-        main = lib.mkOption {
-          type = monitorType;
-          description = "The primary monitor for this system.";
-        };
-        others = lib.mkOption {
-          type = lib.types.listOf monitorType;
-          default = [ ];
-          description = "Additional monitors for this system.";
-        };
-      };
+  options.hardware.monitors = {
+    main = lib.mkOption {
+      type = monitorType;
+      description = "The primary monitor for this system.";
+    };
+    others = lib.mkOption {
+      type = lib.types.listOf monitorType;
+      default = [ ];
+      description = "Additional monitors for this system.";
     };
   };
 }

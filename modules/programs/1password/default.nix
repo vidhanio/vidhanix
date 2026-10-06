@@ -1,6 +1,6 @@
 {
-  flake.aspects._1password = {
-    nixos = {
+  profiles.pc = {
+    module = {
       programs._1password.enable = true;
     };
   };

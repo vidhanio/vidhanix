@@ -1,5 +1,5 @@
 {
-  flake.aspects.nixvim.homeManager =
+  profiles.pc.homeModule =
     { config, ... }:
     {
       programs.nixvim.plugins.treesitter = {

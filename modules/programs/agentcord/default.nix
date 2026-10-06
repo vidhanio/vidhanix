@@ -2,8 +2,8 @@
 {
   flake-file.inputs.agentcord.url = "github:vidhanio/agentcord";
 
-  flake.aspects.agentcord = {
-    homeManager =
+  hosts.vortex = {
+    homeModule =
       { config, ... }:
       {
         imports = [ inputs.agentcord.homeManagerModules.default ];

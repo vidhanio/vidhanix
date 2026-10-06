@@ -1,6 +1,6 @@
 {
-  flake.aspects.jq = {
-    homeManager = {
+  profiles.base = {
+    homeModule = {
       programs.jq.enable = true;
     };
   };

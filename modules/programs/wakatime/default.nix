@@ -1,6 +1,6 @@
 {
-  flake.aspects.wakatime = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       {
         config,
         pkgs,

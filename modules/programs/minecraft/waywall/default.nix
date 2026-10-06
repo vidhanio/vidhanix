@@ -6,8 +6,8 @@
 {
   flake-file.inputs.mcsr.url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
 
-  flake.aspects.minecraft = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       {
         config,
         pkgs,

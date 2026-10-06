@@ -5,8 +5,8 @@ let
   rootPublicKeys = lib.mapAttrsToList (_: host: host.publicKey) hosts;
 in
 {
-  flake.aspects.ssh-server = {
-    nixos =
+  profiles.base = {
+    module =
       { config, ... }:
       let
         activeUsers = lib.filterAttrs (

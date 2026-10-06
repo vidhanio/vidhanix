@@ -1,5 +1,5 @@
 {
-  flake.aspects.nixvim.homeManager = _: {
+  profiles.pc.homeModule = _: {
     programs.nixvim = {
       plugins.lspconfig.enable = true;
       plugins.schemastore.enable = true;

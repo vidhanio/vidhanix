@@ -1,6 +1,6 @@
 {
-  flake.aspects.hardware = {
-    nixos = {
+  profiles.pc = {
+    module = {
       hardware.bluetooth.enable = true;
 
       persist.directories = [

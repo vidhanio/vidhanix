@@ -1,5 +1,5 @@
 {
-  flake.aspects.nixvim.homeManager = {
+  profiles.pc.homeModule = {
     programs.nixvim = {
       extraConfigLuaPre = ''
         require('vim._core.ui2').enable({ enable = true })

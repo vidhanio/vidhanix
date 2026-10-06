@@ -1,14 +1,14 @@
 { lib, ... }:
 {
-  flake.aspects.greeter = {
-    nixos =
+  profiles.pc = {
+    module =
       { config, pkgs, ... }:
 
       let
         renderMainArgs =
           monitor:
           [
-            "${pkgs.wlr-randr}/bin/wlr-randr"
+            (lib.getExe pkgs.wlr-randr)
             "--output"
             monitor.name
           ]
@@ -24,7 +24,7 @@
           ];
 
         renderOffArgs = monitor: [
-          "${pkgs.wlr-randr}/bin/wlr-randr"
+          (lib.getExe pkgs.wlr-randr)
           "--output"
           monitor.name
           "--off"

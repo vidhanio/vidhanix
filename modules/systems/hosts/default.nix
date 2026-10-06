@@ -5,81 +5,73 @@
   ...
 }:
 let
-  cfg = config.hosts;
-  usersCfg = config.users;
-  inherit ((inputs.flake-aspects.lib lib)) forward;
+  inherit (config) hosts users;
 in
 {
   options.hosts = lib.mkOption {
-    type = lib.types.lazyAttrsOf (
-      lib.types.submodule {
-        options = {
-          users = lib.mapAttrs (username: _: {
-            enable = lib.mkEnableOption "${username}'s account";
-            publicKey = lib.mkOption {
-              type = lib.types.str;
-              description = "The user's SSH public key for this host.";
-            };
-          }) usersCfg;
-          publicKey = lib.mkOption {
-            type = lib.types.str;
-            description = "The public SSH key for this system, which will be added to the authorized keys of all users.";
-          };
-          hostPlatform = lib.mkOption {
-            type = lib.types.str;
-            description = "The platform for this host.";
-          };
-        };
-      }
-    );
-  };
-
-  config = {
-    flake.nixosConfigurations = lib.mapAttrs (
-      name: _: inputs.nixpkgs.lib.nixosSystem { modules = [ inputs.self.modules.nixos.${name} ]; }
-    ) cfg;
-
-    flake.aspects =
-      { aspects, ... }:
-      lib.mapAttrs (
-        name:
-        { users, hostPlatform, ... }:
+    description = "Machines and their NixOS and Home Manager configurations.";
+    default = { };
+    type = lib.types.attrsOf (
+      lib.types.submodule (
+        { name, config, ... }:
         let
-          activeUsers = lib.filterAttrs (username: _: users.${username}.enable) usersCfg;
+          host = config;
+          activeUsers = lib.filterAttrs (username: _: host.users.${username}.enable) users;
           activeUsernames = lib.attrNames activeUsers;
         in
         {
-          includes = [
-            (forward {
-              each = activeUsernames;
-              fromClass = _: "homeManager";
-              intoClass = _: "nixos";
-              intoPath = username: [
-                "home-manager"
-                "users"
-                username
-              ];
-              fromAspect = username: aspects.${username};
-            })
-          ];
+          options = {
+            users = lib.mapAttrs (username: _: {
+              enable = lib.mkEnableOption "${username}'s account";
+              publicKey = lib.mkOption {
+                type = lib.types.str;
+                description = "The user's SSH public key for this host.";
+              };
+            }) users;
+            publicKey = lib.mkOption {
+              type = lib.types.str;
+              description = "The host's public SSH key, authorized for all users.";
+            };
+            hostPlatform = lib.mkOption {
+              type = lib.types.str;
+              description = "The platform for this host.";
+            };
+            module = lib.mkOption {
+              type = lib.types.deferredModule;
+              default = { };
+              description = "NixOS configuration for this host.";
+            };
+            homeModule = lib.mkOption {
+              type = lib.types.deferredModule;
+              default = { };
+              description = "Home Manager configuration shared by this host's users.";
+            };
+          };
 
-          nixos =
+          config.module =
             { config, ... }:
             {
               options.users.primaryUser = lib.mkOption {
-                type = lib.types.enum activeUsernames;
-                default = "vidhanio";
+                type = lib.types.enum ([ "root" ] ++ activeUsernames);
+                default =
+                  if lib.elem "vidhanio" activeUsernames then
+                    "vidhanio"
+                  else if activeUsernames == [ ] then
+                    "root"
+                  else
+                    lib.head activeUsernames;
                 description = "The primary user of this system.";
               };
 
               config = {
                 networking.hostName = name;
-                nixpkgs.hostPlatform = hostPlatform;
+                nixpkgs.hostPlatform = host.hostPlatform;
                 system.stateVersion = config.system.nixos.release;
 
-                home-manager.sharedModules = [
-                  inputs.self.modules.homeManager.${name}
-                ];
+                home-manager = {
+                  sharedModules = [ host.homeModule ];
+                  users = lib.mapAttrs (_: user: user.module) activeUsers;
+                };
 
                 sops.secrets = lib.mapAttrs' (
                   username: _: lib.nameValuePair "passwords/${username}" { neededForUsers = true; }
@@ -97,9 +89,12 @@ in
                 }) activeUsers;
               };
             };
-
-          homeManager = { };
         }
-      ) cfg;
+      )
+    );
   };
+
+  config.flake.nixosConfigurations = lib.mapAttrs (
+    _: host: inputs.nixpkgs.lib.nixosSystem { modules = [ host.module ]; }
+  ) hosts;
 }

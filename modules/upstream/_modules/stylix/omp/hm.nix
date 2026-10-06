@@ -1,19 +1,19 @@
-{ lib, ... }: {
-  # vendored from nix-community/stylix PR #2423 (modules/pi-coding-agent/hm.nix).
-  flake.aspects.pi-coding-agent = {
-    homeManager =
-      { config, ... }:
-      let
-        theme = "stylix";
-      in
-      {
-        programs.pi-coding-agent.settings.theme = theme;
+{ mkTarget, config, ... }:
+mkTarget {
+  autoEnable = config.programs.omp.enable;
+  autoEnableExpr = "config.programs.omp.enable";
 
-        home.file."${config.programs.pi-coding-agent.configDir}/themes/${theme}.json".text = lib.toJSON {
-          "$schema" =
-            "https://raw.githubusercontent.com/earendil-works/pi/main/packages/coding-agent/src/modes/interactive/theme/theme-schema.json";
-          name = theme;
-          colors = with config.lib.stylix.colors.withHashtag; {
+  config =
+    { colors }:
+    let
+      theme = "stylix";
+    in
+    {
+      programs.omp = {
+        settings.theme.dark = theme;
+
+        themes.${theme} = with colors.withHashtag; {
+          colors = {
             accent = base0D;
             border = base03;
             borderAccent = base0D;
@@ -25,34 +25,30 @@
             dim = base03;
             text = "";
             thinkingText = base04;
-
-            selectedBg = base02;
+            selectedBg = base03;
             userMessageBg = base01;
             userMessageText = "";
             customMessageBg = base01;
             customMessageText = "";
             customMessageLabel = base0D;
             toolPendingBg = base00;
-            toolSuccessBg = base01;
-            toolErrorBg = base01;
-            toolTitle = base0D;
-            toolOutput = "";
-
+            toolSuccessBg = base00;
+            toolErrorBg = base00;
+            toolTitle = "";
+            toolOutput = base04;
             mdHeading = base0E;
             mdLink = base0D;
             mdLinkUrl = base0C;
             mdCode = base0B;
-            mdCodeBlock = "";
+            mdCodeBlock = base04;
             mdCodeBlockBorder = base03;
             mdQuote = base04;
             mdQuoteBorder = base03;
             mdHr = base03;
             mdListBullet = base0C;
-
             toolDiffAdded = base0B;
             toolDiffRemoved = base08;
             toolDiffContext = base04;
-
             syntaxComment = base03;
             syntaxKeyword = base0E;
             syntaxFunction = base0D;
@@ -62,7 +58,6 @@
             syntaxType = base0A;
             syntaxOperator = base0C;
             syntaxPunctuation = base05;
-
             thinkingOff = base03;
             thinkingMinimal = base0D;
             thinkingLow = base0C;
@@ -70,10 +65,24 @@
             thinkingHigh = base0A;
             thinkingXhigh = base09;
             thinkingMax = base08;
-
             bashMode = base0A;
+            pythonMode = base0E;
+            statusLineBg = base00;
+            statusLineSep = base03;
+            statusLineModel = base0D;
+            statusLinePath = base05;
+            statusLineGitClean = base0B;
+            statusLineGitDirty = base0A;
+            statusLineContext = base0C;
+            statusLineSpend = base09;
+            statusLineStaged = base0B;
+            statusLineDirty = base0A;
+            statusLineUntracked = base08;
+            statusLineOutput = base04;
+            statusLineCost = base09;
+            statusLineSubagents = base0E;
           };
         };
       };
-  };
+    };
 }

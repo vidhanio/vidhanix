@@ -1,6 +1,6 @@
 {
-  flake.aspects.hyprland = {
-    homeManager = {
+  profiles.pc = {
+    homeModule = {
       desktop.binds = {
         "SUPER + mouse:272" = {
           hyprland.dsp."window.drag" = { };

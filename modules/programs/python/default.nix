@@ -1,6 +1,6 @@
 {
-  flake.aspects.python = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { pkgs, ... }:
       {
         home.packages = [ pkgs.python315 ];

@@ -1,6 +1,6 @@
 {
-  flake.aspects.fastfetch = {
-    homeManager = {
+  profiles.base = {
+    homeModule = {
       programs.fastfetch = {
         enable = true;
         settings = {

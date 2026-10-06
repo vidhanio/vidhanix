@@ -1,6 +1,6 @@
 {
-  flake.aspects.bat = {
-    homeManager = {
+  profiles.base = {
+    homeModule = {
       programs.bat.enable = true;
       home.shellAliases.cat = "bat --plain --no-paging";
     };

@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.aspects.stylix.homeManager = {
+  profiles.pc.homeModule = {
     options.stylix = {
       cornerRadius = lib.mkOption {
         type = lib.types.ints.unsigned;

@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.aspects.desktop.homeManager =
+  profiles.pc.homeModule =
     { config, osConfig, ... }:
     let
       monitors = [ osConfig.hardware.monitors.main ] ++ osConfig.hardware.monitors.others;

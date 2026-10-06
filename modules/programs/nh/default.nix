@@ -1,6 +1,6 @@
 {
-  flake.aspects.nh = {
-    nixos = {
+  profiles.base = {
+    module = {
       programs.nh = {
         enable = true;
         clean = {

@@ -1,6 +1,6 @@
 {
-  flake.aspects.automatic-timezoned = {
-    nixos = {
+  profiles.base = {
+    module = {
       services.automatic-timezoned.enable = true;
     };
   };

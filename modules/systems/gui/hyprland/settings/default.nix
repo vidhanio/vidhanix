@@ -1,6 +1,6 @@
 {
-  flake.aspects.hyprland = {
-    homeManager = {
+  profiles.pc = {
+    homeModule = {
       wayland.windowManager.hyprland.settings = {
         config = {
           ecosystem = {

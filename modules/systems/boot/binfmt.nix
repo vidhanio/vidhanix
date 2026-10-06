@@ -1,6 +1,6 @@
 { lib, ... }: {
-  flake.aspects.boot = {
-    nixos =
+  profiles.base = {
+    module =
       { pkgs, ... }:
       {
         boot.binfmt.emulatedSystems = lib.filter (system: system != pkgs.stdenv.hostPlatform.system) [

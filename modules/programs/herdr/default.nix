@@ -1,6 +1,6 @@
 { lib, ... }: {
-  flake.aspects.herdr = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       {
         pkgs,
         inputs',

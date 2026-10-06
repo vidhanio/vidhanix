@@ -1,6 +1,6 @@
 {
-  flake.aspects.hyprland = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { pkgs, ... }:
       let
         lua = pkgs.formats.lua { };

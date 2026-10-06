@@ -1,5 +1,5 @@
 {
-  flake.aspects.hyprland.homeManager = {
+  profiles.pc.homeModule = {
     wayland.windowManager.hyprland.settings = {
       window_rule = [
         {

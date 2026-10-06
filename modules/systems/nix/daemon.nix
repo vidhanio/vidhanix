@@ -1,7 +1,7 @@
 { self, inputs, ... }:
 {
-  flake.aspects.nix = {
-    nixos = {
+  profiles.base = {
+    module = {
       nix = {
         channel.enable = false;
 

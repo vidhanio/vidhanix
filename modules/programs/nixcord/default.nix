@@ -2,8 +2,8 @@
 {
   flake-file.inputs.nixcord.url = "github:4evy/nixcord";
 
-  flake.aspects.nixcord = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { config, ... }:
       let
         alpha =

@@ -1,5 +1,5 @@
 {
-  flake.aspects.focus-or-launch.homeManager = { pkgs, ... }: {
+  profiles.pc.homeModule = { pkgs, ... }: {
     home.packages = [
       (pkgs.writeShellApplication {
         name = "focus-or-launch";

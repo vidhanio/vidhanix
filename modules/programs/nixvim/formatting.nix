@@ -1,5 +1,5 @@
 {
-  flake.aspects.nixvim.homeManager = _: {
+  profiles.pc.homeModule = _: {
     programs.nixvim.plugins.conform-nvim = {
       enable = true;
       autoInstall = {

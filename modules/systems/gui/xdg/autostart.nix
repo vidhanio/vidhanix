@@ -1,6 +1,6 @@
 {
-  flake.aspects.xdg-autostart = {
-    homeManager = {
+  profiles.pc = {
+    homeModule = {
       xdg.autostart.enable = true;
     };
   };

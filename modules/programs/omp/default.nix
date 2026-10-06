@@ -1,6 +1,6 @@
 {
-  flake.aspects.omp = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       {
         inputs',
         config,

@@ -1,6 +1,6 @@
 {
-  flake.aspects.vacuum-tube = {
-    homeManager = {
+  profiles.pc = {
+    homeModule = {
       programs.vacuum-tube = {
         enable = true;
         settings = {

@@ -6,8 +6,8 @@
 {
   flake-file.inputs.home-manager.url = "github:nix-community/home-manager";
 
-  flake.aspects.home-manager = {
-    nixos =
+  profiles.base = {
+    module =
       { pkgs, ... }:
       {
         imports = [ inputs.home-manager.nixosModules.default ];
@@ -17,7 +17,7 @@
           backupCommand = lib.getExe pkgs.trash-cli;
         };
       };
-    homeManager =
+    homeModule =
       { osConfig, ... }:
       {
         home.stateVersion = osConfig.system.stateVersion;

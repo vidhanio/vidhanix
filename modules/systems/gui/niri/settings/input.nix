@@ -1,5 +1,5 @@
 {
-  flake.aspects.niri.homeManager = {
+  profiles.pc.homeModule = {
     wayland.windowManager.niri.settings.input = {
       focus-follows-mouse = { };
       keyboard = {

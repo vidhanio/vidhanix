@@ -1,6 +1,6 @@
 {
-  flake.aspects.agent-browser = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { inputs', config, ... }:
       let
         cfg = config.programs.agent-browser;

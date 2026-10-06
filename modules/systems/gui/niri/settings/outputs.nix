@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.aspects.niri.homeManager =
+  profiles.pc.homeModule =
     {
       osConfig,
       ...

@@ -4,11 +4,13 @@ This is my dendritic NixOS flake for system preferences, programs, and configura
 
 ## Structure
 
-- Look for an existing aspect under `modules/` and follow nearby patterns.
-- Files under `modules/` are imported automatically. Declare configuration under `flake.aspects.<name>` with the appropriate classes (usually `homeManager` or `nixos`); do not add manual imports.
+- Look for an existing feature under `modules/` and follow nearby patterns.
+- Files under `modules/` are imported automatically as flake-parts modules, except underscore-prefixed paths. Contribute directly to `profiles.<name>.module` (NixOS) and `profiles.<name>.homeModule` (Home Manager); do not create per-feature module registries.
 - Prefer upstream Home Manager options for user configuration and NixOS options for system-level features. Packages alone can go in `home.packages`.
-- Put feature configuration in `modules/{programs,services,systems}/<name>/default.nix`. When a local module is needed, keep its option declarations and implementation in `options.nix`, and enable/configure it in `default.nix`. Keep the same aspect name across files and classes.
-- Add shared aspects to `modules/systems/profiles/core/default.nix` when needed without a graphical session, otherwise to `modules/systems/profiles/gui/default.nix`. Keep sorted blocks sorted.
+- Put feature configuration in `modules/{programs,services,systems}/<name>/default.nix`. Use `profiles.base` for headless systems, `profiles.pc` for personal computers, and `profiles.apple-silicon` for Apple-specific settings. Profiles inherit both module classes explicitly.
+- Keep machine-specific settings in `hosts.<hostname>.{module,homeModule}` and user-specific Home Manager settings in `users.<username>.module`.
+- Put reusable NixOS, Home Manager, and Stylix implementations in `modules/upstream/_modules/{nixos,home-manager,stylix}` using upstream layouts. These are ordinary lower-level modules, not flake-parts modules; the base profile imports the exported upstream bundles. Keep personal configuration outside them.
+- Repository-specific option helpers may stay in `options.nix` contributing directly to a profile. Keep sorted blocks sorted.
 - Edit the Nix sources of generated files, not their generated output; regenerate with `just generate`.
 
 ## Workflow

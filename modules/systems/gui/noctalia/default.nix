@@ -1,13 +1,13 @@
 {
-  flake.aspects.noctalia = {
-    nixos = {
+  profiles.pc = {
+    module = {
       programs.noctalia = {
         enable = true;
         recommendedServices.enable = true;
       };
     };
 
-    homeManager = {
+    homeModule = {
       programs.noctalia = {
         enable = true;
         systemd.enable = true;

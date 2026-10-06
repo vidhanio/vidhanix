@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.aspects.desktop.homeManager = {
+  profiles.pc.homeModule = {
     options.desktop.binds = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule {

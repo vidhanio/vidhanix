@@ -1,7 +1,7 @@
 {
   # local SearXNG instance for the machine's agents (omp search provider).
-  flake.aspects.searxng = {
-    nixos =
+  profiles.pc = {
+    module =
       { config, ... }:
       {
         sops.secrets."searxng/secret-key" = { };

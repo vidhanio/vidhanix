@@ -1,7 +1,7 @@
 { config, ... }:
 {
-  flake.aspects.nix = {
-    nixos = {
+  profiles.base = {
+    module = {
       nix.settings = {
         accept-flake-config = true;
         inherit (config.flake-file.nixConfig)

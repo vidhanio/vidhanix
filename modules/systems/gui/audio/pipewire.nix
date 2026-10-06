@@ -1,6 +1,6 @@
 {
-  flake.aspects.audio = {
-    nixos = {
+  profiles.pc = {
+    module = {
       services.pipewire = {
         enable = true;
         wireplumber.extraConfig = {

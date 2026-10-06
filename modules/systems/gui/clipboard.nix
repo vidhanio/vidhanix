@@ -1,6 +1,6 @@
 {
-  flake.aspects.clipboard = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { pkgs, ... }:
       {
         home.packages = with pkgs; [

@@ -1,6 +1,6 @@
 {
-  flake.aspects.nautilus = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { pkgs, ... }:
       {
         home.packages = [ pkgs.nautilus ];

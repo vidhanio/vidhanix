@@ -1,5 +1,5 @@
 {
-  flake.aspects.nixvim.homeManager = {
+  profiles.pc.homeModule = {
     programs.nixvim.plugins.mini.modules = {
       diff.view = {
         style = "sign";

@@ -3,8 +3,8 @@ let
   inherit (config) hosts;
 in
 {
-  flake.aspects.ssh-client = {
-    nixos = {
+  profiles.base = {
+    module = {
       programs.ssh.knownHosts = {
         "github.com".publicKey =
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
@@ -19,7 +19,7 @@ in
       ) hosts;
     };
 
-    homeManager = {
+    homeModule = {
       persist.files = [
         {
           file = ".ssh/id_ed25519";

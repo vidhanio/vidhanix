@@ -24,7 +24,7 @@ let
     };
 in
 {
-  flake.aspects.nixvim.homeManager = {
+  profiles.pc.homeModule = {
     programs.nixvim.imports = [ plugin ];
   };
 }

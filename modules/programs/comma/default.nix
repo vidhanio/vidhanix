@@ -2,8 +2,8 @@
 {
   flake-file.inputs.nix-index-database.url = "github:nix-community/nix-index-database";
 
-  flake.aspects.comma = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { inputs', pkgs, ... }:
       let
         binNames =

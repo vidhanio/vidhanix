@@ -1,5 +1,5 @@
 {
-  flake.aspects.noctalia.homeManager = { config, ... }: {
+  profiles.pc.homeModule = { config, ... }: {
     sops.secrets.apple = { };
 
     programs.noctalia.settings.calendar = {

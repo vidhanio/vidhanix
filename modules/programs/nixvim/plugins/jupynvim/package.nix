@@ -27,6 +27,7 @@ let
 
         meta = {
           description = "Native backend for jupynvim";
+          mainProgram = "jupynvim-core";
           homepage = "https://github.com/sheng-tse/jupynvim";
           license = lib.licenses.mit;
           platforms = lib.platforms.unix;
@@ -39,7 +40,7 @@ let
 
       postInstall = ''
         mkdir -p $out/bin
-        install -m755 ${core}/bin/jupynvim-core $out/bin/jupynvim-core
+        install -m755 ${lib.getExe core} $out/bin/jupynvim-core
       '';
 
       passthru = {
@@ -56,6 +57,7 @@ let
 
       meta = {
         description = "VSCode-style Jupyter notebook editing in Neovim";
+        mainProgram = "jupynvim-core";
         homepage = "https://github.com/sheng-tse/jupynvim";
         changelog = "https://github.com/sheng-tse/jupynvim/releases/tag/v${version}";
         license = lib.licenses.mit;

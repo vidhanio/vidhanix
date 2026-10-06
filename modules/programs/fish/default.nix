@@ -1,6 +1,6 @@
 {
-  flake.aspects.fish = {
-    nixos =
+  profiles.base = {
+    module =
       { config, ... }:
       {
         programs.fish.enable = true;
@@ -9,7 +9,7 @@
         '';
         users.defaultUserShell = config.programs.fish.package;
       };
-    homeManager =
+    homeModule =
       { pkgs, ... }:
       {
         programs = {

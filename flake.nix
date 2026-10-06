@@ -43,9 +43,6 @@
       url = "github:mightyiam/files";
       flake = false;
     };
-    flake-aspects = {
-      url = "github:denful/flake-aspects";
-    };
     flake-file = {
       url = "github:denful/flake-file";
     };

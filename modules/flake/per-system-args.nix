@@ -13,8 +13,8 @@ let
     };
 in
 {
-  flake.aspects.nix = {
-    nixos = perSystemArgs;
-    homeManager = perSystemArgs;
+  profiles.base = {
+    module = perSystemArgs;
+    homeModule = perSystemArgs;
   };
 }

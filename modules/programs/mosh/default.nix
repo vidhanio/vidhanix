@@ -1,6 +1,6 @@
 {
-  flake.aspects.mosh = {
-    nixos = {
+  profiles.base = {
+    module = {
       programs.mosh.enable = true;
     };
   };

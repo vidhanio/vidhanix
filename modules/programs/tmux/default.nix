@@ -1,6 +1,6 @@
 {
-  flake.aspects.tmux = {
-    homeManager = {
+  profiles.base = {
+    homeModule = {
       programs.tmux.enable = true;
     };
   };

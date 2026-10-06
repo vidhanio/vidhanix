@@ -1,5 +1,5 @@
 {
-  flake.aspects.hyprland.homeManager = {
+  profiles.pc.homeModule = {
     wayland.windowManager.hyprland.settings.config = {
       # SUPER + wheel scrubs the tape, so drop the 300ms wheel bind throttle
       binds.scroll_event_delay = 50;

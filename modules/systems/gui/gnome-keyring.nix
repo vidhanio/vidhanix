@@ -1,6 +1,6 @@
 {
-  flake.aspects.gnome-keyring = {
-    nixos = {
+  profiles.pc = {
+    module = {
       services.gnome.gnome-keyring.enable = true;
       programs.seahorse.enable = true;
 
@@ -10,7 +10,7 @@
       };
     };
 
-    homeManager = {
+    homeModule = {
       persist.directories = [ ".local/share/keyrings" ];
     };
   };

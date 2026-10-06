@@ -1,9 +1,9 @@
 {
-  flake.aspects._1password = {
-    nixos = {
+  profiles.pc = {
+    module = {
       programs._1password-gui.enable = true;
     };
-    homeManager = {
+    homeModule = {
       persist.directories = [ ".config/1Password" ];
     };
   };

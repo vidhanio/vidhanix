@@ -1,5 +1,5 @@
 {
-  flake.aspects.noctalia.homeManager = {
+  profiles.pc.homeModule = {
     programs.noctalia.settings = {
       lockscreen.enabled = false; # handled by hyprlock
       location.auto_locate = true;

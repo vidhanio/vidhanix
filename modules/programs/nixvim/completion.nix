@@ -1,5 +1,5 @@
 {
-  flake.aspects.nixvim.homeManager = {
+  profiles.pc.homeModule = {
     programs.nixvim.plugins = {
       blink-cmp = {
         enable = true;

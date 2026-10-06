@@ -1,6 +1,6 @@
 {
-  flake.aspects.hardware = {
-    nixos = {
+  profiles.pc = {
+    module = {
       services.fwupd.enable = true;
     };
   };

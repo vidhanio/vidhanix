@@ -1,8 +1,8 @@
 { lib, ... }:
 
 {
-  flake.aspects.steam = {
-    nixos =
+  profiles.pc = {
+    module =
       { config, pkgs, ... }:
       let
         gamescopeFullscreen = pkgs.symlinkJoin {

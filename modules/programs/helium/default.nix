@@ -1,8 +1,10 @@
 {
+  flake-file.inputs.helium.url = "github:schembriaiden/helium-browser-nix-flake";
 
-  flake.aspects.helium.homeManager =
+  profiles.pc.homeModule =
     {
       config,
+      inputs',
       lib,
       ...
     }:
@@ -10,7 +12,10 @@
       cfg = config.programs.helium;
     in
     {
-      programs.helium.enable = true;
+      programs.helium = {
+        enable = true;
+        package = inputs'.helium.packages.default;
+      };
 
       xdg.autostart.entries = lib.mkIf (cfg.finalPackage != null) [
         "${cfg.finalPackage}/share/applications/helium.desktop"

@@ -1,6 +1,6 @@
 {
-  flake.aspects.teams-for-linux = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { pkgs, ... }:
       {
         home.packages = [ pkgs.teams-for-linux ];

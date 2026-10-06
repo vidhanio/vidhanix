@@ -1,6 +1,6 @@
 {
-  flake.aspects.upower = {
-    nixos = {
+  profiles.pc = {
+    module = {
       services.upower.enable = true;
     };
   };

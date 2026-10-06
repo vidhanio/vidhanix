@@ -69,7 +69,7 @@ let
         runHook preUnpack
 
         ${lib.getExe' dpkg "dpkg-deb"} --fsys-tarfile "$src" |
-          ${lib.getExe' gnutar "tar"} --extract
+          ${lib.getExe gnutar} --extract
 
         runHook postUnpack
       '';
@@ -114,7 +114,7 @@ let
           headExe = lib.getExe' coreutils "head";
           nixExe = lib.getExe nix;
           prefetchExe = lib.getExe' nix "nix-prefetch-url";
-          sedExe = lib.getExe' gnused "sed";
+          sedExe = lib.getExe gnused;
           sortExe = lib.getExe' coreutils "sort";
           packageIndex = "https://repo.cider.sh/apt/pool/main/";
         in

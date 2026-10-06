@@ -1,6 +1,6 @@
 {
-  flake.aspects.omp = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { config, ... }:
       {
         home.file.".omp/agent/extensions/herdr-omp-agent-state.ts".source =

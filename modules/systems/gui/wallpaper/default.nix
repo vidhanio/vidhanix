@@ -1,7 +1,7 @@
 { lib, ... }:
 {
-  flake.aspects.wallpaper = {
-    nixos =
+  profiles.pc = {
+    module =
       { pkgs, config, ... }:
       let
         colors = config.lib.stylix.colors;
@@ -20,7 +20,7 @@
         stylix = {
           image = pkgs.runCommandLocal "wallpaper.png" { } ''
             gradient=$(
-              ${lib.getExe' pkgs.gawk "awk"} '
+              ${lib.getExe pkgs.gawk} '
                 function rms(start, end, splitPercent) {
                   return sqrt((1 - splitPercent) * start ^ 2 + splitPercent * end ^ 2) * 100
                 }
@@ -36,7 +36,7 @@
               '
             )
 
-            ${lib.getExe' pkgs.imagemagick "magick"} \
+            ${lib.getExe pkgs.imagemagick} \
               ${./iceman.png} \
               +level-colors "$gradient" \
               -colorspace sRGB \

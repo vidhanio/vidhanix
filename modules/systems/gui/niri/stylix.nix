@@ -1,5 +1,5 @@
 {
-  flake.aspects.niri.homeManager =
+  profiles.pc.homeModule =
     { config, lib, ... }:
     let
       colors = config.lib.stylix.colors.withHashtag;

@@ -1,7 +1,7 @@
 { lib, ... }:
 {
-  flake.aspects.network = {
-    nixos =
+  profiles.base = {
+    module =
       { config, ... }:
       let
         ssids = [

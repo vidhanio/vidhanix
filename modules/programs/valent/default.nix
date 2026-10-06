@@ -1,6 +1,6 @@
 {
-  flake.aspects.valent.homeManager =
-    { pkgs, ... }:
+  profiles.pc.homeModule =
+    { lib, pkgs, ... }:
     {
       home.packages = [ pkgs.valent ];
 
@@ -14,7 +14,7 @@
         Install.WantedBy = [ "graphical-session.target" ];
 
         Service = {
-          ExecStart = "${pkgs.valent}/bin/valent --gapplication-service";
+          ExecStart = "${lib.getExe pkgs.valent} --gapplication-service";
           Restart = "on-abort";
         };
       };

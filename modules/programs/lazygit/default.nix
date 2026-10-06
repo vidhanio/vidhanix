@@ -1,7 +1,7 @@
 { lib, ... }:
 {
-  flake.aspects.lazygit = {
-    homeManager =
+  profiles.base = {
+    homeModule =
       { pkgs, ... }:
       {
         programs.lazygit = {

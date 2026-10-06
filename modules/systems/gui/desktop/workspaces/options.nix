@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.aspects.desktop.homeManager = {
+  profiles.pc.homeModule = {
     options.desktop.workspaces = lib.mkOption {
       default = { };
       description = "Named workspaces shared across supported compositors.";

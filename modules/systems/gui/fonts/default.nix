@@ -1,6 +1,6 @@
 {
-  flake.aspects.fonts = {
-    nixos =
+  profiles.pc = {
+    module =
       {
         self',
         pkgs,

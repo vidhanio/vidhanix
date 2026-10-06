@@ -10,8 +10,8 @@
     inputs.nix-cachyos-kernel.inputs.nixpkgs.autoFollow = false;
   };
 
-  flake.aspects.cachyos-kernel = {
-    nixos =
+  hosts.vortex = {
+    module =
       { inputs', ... }:
       {
         boot.kernelPackages = inputs'.nix-cachyos-kernel.legacyPackages.linuxPackages-cachyos-latest;

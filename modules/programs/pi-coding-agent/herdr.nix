@@ -1,6 +1,6 @@
 {
-  flake.aspects.pi-coding-agent = {
-    homeManager =
+  profiles.pc = {
+    homeModule =
       { config, ... }:
       {
         home.file."${config.programs.pi-coding-agent.configDir}/extensions/herdr-agent-state.ts".source =

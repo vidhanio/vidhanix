@@ -13,8 +13,8 @@
     };
   };
 
-  flake.aspects.hyprland = {
-    nixos =
+  profiles.pc = {
+    module =
       { inputs', ... }:
       {
         programs.hyprland = {
@@ -26,7 +26,7 @@
           withUWSM = true;
         };
       };
-    homeManager =
+    homeModule =
       { config, inputs', ... }:
       {
         # https://wiki.hypr.land/Nix/Hyprland-on-Home-Manager/#nixos-uwsm

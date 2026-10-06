@@ -5,7 +5,7 @@
     flake = false;
   };
 
-  flake.aspects.ghostty.homeManager = { config, ... }: {
+  profiles.pc.homeModule = { config, ... }: {
     home.sessionVariables.TERMINAL = "ghostty";
 
     programs.ghostty = {

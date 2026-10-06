@@ -1,6 +1,6 @@
 {
-  flake.aspects.llama = {
-    nixos =
+  hosts.vortex = {
+    module =
       {
         lib,
         pkgs,
