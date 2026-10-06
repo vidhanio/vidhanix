@@ -6,13 +6,15 @@
       "packages"
       "generated-files"
     ];
-    content.introduction = {
-      title = "Introduction";
-      content = ''
-        A [Dendritic](https://github.com/mightyiam/dendritic) Nix flake for my stuff.
-      '';
+    content = {
+      introduction = {
+        title = "Introduction";
+        content = ''
+          A [Dendritic](https://github.com/mightyiam/dendritic) Nix flake for my stuff.
+        '';
+      };
+      packages.title = "Packages";
+      generated-files.title = "Generated Files";
     };
-    content.packages.title = "Packages";
-    content.generated-files.title = "Generated Files";
   };
 }

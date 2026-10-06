@@ -10,16 +10,12 @@
     treefmt = {
       programs = {
         nixfmt.enable = true;
-        statix.enable = true;
-        deadnix.enable = true;
 
         shfmt.enable = true;
-        shellcheck.enable = true;
 
         stylua.enable = true;
 
         ruff-format.enable = true;
-        ruff-check.enable = true;
 
         oxfmt.enable = true;
 
@@ -33,7 +29,5 @@
         on-unmatched = "fatal";
       };
     };
-
-    pre-commit.settings.hooks.treefmt.enable = true;
   };
 }

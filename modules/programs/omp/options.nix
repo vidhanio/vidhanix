@@ -340,69 +340,71 @@
 
         config = lib.mkIf cfg.enable {
 
-          home.packages = lib.mkIf (cfg.package != null) [ cfg.package ];
+          home = {
+            packages = lib.mkIf (cfg.package != null) [ cfg.package ];
 
-          # omp locks and rewrites config.yml at runtime, so it must be a
-          # writable file rather than a read-only `home.file` symlink.
-          home.activation.ompConfig = lib.mkIf (cfg.settings != null) {
-            before = [ ];
-            after = [ "writeBoundary" ];
-            data = ''
-              run mkdir -p "$HOME/.omp/agent"
-              run install -m 600 ${yaml.generate "omp-config.yml" cfg.settings} "$HOME/.omp/agent/config.yml"
-            '';
+            # omp locks and rewrites config.yml at runtime, so it must be a
+            # writable file rather than a read-only `home.file` symlink.
+            activation.ompConfig = lib.mkIf (cfg.settings != null) {
+              before = [ ];
+              after = [ "writeBoundary" ];
+              data = ''
+                run mkdir -p "$HOME/.omp/agent"
+                run install -m 600 ${yaml.generate "omp-config.yml" cfg.settings} "$HOME/.omp/agent/config.yml"
+              '';
+            };
+
+            file = {
+
+              ".omp/agent/models.yml" = lib.mkIf (cfg.models != { }) {
+                source = yaml.generate "omp-models.yml" cfg.models;
+              };
+
+              ".omp/agent/mcp.json" = lib.mkIf (mcpServers != { }) {
+                source = json.generate "omp-mcp.json" { inherit mcpServers; };
+              };
+
+              ".omp/agent/keybindings.yml" = lib.mkIf (cfg.keybindings != { }) {
+                source = yaml.generate "omp-keybindings.yml" cfg.keybindings;
+              };
+
+              ".omp/agent/AGENTS.md" =
+                if lib.isPath cfg.context then
+                  { source = cfg.context; }
+                else
+                  lib.mkIf (cfg.context != "") {
+                    text = cfg.context;
+                  };
+            }
+            // (lib.optionalAttrs (lib.hm.strings.isPathLike cfg.themes) {
+              ".omp/agent/themes" = {
+                source = cfg.themes;
+                recursive = true;
+              };
+            })
+            // lib.mapAttrs' (
+              name: content:
+              lib.nameValuePair ".omp/agent/themes/${name}.json" (
+                if lib.isPath content then
+                  { source = content; }
+                else
+                  {
+                    source = json.generate "omp-${name}.json" (
+                      {
+                        "$schema" =
+                          "https://raw.githubusercontent.com/can1357/oh-my-pi/main/packages/coding-agent/theme-schema.json";
+                        inherit name;
+                      }
+                      // content
+                    );
+                  }
+              )
+            ) (if lib.isAttrs cfg.themes then cfg.themes else { })
+            // resourceFiles "commands" ".md" cfg.commands
+            // resourceFiles "skills" "/SKILL.md" cfg.skills
+            // resourceFiles "prompts" ".md" cfg.prompts
+            // resourceFiles "tools" ".ts" cfg.tools;
           };
-
-          home.file = {
-
-            ".omp/agent/models.yml" = lib.mkIf (cfg.models != { }) {
-              source = yaml.generate "omp-models.yml" cfg.models;
-            };
-
-            ".omp/agent/mcp.json" = lib.mkIf (mcpServers != { }) {
-              source = json.generate "omp-mcp.json" { inherit mcpServers; };
-            };
-
-            ".omp/agent/keybindings.yml" = lib.mkIf (cfg.keybindings != { }) {
-              source = yaml.generate "omp-keybindings.yml" cfg.keybindings;
-            };
-
-            ".omp/agent/AGENTS.md" =
-              if lib.isPath cfg.context then
-                { source = cfg.context; }
-              else
-                lib.mkIf (cfg.context != "") {
-                  text = cfg.context;
-                };
-          }
-          // (lib.optionalAttrs (lib.hm.strings.isPathLike cfg.themes) {
-            ".omp/agent/themes" = {
-              source = cfg.themes;
-              recursive = true;
-            };
-          })
-          // lib.mapAttrs' (
-            name: content:
-            lib.nameValuePair ".omp/agent/themes/${name}.json" (
-              if lib.isPath content then
-                { source = content; }
-              else
-                {
-                  source = json.generate "omp-${name}.json" (
-                    {
-                      "$schema" =
-                        "https://raw.githubusercontent.com/can1357/oh-my-pi/main/packages/coding-agent/theme-schema.json";
-                      inherit name;
-                    }
-                    // content
-                  );
-                }
-            )
-          ) (if lib.isAttrs cfg.themes then cfg.themes else { })
-          // resourceFiles "commands" ".md" cfg.commands
-          // resourceFiles "skills" "/SKILL.md" cfg.skills
-          // resourceFiles "prompts" ".md" cfg.prompts
-          // resourceFiles "tools" ".ts" cfg.tools;
 
           assertions = map resourceAssertion [
             {

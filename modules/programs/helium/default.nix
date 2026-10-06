@@ -16,9 +16,11 @@
         "${cfg.finalPackage}/share/applications/helium.desktop"
       ];
 
-      desktop.binds."SUPER + b".cmd = "focus-or-launch helium helium";
-      desktop.binds."SUPER + SHIFT + b".app = "helium";
-      desktop.workspaces.work.apps = [ "helium" ];
+      desktop = {
+        binds."SUPER + b".cmd = "focus-or-launch helium helium";
+        binds."SUPER + SHIFT + b".app = "helium";
+        workspaces.work.apps = [ "helium" ];
+      };
 
       persist.directories = [ ".config/net.imput.helium" ];
     };

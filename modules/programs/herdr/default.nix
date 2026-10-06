@@ -64,9 +64,11 @@
 
         programs.agents.skills.herdr = "${herdr.src}/skills/herdr";
 
-        desktop.binds."SUPER + t".cmd = "focus-or-launch dev.herdr ${launch}";
-        desktop.binds."SUPER + SHIFT + t".app = launch;
-        desktop.workspaces.work.apps = [ "dev.herdr" ];
+        desktop = {
+          binds."SUPER + t".cmd = "focus-or-launch dev.herdr ${launch}";
+          binds."SUPER + SHIFT + t".app = launch;
+          workspaces.work.apps = [ "dev.herdr" ];
+        };
 
         xdg.autostart.entries = [ "${package}/share/applications/herdr.desktop" ];
 
