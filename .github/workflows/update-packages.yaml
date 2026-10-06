@@ -18,9 +18,9 @@ jobs:
           (github.event_name == 'push' || github.event_name == 'schedule' || 
           github.event_name == 'workflow_dispatch')) || (github.event_name == 
           'push' && 
-          contains(fromJSON('["vidhanio","vidhanix[bot]","dependabot[bot]"]'), 
+          contains(fromJSON('["vidhanio","vidhan-bot[bot]","dependabot[bot]"]'),
           github.actor)) || (github.event_name == 'pull_request' && 
-          contains(fromJSON('["vidhanio","vidhanix[bot]","dependabot[bot]"]'), 
+          contains(fromJSON('["vidhanio","vidhan-bot[bot]","dependabot[bot]"]'),
           github.event.pull_request.user.login))) && secrets.CACHIX_AUTH_TOKEN 
           || '' }}
         ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
