@@ -1,25 +1,39 @@
 # AGENTS.md
 
-This is my dendritic NixOS flake for system preferences, programs, and configurations across my machines.
+Personal NixOS and Home Manager configurations, composed with flake-parts and import-tree using the Dendritic pattern.
 
-## Structure
+## Organization
 
-- Look for an existing feature under `modules/` and follow nearby patterns.
-- Files under `modules/` are imported automatically as flake-parts modules, except underscore-prefixed paths. Contribute directly to `profiles.<name>.module` (NixOS) and `profiles.<name>.homeModule` (Home Manager); do not create per-feature module registries.
-- Prefer upstream Home Manager options for user configuration and NixOS options for system-level features. Packages alone can go in `home.packages`.
-- Keep apps and compositor-specific settings in `modules/programs/<name>/`, services in `modules/services/<name>/`, shared desktop configuration in `modules/desktop/`, and system foundations in the shallow `modules/system/` directory. Avoid generic `settings/` layers and one-option feature directories; keep related settings together and assets beside their owner.
-- Profiles live in `modules/profiles/`. Use `profiles.base` for headless systems, `profiles.pc` for personal computers, and `profiles.apple-silicon` for Apple-specific settings. Profiles inherit both module classes explicitly.
-- Keep machine-specific settings in `modules/hosts/<hostname>/` contributing to `hosts.<hostname>.{module,homeModule}`, and identities and per-user Home Manager settings in `modules/users/<username>/` contributing to `users.<username>.module`.
-- Put reusable NixOS, Home Manager, and Stylix implementations in `modules/upstream/_modules/{nixos,home-manager,stylix}` using upstream layouts. These are ordinary lower-level modules, not flake-parts modules; the base profile imports the exported upstream bundles. Keep personal configuration outside them.
-- Repository-specific option helpers may stay in `options.nix` contributing directly to a profile. Keep sorted blocks sorted.
-- Edit the Nix sources of generated files, not their generated output; regenerate with `just generate`.
+- `modules/profiles/`: shared NixOS and Home Manager configuration. `base` provides headless foundations; `pc` extends it for desktop systems; `apple-silicon` extends `pc` for Apple hardware.
+- `modules/hosts/<hostname>/`: host metadata, profile selection, and machine-specific configuration.
+- `modules/users/<username>/`: user identity and Home Manager configuration.
+- `modules/system/`: boot, storage, persistence, and Nix configuration.
+- `modules/desktop/`: shared bindings, workspaces, appearance, and session helpers.
+- `modules/programs/<name>/`: application and compositor configuration, adapters, and packages.
+- `modules/services/<name>/`: service configuration.
+- `modules/upstream/_modules/{nixos,home-manager,stylix}/`: reusable modules in upstream-compatible layouts.
+- `modules/flake/`: inputs, tooling, generated files, and repository infrastructure.
+
+## Module conventions
+
+- Follow the conventions of the feature being changed. Keep related configuration, packages, and assets together.
+- import-tree discovers Nix files under `modules/` automatically. Underscore-prefixed paths are excluded from discovery.
+- Contribute shared configuration to `profiles.<name>.module` for NixOS and `profiles.<name>.homeModule` for Home Manager. Profile inheritance imports both module classes explicitly.
+- Contribute host configuration to `hosts.<hostname>.{module,homeModule}` and per-user Home Manager configuration to `users.<username>.module`.
+- Prefer upstream NixOS and Home Manager options. Use `home.packages` for packages requiring no additional configuration.
+- Reusable modules define NixOS or Home Manager options and implementation. The base profile imports the `nixosModules.upstream` and `homeModules.upstream` bundles. Keep personal preferences in feature modules.
+- Stylix targets follow the upstream target layout and use its `mkTarget` implementation.
+- Group related settings in cohesive files. Keep option declarations in `options.nix` when a feature benefits from a separate schema.
+- Use `lib.getExe` for a package's main executable and `lib.getExe'` for secondary commands.
+- Preserve ordering in sorted blocks. Add concise comments where the rationale needs explanation.
 
 ## Workflow
 
-- Load the dev shell with `direnv reload`.
-- Use `just` recipes where helpful
-- Stage new files before Nix evaluation so the flake can see them. Some recipes run `git add -A`, so check for unrelated changes first.
-- Format with `nix fmt` and validate the affected configuration with an appropriate evaluation or build. Do not activate the system unless asked.
-- Add comments only when necessary, and keep them concise.
-- Commit each finished unit of work with a lowercase `<scope>: <description>` title, e.g. `kitty: disable close confirmation`.
-- Fold small follow-ups into the current unit's commit. Leave no task changes uncommitted, and do not include unrelated changes.
+- Load the development shell with `direnv reload`.
+- Check the working tree before running recipes that stage files with `git add -A`.
+- Stage new files before flake evaluation.
+- Edit the Nix definitions for generated files and regenerate with `just generate`.
+- Format with `nix fmt` and validate affected configurations through evaluation or builds.
+- Activate configurations only when explicitly requested.
+- Commit completed work with a lowercase `<scope>: <description>` title, such as `kitty: disable close confirmation`.
+- Fold small follow-ups into the current commit. Keep unrelated changes separate and leave completed task changes committed.

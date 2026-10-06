@@ -9,44 +9,38 @@
     ];
     content = {
       introduction = {
-        title = "Introduction";
+        title = "Overview";
         content = ''
-          A [Dendritic](https://github.com/mightyiam/dendritic) Nix flake for my stuff.
+          Personal NixOS and Home Manager configurations for x86-64 and Apple Silicon machines.
+          Built with flake-parts and import-tree using the [Dendritic pattern](https://github.com/mightyiam/dendritic).
         '';
       };
       structure = {
         title = "Structure";
         content = ''
-          Every automatically imported Nix file under `modules/` is a flake-parts module describing a feature.
-          Features merge directly into the repository's own deferred-module options rather than registering per-app modules.
-          The layout follows ownership, without a `systems/gui` hierarchy or nested `settings` directories:
-
           ```text
           modules/
-            profiles/   # shared foundations and hardware profiles
-            hosts/      # machine metadata, storage, and host-specific settings
-            users/      # identities and per-user Home Manager settings
+            profiles/   # shared configuration and hardware profiles
+            hosts/      # machine metadata and host-specific configuration
+            users/      # identities and per-user Home Manager configuration
             system/     # boot, storage, persistence, and Nix
-            desktop/    # shared bindings, workspaces, theme, and session helpers
-            programs/   # apps and compositors, including their own settings and adapters
-            services/   # system and user services
-            upstream/   # reusable ordinary modules and Stylix targets
-            flake/      # flake tooling, generated files, and infrastructure
+            desktop/    # shared bindings, workspaces, appearance, and session helpers
+            programs/   # applications, compositors, adapters, and packages
+            services/   # service configuration
+            upstream/   # reusable NixOS, Home Manager, and Stylix modules
+            flake/      # inputs, tooling, generated files, and infrastructure
           ```
 
-          Configuration is composed through these options:
+          import-tree discovers feature modules under `modules/`. Features contribute to deferred modules through three option groups:
 
-          - `profiles.<name>.module` and `profiles.<name>.homeModule` share NixOS and Home Manager configuration across machines.
-            `base` is headless, `pc` inherits `base` for personal computers, and `apple-silicon` inherits `pc` for Apple hardware.
-          - `hosts.<hostname>.{module,homeModule}` select profiles and add machine-specific configuration.
-            Hosts also declare their platform, SSH key, and enabled users.
-          - `users.<username>.module` holds per-user Home Manager configuration alongside identity, SSH keys, and an optional face image.
+          - `profiles.<name>.{module,homeModule}`: shared NixOS and Home Manager configuration.
+            `base` provides headless foundations, `pc` adds desktop configuration, and `apple-silicon` extends `pc` for Apple hardware.
+          - `hosts.<hostname>.{module,homeModule}`: profile selection and machine-specific configuration, accompanied by platform, SSH key, and user metadata.
+          - `users.<username>.module`: per-user Home Manager configuration, accompanied by identity and SSH keys.
 
-          Reusable lower-level modules live under `modules/upstream/_modules/{nixos,home-manager,stylix}` in upstream-style layouts.
-          The underscore excludes them from automatic flake-parts importing.
-          `nixosModules.upstream` and `homeModules.upstream` bundle them for the base profile and external consumers.
-          Stylix targets use `<target>/{hm,nixos,meta}.nix` and the upstream `mkTarget` implementation, with a local autoloader matching Stylix's argument guards.
-          Personal settings remain in the feature files outside `upstream`.
+          Reusable modules live in `modules/upstream/_modules/{nixos,home-manager,stylix}/`.
+          The base profile imports the exported `nixosModules.upstream` and `homeModules.upstream` bundles.
+          Keep related settings, packages, and assets beside their owning feature.
         '';
       };
       packages.title = "Packages";

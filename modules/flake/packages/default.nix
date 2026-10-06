@@ -26,8 +26,8 @@
           );
         in
         ''
-          This flake has a couple of packages, mostly used internally, but available via `.#<package>`.
-          Some of these packages provide a `passthru.updateScript`, all of which can be run via `just update-packages`.
+          Build packages with `nix build .#<package>`.
+          Run available `passthru.updateScript` hooks with `just update-packages`; pass package names to update a subset.
 
           ${config.files.lib.readme.renderTable {
             header = [
