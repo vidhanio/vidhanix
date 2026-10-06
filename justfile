@@ -39,6 +39,9 @@ systemPackage := nixosConfig + ".system.build.toplevel"
 # Test the configuration, passing extra flags to `nh os`
 @test *flags: (os "test" flags)
 
+# Build the configuration, passing extra flags to `nh os`
+@build *flags: (os "build" flags)
+
 # Format the tree with treefmt, e.g. `just fmt --ci`
 @fmt *flags: add
     nix fmt -- {{ flags }}
@@ -50,7 +53,6 @@ systemPackage := nixosConfig + ".system.build.toplevel"
 # Update the flake inputs, then update each package
 update: generate
     nix flake update
-    just generate
     just update-packages
 
 # Evaluate a path under the current host's NixOS config, e.g. `just eval-nixos services.tailscale`
@@ -60,43 +62,3 @@ update: generate
 # Evaluate a Home Manager option, e.g. `just eval-hm programs.git`
 @eval-hm option *flags: add
     nix eval {{ flags }} {{ hmConfig }}.{{ option }}
-
-# Search NixOS options, e.g. `just search-nixos services.tailscale`
-@search-nixos *query: add
-    nh search options --scope=nixpkgs {{ query }}
-
-# Search home-manager options, e.g. `just search-hm programs.git`
-@search-hm *query: add
-    nh search options --scope=home-manager {{ query }}
-
-# Evaluate a flake option's value, e.g. `just eval-flake files.generatedMessage.text`
-@eval-flake option *flags: add
-    nix eval {{ flags }} .#debug.config.{{ option }}
-
-# Evaluate a per-system option's value, e.g. `just eval-per-system files.readme.rendered`
-@eval-per-system option *flags: add
-    nix eval {{ flags }} {{ perSystemConfig }}.{{ option }}
-
-# Evaluate the whole configuration
-@eval-system: fmt
-    nix eval --raw {{ systemPackage }}.drvPath
-
-# Build a flake path (or a Nix build expression) and print its output store paths
-@build-flake *args: add
-    if [ -t 1 ]; \
-        then nom build --no-link --print-out-paths {{ args }}; \
-    else \
-        nix build --print-build-logs --no-link --print-out-paths {{ args }}; \
-    fi
-
-# Build a NixOS config path, e.g. `just build-nixos system.build.toplevel`
-@build-nixos option *flags: (build-flake (nixosConfig + "." + option) flags)
-
-# Build a Home Manager config path, e.g. `just build-hm home.path`
-@build-hm option *flags: (build-flake (hmConfig + "." + option) flags)
-
-# Build a per-system config path, e.g. `just build-per-system packages.generate-files`
-@build-per-system option *flags: (build-flake (perSystemConfig + "." + option) flags)
-
-# Build the whole configuration
-@build-system: (build-flake systemPackage)
