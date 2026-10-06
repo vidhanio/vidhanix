@@ -9,7 +9,23 @@ A [Dendritic](https://github.com/mightyiam/dendritic) Nix flake for my stuff.
 ## Structure
 
 Every automatically imported Nix file under `modules/` is a flake-parts module describing a feature.
-Features merge directly into the repository's own deferred-module options rather than registering per-app modules:
+Features merge directly into the repository's own deferred-module options rather than registering per-app modules.
+The layout follows ownership, without a `systems/gui` hierarchy or nested `settings` directories:
+
+```text
+modules/
+  profiles/   # shared foundations and hardware profiles
+  hosts/      # machine metadata, storage, and host-specific settings
+  users/      # identities and per-user Home Manager settings
+  system/     # boot, storage, persistence, and Nix
+  desktop/    # shared bindings, workspaces, theme, and session helpers
+  programs/   # apps and compositors, including their own settings and adapters
+  services/   # system and user services
+  upstream/   # reusable ordinary modules and Stylix targets
+  flake/      # flake tooling, generated files, and infrastructure
+```
+
+Configuration is composed through these options:
 
 - `profiles.<name>.module` and `profiles.<name>.homeModule` share NixOS and Home Manager configuration across machines.
   `base` is headless, `pc` inherits `base` for personal computers, and `apple-silicon` inherits `pc` for Apple hardware.
@@ -28,27 +44,27 @@ Personal settings remain in the feature files outside `upstream`.
 This flake has a couple of packages, mostly used internally, but available via `.#<package>`.
 Some of these packages provide a `passthru.updateScript`, all of which can be run via `just update-packages`.
 
-| Package                                                                        | Description                                                                                                                        | Updatable |
-| :----------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :-------: |
-| [`berkeley-mono`](modules/systems/gui/fonts/vidhan-fonts.nix)                  | A love letter to the golden era of computing                                                                                       |           |
-| [`berkeley-mono-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)         | A love letter to the golden era of computing                                                                                       |           |
-| [`bibata-combined`](modules/systems/gui/cursor/packages/ful1e5-cursors.nix)    | Bibata Cursor theme combining both Xcursor and hyprcursor versions                                                                 |           |
-| [`bibata-cursor`](modules/systems/gui/cursor/packages/ful1e5-cursors.nix)      | Material based cursor theme                                                                                                        |     ✓     |
-| [`bibata-hyprcursor`](modules/systems/gui/cursor/packages/ful1e5-cursors.nix)  | Bibata Cursor theme adapted for hyprcursor                                                                                         |           |
-| [`breezex-combined`](modules/systems/gui/cursor/packages/ful1e5-cursors.nix)   | BreezeX Cursor theme combining both Xcursor and hyprcursor versions                                                                |           |
-| [`breezex-cursor`](modules/systems/gui/cursor/packages/ful1e5-cursors.nix)     | Extended KDE cursor                                                                                                                |     ✓     |
-| [`breezex-hyprcursor`](modules/systems/gui/cursor/packages/ful1e5-cursors.nix) | BreezeX Cursor theme adapted for hyprcursor                                                                                        |           |
-| [`cider`](modules/programs/cider/package.nix)                                  | A cross-platform Apple Music experience built on Vue.js and written from the ground up with performance in mind                    |     ✓     |
-| [`generate-files`](modules/flake/files/default.nix)                            | Generate various files for this repository                                                                                         |           |
-| [`google-combined`](modules/systems/gui/cursor/packages/ful1e5-cursors.nix)    | Google Cursor theme combining both Xcursor and hyprcursor versions                                                                 |           |
-| [`google-cursor`](modules/systems/gui/cursor/packages/ful1e5-cursors.nix)      | Opensource cursor theme inspired by Google                                                                                         |     ✓     |
-| [`google-hyprcursor`](modules/systems/gui/cursor/packages/ful1e5-cursors.nix)  | Google Cursor theme adapted for hyprcursor                                                                                         |           |
-| [`google-sans-flex`](modules/systems/gui/fonts/vidhan-fonts.nix)               | The next generation of Google's brand typeface                                                                                     |           |
-| [`jupynvim`](modules/programs/nixvim/plugins/jupynvim/package.nix)             | VSCode-style Jupyter notebook editing in Neovim                                                                                    |     ✓     |
-| [`linux-asahi-fairydust`](modules/systems/profiles/apple-silicon/kernel.nix)   | Experimental Asahi Linux kernel with DisplayPort Alt Mode support                                                                  |     ✓     |
-| [`muvm-steam`](modules/programs/steam/packages/muvm-steam.nix)                 | ARM64 Steam beta client with codecs and runtime in muvm for Apple Silicon                                                          |           |
-| [`pragmata-pro-variable`](modules/systems/gui/fonts/vidhan-fonts.nix)          | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |           |
-| [`update-packages`](modules/flake/packages/update-packages/default.nix)        | Update all packages in this flake that have an update script                                                                       |           |
+| Package                                                                    | Description                                                                                                                        | Updatable |
+| :------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :-------: |
+| [`berkeley-mono`](modules/desktop/fonts/vidhan-fonts.nix)                  | A love letter to the golden era of computing                                                                                       |           |
+| [`berkeley-mono-variable`](modules/desktop/fonts/vidhan-fonts.nix)         | A love letter to the golden era of computing                                                                                       |           |
+| [`bibata-combined`](modules/desktop/cursor/packages/ful1e5-cursors.nix)    | Bibata Cursor theme combining both Xcursor and hyprcursor versions                                                                 |           |
+| [`bibata-cursor`](modules/desktop/cursor/packages/ful1e5-cursors.nix)      | Material based cursor theme                                                                                                        |     ✓     |
+| [`bibata-hyprcursor`](modules/desktop/cursor/packages/ful1e5-cursors.nix)  | Bibata Cursor theme adapted for hyprcursor                                                                                         |           |
+| [`breezex-combined`](modules/desktop/cursor/packages/ful1e5-cursors.nix)   | BreezeX Cursor theme combining both Xcursor and hyprcursor versions                                                                |           |
+| [`breezex-cursor`](modules/desktop/cursor/packages/ful1e5-cursors.nix)     | Extended KDE cursor                                                                                                                |     ✓     |
+| [`breezex-hyprcursor`](modules/desktop/cursor/packages/ful1e5-cursors.nix) | BreezeX Cursor theme adapted for hyprcursor                                                                                        |           |
+| [`cider`](modules/programs/cider/package.nix)                              | A cross-platform Apple Music experience built on Vue.js and written from the ground up with performance in mind                    |     ✓     |
+| [`generate-files`](modules/flake/files/default.nix)                        | Generate various files for this repository                                                                                         |           |
+| [`google-combined`](modules/desktop/cursor/packages/ful1e5-cursors.nix)    | Google Cursor theme combining both Xcursor and hyprcursor versions                                                                 |           |
+| [`google-cursor`](modules/desktop/cursor/packages/ful1e5-cursors.nix)      | Opensource cursor theme inspired by Google                                                                                         |     ✓     |
+| [`google-hyprcursor`](modules/desktop/cursor/packages/ful1e5-cursors.nix)  | Google Cursor theme adapted for hyprcursor                                                                                         |           |
+| [`google-sans-flex`](modules/desktop/fonts/vidhan-fonts.nix)               | The next generation of Google's brand typeface                                                                                     |           |
+| [`jupynvim`](modules/programs/nixvim/plugins/jupynvim/package.nix)         | VSCode-style Jupyter notebook editing in Neovim                                                                                    |     ✓     |
+| [`linux-asahi-fairydust`](modules/profiles/apple-silicon/kernel.nix)       | Experimental Asahi Linux kernel with DisplayPort Alt Mode support                                                                  |     ✓     |
+| [`muvm-steam`](modules/programs/steam/packages/muvm-steam.nix)             | ARM64 Steam beta client with codecs and runtime in muvm for Apple Silicon                                                          |           |
+| [`pragmata-pro-variable`](modules/desktop/fonts/vidhan-fonts.nix)          | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |           |
+| [`update-packages`](modules/flake/packages/update-packages/default.nix)    | Update all packages in this flake that have an update script                                                                       |           |
 
 ## Generated Files
 

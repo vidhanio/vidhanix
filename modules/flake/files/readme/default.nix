@@ -18,7 +18,23 @@
         title = "Structure";
         content = ''
           Every automatically imported Nix file under `modules/` is a flake-parts module describing a feature.
-          Features merge directly into the repository's own deferred-module options rather than registering per-app modules:
+          Features merge directly into the repository's own deferred-module options rather than registering per-app modules.
+          The layout follows ownership, without a `systems/gui` hierarchy or nested `settings` directories:
+
+          ```text
+          modules/
+            profiles/   # shared foundations and hardware profiles
+            hosts/      # machine metadata, storage, and host-specific settings
+            users/      # identities and per-user Home Manager settings
+            system/     # boot, storage, persistence, and Nix
+            desktop/    # shared bindings, workspaces, theme, and session helpers
+            programs/   # apps and compositors, including their own settings and adapters
+            services/   # system and user services
+            upstream/   # reusable ordinary modules and Stylix targets
+            flake/      # flake tooling, generated files, and infrastructure
+          ```
+
+          Configuration is composed through these options:
 
           - `profiles.<name>.module` and `profiles.<name>.homeModule` share NixOS and Home Manager configuration across machines.
             `base` is headless, `pc` inherits `base` for personal computers, and `apple-silicon` inherits `pc` for Apple hardware.
