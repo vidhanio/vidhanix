@@ -7,9 +7,15 @@
       in
       {
         wayland.windowManager.hyprland = {
-          extraLuaFiles."hyprsplit/init" = {
-            autoLoad = false;
-            content = "${pkgs.hyprlandPlugins.hyprsplit.src}/init.lua";
+          extraLuaFiles = {
+            "hyprsplit/init" = {
+              autoLoad = false;
+              content = "${pkgs.hyprlandPlugins.hyprsplit.src}/init.lua";
+            };
+            scrolling-gesture = {
+              autoLoad = false;
+              content = ./scrolling-gesture.lua;
+            };
           };
 
           settings = {
@@ -24,7 +30,7 @@
               {
                 fingers = 3;
                 direction = "horizontal";
-                action = "scroll_move";
+                action = lua.lib.mkRaw ''require("scrolling-gesture")'';
               }
             ];
 
