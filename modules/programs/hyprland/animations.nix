@@ -21,18 +21,6 @@
               }
             ];
           }
-          {
-            _args = [
-              "niriScroll"
-              {
-                type = "spring";
-                stiffness = 800;
-                # Critical damping: 2 * sqrt(stiffness * mass).
-                damping = 56.568542494923804;
-                mass = 1;
-              }
-            ];
-          }
         ];
         animation = [
           {
@@ -40,12 +28,6 @@
             enabled = true;
             speed = 2.5;
             bezier = "easeOutQuint";
-          }
-          {
-            leaf = "windowsMove";
-            enabled = true;
-            spring = "niriScroll";
-            speed = 1;
           }
           {
             leaf = "workspaces";

@@ -47,10 +47,6 @@
             autoLoad = false;
             content = "${pkgs.hyprlandPlugins.hyprsplit.src}/init.lua";
           };
-          scrolling-gesture = {
-            autoLoad = false;
-            content = ./scrolling-gesture.lua;
-          };
         };
         settings = {
           workspace_rule = lib.mkAfter (map renderRule workspaces);
@@ -64,7 +60,7 @@
             {
               fingers = 3;
               direction = "horizontal";
-              action = lua.lib.mkRaw ''require("scrolling-gesture")'';
+              action = "scroll_move";
             }
           ];
           config.binds.hide_special_on_workspace_change = true;
