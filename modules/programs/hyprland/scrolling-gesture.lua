@@ -1,3 +1,8 @@
+-- Niri's touchpad normalization and swipe tracker defaults.
+local WORKING_AREA_MOVEMENT = 1200
+local HISTORY_LIMIT_MS = 150
+local DECELERATION = 0.997
+
 local state
 local animation_rule = hl.window_rule({
 	name = "scrolling-gesture",
@@ -5,8 +10,6 @@ local animation_rule = hl.window_rule({
 	match = { float = false },
 	no_anim = true,
 })
-
-local restore_animation
 
 local function active_workspace()
 	return hl.get_active_special_workspace() or hl.get_active_workspace()
@@ -20,51 +23,84 @@ local function restore_focus()
 end
 
 local function reset()
-	restore_focus()
-	if restore_animation then
-		restore_animation:set_enabled(false)
-	end
 	animation_rule:set_enabled(false)
-end
-
-local function same_context()
-	return state
-		and active_workspace() == state.workspace
-		and hl.get_active_monitor() == state.monitor
-		and state.workspace.tiled_layout == "scrolling"
+	restore_focus()
 end
 
 local function check_context()
-	if state and not same_context() then
+	if
+		state
+		and (
+			active_workspace() ~= state.workspace
+			or hl.get_active_monitor() ~= state.monitor
+			or state.workspace.tiled_layout ~= "scrolling"
+		)
+	then
 		reset()
 	end
 end
 
-local function bounds(workspace, monitor)
-	local first, last
-	for _, window in ipairs(hl.get_windows({ workspace = workspace, floating = false })) do
-		if window.layout and not window.hidden then
-			local left = window.at.x
-			local right = left + window.size.x
-			local column = { left = left, right = right, center = (left + right) / 2 }
-			if not first or column.center < first.center then
-				first = column
-			end
-			if not last or column.center > last.center then
-				last = column
+local function track(delta, time_ms)
+	local history = state.history
+	if #history > 0 and time_ms < history[#history].time_ms then
+		return false
+	end
+	table.insert(history, { delta = delta, time_ms = time_ms })
+	while time_ms - history[1].time_ms > HISTORY_LIMIT_MS do
+		table.remove(history, 1)
+	end
+	return true
+end
+
+local function projected_motion()
+	local history = state.history
+	local duration = history[#history].time_ms - history[1].time_ms
+	if duration == 0 then
+		return 0
+	end
+	local delta = 0
+	for _, sample in ipairs(history) do
+		delta = delta + sample.delta
+	end
+	return -(delta / duration) / math.log(DECELERATION)
+end
+
+local function snap_offset(projected)
+	local columns, seen = {}, {}
+	local border = hl.get_config("general.border_size")
+	for _, window in ipairs(hl.get_windows({ workspace = state.workspace, floating = false })) do
+		local layout = window.layout
+		if layout and layout.column and not window.hidden and not seen[layout.column.index] then
+			seen[layout.column.index] = true
+			local left = window.at.x - border
+			table.insert(columns, { left = left, right = window.at.x + window.size.x + border })
+		end
+	end
+	if #columns == 0 then
+		return
+	end
+	table.sort(columns, function(a, b)
+		return a.left < b.left
+	end)
+
+	-- Edge-aligned snaps, bounded by the first and last columns, as in Niri's default layout.
+	local first = state.left - columns[1].left
+	local last = state.right - columns[#columns].right
+	local best = first
+	local function consider(offset)
+		if math.abs(offset - projected) < math.abs(best - projected) then
+			best = offset
+		end
+	end
+	consider(last)
+	for _, column in ipairs(columns) do
+		for _, offset in ipairs({ state.left - column.left, state.right - column.right }) do
+			if last < offset and offset < first then
+				consider(offset)
 			end
 		end
 	end
-	if not first then
-		return
-	end
-
-	local reserved = monitor.reserved
-	local gaps = hl.get_config("general.gaps_out")
-	local left = monitor.x + reserved.left + gaps.left
-	local right = monitor.x + monitor.mode.width - reserved.right - gaps.right
-	local center = (left + right) / 2
-	return math.min(0, center - last.center, right - last.right), math.max(0, center - first.center, left - first.left)
+	return best
 end
 
 local function move(delta)
@@ -87,26 +123,22 @@ return {
 			return
 		end
 
-		local min_delta, max_delta = bounds(workspace, monitor)
-		if not min_delta then
+		local gaps = hl.get_config("general.gaps_out")
+		local left = monitor.x + monitor.reserved.left + gaps.left
+		local right = monitor.x + monitor.mode.width - monitor.reserved.right - gaps.right
+		if right <= left then
 			return
 		end
 		state = {
 			workspace = workspace,
 			monitor = monitor,
 			follow_focus = hl.get_config("scrolling.follow_focus"),
-			delta = 0,
-			min_delta = min_delta,
-			max_delta = max_delta,
+			left = left,
+			right = right,
+			scale = (right - left) / WORKING_AREA_MOVEMENT,
+			history = {},
 		}
 		hl.config({ scrolling = { follow_focus = false } })
-		if not restore_animation then
-			-- Leave no_anim enabled until the final motion has reached a frame.
-			restore_animation = hl.timer(function()
-				animation_rule:set_enabled(false)
-			end, { timeout = 50, type = "oneshot" })
-			restore_animation:set_enabled(false)
-		end
 		animation_rule = hl.window_rule({
 			name = "scrolling-gesture",
 			match = { workspace = workspace.addressable_name },
@@ -119,25 +151,22 @@ return {
 		if not state then
 			return
 		end
-		local delta = math.max(state.min_delta, math.min(state.max_delta, state.delta + event.delta.x))
-		if delta == state.delta then
-			return
-		end
-		if move(delta - state.delta) then
-			state.delta = delta
-		else
+		local delta = event.delta.x * state.scale
+		if track(delta, event.time_ms) and delta ~= 0 and not move(delta) then
 			reset()
 		end
 	end,
 	finish = function(event)
 		check_context()
-		if not state then
-			return
+		if state then
+			-- Include the pause before lifting the fingers in the release velocity.
+			track(0, event.time_ms)
+			local offset = snap_offset(projected_motion())
+			animation_rule:set_enabled(false)
+			if offset then
+				move(offset)
+			end
+			restore_focus()
 		end
-		if event.cancelled and state.delta ~= 0 then
-			move(-state.delta)
-		end
-		restore_focus()
-		restore_animation:set_timeout(50)
 	end,
 }
