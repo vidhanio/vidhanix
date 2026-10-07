@@ -35,17 +35,6 @@ scene:register("eye_overlay", {
 
 local mode_manager = Modes.ModeManager.new(waywall)
 
-mode_manager:define("freeze", {
-	width = 0,
-	height = 0,
-	on_enter = function()
-		waywall.set_sensitivity(0.0001)
-	end,
-	on_exit = function()
-		waywall.set_sensitivity(0)
-	end,
-})
-
 mode_manager:define("thin", {
 	width = thin.w,
 	height = thin.h,
@@ -82,9 +71,6 @@ local actions = Keys.actions({
 		else
 			return false
 		end
-	end,
-	["*-MMB"] = function()
-		return mode_manager:toggle("freeze")
 	end,
 	["*-Alt-B"] = function()
 		return mode_manager:toggle("thin")
