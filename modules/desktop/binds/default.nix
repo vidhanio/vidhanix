@@ -47,11 +47,11 @@
             niri.action.toggle-window-floating = { };
           };
           "SUPER + Tab" = {
-            hyprland.lua = ''hs.dsp.focus({ workspace = "r+1" })'';
+            hyprland.lua = ''hs.dsp.focus({ workspace = "m+1" })'';
             niri.action.focus-workspace-down = { };
           };
           "SUPER + SHIFT + Tab" = {
-            hyprland.lua = ''hs.dsp.focus({ workspace = "r-1" })'';
+            hyprland.lua = ''hs.dsp.focus({ workspace = "m-1" })'';
             niri.action.focus-workspace-up = { };
           };
 
