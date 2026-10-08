@@ -64,10 +64,6 @@ Run available `passthru.updateScript` hooks with `just update-packages`; pass pa
 Definitions under `modules/flake/files/` produce the following files. Regenerate them with [`just generate`](justfile).
 
 - [`.envrc`](.envrc)
-- [`.github/actions/setup-nix/action.yaml`](.github/actions/setup-nix/action.yaml)
-- [`.github/workflows/ci.yaml`](.github/workflows/ci.yaml)
-- [`.github/workflows/sync-dependabot.yaml`](.github/workflows/sync-dependabot.yaml)
-- [`.github/workflows/update-packages.yaml`](.github/workflows/update-packages.yaml)
 - [`.gitignore`](.gitignore)
 - [`LICENSE`](LICENSE)
 - [`README.md`](README.md)
