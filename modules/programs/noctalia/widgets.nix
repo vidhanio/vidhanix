@@ -2,6 +2,7 @@
   profiles.pc.homeModule = {
     programs.noctalia.settings.widget = {
       tray.drawer = true;
+      workspaces.style = "minimal";
 
       clock = {
         anchor = true;
