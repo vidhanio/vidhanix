@@ -57,12 +57,29 @@ in
         };
 
         permissions = {
-          # the store cache save needs actions: write
+          # the store cache save needs `actions: write`
           contents = "read";
           actions = "write";
         };
 
         jobs = {
+          check-flake = {
+            name = "Check Flake (${ghExpr "matrix.system"})";
+            runs-on = runner;
+            strategy = {
+              matrix.system = lib.attrNames buildRunners;
+              fail-fast = false;
+            };
+            steps = [
+              checkout
+              setupNix
+              {
+                name = "Check Flake";
+                run = "nix flake check --print-build-logs";
+              }
+            ];
+          };
+
           check-formatting = {
             name = "Check Formatting";
             runs-on = "ubuntu-latest";

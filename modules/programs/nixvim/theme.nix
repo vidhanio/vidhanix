@@ -15,7 +15,7 @@
     in
     {
       programs.nixvim.highlightOverride = {
-        # base16 swaps fg/bg for selection; lighten the background instead.
+        # `base16` swaps `fg`/`bg` for selection; lighten the background instead.
         PmenuSel = {
           fg = base05;
           bg = base02;
@@ -40,7 +40,7 @@
           bold = true;
         };
 
-        # Hide the mini.pick footer (source name and match counts).
+        # Hide the `mini.pick` footer (source name and match counts).
         MiniPickBorderText = {
           fg = base01;
           bg = base01;
@@ -76,7 +76,7 @@
           bg = "NONE";
         };
 
-        # mini.base16 points the diagnostic signs at their floating-window
+        # `mini.base16` points the diagnostic signs at their floating-window
         # variants, which carry a background; nvim's own defaults don't.
         DiagnosticSignError = {
           link = "DiagnosticError";

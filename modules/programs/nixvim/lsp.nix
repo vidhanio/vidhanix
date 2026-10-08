@@ -7,6 +7,8 @@
       lsp.servers = {
         # keep-sorted start
         bashls.enable = true;
+        codebook.enable = true;
+        harper_ls.enable = true;
         jsonls.enable = true;
         lua_ls.enable = true;
         nil_ls.enable = true;

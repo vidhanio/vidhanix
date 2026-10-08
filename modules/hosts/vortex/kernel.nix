@@ -1,6 +1,4 @@
 {
-  perSystem.treefmt.programs.flake-edit.settings.follow.ignore = [ "nix-cachyos-kernel.nixpkgs" ];
-
   hosts.vortex = {
     module =
       { inputs', ... }:

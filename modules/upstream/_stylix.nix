@@ -33,7 +33,7 @@ let
       if builtins.isFunction module && (builtins.functionArgs module) ? mkTarget then
         { config, ... }@args:
         let
-          # mkTarget must be injected before evaluation, not via _module.args.
+          # `mkTarget` must be injected before evaluation, not via `_module.args`.
           extraArgs = lib.mapAttrs (
             argument: _:
             builtins.addErrorContext "while evaluating module argument `${argument}' in ${toString file}:" (
@@ -50,7 +50,7 @@ let
               // extraArgs
               // {
                 inherit mkTarget;
-                # Match Stylix's guards against bypassing mkTarget's disabled options.
+                # Match Stylix's guards against bypassing the disabled options of `mkTarget`.
                 config = lib.recursiveUpdate config {
                   stylix = throw "stylix: unguarded `config.stylix` accessed while using mkTarget";
                   lib.stylix.colors = throw "stylix: unguarded `config.lib.stylix.colors` accessed while using mkTarget";

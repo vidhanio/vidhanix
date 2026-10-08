@@ -132,6 +132,34 @@ jobs:
         - attr: nixosConfigurations.voyager.config.system.build.toplevel
           name: voyager
           system: aarch64-linux
+  check-flake:
+    name: Check Flake (${{ matrix.system }})
+    runs-on: ${{ case(matrix.system == 'aarch64-linux', 'ubuntu-26.04-arm', 
+      matrix.system == 'x86_64-linux', 'ubuntu-latest', null) }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Set Up Nix
+      uses: ./.github/actions/setup-nix
+      with:
+        cachix-auth-token: ${{ ((github.ref == 'refs/heads/main' && 
+          (github.event_name == 'push' || github.event_name == 'schedule' || 
+          github.event_name == 'workflow_dispatch')) || (github.event_name == 
+          'push' && 
+          contains(fromJSON('["vidhanio","vidhan-bot[bot]","dependabot[bot]"]'),
+          github.actor)) || (github.event_name == 'pull_request' && 
+          contains(fromJSON('["vidhanio","vidhan-bot[bot]","dependabot[bot]"]'),
+          github.event.pull_request.user.login))) && secrets.CACHIX_AUTH_TOKEN 
+          || '' }}
+        ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
+    - name: Check Flake
+      run: nix flake check --print-build-logs
+    strategy:
+      fail-fast: false
+      matrix:
+        system:
+        - aarch64-linux
+        - x86_64-linux
   check-formatting:
     name: Check Formatting
     runs-on: ubuntu-latest

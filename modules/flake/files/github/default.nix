@@ -21,7 +21,7 @@
 
       config = {
         # generated workflow and action files carry `${{ }}` expressions whose
-        # quoting oxfmt normalizes differently than the generator; keep them verbatim.
+        # quoting `oxfmt` normalizes differently than the generator; keep them verbatim.
         treefmt.programs.oxfmt.excludes = [
           ".github/workflows/*"
           ".github/actions/*"

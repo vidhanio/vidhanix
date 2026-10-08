@@ -14,7 +14,7 @@
               xcursor-size = config.home.pointerCursor.size;
             };
             input = {
-              # Preserve Niri's built-in Mod+MouseLeft drag and Mod+MouseRight resize gestures.
+              # Preserve Niri's built-in `Mod+MouseLeft` drag and `Mod+MouseRight` resize gestures.
               mod-key = "Super";
               focus-follows-mouse = { };
               keyboard = {

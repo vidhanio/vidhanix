@@ -27,7 +27,7 @@
         };
 
         permissions = {
-          # the store cache save needs actions: write
+          # the store cache save needs `actions: write`
           contents = "write";
           pull-requests = "write";
           actions = "write";
@@ -41,7 +41,7 @@
 
         jobs = {
           # one metadata fetch drives both sync paths; the jobs below dispatch
-          # on its ecosystem output instead of matching branch name prefixes.
+          # on its `ecosystem` output instead of matching branch name prefixes.
           metadata = {
             name = "Fetch Dependabot Metadata";
             runs-on = "ubuntu-latest";
@@ -60,7 +60,7 @@
             needs = [ "metadata" ];
             "if" = "needs.metadata.outputs.ecosystem=='github_actions'";
             runs-on = "ubuntu-latest";
-            # the head checkout also sets ghcommit's expected branch tip: it
+            # the head checkout also sets the expected branch tip for `ghcommit`: it
             # must equal the PR branch head or the API commit is refused.
             steps = [
               checkoutHead

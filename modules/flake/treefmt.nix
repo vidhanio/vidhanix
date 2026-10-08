@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   imports = [
     inputs.treefmt-nix.flakeModule
@@ -11,7 +11,6 @@
           enable = true;
           noLock = true;
           priority = -1;
-          settings.follow.aliases.nixpkgs = [ "nixpkgs-lib" ];
         };
 
         nixfmt.enable = true;
@@ -30,6 +29,12 @@
       };
 
       settings = {
+        # TODO: Fix treefmt-nix upstream to avoid generating configs for empty settings.
+        formatter.flake-edit.options = lib.mkForce [
+          "--non-interactive"
+          "--no-lock"
+          "follow"
+        ];
         excludes = [ "*.patch" ];
         on-unmatched = "fatal";
       };

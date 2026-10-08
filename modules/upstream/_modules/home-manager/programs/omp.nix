@@ -340,7 +340,7 @@ in
     home = {
       packages = lib.mkIf (cfg.package != null) [ cfg.package ];
 
-      # omp locks and rewrites config.yml at runtime, so it must be a
+      # omp locks and rewrites `config.yml` at runtime, so it must be a
       # writable file rather than a read-only `home.file` symlink.
       activation.ompConfig = lib.mkIf (cfg.settings != null) {
         before = [ ];

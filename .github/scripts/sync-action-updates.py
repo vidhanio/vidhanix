@@ -21,7 +21,7 @@ def run(*command: str) -> str:
 
 
 def ref(version: str) -> str:
-    """The `uses:` form of an action version: SHAs stay bare, tags get a leading `v`."""
+    """The `uses:` form of an action version: SHAs stay bare, tags get the prefix `v`."""
     return version if FULL_SHA.fullmatch(version) else f"v{version}"
 
 

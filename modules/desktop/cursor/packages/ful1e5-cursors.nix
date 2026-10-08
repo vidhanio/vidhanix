@@ -344,7 +344,7 @@ let
         # cbmp cannot render the upstream animated SVGs.
         cp bitmaps/GoogleDot-Black/{left_ptr_watch,wait}-*.png "bitmaps/Google Cursor"
         ctgen build.toml -p x11 -d "bitmaps/Google Cursor" -o $out/share/icons \
-          -n "Google Cursor" -c "Opensource cursor theme inspired by Google"
+          -n "Google Cursor" -c "Open-source cursor theme inspired by Google"
 
         runHook postBuild
       '';
@@ -354,7 +354,7 @@ let
       };
 
       meta = {
-        description = "Opensource cursor theme inspired by Google";
+        description = "Open-source cursor theme inspired by Google";
         homepage = "https://github.com/ful1e5/Google_Cursor";
         changelog = "https://github.com/ful1e5/Google_Cursor/releases/tag/${finalAttrs.src.tag}";
         license = lib.licenses.gpl3Plus;

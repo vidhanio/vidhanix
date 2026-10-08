@@ -1,0 +1,10 @@
+[follow]
+ignore = [
+  "determinate.nixpkgs",
+  "determinate.nix.nixpkgs",
+  "hyprland.nixpkgs",
+  "llm-agents.nixpkgs",
+  "llm-agents.bun2nix.nixpkgs",
+  "nix-cachyos-kernel.nixpkgs",
+]
+aliases = { nixpkgs = ["nixpkgs-lib"] }

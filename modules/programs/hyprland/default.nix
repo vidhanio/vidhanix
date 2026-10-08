@@ -1,6 +1,4 @@
 {
-  perSystem.treefmt.programs.flake-edit.settings.follow.ignore = [ "hyprland.nixpkgs" ];
-
   profiles.pc = {
     module =
       { inputs', ... }:

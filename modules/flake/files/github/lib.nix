@@ -82,7 +82,7 @@ let
   };
 
   # dependabot PRs carry structured metadata about their update; workflows
-  # dispatch on its ecosystem output instead of parsing branch names.
+  # dispatch on its `ecosystem` output instead of parsing branch names.
   fetchMetadata = {
     name = "Fetch Dependabot Metadata";
     id = "metadata";
@@ -115,7 +115,7 @@ in
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
-      # the justfile recipes run inside the devshell, which pins just (and
+      # the `justfile` recipes run inside the devshell, which pins `just` (and
       # the other tools) to the locked nixpkgs.
       just = "nix develop -c just";
 
