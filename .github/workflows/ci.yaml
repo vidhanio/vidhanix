@@ -36,19 +36,18 @@ jobs:
                   ) (builtins.attrNames flake.packages.${system});
                 in map (pkg: {
                   inherit system;
-                  attr = "packages.${system}.${pkg}";
+                  name = pkg;
                   type = "Package";
                 }) supported
               ) systems);
               hosts = map (name: {
+                inherit name;
                 system = flake.nixosConfigurations.${name}.config.nixpkgs.hostPlatform.system;
-                attr = "nixosConfigurations.${name}.config.system.build.toplevel";
                 type = "System";
               }) (builtins.attrNames flake.nixosConfigurations);
               shells = builtins.concatLists (map (system:
                 map (name: {
-                  inherit system;
-                  attr = "devShells.${system}.${name}";
+                  inherit name system;
                   type = "Dev Shell";
                 }) (builtins.attrNames flake.devShells.${system})
               ) systems);
@@ -138,7 +137,7 @@ jobs:
         run: git diff --exit-code
 
   build:
-    name: "Build ${{ matrix.type }} (${{ matrix.system }}): ${{ matrix.attr }}"
+    name: "Build ${{ matrix.type }} (${{ matrix.system }}): ${{ matrix.name }}"
     needs: generate-matrix
     runs-on: >-
       ${{ case(
@@ -147,7 +146,7 @@ jobs:
         null
       ) }}
     concurrency:
-      group: ${{ format('nix-{0}', matrix.attr) }}
+      group: ${{ format('nix-{0}-{1}-{2}', matrix.type, matrix.system, matrix.name) }}
       cancel-in-progress: false
       queue: max
     strategy:
@@ -171,5 +170,14 @@ jobs:
             ) && secrets.CACHIX_AUTH_TOKEN || '' }}
       - name: Build ${{ matrix.type }}
         env:
-          ATTR: ${{ matrix.attr }}
-        run: nix build ".#$ATTR" --print-build-logs
+          TYPE: ${{ matrix.type }}
+          SYSTEM: ${{ matrix.system }}
+          NAME: ${{ matrix.name }}
+        run: |
+          case "$TYPE" in
+            Package) attr="packages.$SYSTEM.$NAME" ;;
+            System) attr="nixosConfigurations.$NAME.config.system.build.toplevel" ;;
+            "Dev Shell") attr="devShells.$SYSTEM.$NAME" ;;
+            *) echo "Unknown build type: $TYPE" >&2; exit 1 ;;
+          esac
+          nix build ".#$attr" --print-build-logs
