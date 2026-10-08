@@ -31,12 +31,11 @@ jobs:
               systems = [ "aarch64-linux" "x86_64-linux" ];
               packages = builtins.concatLists (map (system:
                 let
-                  supported = builtins.filter (pkg:
-                    builtins.elem system (flake.packages.${system}.${pkg}.meta.platforms or [])
+                  supported = builtins.filter (name:
+                    builtins.elem system (flake.packages.${system}.${name}.meta.platforms or [])
                   ) (builtins.attrNames flake.packages.${system});
-                in map (pkg: {
-                  inherit system;
-                  name = pkg;
+                in map (name: {
+                  inherit system name;
                   type = "Package";
                 }) supported
               ) systems);
