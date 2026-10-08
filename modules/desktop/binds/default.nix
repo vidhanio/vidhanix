@@ -37,10 +37,6 @@
             hyprland.dsp."window.close" = { };
             niri.action.close-window = { };
           };
-          "SUPER + m" = {
-            hyprland.cmd = "uwsm stop";
-            niri.action.quit._props.skip-confirmation = true;
-          };
           "SUPER + v".cmd = msg "panel-toggle clipboard";
           "SUPER + f" = {
             hyprland.dsp."window.fullscreen" = { };
