@@ -170,14 +170,11 @@ jobs:
             ) && secrets.CACHIX_AUTH_TOKEN || '' }}
       - name: Build ${{ matrix.type }}
         env:
-          TYPE: ${{ matrix.type }}
-          SYSTEM: ${{ matrix.system }}
-          NAME: ${{ matrix.name }}
-        run: |
-          case "$TYPE" in
-            Package) attr="packages.$SYSTEM.$NAME" ;;
-            System) attr="nixosConfigurations.$NAME.config.system.build.toplevel" ;;
-            "Dev Shell") attr="devShells.$SYSTEM.$NAME" ;;
-            *) echo "Unknown build type: $TYPE" >&2; exit 1 ;;
-          esac
-          nix build ".#$attr" --print-build-logs
+          ATTR: >-
+            ${{ case(
+              matrix.type == 'Package', format('packages.{0}.{1}', matrix.system, matrix.name),
+              matrix.type == 'System', format('nixosConfigurations.{0}.config.system.build.toplevel', matrix.name),
+              matrix.type == 'Dev Shell', format('devShells.{0}.{1}', matrix.system, matrix.name),
+              null
+            ) }}
+        run: nix build ".#$ATTR" --print-build-logs
