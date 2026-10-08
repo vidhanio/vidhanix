@@ -5,9 +5,12 @@
       plugins.schemastore.enable = true;
 
       lsp.servers = {
-        # keep-sorted start
+        # keep-sorted start block=yes
         bashls.enable = true;
-        codebook.enable = true;
+        codebook = {
+          enable = true;
+          config.filetypes.__raw = "vim.list_extend(vim.deepcopy(vim.lsp.config.codebook.filetypes), { 'nix' })";
+        };
         harper_ls.enable = true;
         jsonls.enable = true;
         lua_ls.enable = true;
