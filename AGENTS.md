@@ -22,10 +22,8 @@ Personal NixOS and Home Manager configurations, composed with flake-parts and im
 - Contribute host configuration to `hosts.<hostname>.{module,homeModule}` and per-user Home Manager configuration to `users.<username>.module`.
 - Prefer upstream NixOS and Home Manager options. Use `home.packages` for packages requiring no additional configuration.
 - Reusable modules define NixOS or Home Manager options and implementation. The base profile imports the `nixosModules.upstream` and `homeModules.upstream` bundles. Keep personal preferences in feature modules.
-- Stylix targets follow the upstream target layout and use its `mkTarget` implementation.
 - Group related settings in cohesive files. Keep option declarations in `options.nix` when a feature benefits from a separate schema.
-- Use `lib.getExe` for a package's main executable and `lib.getExe'` for secondary commands.
-- Preserve ordering in sorted blocks. Add concise comments where the rationale needs explanation.
+- Avoid unnecessary comments. If rationale needs explanation, keep any comments concise.
 
 ## Workflow
 
