@@ -129,6 +129,39 @@ jobs:
       - name: Check Diff
         run: git diff --exit-code
 
+  build-devshell:
+    name: Build Dev Shell (${{ matrix.system }})
+    runs-on: >-
+      ${{ case(
+        matrix.system == 'aarch64-linux', 'ubuntu-26.04-arm',
+        matrix.system == 'x86_64-linux', 'ubuntu-latest',
+        null
+      ) }}
+    strategy:
+      fail-fast: false
+      matrix:
+        system:
+          - aarch64-linux
+          - x86_64-linux
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Set Up Nix
+        uses: ./.github/actions/setup-nix
+        with:
+          ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
+          cachix-auth-token: >-
+            ${{ (
+              (github.ref == 'refs/heads/main' &&
+                (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) ||
+              (github.event_name == 'push' &&
+                contains(fromJSON('["vidhanio","vidhan-bot[bot]","dependabot[bot]"]'), github.actor)) ||
+              (github.event_name == 'pull_request' &&
+                contains(fromJSON('["vidhanio","vidhan-bot[bot]","dependabot[bot]"]'), github.event.pull_request.user.login))
+            ) && secrets.CACHIX_AUTH_TOKEN || '' }}
+      - name: Build Dev Shell
+        run: nix build .#devShells.${{ matrix.system }}.default --print-build-logs
+
   build-packages:
     name: "Build Package (${{ matrix.system }}): ${{ matrix.pkg }}"
     needs: generate-matrices
