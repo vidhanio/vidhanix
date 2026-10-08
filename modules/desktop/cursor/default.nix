@@ -9,7 +9,7 @@
               with config.lib.stylix.colors.withHashtag;
               {
                 baseColor = base01;
-                outlineColor = base05;
+                outlineColor = base06;
                 palette = {
                   spinnerBlue = blue;
                   spinnerGreen = green;
