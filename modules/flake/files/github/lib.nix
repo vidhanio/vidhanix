@@ -41,9 +41,8 @@ let
         }
         {
           name = "Install Nix";
-          uses = "cachix/install-nix-action@v31";
-          "with".nix_path = "nixpkgs=channel:nixos-unstable";
-          "with".extra_nix_config = ''
+          uses = "DeterminateSystems/determinate-nix-action@v3";
+          "with"."extra-conf" = ''
             build-dir = /nix/build
             accept-flake-config = true
             extra-platforms = x86_64-linux aarch64-linux i686-linux

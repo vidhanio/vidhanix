@@ -24,11 +24,10 @@ runs:
     with:
       hatchet-protocol: carve
   - name: Install Nix
-    uses: cachix/install-nix-action@v31
+    uses: DeterminateSystems/determinate-nix-action@v3
     with:
-      extra_nix_config: "build-dir = /nix/build\naccept-flake-config = true\nextra-platforms
+      extra-conf: "build-dir = /nix/build\naccept-flake-config = true\nextra-platforms
         = x86_64-linux aarch64-linux i686-linux\n"
-      nix_path: nixpkgs=channel:nixos-unstable
   - name: Set Up Cachix
     uses: cachix/cachix-action@v17
     with:
