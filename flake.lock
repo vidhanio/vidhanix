@@ -197,6 +197,22 @@
         "type": "github"
       }
     },
+    "cursor-shaders": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791039790,
+        "narHash": "sha256-TnoQvptwjs6P5/JfJO1CR3yhCfCcaw5wvPr5oEhn4Ho=",
+        "owner": "sahaj-b",
+        "repo": "cursor-shaders",
+        "rev": "9ad9158a93c0de0c045e1c6b27df37da698bc8af",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sahaj-b",
+        "repo": "cursor-shaders",
+        "type": "github"
+      }
+    },
     "determinate": {
       "inputs": {
         "determinate-nixd-aarch64-darwin": "determinate-nixd-aarch64-darwin",
@@ -404,22 +420,6 @@
       "original": {
         "owner": "SenchoPens",
         "repo": "fromYaml",
-        "type": "github"
-      }
-    },
-    "ghostty-cursor-shaders": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1791039790,
-        "narHash": "sha256-TnoQvptwjs6P5/JfJO1CR3yhCfCcaw5wvPr5oEhn4Ho=",
-        "owner": "sahaj-b",
-        "repo": "ghostty-cursor-shaders",
-        "rev": "9ad9158a93c0de0c045e1c6b27df37da698bc8af",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sahaj-b",
-        "repo": "ghostty-cursor-shaders",
         "type": "github"
       }
     },
@@ -1312,11 +1312,11 @@
     "root": {
       "inputs": {
         "agentcord": "agentcord",
+        "cursor-shaders": "cursor-shaders",
         "determinate": "determinate",
         "disko": "disko",
         "files": "files",
         "flake-parts": "flake-parts",
-        "ghostty-cursor-shaders": "ghostty-cursor-shaders",
         "git-hooks-nix": "git-hooks-nix",
         "helium": "helium",
         "home-manager": "home-manager",

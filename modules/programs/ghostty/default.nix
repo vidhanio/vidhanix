@@ -9,7 +9,7 @@
 
       settings = {
         confirm-close-surface = false;
-        custom-shader = "${inputs.ghostty-cursor-shaders}/cursor_warp.glsl";
+        custom-shader = "${inputs.cursor-shaders}/ghostty/cursor_warp.glsl";
         gtk-single-instance = true;
         quit-after-last-window-closed = false;
         window-padding-x = config.stylix.padding;

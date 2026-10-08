@@ -90,8 +90,8 @@
     };
 
     # desktop
-    ghostty-cursor-shaders = {
-      url = "github:sahaj-b/ghostty-cursor-shaders";
+    cursor-shaders = {
+      url = "github:sahaj-b/cursor-shaders";
       flake = false;
     };
     hyprland = {
