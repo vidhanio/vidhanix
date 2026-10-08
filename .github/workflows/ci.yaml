@@ -9,12 +9,11 @@ permissions:
   actions: write
 
 jobs:
-  generate-matrices:
-    name: Generate Build Matrices
+  generate-matrix:
+    name: Generate Build Matrix
     runs-on: ubuntu-latest
     outputs:
-      packages: ${{ steps.matrices.outputs.packages }}
-      systems: ${{ steps.matrices.outputs.systems }}
+      builds: ${{ steps.matrix.outputs.builds }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -22,33 +21,42 @@ jobs:
         uses: ./.github/actions/setup-nix
         with:
           ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-      - name: Generate Build Matrices
-        id: matrices
+      - name: Generate Build Matrix
+        id: matrix
         run: |
           # shellcheck disable=SC2016
-          packages=$(nix eval --json .#packages --apply '
-            packages: {
-              include = builtins.concatLists (map (system:
+          builds=$(nix eval --json --impure --expr '
+            let
+              flake = builtins.getFlake (toString ./.);
+              systems = [ "aarch64-linux" "x86_64-linux" ];
+              packages = builtins.concatLists (map (system:
                 let
                   supported = builtins.filter (pkg:
-                    builtins.elem system (packages.${system}.${pkg}.meta.platforms or [])
-                  ) (builtins.attrNames packages.${system});
-                in map (pkg: { inherit pkg system; }) supported
-              ) [ "aarch64-linux" "x86_64-linux" ]);
-            }
-          ')
-          # shellcheck disable=SC2016
-          systems=$(nix eval --json .#nixosConfigurations --apply '
-            hosts: {
-              include = map (name: {
-                inherit name;
-                system = hosts.${name}.config.nixpkgs.hostPlatform.system;
+                    builtins.elem system (flake.packages.${system}.${pkg}.meta.platforms or [])
+                  ) (builtins.attrNames flake.packages.${system});
+                in map (pkg: {
+                  inherit system;
+                  attr = "packages.${system}.${pkg}";
+                  type = "Package";
+                }) supported
+              ) systems);
+              hosts = map (name: {
+                system = flake.nixosConfigurations.${name}.config.nixpkgs.hostPlatform.system;
                 attr = "nixosConfigurations.${name}.config.system.build.toplevel";
-              }) (builtins.attrNames hosts);
+                type = "System";
+              }) (builtins.attrNames flake.nixosConfigurations);
+              shells = builtins.concatLists (map (system:
+                map (name: {
+                  inherit system;
+                  attr = "devShells.${system}.${name}";
+                  type = "Dev Shell";
+                }) (builtins.attrNames flake.devShells.${system})
+              ) systems);
+            in {
+              include = packages ++ hosts ++ shells;
             }
           ')
-          echo "packages=$packages" >> "$GITHUB_OUTPUT"
-          echo "systems=$systems" >> "$GITHUB_OUTPUT"
+          echo "builds=$builds" >> "$GITHUB_OUTPUT"
 
   check-flake:
     name: Check Flake (${{ matrix.system }})
@@ -129,42 +137,9 @@ jobs:
       - name: Check Diff
         run: git diff --exit-code
 
-  build-devshell:
-    name: Build Dev Shell (${{ matrix.system }})
-    runs-on: >-
-      ${{ case(
-        matrix.system == 'aarch64-linux', 'ubuntu-26.04-arm',
-        matrix.system == 'x86_64-linux', 'ubuntu-latest',
-        null
-      ) }}
-    strategy:
-      fail-fast: false
-      matrix:
-        system:
-          - aarch64-linux
-          - x86_64-linux
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-      - name: Set Up Nix
-        uses: ./.github/actions/setup-nix
-        with:
-          ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-          cachix-auth-token: >-
-            ${{ (
-              (github.ref == 'refs/heads/main' &&
-                (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) ||
-              (github.event_name == 'push' &&
-                contains(fromJSON('["vidhanio","vidhan-bot[bot]","dependabot[bot]"]'), github.actor)) ||
-              (github.event_name == 'pull_request' &&
-                contains(fromJSON('["vidhanio","vidhan-bot[bot]","dependabot[bot]"]'), github.event.pull_request.user.login))
-            ) && secrets.CACHIX_AUTH_TOKEN || '' }}
-      - name: Build Dev Shell
-        run: nix build .#devShells.${{ matrix.system }}.default --print-build-logs
-
-  build-packages:
-    name: "Build Package (${{ matrix.system }}): ${{ matrix.pkg }}"
-    needs: generate-matrices
+  build:
+    name: "Build ${{ matrix.type }} (${{ matrix.system }}): ${{ matrix.attr }}"
+    needs: generate-matrix
     runs-on: >-
       ${{ case(
         matrix.system == 'aarch64-linux', 'ubuntu-26.04-arm',
@@ -172,12 +147,12 @@ jobs:
         null
       ) }}
     concurrency:
-      group: ${{ format('nix-{0}-{1}', matrix.pkg, matrix.system) }}
+      group: ${{ format('nix-{0}', matrix.attr) }}
       cancel-in-progress: false
       queue: max
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.generate-matrices.outputs.packages) }}
+      matrix: ${{ fromJSON(needs.generate-matrix.outputs.builds) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -194,40 +169,7 @@ jobs:
               (github.event_name == 'pull_request' &&
                 contains(fromJSON('["vidhanio","vidhan-bot[bot]","dependabot[bot]"]'), github.event.pull_request.user.login))
             ) && secrets.CACHIX_AUTH_TOKEN || '' }}
-      - name: Build Package
-        run: nix build .#${{ matrix.pkg }} --print-build-logs
-
-  build-systems:
-    name: "Build System (${{ matrix.system }}): ${{ matrix.name }}"
-    needs: generate-matrices
-    runs-on: >-
-      ${{ case(
-        matrix.system == 'aarch64-linux', 'ubuntu-26.04-arm',
-        matrix.system == 'x86_64-linux', 'ubuntu-latest',
-        null
-      ) }}
-    concurrency:
-      group: ${{ format('nix-{0}', matrix.name) }}
-      cancel-in-progress: false
-      queue: max
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.generate-matrices.outputs.systems) }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-      - name: Set Up Nix
-        uses: ./.github/actions/setup-nix
-        with:
-          ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
-          cachix-auth-token: >-
-            ${{ (
-              (github.ref == 'refs/heads/main' &&
-                (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')) ||
-              (github.event_name == 'push' &&
-                contains(fromJSON('["vidhanio","vidhan-bot[bot]","dependabot[bot]"]'), github.actor)) ||
-              (github.event_name == 'pull_request' &&
-                contains(fromJSON('["vidhanio","vidhan-bot[bot]","dependabot[bot]"]'), github.event.pull_request.user.login))
-            ) && secrets.CACHIX_AUTH_TOKEN || '' }}
-      - name: Build System
-        run: nix build .#${{ matrix.attr }} --print-build-logs
+      - name: Build ${{ matrix.type }}
+        env:
+          ATTR: ${{ matrix.attr }}
+        run: nix build ".#$ATTR" --print-build-logs
