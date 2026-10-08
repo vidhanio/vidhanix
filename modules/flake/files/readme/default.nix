@@ -31,7 +31,7 @@
             flake/      # inputs, tooling, generated files, and infrastructure
           ```
 
-          import-tree discovers feature modules under `modules/`. Features contribute to deferred modules through three option groups:
+          The `import-tree` loader discovers feature modules under `modules/`. Features contribute to deferred modules through three option groups:
 
           - `profiles.<name>.{module,homeModule}`: shared NixOS and Home Manager configuration.
             `base` provides headless foundations, `pc` adds desktop configuration, and `apple-silicon` extends `pc` for Apple hardware.

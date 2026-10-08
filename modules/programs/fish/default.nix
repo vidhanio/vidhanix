@@ -52,7 +52,7 @@
 
         };
 
-        # fish is the login shell; silence the pre-shell login banner.
+        # Fish is the login shell; silence the pre-shell login banner.
         home.file.".hushlogin".source = pkgs.emptyFile;
 
         persist.files = [

@@ -22,7 +22,7 @@ modules/
   flake/      # inputs, tooling, generated files, and infrastructure
 ```
 
-import-tree discovers feature modules under `modules/`. Features contribute to deferred modules through three option groups:
+The `import-tree` loader discovers feature modules under `modules/`. Features contribute to deferred modules through three option groups:
 
 - `profiles.<name>.{module,homeModule}`: shared NixOS and Home Manager configuration.
   `base` provides headless foundations, `pc` adds desktop configuration, and `apple-silicon` extends `pc` for Apple hardware.
@@ -48,7 +48,7 @@ Run available `passthru.updateScript` hooks with `just update-packages`; pass pa
 | [`breezex-combined`](modules/desktop/cursor/packages/ful1e5-cursors.nix)   | BreezeX Cursor theme combining both Xcursor and hyprcursor versions                                                                |           |
 | [`breezex-cursor`](modules/desktop/cursor/packages/ful1e5-cursors.nix)     | Extended KDE cursor                                                                                                                |     ✓     |
 | [`breezex-hyprcursor`](modules/desktop/cursor/packages/ful1e5-cursors.nix) | BreezeX Cursor theme adapted for hyprcursor                                                                                        |           |
-| [`cider`](modules/programs/cider/package.nix)                              | A cross-platform Apple Music experience built on Vue.js and written from the ground up with performance in mind                    |     ✓     |
+| [`cider`](modules/programs/cider/package.nix)                              | A cross-platform Apple Music experience built on Vue and written from the ground up with performance in mind                       |     ✓     |
 | [`google-combined`](modules/desktop/cursor/packages/ful1e5-cursors.nix)    | Google Cursor theme combining both Xcursor and hyprcursor versions                                                                 |           |
 | [`google-cursor`](modules/desktop/cursor/packages/ful1e5-cursors.nix)      | Open-source cursor theme inspired by Google                                                                                        |     ✓     |
 | [`google-hyprcursor`](modules/desktop/cursor/packages/ful1e5-cursors.nix)  | Google Cursor theme adapted for hyprcursor                                                                                         |           |

@@ -29,7 +29,6 @@
         source = "if_many";
       };
 
-      # registered while a language server is attached.
       lsp.keymaps = [
         {
           key = "<leader>ca";

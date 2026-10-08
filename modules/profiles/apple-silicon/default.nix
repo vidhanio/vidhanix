@@ -14,7 +14,7 @@
           inputs.nixos-apple-silicon.nixosModules.default
         ];
         hardware.asahi.enable = true;
-        # TODO: remove once nix-community/nixos-apple-silicon#559 is merged
+        # TODO: Remove once https://github.com/nix-community/nixos-apple-silicon/pull/559 is merged.
         hardware.asahi.overlay =
           lib.composeExtensions
             (import "${inputs.nixos-apple-silicon}/apple-silicon-support/packages/overlay.nix")

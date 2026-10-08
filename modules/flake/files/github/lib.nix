@@ -4,7 +4,7 @@
   ...
 }:
 let
-  # `${{ ... }}` would parse as a nix interpolation, so build github
+  # `${{ ... }}` would parse as a Nix interpolation, so build GitHub
   # expression syntax from parts.
   ghExpr = name: "$" + "{{ ${name} }}";
 
@@ -68,7 +68,6 @@ let
     uses = "actions/checkout@v7";
   };
 
-  # the composite action keeps the runner setup identical across workflows.
   setupNix = {
     name = "Set Up Nix";
     uses = "./.github/actions/setup-nix";
@@ -81,15 +80,12 @@ let
     "with".ref = ghExpr "github.event.pull_request.head.sha";
   };
 
-  # dependabot PRs carry structured metadata about their update; workflows
-  # dispatch on its `ecosystem` output instead of parsing branch names.
   fetchMetadata = {
     name = "Fetch Dependabot Metadata";
     id = "metadata";
     uses = "dependabot/fetch-metadata@v3";
   };
 
-  # commits the worktree back onto the PR branch; a clean tree makes it a no-op.
   commitToPrBranch = commitMessage: {
     name = "Commit";
     uses = "planetscale/ghcommit-action@v0.2.22";
@@ -115,7 +111,7 @@ in
   options.perSystem = flake-parts-lib.mkPerSystemOption (
     { config, ... }:
     let
-      # the `justfile` recipes run inside the devshell, which pins `just` (and
+      # The `justfile` recipes run inside the devshell, which pins `just` (and
       # the other tools) to the locked nixpkgs.
       just = "nix develop -c just";
 

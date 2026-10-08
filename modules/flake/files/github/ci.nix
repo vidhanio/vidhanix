@@ -57,7 +57,7 @@ in
         };
 
         permissions = {
-          # the store cache save needs `actions: write`
+          # Saving the store cache requires `actions: write`.
           contents = "read";
           actions = "write";
         };

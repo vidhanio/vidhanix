@@ -169,7 +169,7 @@ let
         '';
 
       meta = {
-        description = "A cross-platform Apple Music experience built on Vue.js and written from the ground up with performance in mind";
+        description = "A cross-platform Apple Music experience built on Vue and written from the ground up with performance in mind";
         homepage = "https://cider.sh";
         downloadPage = "https://cider.sh/downloads";
         license = lib.licenses.unfree;

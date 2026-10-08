@@ -25,7 +25,7 @@
           package = inputs'.hyprland.packages.hyprland;
           portalPackage = inputs'.hyprland.packages.xdg-desktop-portal-hyprland;
 
-          # conflicts with uwsm
+          # Conflicts with `uwsm`.
           systemd.enable = false;
 
           xdph.settings.screencopy.allow_token_by_default = true;

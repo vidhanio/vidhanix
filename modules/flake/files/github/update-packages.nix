@@ -51,7 +51,6 @@
             }
             createAppToken
             {
-              # the fixed branch is rebased on main and closed when it has no diff.
               name = "Create Pull Request";
               uses = "peter-evans/create-pull-request@v8";
               "with" = {

@@ -27,25 +27,21 @@
         };
 
         permissions = {
-          # the store cache save needs `actions: write`
+          # Saving the store cache requires `actions: write`.
           contents = "write";
           pull-requests = "write";
           actions = "write";
         };
 
-        # a fresh dependabot push supersedes the older run on the same PR
         concurrency = {
           group = ghExpr "github.event.pull_request.number";
           cancel-in-progress = true;
         };
 
         jobs = {
-          # one metadata fetch drives both sync paths; the jobs below dispatch
-          # on its `ecosystem` output instead of matching branch name prefixes.
           metadata = {
             name = "Fetch Dependabot Metadata";
             runs-on = "ubuntu-latest";
-            # the author gate keeps the action from failing on other PRs
             "if" = "github.event.pull_request.user.login=='dependabot[bot]'";
             outputs = {
               ecosystem = ghExpr "steps.metadata.outputs.package-ecosystem";
@@ -54,13 +50,12 @@
             steps = [ fetchMetadata ];
           };
 
-          # the script treats the metadata as data.
           sync-actions = {
             name = "Sync GitHub Actions Updates";
             needs = [ "metadata" ];
             "if" = "needs.metadata.outputs.ecosystem=='github_actions'";
             runs-on = "ubuntu-latest";
-            # the head checkout also sets the expected branch tip for `ghcommit`: it
+            # The head checkout also sets the expected branch tip for `ghcommit`: it
             # must equal the PR branch head or the API commit is refused.
             steps = [
               checkoutHead
@@ -74,7 +69,6 @@
             ];
           };
 
-          # Refresh follows from Dependabot's lock, then prune the replaced inputs.
           prune-lock = {
             name = "Prune Lock";
             needs = [ "metadata" ];

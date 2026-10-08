@@ -6,7 +6,7 @@
     let
       mkSopsConfig = key: {
         defaultSopsFile = ../../secrets.yaml;
-        # todo: https://github.com/Mic92/sops-nix/pull/779
+        # TODO: https://github.com/Mic92/sops-nix/pull/779
         environment.SOPS_AGE_SSH_PRIVATE_KEY_FILE = key;
         age.sshKeyPaths = [ key ];
       };

@@ -18,7 +18,8 @@ let
       extraLibraries ? _pkgs: [ ],
       extraEnv ? { },
       extraPkgs ? _pkgs: [ ],
-      # microVM RAM ceiling in MiB (balloon-backed, not reserved); `null` = muvm's 80% default, no host headroom on 8GB.
+      # RAM ceiling for the microVM in MiB (balloon-backed, not reserved).
+      # Use `null` for muvm's 80% default, which leaves no host headroom on 8 GB.
       memoryMiB ? null,
       ...
     }@args:
@@ -188,18 +189,18 @@ let
         ln -snf ${mesa32} /run/opengl-driver-32
       '';
 
-      # steam's tray clients only accept `EXTERNAL` auth on unix sockets.
-      # front the host session bus (see `hostBusScript`) with a guest-local socket
-      # over this vsock port. muvm maps each port to a host socket under
+      # Steam's tray clients only accept `EXTERNAL` auth on UNIX sockets.
+      # Front the host session bus (see `hostBusScript`) with a guest-local socket
+      # over this vsock port. The muvm process maps each port to a host socket under
       # `$XDG_RUNTIME_DIR/krun/socket`.
       vsockPort = 50001;
       guestBusScript = writeShellScript "muvm-steam-guest-bus.sh" ''
         nohup ${lib.getExe socat} UNIX-LISTEN:/run/user/1000/muvm-bus,fork,reuseaddr VSOCK-CONNECT:2:${toString vsockPort} >/dev/null 2>&1 &
       '';
 
-      # host half of the D-Bus bridge, owned by the wrapper: forward the krun
+      # Host half of the D-Bus bridge, owned by the wrapper: forward the krun
       # vsock socket to the session bus, then run the launcher (muvm + guest
-      # flags) passed as `$1`. concurrent instances share the first listener.
+      # flags) passed as `$1`. Concurrent instances share the first listener.
       hostBusScript = writeShellScript "muvm-steam-host-bus.sh" ''
         set -e
         launcher=$1

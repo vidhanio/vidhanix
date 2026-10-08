@@ -1,4 +1,4 @@
-# AGENTS.md
+# `AGENTS.md`
 
 Personal NixOS and Home Manager configurations, composed with flake-parts and import-tree using the Dendritic pattern.
 
@@ -17,7 +17,7 @@ Personal NixOS and Home Manager configurations, composed with flake-parts and im
 ## Module conventions
 
 - Follow the conventions of the feature being changed. Keep related configuration, packages, and assets together.
-- import-tree discovers Nix files under `modules/` automatically. Underscore-prefixed paths are excluded from discovery.
+- The `import-tree` loader discovers Nix files under `modules/` automatically. Underscore-prefixed paths are excluded from discovery.
 - Contribute shared configuration to `profiles.<name>.module` for NixOS and `profiles.<name>.homeModule` for Home Manager. Profile inheritance imports both module classes explicitly.
 - Contribute host configuration to `hosts.<hostname>.{module,homeModule}` and per-user Home Manager configuration to `users.<username>.module`.
 - Prefer upstream NixOS and Home Manager options. Use `home.packages` for packages requiring no additional configuration.

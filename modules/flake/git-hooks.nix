@@ -43,47 +43,52 @@
           '';
           meta = pkgs.codebook.meta;
         };
+      codebookPackage = codebookWithDicts [
+        "csharp/dict/csharp.txt"
+        "dart/dict/dart.txt"
+        "en_US/src/hunspell/en_US-large.aff"
+        "en_US/src/hunspell/en_US-large.dic"
+        "golang/dict/go.txt"
+        "rust/dict/rust.txt"
+        "software-terms/dict/computing-acronyms.txt"
+        "software-terms/dict/softwareTerms.txt"
+      ];
     in
     {
+      files.gitignore = ".pre-commit-config.yaml";
+
       pre-commit.settings = {
         package = pkgs.prek;
         hooks = {
           codebook = {
             enable = true;
-            name = "codebook";
-            entry = "${
-              lib.getExe (codebookWithDicts [
-                "csharp/dict/csharp.txt"
-                "dart/dict/dart.txt"
-                "en_US/src/hunspell/en_US-large.aff"
-                "en_US/src/hunspell/en_US-large.dic"
-                "golang/dict/go.txt"
-                "rust/dict/rust.txt"
-                "software-terms/dict/computing-acronyms.txt"
-                "software-terms/dict/softwareTerms.txt"
-              ])
-            } lint";
+            package = codebookPackage;
+            entry = lib.getExe codebookPackage;
+            args = [ "lint" ];
             types = [ "text" ];
             excludes = [ "^secrets\\.yaml$" ];
           };
           deadnix.enable = true;
           harper = {
             enable = true;
-            name = "harper";
-            entry = "${lib.getExe' pkgs.harper "harper-cli"} lint --user-dict-path .harper-dictionary.txt --ignore ${
-              lib.concatStringsSep "," [
+            package = pkgs.harper;
+            entry = lib.getExe' pkgs.harper "harper-cli";
+            args = [
+              "lint"
+              "--user-dict-path"
+              ".harper-dictionary.txt"
+              "--ignore"
+              (lib.concatStringsSep "," [
                 "ExpandArgument"
                 "ExpandConfiguration"
                 "ExpandDirectory"
                 "ExpandMemoryShorthands"
                 "ExpandMinimum"
                 "ExpandTimeShorthands"
-                "OrthographicConsistency"
-                "SentenceCapitalization"
                 "ToDoHyphen"
                 "UseTitleCase"
-              ]
-            }";
+              ])
+            ];
             files = "\\.(md|nix|py|sh|lua)$";
             types = [ "text" ];
           };
@@ -101,6 +106,5 @@
           };
         };
       };
-      files.gitignore = ".pre-commit-config.yaml";
     };
 }

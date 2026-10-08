@@ -341,7 +341,7 @@ let
         cbmp -d svg -n "Google Cursor" \
           -bc ${lib.escapeShellArg baseColor} \
           -oc ${lib.escapeShellArg outlineColor}
-        # cbmp cannot render the upstream animated SVGs.
+        # The `cbmp` utility cannot render the upstream animated SVGs.
         cp bitmaps/GoogleDot-Black/{left_ptr_watch,wait}-*.png "bitmaps/Google Cursor"
         ctgen build.toml -p x11 -d "bitmaps/Google Cursor" -o $out/share/icons \
           -n "Google Cursor" -c "Open-source cursor theme inspired by Google"

@@ -113,7 +113,7 @@ in
                       echo "$comment" >> "${name}"
                     fi
                     cat "${source}" >> "${name}"
-                    # ensure that it uses correct exclusion rules by naming the file properly
+                    # Name the file properly so the correct exclusion rules apply.
                     ${lib.getExe config.treefmt.build.wrapper} --no-cache --tree-root-file "${name}" "${name}"
                     mv "${name}" $out
                   '';

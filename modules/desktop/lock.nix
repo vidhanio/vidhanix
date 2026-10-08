@@ -50,7 +50,6 @@
                   on-timeout = "loginctl lock-session";
                 }
                 {
-                  # turn off screen 5 seconds after manual lock
                   timeout = 5;
                   condition_cmd = "pidof hyprlock";
                   condition_retry = 1;

@@ -45,7 +45,6 @@
             winminwidth = 5;
           };
 
-          # wrap long lines in prose, breaking at word boundaries.
           autoCmd = [
             {
               event = [ "FileType" ];

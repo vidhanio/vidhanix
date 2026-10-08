@@ -1,5 +1,4 @@
 {
-  # local SearXNG instance for the machine's agents (omp search provider).
   profiles.pc = {
     module =
       { config, ... }:
@@ -28,7 +27,7 @@
               public_instance = false;
             };
 
-            # the default is html-only; the json format powers the agents' API.
+            # The default is HTML-only; the JSON format powers the agents' API.
             search.formats = [
               "html"
               "json"

@@ -99,7 +99,7 @@
         tabline = { };
       };
 
-      # nixvim has no `mini.input` module.
+      # Nixvim has no `mini.input` module.
       extraConfigLua = "require('mini.input').setup()";
     };
   };

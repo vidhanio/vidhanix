@@ -13,7 +13,7 @@
 
       extraConfigLua = "require('pickers').setup()";
 
-      # `netrw` owns the `FileExplorer` event that `mini.files` clears; load it first.
+      # Load `netrw` first; it owns the `FileExplorer` event that `mini.files` clears.
       extraConfigLuaPre = "vim.cmd('runtime! plugin/netrwPlugin.vim')";
 
       keymaps = [
