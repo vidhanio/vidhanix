@@ -9,6 +9,10 @@
       programs = {
         flake-edit = {
           enable = true;
+          includes = [
+            "flake.nix"
+            "*.flake.nix"
+          ];
           noLock = true;
           priority = -1;
         };
