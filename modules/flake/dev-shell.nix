@@ -15,11 +15,12 @@
         allowSubstitutes = false;
         preferLocalBuild = true;
 
-        inherit (config.pre-commit) shellHook;
+        inherit (config.hk-nix) shellHook;
 
         packages = [
-          config.pre-commit.settings.package
+          config.hk-nix.hk
           config.treefmt.build.wrapper
+          pkgs.git
           pkgs.just
           pkgs.nh
           pkgs.sops

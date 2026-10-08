@@ -1,10 +1,10 @@
 { inputs, lib, ... }:
 {
   imports = [
-    inputs.git-hooks-nix.flakeModule
+    inputs.hk-nix.flakeModules.default
   ];
   perSystem =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     let
       dictionaryRepo = pkgs.fetchFromGitHub {
         owner = "streetsidesoftware";
@@ -55,30 +55,25 @@
       ];
     in
     {
-      files.gitignore = ".pre-commit-config.yaml";
-
-      pre-commit.settings = {
-        package = pkgs.prek;
-        hooks = {
+      hk-nix.settings.hooks."pre-commit" = {
+        fix = true;
+        stage = false;
+        fail_on_fix = true;
+        stash = "git";
+        steps = {
           codebook = {
-            enable = true;
-            package = codebookPackage;
-            entry = lib.getExe codebookPackage;
-            args = [ "lint" ];
             types = [ "text" ];
-            excludes = [ "^secrets\\.yaml$" ];
+            exclude = [ "secrets.yaml" ];
+            check = "${lib.getExe codebookPackage} lint {{files}}";
           };
-          deadnix.enable = true;
+          deadnix = {
+            glob = "**/*.nix";
+            check = "${lib.getExe pkgs.deadnix} --fail {{files}}";
+          };
           harper = {
-            enable = true;
-            package = pkgs.harper;
-            entry = lib.getExe' pkgs.harper "harper-cli";
-            args = [
-              "lint"
-              "--user-dict-path"
-              ".harper-dictionary.txt"
-              "--ignore"
-              (lib.concatStringsSep "," [
+            glob = "**/*.{md,nix,py,sh,lua}";
+            check = "${lib.getExe' pkgs.harper "harper-cli"} lint --user-dict-path .harper-dictionary.txt --ignore ${
+              lib.concatStringsSep "," [
                 "ExpandArgument"
                 "ExpandConfiguration"
                 "ExpandDirectory"
@@ -87,22 +82,50 @@
                 "ExpandTimeShorthands"
                 "ToDoHyphen"
                 "UseTitleCase"
-              ])
-            ];
-            files = "\\.(md|nix|py|sh|lua)$";
-            types = [ "text" ];
+              ]
+            } {{files}}";
           };
-          ruff.enable = true;
-          shellcheck.enable = true;
-          statix.enable = true;
-          treefmt.enable = true;
-          ty = {
-            enable = true;
-            name = "ty";
-            entry = "${lib.getExe pkgs.ty} check --python ${
-              lib.getExe (pkgs.python3.withPackages (ps: [ ps.rich ]))
-            }";
+          ruff = {
             types = [ "python" ];
+            check = "${lib.getExe pkgs.ruff} check {{files}}";
+            fix = "${lib.getExe pkgs.ruff} check --fix {{files}}";
+          };
+          shellcheck = {
+            match_any = [
+              { __pkl = ''new FileSelector { types = List("shell") }''; }
+              { __pkl = ''new FileSelector { glob = ".envrc" }''; }
+            ];
+            check = "${lib.getExe pkgs.shellcheck} {{files}}";
+          };
+          statix = {
+            glob = "**/*.nix";
+            check = "${lib.getExe pkgs.statix} check";
+          };
+          treefmt = {
+            check = "${lib.getExe config.treefmt.build.wrapper} --fail-on-change --no-cache {{files}}";
+            fix = "${lib.getExe config.treefmt.build.wrapper} --no-cache {{files}}";
+          };
+          ty = {
+            types = [ "python" ];
+            check = "${lib.getExe pkgs.ty} check --python ${
+              lib.getExe (pkgs.python3.withPackages (ps: [ ps.rich ]))
+            } {{files}}";
+          };
+          write-files = {
+            depends = [ "treefmt" ];
+            stage = lib.attrNames config.files.file;
+            check = lib.getExe (
+              pkgs.writeShellApplication {
+                name = "check-generated-files";
+                runtimeInputs = [ pkgs.diffutils ];
+                text = lib.concatStringsSep "\n" (
+                  lib.mapAttrsToList (
+                    path: file: "diff --unified ${lib.escapeShellArg path} ${file.source}"
+                  ) config.files.file
+                );
+              }
+            );
+            fix = lib.getExe config.files.writer.drv;
           };
         };
       };

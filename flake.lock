@@ -485,6 +485,35 @@
         "type": "github"
       }
     },
+    "hk-nix": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "import-tree": [
+          "import-tree"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788220061,
+        "narHash": "sha256-ePEDQQuzkyy9p0PUOTgJoOyGufjVMPcH5gKr0lHlt24=",
+        "owner": "nix-tools",
+        "repo": "hk-nix",
+        "rev": "7e7b66f7276572776eaabc1ffa0c5b1e1aa2f6dd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-tools",
+        "repo": "hk-nix",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -936,9 +965,7 @@
         "flake-parts": [
           "flake-parts"
         ],
-        "git-hooks-nix": [
-          "git-hooks-nix"
-        ],
+        "git-hooks-nix": "git-hooks-nix",
         "nixpkgs": "nixpkgs",
         "nixpkgs-23-11": "nixpkgs-23-11",
         "nixpkgs-regression": "nixpkgs-regression"
@@ -1317,8 +1344,8 @@
         "disko": "disko",
         "files": "files",
         "flake-parts": "flake-parts",
-        "git-hooks-nix": "git-hooks-nix",
         "helium": "helium",
+        "hk-nix": "hk-nix",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "impermanence": "impermanence",

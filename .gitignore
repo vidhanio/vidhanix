@@ -5,5 +5,3 @@ result.*
 
 .direnv
 __pycache__
-
-.pre-commit-config.yaml

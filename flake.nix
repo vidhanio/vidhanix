@@ -48,9 +48,14 @@
       url = "github:mightyiam/files";
       flake = false;
     };
-    git-hooks-nix = {
-      url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+    hk-nix = {
+      url = "github:nix-tools/hk-nix";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        import-tree.follows = "import-tree";
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.follows = "treefmt-nix";
+      };
     };
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -60,10 +65,8 @@
     # system
     determinate = {
       url = "github:DeterminateSystems/determinate";
-      inputs.nix.inputs = {
-        flake-parts.follows = "flake-parts";
-        git-hooks-nix.follows = "git-hooks-nix";
-      };
+      inputs.nix.inputs.flake-parts.follows = "flake-parts";
+      inputs.nix.inputs.git-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
       url = "github:vidhanio/disko/feature/skip-partition-uuid";
