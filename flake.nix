@@ -9,6 +9,7 @@
       "flakes"
     ];
     extra-substituters = [
+      "https://install.determinate.systems"
       "https://hyprland.cachix.org"
       "https://cache.numtide.com"
       "https://attic.xuyh0120.win/lantian"
@@ -16,6 +17,7 @@
       "https://vidhanio.cachix.org"
     ];
     extra-trusted-public-keys = [
+      "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
@@ -33,6 +35,13 @@
         rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
         systems.follows = "systems";
         treefmt-nix.follows = "treefmt-nix";
+      };
+    };
+    determinate = {
+      url = "github:DeterminateSystems/determinate";
+      inputs.nix.inputs = {
+        flake-parts.follows = "flake-parts";
+        git-hooks-nix.follows = "git-hooks-nix";
       };
     };
     disko = {
