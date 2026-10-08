@@ -65,7 +65,10 @@
         programs.agents.skills.herdr = "${herdr.src}/skills/herdr";
 
         desktop = {
-          binds."SUPER + t".cmd = "focus-or-launch dev.herdr ${launch}";
+          binds."SUPER + t".app = {
+            cmd = launch;
+            focusAppId = "dev.herdr";
+          };
           binds."SUPER + SHIFT + t".app = launch;
           workspaces.work.apps = [ "dev.herdr" ];
         };

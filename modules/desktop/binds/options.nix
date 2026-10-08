@@ -12,7 +12,24 @@
             };
 
             app = lib.mkOption {
-              type = lib.types.nullOr lib.types.str;
+              type = lib.types.nullOr (
+                lib.types.coercedTo lib.types.str (cmd: { inherit cmd; }) (
+                  lib.types.submodule {
+                    options = {
+                      cmd = lib.mkOption {
+                        type = lib.types.str;
+                        description = "Command used to launch the application.";
+                      };
+
+                      focusAppId = lib.mkOption {
+                        type = lib.types.nullOr lib.types.str;
+                        default = null;
+                        description = "Application ID to focus before launching; null always spawns a new instance.";
+                      };
+                    };
+                  }
+                )
+              );
               default = null;
               description = "Application launched by the bind.";
             };

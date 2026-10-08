@@ -19,7 +19,10 @@
             accent_from_art = false;
           };
         };
-        desktop.binds."SUPER + s".app = "spotifast";
+        desktop.binds."SUPER + s".app = {
+          cmd = "spotifast";
+          focusAppId = "spotifast";
+        };
         desktop.workspaces.social.apps = [ "spotifast" ];
 
         xdg.autostart.entries = [

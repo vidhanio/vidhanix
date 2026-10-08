@@ -1,8 +1,26 @@
 { lib, ... }:
 {
   profiles.pc.homeModule =
-    { config, ... }:
+    { config, pkgs, ... }:
     let
+      focusOrLaunch = pkgs.writeShellApplication {
+        name = "niri-focus-or-launch";
+        runtimeInputs = [
+          pkgs.jq
+          pkgs.niri
+        ];
+        text = ''
+          appid=$1
+          shift
+
+          id=$(niri msg --json windows | jq -r --arg appid "$appid" 'map(select(.app_id == $appid)) | first | .id // empty')
+          if [[ -n "$id" ]]; then
+            niri msg action focus-window --id "$id"
+          else
+            niri msg action spawn -- "$@"
+          fi
+        '';
+      };
       kdlType = lib.types.nullOr (
         lib.types.oneOf [
           lib.types.bool
@@ -66,7 +84,15 @@
             niri = {
               cmd = lib.mkMerge [
                 (lib.mkIf (config.cmd != null) (lib.mkDerivedConfig options.cmd lib.id))
-                (lib.mkIf (config.app != null) (lib.mkDerivedConfig options.app lib.id))
+                (lib.mkIf (config.app != null) (
+                  lib.mkDerivedConfig options.app (
+                    app:
+                    if app.focusAppId == null then
+                      app.cmd
+                    else
+                      "${lib.getExe focusOrLaunch} ${lib.escapeShellArg app.focusAppId} ${app.cmd}"
+                  )
+                ))
               ];
               action = lib.mkIf (config.niri.cmd != null) (
                 lib.mkDerivedConfig options.niri.cmd (cmd: {

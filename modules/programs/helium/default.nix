@@ -22,7 +22,10 @@
       ];
 
       desktop = {
-        binds."SUPER + b".cmd = "focus-or-launch helium helium";
+        binds."SUPER + b".app = {
+          cmd = "helium";
+          focusAppId = "helium";
+        };
         binds."SUPER + SHIFT + b".app = "helium";
         workspaces.work.apps = [ "helium" ];
       };

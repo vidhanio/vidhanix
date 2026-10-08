@@ -7,6 +7,25 @@
       ...
     }:
     let
+      focusOrLaunch = pkgs.writeShellApplication {
+        name = "hyprland-focus-or-launch";
+        runtimeInputs = [
+          pkgs.hyprland
+          pkgs.jq
+          pkgs.uwsm
+        ];
+        text = ''
+          appid=$1
+          shift
+
+          address=$(hyprctl -j clients | jq -r --arg appid "$appid" 'map(select(.class == $appid)) | first | .address // empty')
+          if [[ -n "$address" ]]; then
+            hyprctl eval "hl.dispatch(hl.dsp.focus({ window = \"address:$address\" }))"
+          else
+            uwsm app -- "$@"
+          fi
+        '';
+      };
       lua = pkgs.formats.lua { };
       toLua = lib.generators.toLua { multiline = false; };
 
@@ -72,7 +91,15 @@
             hyprland = {
               cmd = lib.mkMerge [
                 (lib.mkIf (config.cmd != null) (lib.mkDerivedConfig options.cmd lib.id))
-                (lib.mkIf (config.app != null) (lib.mkDerivedConfig options.app (app: "uwsm app -- ${app}")))
+                (lib.mkIf (config.app != null) (
+                  lib.mkDerivedConfig options.app (
+                    app:
+                    if app.focusAppId == null then
+                      "uwsm app -- ${app.cmd}"
+                    else
+                      "${lib.getExe focusOrLaunch} ${lib.escapeShellArg app.focusAppId} ${app.cmd}"
+                  )
+                ))
               ];
               dsp = lib.mkIf (config.hyprland.cmd != null) (
                 lib.mkDerivedConfig options.hyprland.cmd (cmd: {
