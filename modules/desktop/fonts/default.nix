@@ -52,5 +52,11 @@
           };
         };
       };
+
+    homeModule =
+      { self', ... }:
+      {
+        home.packages = [ self'.packages.berkeley-mono ];
+      };
   };
 }
