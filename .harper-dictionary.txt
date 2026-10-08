@@ -21,7 +21,6 @@ Niri's
 NixOS
 nixpkgs
 Nixvim
-omp
 python3
 Schiavi
 SearXNG

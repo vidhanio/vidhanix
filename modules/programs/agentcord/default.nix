@@ -33,12 +33,6 @@
 
             projects.base_path = "~/Projects";
 
-            agents.omp = {
-              display_name = "Oh My Pi";
-              command = "omp";
-              args = [ "acp" ];
-              emoji = "🥧";
-            };
           };
         };
 
