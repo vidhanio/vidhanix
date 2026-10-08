@@ -12,6 +12,9 @@
       '';
 
       devShells.default = pkgs.mkShell {
+        allowSubstitutes = false;
+        preferLocalBuild = true;
+
         inherit (config.pre-commit) shellHook;
 
         packages = [
