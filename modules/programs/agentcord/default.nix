@@ -1,7 +1,5 @@
 { inputs, ... }:
 {
-  flake-file.inputs.agentcord.url = "github:vidhanio/agentcord";
-
   hosts.vortex = {
     homeModule =
       { config, ... }:

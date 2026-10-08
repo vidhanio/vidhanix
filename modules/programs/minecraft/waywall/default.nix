@@ -4,8 +4,6 @@
   ...
 }:
 {
-  flake-file.inputs.mcsr.url = "https://git.uku3lig.net/uku/mcsr-nixos/archive/main.tar.gz";
-
   profiles.pc = {
     homeModule =
       {

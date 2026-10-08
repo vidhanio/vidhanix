@@ -1,13 +1,9 @@
 {
-  config,
   inputs,
   self,
   withSystem,
   ...
 }:
-let
-  flakeConfig = config.flake-file.nixConfig;
-in
 {
   profiles.base.module =
     { config, ... }:
@@ -21,11 +17,10 @@ in
           allowed-users = [ "@wheel" ];
           trusted-users = [ "@wheel" ];
           accept-flake-config = true;
-          inherit (flakeConfig)
-            extra-substituters
-            extra-trusted-public-keys
-            extra-experimental-features
-            ;
+          extra-experimental-features = [
+            "nix-command"
+            "flakes"
+          ];
         };
         registry = {
           self.flake = self;

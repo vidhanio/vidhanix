@@ -1,7 +1,5 @@
 { inputs, lib, ... }:
 {
-  flake-file.inputs.nixcord.url = "github:4evy/nixcord";
-
   profiles.pc = {
     homeModule =
       { config, ... }:

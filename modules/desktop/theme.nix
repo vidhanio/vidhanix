@@ -1,13 +1,5 @@
 { inputs, lib, ... }:
 {
-  flake-file.inputs = {
-    stylix.url = "github:nix-community/stylix";
-    tinted-schemes = {
-      url = "github:tinted-theming/schemes";
-      flake = false;
-    };
-  };
-
   profiles.pc = {
     module.stylix = {
       enable = true;

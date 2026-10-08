@@ -1,6 +1,4 @@
 {
-  flake-file.inputs.spotifast.url = "github:crmne/spotifast";
-
   profiles.pc = {
     homeModule =
       {

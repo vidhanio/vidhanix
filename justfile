@@ -17,12 +17,12 @@ systemPackage := nixosConfig + ".system.build.toplevel"
 @add:
     git add -A
 
-# Regenerate the generated files, bring flake.lock up to date, and remove duplicate inputs
+# Regenerate the generated files
 @generate: add
-    nix run .#generate-files
+    nix run .#write-files
 
-# Regenerate the files, then run `nh os` with the given action and flags
-@os action *flags: generate
+# Run `nh os` with the given action and flags
+@os action *flags: add
     if [ -t 1 ]; \
         then nh os {{ action }} {{ flags }} .; \
     else \
@@ -50,7 +50,7 @@ systemPackage := nixosConfig + ".system.build.toplevel"
     nix run .#update-packages -- {{ packages }}
 
 # Update the flake inputs, then update each package
-update: generate
+update: add
     nix flake update
     just update-packages
 

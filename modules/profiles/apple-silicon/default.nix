@@ -1,7 +1,5 @@
 { config, inputs, ... }:
 {
-  flake-file.inputs.nixos-apple-silicon.url = "github:nix-community/nixos-apple-silicon";
-
   profiles.apple-silicon = {
     module =
       {

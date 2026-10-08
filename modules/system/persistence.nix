@@ -1,7 +1,5 @@
 { inputs, lib, ... }:
 {
-  flake-file.inputs.impermanence.url = "github:nix-community/impermanence";
-
   profiles.base = {
     module =
       { config, ... }:

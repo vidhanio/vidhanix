@@ -371,21 +371,6 @@
         "type": "github"
       }
     },
-    "flake-file": {
-      "locked": {
-        "lastModified": 1791311177,
-        "narHash": "sha256-5ShQ10Jlfmge8emgwENj/1/2OXl8hN6mre05ZwxSkE8=",
-        "owner": "denful",
-        "repo": "flake-file",
-        "rev": "ef875de213a2f093ecb351c1e764797baa98e044",
-        "type": "github"
-      },
-      "original": {
-        "owner": "denful",
-        "repo": "flake-file",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -1330,7 +1315,6 @@
         "determinate": "determinate",
         "disko": "disko",
         "files": "files",
-        "flake-file": "flake-file",
         "flake-parts": "flake-parts",
         "ghostty-cursor-shaders": "ghostty-cursor-shaders",
         "git-hooks-nix": "git-hooks-nix",

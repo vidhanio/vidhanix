@@ -50,8 +50,6 @@ jobs:
           system: aarch64-linux
         - pkg: cider
           system: aarch64-linux
-        - pkg: generate-files
-          system: aarch64-linux
         - pkg: google-combined
           system: aarch64-linux
         - pkg: google-cursor
@@ -85,8 +83,6 @@ jobs:
         - pkg: breezex-hyprcursor
           system: x86_64-linux
         - pkg: cider
-          system: x86_64-linux
-        - pkg: generate-files
           system: x86_64-linux
         - pkg: google-combined
           system: x86_64-linux

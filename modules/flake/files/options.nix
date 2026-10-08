@@ -123,11 +123,4 @@ in
       }
     );
   };
-
-  config = {
-    flake-file.inputs.files = {
-      url = "github:mightyiam/files";
-      flake = false;
-    };
-  };
 }

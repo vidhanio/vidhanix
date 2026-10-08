@@ -1,16 +1,6 @@
 {
-  flake-file = {
-    inputs.llm-agents = {
-      url = "github:numtide/llm-agents.nix";
-      inputs.nixpkgs.autoFollow = false;
-      inputs.bun2nix.inputs.nixpkgs.autoFollow = false;
-    };
-
-    nixConfig = {
-      extra-substituters = [ "https://cache.numtide.com" ];
-      extra-trusted-public-keys = [
-        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-      ];
-    };
-  };
+  perSystem.treefmt.programs.flake-edit.settings.follow.ignore = [
+    "llm-agents.nixpkgs"
+    "llm-agents.bun2nix.nixpkgs"
+  ];
 }

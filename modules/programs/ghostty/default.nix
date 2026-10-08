@@ -1,10 +1,5 @@
 { inputs, ... }:
 {
-  flake-file.inputs.ghostty-cursor-shaders = {
-    url = "github:sahaj-b/ghostty-cursor-shaders";
-    flake = false;
-  };
-
   profiles.pc.homeModule = { config, ... }: {
     home.sessionVariables.TERMINAL = "ghostty";
 

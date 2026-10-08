@@ -74,7 +74,7 @@
             ];
           };
 
-          # `just generate` prunes the new lock and regenerates everything from it.
+          # Refresh follows from Dependabot's lock, then prune the replaced inputs.
           prune-lock = {
             name = "Prune Lock";
             needs = [ "metadata" ];
@@ -86,7 +86,10 @@
               createAppToken
               {
                 name = "Prune Lock";
-                run = "${just} generate";
+                run = ''
+                  ${just} fmt
+                  nix flake lock
+                '';
               }
               (commitToPrBranch "flake: prune lock")
             ];

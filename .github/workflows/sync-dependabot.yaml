@@ -47,7 +47,7 @@ jobs:
         client-id: ${{ vars.APP_CLIENT_ID }}
         private-key: ${{ secrets.APP_PRIVATE_KEY }}
     - name: Prune Lock
-      run: nix develop -c just generate
+      run: "nix develop -c just fmt\nnix flake lock\n"
     - env:
         GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
       name: Commit

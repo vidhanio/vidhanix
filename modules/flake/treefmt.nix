@@ -4,11 +4,16 @@
     inputs.treefmt-nix.flakeModule
   ];
 
-  flake-file.inputs.treefmt-nix.url = "github:numtide/treefmt-nix";
-
   perSystem = {
     treefmt = {
       programs = {
+        flake-edit = {
+          enable = true;
+          noLock = true;
+          priority = -1;
+          settings.follow.aliases.nixpkgs = [ "nixpkgs-lib" ];
+        };
+
         nixfmt.enable = true;
 
         shfmt.enable = true;

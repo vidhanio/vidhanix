@@ -1,33 +1,13 @@
 { lib, ... }:
 {
   perSystem =
+    { config, ... }:
     {
-      pkgs,
-      config,
-      self',
-      ...
-    }:
-    {
-      packages.generate-files = pkgs.writeShellApplication {
-        name = "generate-files";
-        meta = {
-          description = "Generate various files for this repository";
-          platforms = lib.platforms.linux;
-        };
-        derivationArgs = {
-          preferLocalBuild = true;
-          allowSubstitutes = false;
-        };
-        text = ''
-          ${lib.getExe config.files.writer.drv}
+      files.writer.app = true;
 
-          ${lib.getExe self'.packages.write-flake}
-        '';
-      };
-
-      pre-commit.settings.hooks.generate-files = {
+      pre-commit.settings.hooks.write-files = {
         enable = true;
-        entry = lib.getExe self'.packages.generate-files;
+        entry = lib.getExe config.files.writer.drv;
         pass_filenames = false;
       };
 

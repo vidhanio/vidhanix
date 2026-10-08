@@ -1,7 +1,5 @@
 { inputs, ... }:
 {
-  flake-file.inputs.disko.url = "github:vidhanio/disko/feature/skip-partition-uuid";
-
   profiles.base.module = {
     imports = [ inputs.disko.nixosModules.default ];
     disko.devices.disk.main = {

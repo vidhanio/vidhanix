@@ -1,6 +1,4 @@
 {
-  flake-file.inputs.helium.url = "github:schembriaiden/helium-browser-nix-flake";
-
   profiles.pc.homeModule =
     {
       config,

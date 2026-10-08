@@ -1,17 +1,5 @@
 {
-  flake-file = {
-    inputs.hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.autoFollow = false;
-    };
-
-    nixConfig = {
-      extra-substituters = [ "https://hyprland.cachix.org" ];
-      extra-trusted-public-keys = [
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      ];
-    };
-  };
+  perSystem.treefmt.programs.flake-edit.settings.follow.ignore = [ "hyprland.nixpkgs" ];
 
   profiles.pc = {
     module =
