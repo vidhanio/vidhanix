@@ -181,6 +181,13 @@
     };
 
     # agents
+    herdr = {
+      url = "github:herdrdev/herdr";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+      };
+    };
     agentcord = {
       url = "github:vidhanio/agentcord";
       inputs = {
