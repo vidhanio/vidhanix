@@ -48,7 +48,10 @@
           autoCmd = [
             {
               event = [ "FileType" ];
-              pattern = [ "markdown" ];
+              pattern = [
+                "markdown"
+                "typst"
+              ];
               command = "setlocal wrap linebreak";
             }
           ];
