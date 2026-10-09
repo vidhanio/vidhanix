@@ -36,7 +36,10 @@
         image.enable = true;
         typst-preview = {
           enable = true;
-          settings.open_cmd = "${lib.getExe openTypstPreview} %s";
+          settings = {
+            invert_colors = "auto";
+            open_cmd = "${lib.getExe openTypstPreview} %s";
+          };
         };
         wakatime.enable = true;
       };
