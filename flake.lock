@@ -499,6 +499,27 @@
         "type": "github"
       }
     },
+    "herdr": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay_2"
+      },
+      "locked": {
+        "lastModified": 1791490364,
+        "narHash": "sha256-CCHbrAwI51iNPu7/ubU/UUmyxeIWEYoIcoFC5A6+KX8=",
+        "owner": "herdrdev",
+        "repo": "herdr",
+        "rev": "2563803dca97c040beaf3dc3acdcb5a3221b4238",
+        "type": "github"
+      },
+      "original": {
+        "owner": "herdrdev",
+        "repo": "herdr",
+        "type": "github"
+      }
+    },
     "hk-nix": {
       "inputs": {
         "flake-parts": [
@@ -1390,6 +1411,7 @@
         "files": "files",
         "flake-parts": "flake-parts",
         "helium": "helium",
+        "herdr": "herdr",
         "hk-nix": "hk-nix",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
@@ -1410,8 +1432,7 @@
         "systems": "systems",
         "tinted-schemes": "tinted-schemes",
         "treefmt-nix": "treefmt-nix",
-        "vidhan-fonts": "vidhan-fonts",
-        "herdr": "herdr"
+        "vidhan-fonts": "vidhan-fonts"
       }
     },
     "rust-overlay": {
@@ -1466,6 +1487,27 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "rev": "4ca2963243427cb86bd6b4d9ca6010db0162a619",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_4": {
+      "inputs": {
+        "nixpkgs": [
+          "spotifast",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787834454,
+        "narHash": "sha256-jXSvqn04IOecJCvSvl8+g3PsbDVNP6qKs6dKUs/b16k=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "dc2fd1acc537f3583744e1373597a5731ff7a6e3",
         "type": "github"
       },
       "original": {
@@ -1735,48 +1777,6 @@
       "original": {
         "owner": "hyprwm",
         "repo": "xdg-desktop-portal-hyprland",
-        "type": "github"
-      }
-    },
-    "herdr": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "rust-overlay": "rust-overlay_2"
-      },
-      "locked": {
-        "lastModified": 1791490364,
-        "narHash": "sha256-CCHbrAwI51iNPu7/ubU/UUmyxeIWEYoIcoFC5A6+KX8=",
-        "owner": "herdrdev",
-        "repo": "herdr",
-        "rev": "2563803dca97c040beaf3dc3acdcb5a3221b4238",
-        "type": "github"
-      },
-      "original": {
-        "owner": "herdrdev",
-        "repo": "herdr",
-        "type": "github"
-      }
-    },
-    "rust-overlay_4": {
-      "inputs": {
-        "nixpkgs": [
-          "spotifast",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1787834454,
-        "narHash": "sha256-jXSvqn04IOecJCvSvl8+g3PsbDVNP6qKs6dKUs/b16k=",
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "rev": "dc2fd1acc537f3583744e1373597a5731ff7a6e3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oxalica",
-        "repo": "rust-overlay",
         "type": "github"
       }
     }
