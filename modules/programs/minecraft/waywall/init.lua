@@ -1,10 +1,12 @@
 local waywall = require("waywall")
 local helpers = require("waywall.helpers")
-local Scene = require("waywork.scene")
-local Modes = require("waywork.modes")
-local Keys = require("waywork.keys")
 
-local config = {
+helpers.res_mirror({ src = eyeSrc, dst = eyeDst }, tall.w, tall.h)
+helpers.res_image(files.eye_overlay, { dst = eyeDst, depth = 999 }, tall.w, tall.h)
+
+local toggle_tall = helpers.toggle_res(tall.w, tall.h, sens.tall)
+
+return {
 	input = {
 		sensitivity = sens.base,
 		remaps = {
@@ -16,79 +18,19 @@ local config = {
 		ninb_anchor = "topright",
 		ninb_opacity = 1,
 	},
+	actions = {
+		["*-F4"] = function()
+			if waywall.get_key("F3") then
+				return false
+			end
+			return toggle_tall()
+		end,
+		["*-Alt-B"] = helpers.toggle_res(thin.w, thin.h),
+		["*-Alt-N"] = helpers.toggle_res(wide.w, wide.h),
+		["*-Alt-apostrophe"] = function()
+			waywall.exec(programs.ninjabrain_bot)
+			waywall.show_floating(true)
+		end,
+		["*-Alt-semicolon"] = helpers.toggle_floating,
+	},
 }
-
-local scene = Scene.SceneManager.new(waywall)
-
-scene:register("eye_measure", {
-	kind = "mirror",
-	options = { src = eyeSrc, dst = eyeDst },
-	groups = { "tall" },
-})
-
-scene:register("eye_overlay", {
-	kind = "image",
-	path = files.eye_overlay,
-	options = { dst = eyeDst, depth = 999 },
-	groups = { "tall" },
-})
-
-local mode_manager = Modes.ModeManager.new(waywall)
-
-mode_manager:define("thin", {
-	width = thin.w,
-	height = thin.h,
-	on_enter = function()
-		scene:enable_group("thin", true)
-	end,
-	on_exit = function()
-		scene:enable_group("thin", false)
-	end,
-})
-
-mode_manager:define("tall", {
-	width = tall.w,
-	height = tall.h,
-	on_enter = function()
-		scene:enable_group("tall", true)
-		waywall.set_sensitivity(sens.tall)
-	end,
-	on_exit = function()
-		scene:enable_group("tall", false)
-		waywall.set_sensitivity(0)
-	end,
-})
-
-mode_manager:define("wide", {
-	width = wide.w,
-	height = wide.h,
-})
-
-local actions = Keys.actions({
-	["*-F4"] = function()
-		if not waywall.get_key("F3") then
-			return mode_manager:toggle("tall")
-		else
-			return false
-		end
-	end,
-	["*-Alt-B"] = function()
-		return mode_manager:toggle("thin")
-	end,
-
-	["*-Alt-N"] = function()
-		return mode_manager:toggle("wide")
-	end,
-
-	["*-Alt-apostrophe"] = function()
-		waywall.exec(programs.ninjabrain_bot)
-		waywall.show_floating(true)
-	end,
-	["*-Alt-semicolon"] = function()
-		helpers.toggle_floating()
-	end,
-})
-
-config.actions = actions
-
-return config

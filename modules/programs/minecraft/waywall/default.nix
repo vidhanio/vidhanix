@@ -126,7 +126,6 @@
               patches = (old.patches or [ ]) ++ [ ./26.3.patch ];
             });
             config = {
-              enableWaywork = true;
               programs = [ pkgs.ninjabrain-bot ];
               files = {
                 eye_overlay = ./eye_overlay.png;
