@@ -1428,6 +1428,7 @@
         "nixvim": "nixvim",
         "sops-nix": "sops-nix",
         "spotifast": "spotifast",
+        "steam-config-nix": "steam-config-nix",
         "stylix": "stylix",
         "systems": "systems",
         "tinted-schemes": "tinted-schemes",
@@ -1554,6 +1555,32 @@
       "original": {
         "owner": "crmne",
         "repo": "spotifast",
+        "type": "github"
+      }
+    },
+    "steam-config-nix": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790756730,
+        "narHash": "sha256-f5Ms6iJDGSA9UggYA2Mt9IiI8BOHft3tRFXOZyvjTFE=",
+        "owner": "different-name",
+        "repo": "steam-config-nix",
+        "rev": "86a90f161fb0bce7ef5e4d18eb39398f9ee558f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "different-name",
+        "repo": "steam-config-nix",
         "type": "github"
       }
     },
