@@ -8,6 +8,11 @@
           package = pkgs.zathura.override {
             plugins = [ pkgs.zathuraPkgs.zathura_pdf_mupdf ];
           };
+          options = {
+            adjust-open = "width";
+            recolor = true;
+            selection-clipboard = "clipboard";
+          };
         };
       };
   };
