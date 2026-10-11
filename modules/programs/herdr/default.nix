@@ -7,7 +7,7 @@
         ...
       }:
       let
-        herdr = inputs'.herdr.packages.default;
+        herdr = inputs'.llm-agents.packages.herdr;
         launch = "ghostty --class=dev.herdr -e herdr";
         desktopItem = pkgs.makeDesktopItem {
           name = "herdr";
