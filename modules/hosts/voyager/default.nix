@@ -17,7 +17,7 @@
           x = 0;
           y = 0;
         };
-        scale = 1.6;
+        scale = 1.33;
       };
       hardware.asahi.peripheralFirmwareDirectory = ./firmware;
     };
