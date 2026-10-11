@@ -5,19 +5,19 @@
         models = {
           presets = {
             default = {
-              provider = "opencode-go";
-              model = "deepseek-v4.1-flash";
-              thinking = "max";
+              provider = "openai";
+              model = "gpt-6.1-sol";
+              thinking = "medium";
             };
             small = {
               provider = "opencode-go";
               model = "deepseek-v4.1-flash";
-              thinking = "low";
+              thinking = "high";
             };
             large = {
-              provider = "openai-codex";
-              model = "gpt-6-sol";
-              thinking = "medium";
+              provider = "openai";
+              model = "gpt-6.1-sol";
+              thinking = "high";
             };
           };
 
