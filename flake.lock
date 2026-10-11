@@ -1422,7 +1422,6 @@
         "nixpkgs": "nixpkgs_6",
         "nixvim": "nixvim",
         "sops-nix": "sops-nix",
-        "spotifast": "spotifast",
         "steam-config-nix": "steam-config-nix",
         "stylix": "stylix",
         "systems": "systems",
@@ -1471,27 +1470,6 @@
         "type": "github"
       }
     },
-    "rust-overlay_3": {
-      "inputs": {
-        "nixpkgs": [
-          "spotifast",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1787834454,
-        "narHash": "sha256-jXSvqn04IOecJCvSvl8+g3PsbDVNP6qKs6dKUs/b16k=",
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "rev": "dc2fd1acc537f3583744e1373597a5731ff7a6e3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "type": "github"
-      }
-    },
     "sops-nix": {
       "inputs": {
         "nixpkgs": [
@@ -1509,27 +1487,6 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
-        "type": "github"
-      }
-    },
-    "spotifast": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "rust-overlay": "rust-overlay_3"
-      },
-      "locked": {
-        "lastModified": 1791604296,
-        "narHash": "sha256-myad/LxlHhw5u2W6w6FjzzOqLGtThxYxsE024/V9ivM=",
-        "owner": "crmne",
-        "repo": "spotifast",
-        "rev": "dd2d5e34e66d4e01e31e595a3022a1de808b449a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "crmne",
-        "repo": "spotifast",
         "type": "github"
       }
     },

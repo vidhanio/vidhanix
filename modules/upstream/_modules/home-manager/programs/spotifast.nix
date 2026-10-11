@@ -12,10 +12,7 @@ in
   options.programs.spotifast = {
     enable = lib.mkEnableOption "spotifast";
 
-    package = lib.mkPackageOption pkgs "spotifast" {
-      nullable = true;
-      default = null;
-    };
+    package = lib.mkPackageOption pkgs "spotifast" { nullable = true; };
 
     settings = lib.mkOption {
       inherit (json) type;
