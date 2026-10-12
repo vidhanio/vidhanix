@@ -15,12 +15,14 @@
         lua_ls.enable = true;
         nil_ls.enable = true;
         nixd.enable = true;
+        oxlint.enable = true;
         ruff.enable = true;
         rust_analyzer.enable = true;
         statix.enable = true;
         tailwindcss.enable = true;
         tinymist.enable = true;
         tombi.enable = true;
+        tsc.enable = true;
         ty.enable = true;
         yamlls.enable = true;
         # keep-sorted end
