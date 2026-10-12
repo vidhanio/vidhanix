@@ -6,7 +6,6 @@ ignore_paths = [
   ".github/dependabot.yaml",
   ".github/workflows/**",
   ".gitignore",
-  ".harper-dictionary.txt",
   ".sops.yaml",
   "**/*.nix",
   "**/*.patch",

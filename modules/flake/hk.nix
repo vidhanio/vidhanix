@@ -70,21 +70,6 @@
             glob = "**/*.nix";
             check = "${lib.getExe pkgs.deadnix} --fail {{files}}";
           };
-          harper = {
-            glob = "**/*.{md,nix,py,sh,lua}";
-            check = "${lib.getExe' pkgs.harper "harper-cli"} lint --user-dict-path .harper-dictionary.txt --ignore ${
-              lib.concatStringsSep "," [
-                "ExpandArgument"
-                "ExpandConfiguration"
-                "ExpandDirectory"
-                "ExpandMemoryShorthands"
-                "ExpandMinimum"
-                "ExpandTimeShorthands"
-                "ToDoHyphen"
-                "UseTitleCase"
-              ]
-            } {{files}}";
-          };
           ruff = {
             types = [ "python" ];
             check = "${lib.getExe pkgs.ruff} check {{files}}";
