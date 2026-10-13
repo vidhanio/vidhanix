@@ -48,15 +48,6 @@ in
                 "-fullscreen"
               ];
             };
-            "322170" = {
-              name = "Geometry Dash";
-              env = {
-                PROTON_USE_NTSYNC = "1";
-                vblank_mode = "0";
-                LD_PRELOAD = "${lib.getLib pkgs.pkgsi686Linux.libevdev}/lib/libevdev.so";
-              };
-              dllOverrides.xinput1_4 = "n,b";
-            };
           };
         };
 
