@@ -66,39 +66,6 @@
             niri.action.focus-workspace-up = { };
           };
 
-          "SUPER + h" = {
-            hyprland.dsp.focus.direction = "l";
-            niri.action.focus-column-left = { };
-          };
-          "SUPER + j" = {
-            hyprland.dsp.focus.direction = "d";
-            niri.action.focus-window-or-workspace-down = { };
-          };
-          "SUPER + k" = {
-            hyprland.dsp.focus.direction = "u";
-            niri.action.focus-window-or-workspace-up = { };
-          };
-          "SUPER + l" = {
-            hyprland.dsp.focus.direction = "r";
-            niri.action.focus-column-right = { };
-          };
-          "SUPER + SHIFT + h" = {
-            hyprland.dsp."window.move".direction = "l";
-            niri.action.move-column-left = { };
-          };
-          "SUPER + SHIFT + j" = {
-            hyprland.dsp."window.move".direction = "d";
-            niri.action.move-window-down = { };
-          };
-          "SUPER + SHIFT + k" = {
-            hyprland.dsp."window.move".direction = "u";
-            niri.action.move-window-up = { };
-          };
-          "SUPER + SHIFT + l" = {
-            hyprland.dsp."window.move".direction = "r";
-            niri.action.move-column-right = { };
-          };
-
           "SUPER + mouse_up" = {
             hyprland.dsp.layout = "move -col";
             niri.action.focus-column-left = { };

@@ -47,9 +47,13 @@
             };
           };
         };
-        desktop.binds."SUPER + d".app = {
-          cmd = "equibop";
-          focusAppId = "equibop";
+        desktop.binds = {
+          "SUPER + d".app = {
+            cmd = "equibop";
+            focusAppId = "equibop";
+          };
+          "SUPER + m".cmd = "${lib.getExe config.programs.nixcord.equibop.package} --toggle-mic";
+          "SUPER + SHIFT + m".cmd = "${lib.getExe config.programs.nixcord.equibop.package} --toggle-deafen";
         };
         desktop.workspaces.social.apps = [ "equibop" ];
 
