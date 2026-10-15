@@ -3,7 +3,7 @@
     module =
       { inputs', ... }:
       {
-        boot.kernelPackages = inputs'.nix-cachyos-kernel.legacyPackages.linuxPackages-cachyos-latest;
+        boot.kernelPackages = inputs'.nix-cachyos-kernel.legacyPackages.linuxPackages-cachyos-bore;
       };
   };
 }
