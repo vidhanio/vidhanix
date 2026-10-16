@@ -13,7 +13,7 @@
         "automatic-gain-control": false
       },
       "noise-suppression": {
-        "enable": false,
+        "enable": true,
         "level": "Low"
       },
       "high-pass": {

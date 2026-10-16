@@ -3,8 +3,8 @@
   profiles.pc.homeModule = {
     services.easyeffects = {
       enable = true;
-      preset.input = "aec-only";
-      extraPresets.aec-only = lib.importJSON ./aec-only.json;
+      preset.input = "aec-low";
+      extraPresets.aec-low = lib.importJSON ./aec-low.json;
       settings = {
         EffectsPipelines.processAllOutputs = false;
         StreamInputs.inputDevice = null;
