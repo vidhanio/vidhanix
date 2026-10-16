@@ -188,20 +188,19 @@
     };
 
     # agents
-    agentcord = {
-      url = "github:vidhanio/agentcord";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        nixpkgs.follows = "nixpkgs";
-        rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
-        systems.follows = "systems";
-        treefmt-nix.follows = "treefmt-nix";
-      };
-    };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs = {
         flake-parts.follows = "flake-parts";
+        systems.follows = "systems";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
+    vane = {
+      url = "github:vidhanio/vane";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs";
         systems.follows = "systems";
         treefmt-nix.follows = "treefmt-nix";
       };
