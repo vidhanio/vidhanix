@@ -1,0 +1,52 @@
+{
+  "input": {
+    "blocklist": ["echo_bench_raw"],
+    "plugins_order": ["echo_canceller#0", "limiter#0"],
+    "echo_canceller#0": {
+      "bypass": false,
+      "input-gain": 0.0,
+      "output-gain": 0.0,
+      "echo-canceller": {
+        "enable": true,
+        "mobile-mode": false,
+        "enforce-high-pass": true,
+        "automatic-gain-control": false
+      },
+      "noise-suppression": {
+        "enable": false,
+        "level": "Low"
+      },
+      "high-pass": {
+        "enable": true,
+        "full-band": true
+      }
+    },
+    "limiter#0": {
+      "bypass": false,
+      "input-gain": 0.0,
+      "output-gain": 0.0,
+      "mode": "Herm Thin",
+      "oversampling": "True Peak/24 bit",
+      "dithering": "None",
+      "sidechain-type": "Internal",
+      "lookahead": 5.0,
+      "attack": 0.25,
+      "release": 10.0,
+      "threshold": -3.0,
+      "sidechain-preamp": 0.0,
+      "stereo-link": 100.0,
+      "alr": false,
+      "alr-attack": 5.0,
+      "alr-release": 50.0,
+      "alr-knee": 0.0,
+      "alr-knee-smooth": -5.0,
+      "gain-boost": false,
+      "input-to-sidechain": -80.01,
+      "input-to-link": -80.01,
+      "sidechain-to-input": -80.01,
+      "sidechain-to-link": -80.01,
+      "link-to-input": -80.01,
+      "link-to-sidechain": -80.01
+    }
+  }
+}
