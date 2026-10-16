@@ -122,9 +122,7 @@
         config = {
           programs.waywall = {
             enable = true;
-            package = pkgs.waywall.overrideAttrs (old: {
-              patches = (old.patches or [ ]) ++ [ ./26.3.patch ];
-            });
+            package = pkgs.waywall;
             config = {
               programs = [ pkgs.ninjabrain-bot ];
               files = {

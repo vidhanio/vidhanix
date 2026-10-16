@@ -4,11 +4,12 @@ local helpers = require("waywall.helpers")
 helpers.res_mirror({ src = eyeSrc, dst = eyeDst }, tall.w, tall.h)
 helpers.res_image(files.eye_overlay, { dst = eyeDst, depth = 999 }, tall.w, tall.h)
 
-local toggle_tall = helpers.toggle_res(tall.w, tall.h, sens.tall)
+local toggle_tall = helpers.toggle_res(tall.w, tall.h, sens.tall, sens.tall)
 
 return {
 	input = {
 		sensitivity = sens.base,
+		raw_sensitivity = sens.base,
 		remaps = {
 			["MB5"] = "F3",
 			["MB4"] = "F5",
