@@ -9,11 +9,11 @@ let
     }:
     stdenvNoCC.mkDerivation (finalAttrs: {
       pname = "geode";
-      version = "5.11.1";
+      version = "5.11.2";
 
       src = fetchurl {
         url = "https://github.com/geode-sdk/geode/releases/download/v${finalAttrs.version}/geode-v${finalAttrs.version}-win.zip";
-        hash = "sha256-hNLgsi5CaHDB7D6pe1xm4TATWs9erLoSU9X9DyXSKs0=";
+        hash = "sha256-GT1NkAPdAgyYnq5cDlNFqltQHyo+pGfr3YO3KgxlOc8=";
       };
 
       nativeBuildInputs = [ unzip ];
