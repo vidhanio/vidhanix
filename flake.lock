@@ -861,6 +861,27 @@
         "type": "github"
       }
     },
+    "iets": {
+      "inputs": {
+        "crane": "crane",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792248139,
+        "narHash": "sha256-fxYDHRZt3FEHUut/SkdR5hVtXrwFv3C1gXcbP8N3vp4=",
+        "owner": "numtide",
+        "repo": "iets",
+        "rev": "e1c664492b0ba8c4c4f5b76d34fa0e35142ddf40",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "iets",
+        "type": "github"
+      }
+    },
     "impermanence": {
       "inputs": {
         "home-manager": [
@@ -1380,6 +1401,7 @@
         "hk-nix": "hk-nix",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
+        "iets": "iets",
         "impermanence": "impermanence",
         "import-tree": "import-tree",
         "llm-agents": "llm-agents",

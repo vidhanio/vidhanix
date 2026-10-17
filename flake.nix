@@ -143,6 +143,10 @@
         utils.inputs.systems.follows = "systems";
       };
     };
+    iets = {
+      url = "github:numtide/iets";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     meowland = {
       url = "github:vidhanio/meowland";
       inputs = {
