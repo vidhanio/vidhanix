@@ -25,6 +25,12 @@
               allowed_user_ids = [ "1063329635569512520" ];
             };
 
+            memory = {
+              provider = "opencode-go";
+              model_id = "deepseek-v4.1-flash";
+              thinking = "high";
+            };
+
             agent = {
               provider = "opencode-go";
               model_id = "deepseek-v4.1-flash";
