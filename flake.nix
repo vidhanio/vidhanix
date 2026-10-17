@@ -209,6 +209,8 @@
         nixpkgs.follows = "nixpkgs";
         systems.follows = "systems";
         treefmt-nix.follows = "treefmt-nix";
+        bun2nix.inputs.flake-parts.follows = "flake-parts";
+        bun2nix.inputs.treefmt-nix.follows = "treefmt-nix";
       };
     };
   };
