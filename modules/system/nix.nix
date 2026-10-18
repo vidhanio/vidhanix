@@ -17,7 +17,7 @@
           allowed-users = [ "@wheel" ];
           trusted-users = [ "@wheel" ];
           accept-flake-config = true;
-          extra-experimental-features = [
+          experimental-features = [
             "nix-command"
             "flakes"
           ];

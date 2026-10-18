@@ -1,12 +1,7 @@
 {
   nixConfig = {
     allow-import-from-derivation = false;
-    extra-experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
     extra-substituters = [
-      "https://install.determinate.systems"
       "https://hyprland.cachix.org"
       "https://cache.numtide.com"
       # Down: https://github.com/xddxdd/nix-cachyos-kernel/issues/110
@@ -15,7 +10,6 @@
       "https://vidhanio.cachix.org"
     ];
     extra-trusted-public-keys = [
-      "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       # Down: https://github.com/xddxdd/nix-cachyos-kernel/issues/110
@@ -65,11 +59,6 @@
     };
 
     # system
-    determinate = {
-      url = "github:DeterminateSystems/determinate";
-      inputs.nix.inputs.flake-parts.follows = "flake-parts";
-      inputs.nix.inputs.git-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
-    };
     disko = {
       url = "github:vidhanio/disko/feature/skip-partition-uuid";
       inputs.nixpkgs.follows = "nixpkgs";
