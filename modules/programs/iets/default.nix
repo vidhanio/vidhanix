@@ -1,9 +1,6 @@
+{ inputs, ... }:
 {
-  profiles.base = {
-    homeModule =
-      { inputs', ... }:
-      {
-        home.packages = [ inputs'.iets.packages.default ];
-      };
+  profiles.base.module = {
+    imports = [ inputs.iets.nixosModules.default ];
   };
 }
