@@ -1466,11 +1466,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792430851,
-        "narHash": "sha256-eu5P5jozp31tMnx8XCSel84yV8F/nBdkZIfuJ8WInW4=",
+        "lastModified": 1792439249,
+        "narHash": "sha256-ybfKGc1JaNtZ1AcNV4R+vLVdQgvvvz0aD9MlJOwJRYI=",
         "owner": "vidhanio",
         "repo": "vane",
-        "rev": "e6aebef90e23b8f1d0debbccf6d9539dbb6793f9",
+        "rev": "1242fa4ac2887bcfcdbfe4bb4c6457479ebbded5",
         "type": "github"
       },
       "original": {
