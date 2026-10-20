@@ -21,6 +21,10 @@
             "nix-command"
             "flakes"
           ];
+          inherit ((import ../../flake.nix).nixConfig)
+            extra-substituters
+            extra-trusted-public-keys
+            ;
         };
         registry = {
           self.flake = self;
