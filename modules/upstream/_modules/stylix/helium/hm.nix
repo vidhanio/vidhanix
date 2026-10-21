@@ -36,7 +36,23 @@ mkTarget {
 
             toolbar = "base02";
             tab_text = "base0D";
+            bookmark_text = "base06";
+            toolbar_text = "base06";
 
+            background_tab = "base00";
+            background_tab_inactive = "base00";
+            background_tab_incognito = "base00";
+            background_tab_incognito_inactive = "base00";
+
+            tab_background_text = "base06";
+            tab_background_text_inactive = "base04";
+            tab_background_text_incognito = "base06";
+            tab_background_text_incognito_inactive = "base04";
+
+            omnibox_text = "base0D";
+            omnibox_background = "base01";
+
+            ntp_header = "base01";
             ntp_text = "base06";
             ntp_link = "base07";
             ntp_section = "base01";
