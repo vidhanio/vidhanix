@@ -28,55 +28,22 @@ mkTarget {
         theme = {
           colors = lib.mapAttrs (_: rgbList) {
             # `frame` currently does nothing: https://github.com/imputnet/helium/issues/1459
-            frame = "base00";
-            frame_incognito = "base00";
+            frame = "base03";
+            frame_incognito = "base03";
 
-            frame_inactive = "base01";
-            frame_incognito_inactive = "base01";
+            frame_inactive = "base00";
+            frame_incognito_inactive = "base00";
 
-            toolbar = "base00";
+            toolbar = "base02";
+            tab_text = "base0D";
 
-            tab_text = "base05";
-            bookmark_text = "base05";
-            toolbar_text = "base05";
+            ntp_text = "base06";
+            ntp_link = "base07";
+            ntp_section = "base01";
+            ntp_background = "base02";
 
-            background_tab = "base01";
-            background_tab_inactive = "base01";
-            background_tab_incognito = "base01";
-            background_tab_incognito_inactive = "base01";
-
-            tab_background_text = "base04";
-            tab_background_text_inactive = "base04";
-            tab_background_text_incognito = "base04";
-            tab_background_text_incognito_inactive = "base04";
-
-            button_background = "base00";
-
-            omnibox_text = "base0D";
-            omnibox_background = "base01";
-
-            ntp_background = "base00";
-            ntp_header = "base01";
-            ntp_link = "base04";
-            ntp_text = "base04";
+            button_background = "base02";
           };
-
-          tints =
-            let
-              identity = [
-                (-1)
-                (-1)
-                (-1)
-              ];
-            in
-            {
-              background_tab = identity;
-              buttons = identity;
-              frame = identity;
-              frame_inactive = identity;
-              frame_incognito = identity;
-              frame_incognito_inactive = identity;
-            };
         };
       };
       theme = pkgs.runCommandLocal "helium-theme" { } ''
