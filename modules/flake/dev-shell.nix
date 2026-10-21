@@ -2,7 +2,9 @@
   perSystem =
     {
       config,
+      inputs',
       pkgs,
+      system,
       ...
     }:
     {
@@ -17,16 +19,20 @@
 
         inherit (config.hk-nix) shellHook;
 
-        packages = with pkgs; [
-          git
-          just
-          nh
-          nix
-          sops
+        packages =
+          with (pkgs.extend (
+            _: _: {
+              nix = inputs'.determinate.inputs.nix.packages.${system}.default;
+            }
+          )); [
+            git
+            just
+            nh
+            sops
 
-          config.hk-nix.hk
-          config.treefmt.build.wrapper
-        ];
+            config.hk-nix.hk
+            config.treefmt.build.wrapper
+          ];
       };
     };
 }
