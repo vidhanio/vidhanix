@@ -7,6 +7,7 @@
         gaps_out = config.stylix.padding;
         layout = "scrolling";
       };
+      scrolling.follow_min_visible = 0.0;
       decoration = {
         rounding = config.stylix.cornerRadius;
         blur =
