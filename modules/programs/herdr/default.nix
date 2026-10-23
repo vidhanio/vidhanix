@@ -46,7 +46,6 @@
 
             ui = {
               toast.delivery = "system";
-              pane_borders = "always";
             };
 
             keys.command = [
