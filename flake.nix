@@ -9,8 +9,7 @@
       "https://install.determinate.systems"
       "https://hyprland.cachix.org"
       "https://cache.numtide.com"
-      # Down: https://github.com/xddxdd/nix-cachyos-kernel/issues/110
-      # "https://attic.xuyh0120.win/lantian"
+      "https://cache.lantian.pub/lantian"
       "https://nix-community.cachix.org"
       "https://vidhanio.cachix.org"
     ];
@@ -18,8 +17,7 @@
       "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-      # Down: https://github.com/xddxdd/nix-cachyos-kernel/issues/110
-      # "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+      "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "vidhanio.cachix.org-1:Qzk2G10fmck+K+pxP5nvHC5yl/ic315by091/bJpnio="
     ];
