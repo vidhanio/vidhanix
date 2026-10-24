@@ -10,7 +10,7 @@ let
       lib,
       linux-asahi,
       linuxPackagesFor,
-      nix-prefetch-github,
+      nix,
       symlinkJoin,
       writeShellScript,
       _kernelPatches ? [ ],
@@ -26,7 +26,7 @@ let
         "lib"
         "linux-asahi"
         "linuxPackagesFor"
-        "nix-prefetch-github"
+        "nix"
         "symlinkJoin"
         "writeShellScript"
         "_kernelPatches"
@@ -43,10 +43,10 @@ let
           lib.recursiveUpdate rec {
             inherit stdenv lib;
             pname = "linux-asahi-fairydust";
-            version = "7.1.13";
+            version = "7.2.12";
             modDirVersion = version;
             extraMeta = {
-              branch = "7.1";
+              branch = lib.versions.majorMinor version;
               description = "Experimental Asahi Linux kernel with DisplayPort Alt Mode support";
               homepage = "https://github.com/AsahiLinux/linux/tree/fairydust";
               license = lib.licenses.gpl2Only;
@@ -55,8 +55,8 @@ let
             src = fetchFromGitHub {
               owner = "AsahiLinux";
               repo = "linux";
-              rev = "ce9f2eba72c061a50b2d790450e90af3439d8c24";
-              hash = "sha256-W3yMSUe6xa+M/X0k86kbCS4g3d7jJmO3WV9L/5rQRhI=";
+              rev = "f19ef6bf2bf607ffb39dc3250e0986b1fc8aa956";
+              hash = "sha256-CZeqt8a+rycws3l+pk1Faym/rasmjugHuZdkRA/DZdk=";
             };
             kernelPatches =
               linux-asahi.kernelPatches
@@ -83,7 +83,7 @@ let
               curlExe = lib.getExe curl;
               gitExe = lib.getExe git;
               jqExe = lib.getExe jq;
-              nixPrefetchGitHubExe = lib.getExe nix-prefetch-github;
+              nixExe = lib.getExe nix;
               sedExe = lib.getExe gnused;
             in
             writeShellScript "update-linux-asahi-fairydust" ''
@@ -103,9 +103,8 @@ let
                 exit 0
               fi
 
-              metadata="$(${nixPrefetchGitHubExe} AsahiLinux linux --rev "$rev")"
-              rev="$(${jqExe} --raw-output .rev <<<"$metadata")"
-              hash="$(${jqExe} --raw-output .hash <<<"$metadata")"
+              metadata="$(${nixExe} --extra-experimental-features nix-command store prefetch-file --unpack --json "https://github.com/AsahiLinux/linux/archive/$rev.tar.gz")"
+              hash="$(${jqExe} --exit-status --raw-output .hash <<<"$metadata")"
               makefile="$(${curlExe} --fail --silent --show-error --location "https://raw.githubusercontent.com/AsahiLinux/linux/$rev/Makefile")"
 
               makefile_value() {
@@ -121,7 +120,7 @@ let
               ${sedExe} --in-place --regexp-extended \
                 -e 's/version = "[^"]+";/version = "'"$kernel_version"'";/' \
                 -e 's/rev = "[0-9a-f]+";/rev = "'"$rev"'";/' \
-                -e 's|hash = "sha256-[^"]+";|hash = "'"$hash"'";|' \
+                -e '/src = fetchFromGitHub \{/,/^[[:space:]]*\};/s|hash = "sha256-[^"]+";|hash = "'"$hash"'";|' \
                 "$package_file"
             '';
         };
