@@ -90,48 +90,45 @@ in
       '';
     };
 
-    skills = lib.mkOption {
-      type = lib.types.attrsOf (
-        lib.types.oneOf [
-          lib.types.lines
-          lib.types.path
-          lib.types.str
-        ]
-      );
-      default = { };
-      example = lib.literalExpression ''
-        {
-          pdf-processing = '''
-            ---
-            name: pdf-processing
-            description: Extract text and tables from PDF files, fill forms, merge documents.
-            ---
+    skills = {
+      packages = lib.mkOption {
+        type = lib.types.listOf lib.types.package;
+        default = [ ];
+        example = lib.literalExpression "[ config.programs.herdr.package ]";
+        description = ''
+          Packages providing skill directories under
+          {file}`share/skills/<pname>/`, following the nixpkgs
+          `installAgentSkills` convention.
+        '';
+      };
 
-            # PDF Processing
+      bundles = lib.mkOption {
+        type = lib.types.listOf lib.types.path;
+        default = [ ];
+        example = lib.literalExpression ''[ "''${inputs.beautiful-rust}/skills" ]'';
+        description = ''
+          Directories containing named skill directories, each with a
+          {file}`SKILL.md`. Their contents are merged directly into
+          {file}`~/.agents/skills/`, without a bundle-name directory.
+        '';
+      };
 
-            Use pdfplumber to extract text from PDFs.
-          ''';
-          xlsx = ./skills/xlsx/SKILL.md;
-          data-analysis = ./skills/data-analysis;
-        }
-      '';
-      description = ''
-        Custom skills for the agents.
-
-        The attribute name becomes the skill directory name, and the
-        value is either:
-        - Inline content as a string (creates {file}`~/.agents/skills/<name>/SKILL.md`)
-        - A path to a file (creates {file}`~/.agents/skills/<name>/SKILL.md`)
-        - A path to a directory (creates {file}`~/.agents/skills/<name>/` with all files)
-
-        This also accepts Nix store paths, for example a skill directory
-        from a package.
-
-        A directory that holds a whole collection of skills, such as a
-        skills repository, is symlinked under the attribute name as well;
-        each skill folder inside it stays reachable at
-        {file}`~/.agents/skills/<name>/<skill>/SKILL.md`.
-      '';
+      skills = lib.mkOption {
+        type = lib.types.attrsOf lib.types.path;
+        default = { };
+        example = lib.literalExpression ''
+          {
+            comma = ./COMMA.md;
+            meowland = ./meowland;
+          }
+        '';
+        description = ''
+          Named skills, each either a directory containing {file}`SKILL.md`
+          and supporting files, or a file installed as
+          {file}`~/.agents/skills/<name>/SKILL.md`.
+          Nix store paths are also supported.
+        '';
+      };
     };
   };
 
@@ -152,26 +149,18 @@ in
           fi
         '';
 
-      skillsDir = "${config.home.homeDirectory}/.agents/skills";
-
-      mkSkillEntry =
-        name: content:
-        if lib.isPath content && lib.pathIsDirectory content then
-          lib.nameValuePair "${skillsDir}/${name}" {
-            source = content;
-            recursive = true;
-          }
-        else if lib.isPath content then
-          lib.nameValuePair "${skillsDir}/${name}/SKILL.md" { source = content; }
-        else if lib.hm.strings.isPathLike content then
-          lib.nameValuePair "${skillsDir}/${name}" {
-            source = normalizeSkill name content;
-            recursive = true;
-          }
-        else
-          lib.nameValuePair "${skillsDir}/${name}/SKILL.md" { text = content; };
+      skillDirs = lib.mapAttrsToList (name: source: {
+        inherit name;
+        path = normalizeSkill name source;
+      }) cfg.skills.skills;
     in
     {
+      programs.agents.skills.bundles =
+        map (package: "${package}/share/skills/${package.pname}") cfg.skills.packages
+        ++ [
+          (pkgs.linkFarm "agent-skills" skillDirs)
+        ];
+
       home.file = {
         "AGENTS.md" =
           if lib.isPath cfg.context then
@@ -180,7 +169,11 @@ in
             lib.mkIf (cfg.context != "") {
               text = cfg.context;
             };
-      }
-      // lib.mapAttrs' mkSkillEntry cfg.skills;
+
+        ".agents/skills".source = pkgs.symlinkJoin {
+          name = "agent-skills-merged";
+          paths = cfg.skills.bundles;
+        };
+      };
     };
 }

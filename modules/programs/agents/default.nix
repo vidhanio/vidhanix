@@ -3,7 +3,7 @@
   profiles.pc = {
     homeModule = {
       programs.agents = {
-        skills.beautiful-rust = "${inputs.beautiful-rust}/skills";
+        skills.bundles = [ "${inputs.beautiful-rust}/skills" ];
 
         models = {
           presets = {

@@ -2,6 +2,7 @@
   profiles.pc = {
     homeModule =
       {
+        config,
         pkgs,
         inputs',
         ...
@@ -25,7 +26,7 @@
         '';
         package = pkgs.symlinkJoin {
           inherit (herdr) meta;
-          inherit (herdr) name;
+          inherit (herdr) name pname;
           passthru.src = herdr.src;
           paths = [
             herdr
@@ -61,7 +62,7 @@
           };
         };
 
-        programs.agents.skills.herdr = "${herdr.src}/skills/herdr";
+        programs.agents.skills.packages = [ config.programs.herdr.package ];
 
         desktop = {
           binds."SUPER + t".app = {
