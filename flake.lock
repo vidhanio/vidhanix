@@ -117,6 +117,22 @@
         "type": "github"
       }
     },
+    "beautiful-rust": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793022351,
+        "narHash": "sha256-po2PGDe9o+FKraiyUsKGjK/aj7mCldpIkOpfny9sENg=",
+        "owner": "morganlinton",
+        "repo": "BeautifulRust",
+        "rev": "c6f56d27a01739d404da2a554daaea023d7ddcca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "morganlinton",
+        "repo": "BeautifulRust",
+        "type": "github"
+      }
+    },
     "bun2nix": {
       "inputs": {
         "flake-parts": [
@@ -1353,6 +1369,7 @@
     },
     "root": {
       "inputs": {
+        "beautiful-rust": "beautiful-rust",
         "cursor-shaders": "cursor-shaders",
         "determinate": "determinate",
         "disko": "disko",

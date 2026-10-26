@@ -188,6 +188,10 @@
     };
 
     # agents
+    beautiful-rust = {
+      url = "github:morganlinton/BeautifulRust";
+      flake = false;
+    };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs = {

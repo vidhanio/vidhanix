@@ -1,7 +1,10 @@
+{ inputs, ... }:
 {
   profiles.pc = {
     homeModule = {
       programs.agents = {
+        skills.beautiful-rust = "${inputs.beautiful-rust}/skills";
+
         models = {
           presets = {
             default = {
