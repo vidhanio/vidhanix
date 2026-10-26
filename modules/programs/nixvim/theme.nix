@@ -3,6 +3,7 @@
     { config, ... }:
     let
       inherit (config.lib.stylix.colors.withHashtag)
+        base00
         base01
         base02
         base03
@@ -38,6 +39,12 @@
           fg = base0A;
           bg = base01;
           bold = true;
+        };
+
+        # Notebook borders are inline, not floats; match the editor background.
+        JupynvimBorder = {
+          fg = base05;
+          bg = base00;
         };
 
         MiniPickBorderText = {
