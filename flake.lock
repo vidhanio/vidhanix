@@ -961,11 +961,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792803206,
-        "narHash": "sha256-y8OCU+EOlUg1tioSPgTwrCq2Zp/G8uqTYnraQkFfOO4=",
+        "lastModified": 1792874049,
+        "narHash": "sha256-mO+BKlztqO7WzkjQaPikvckLCw5oltT9kWudAn2kb/s=",
         "owner": "vidhanio",
         "repo": "meowland",
-        "rev": "0b64b75907fe0d7b9954c1a7e8ac89d918ae70ed",
+        "rev": "61c2681a34ed2a1740ce7565e7159fec5e7a1f8c",
         "type": "github"
       },
       "original": {
@@ -1642,11 +1642,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792510313,
-        "narHash": "sha256-tmhpFpze4wI/ljHpssKZm+mEionj7egDtZjhP5eXL4k=",
+        "lastModified": 1792862270,
+        "narHash": "sha256-KhSQRGaz83qujhrvsr8YqlNNmJyQWNK+F29VtoaaYOY=",
         "owner": "vidhanio",
         "repo": "vane",
-        "rev": "bbab5a641ced5db6d0d5730f25a0538e0b343e2c",
+        "rev": "475bf170aab48b777437dd48f41e2d2e4ec3fefb",
         "type": "github"
       },
       "original": {
