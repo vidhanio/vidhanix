@@ -40,6 +40,7 @@ let
 
       postPatch = ''
         substituteInPlace lua/jupynvim/notebook/render.lua \
+          --replace-fail 'tl = "╭", tr = "╮", bl = "╰", br = "╯"' 'tl = "┌", tr = "┐", bl = "└", br = "┘"' \
           --replace-fail 'local ltxt = vim.api.nvim_buf_get_lines(buf, out_last, out_last + 1, false)[1] or ""' \
           'for row = range.out_sep, out_last do
             vim.api.nvim_buf_set_extmark(buf, nb.border_ns, row, 0, {
