@@ -62,7 +62,7 @@
           };
         };
 
-        programs.agents.skills.packages = [ config.programs.herdr.package ];
+        agents.skills.packages = [ config.programs.herdr.package ];
 
         desktop = {
           binds."SUPER + t".app = {

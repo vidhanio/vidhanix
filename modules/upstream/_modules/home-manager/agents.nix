@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.programs.agents;
+  cfg = config.agents;
 
   modelType = lib.types.submodule {
     options = {
@@ -27,7 +27,7 @@ let
   };
 in
 {
-  options.programs.agents = {
+  options.agents = {
     models = {
       presets = {
         default = lib.mkOption {
@@ -155,7 +155,7 @@ in
       }) cfg.skills.skills;
     in
     {
-      programs.agents.skills.bundles =
+      agents.skills.bundles =
         map (package: "${package}/share/skills/${package.pname}") cfg.skills.packages
         ++ [
           (pkgs.linkFarm "agent-skills" skillDirs)

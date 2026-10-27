@@ -2,7 +2,7 @@
 {
   profiles.pc = {
     homeModule = {
-      programs.agents = {
+      agents = {
         skills.bundles = [ "${inputs.beautiful-rust}/skills" ];
 
         models = {
