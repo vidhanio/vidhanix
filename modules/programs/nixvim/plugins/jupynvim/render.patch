@@ -1,0 +1,48 @@
+--- a/lua/jupynvim/notebook/render.lua
++++ b/lua/jupynvim/notebook/render.lua
+@@ -56,7 +56,7 @@
+ -- border column. Selection is shown by the far-left gutter bar, NOT the
+ -- frame: every box stays the same calm thin style.
+ local function box_chars(_)
+-  return { tl = "╭", tr = "╮", bl = "╰", br = "╯", h = "─", v = "│" }
++  return { tl = "┌", tr = "┐", bl = "└", br = "┘", h = "─", v = "│" }
+ end
+ 
+ -- VSCode layout: the top edge carries only the cell number badge; the
+@@ -439,6 +439,9 @@
+   -- Bottom border carries the exec status inline (see footer_chunks); no
+   -- separate "[n] ✓ 0.1s" line below the box anymore.
+   table.insert(lines_below, footer_chunks(total_w, gut, bc, label, cell, st, border_hl))
++  if range.out_sep and range.out_stop then
++    table.insert(lines_below, { { string.rep(" ", total_w), "Normal" } })
++  end
+   local sub_lead = repeat_char(" ", gut)
+   if cell.cell_type == "code" then
+     if #(cell.outputs or {}) > 0 then
+@@ -453,8 +456,8 @@
+     local last_out = math.min(range.out_stop, total) - 1
+     if last_out >= 0 then
+       pcall(vim.api.nvim_buf_set_extmark, buf, nb.border_ns, last_out, 0, {
+-        virt_lines = { { { " ", "Normal" } } },
+-        virt_lines_leftcol = true,
++        virt_lines = { { { string.rep(" ", width), "JupynvimOutputBackground" } } },
++        virt_lines_leftcol = false,
+       })
+     end
+   else
+@@ -493,7 +496,14 @@
+   if range.out_sep and range.out_stop then
+     local out_last = math.min(range.out_stop, total) - 1
+     if out_last > range.out_sep then
+-      local ltxt = vim.api.nvim_buf_get_lines(buf, out_last, out_last + 1, false)[1] or ""
++      for row = range.out_sep, out_last do
++        vim.api.nvim_buf_set_extmark(buf, nb.border_ns, row, 0, {
++          line_hl_group = "JupynvimOutputBackground",
++          number_hl_group = "JupynvimOutputBackground",
++          priority = 4999,
++        })
++      end
++      local ltxt = vim.api.nvim_buf_get_lines(buf, out_last, out_last + 1, false)[1] or ""
+       pcall(vim.api.nvim_buf_set_extmark, buf, nb.border_ns, range.out_sep, 0, {
+         end_row = out_last,
+         end_col = #ltxt,

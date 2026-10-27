@@ -38,33 +38,7 @@ let
       pname = "jupynvim";
       inherit version src;
 
-      postPatch = ''
-        substituteInPlace lua/jupynvim/notebook/render.lua \
-          --replace-fail 'tl = "╭", tr = "╮", bl = "╰", br = "╯"' 'tl = "┌", tr = "┐", bl = "└", br = "┘"' \
-          --replace-fail 'table.insert(lines_below, footer_chunks(total_w, gut, bc, label, cell, st, border_hl))' \
-          'table.insert(lines_below, footer_chunks(total_w, gut, bc, label, cell, st, border_hl))
-          if range.out_sep and range.out_stop then
-            table.insert(lines_below, { { string.rep(" ", total_w), "Normal" } })
-          end' \
-          --replace-fail 'local ltxt = vim.api.nvim_buf_get_lines(buf, out_last, out_last + 1, false)[1] or ""' \
-          'for row = range.out_sep, out_last do
-            vim.api.nvim_buf_set_extmark(buf, nb.border_ns, row, 0, {
-              line_hl_group = "JupynvimOutputBackground",
-              priority = 4999,
-            })
-          end
-          local ltxt = vim.api.nvim_buf_get_lines(buf, out_last, out_last + 1, false)[1] or ""' \
-          --replace-fail $'virt_lines = { { { " ", "Normal" } } },\n        virt_lines_leftcol = true,' \
-          'virt_lines = { { { string.rep(" ", width), "JupynvimOutputBackground" } } },
-        virt_lines_leftcol = false,'
-        substituteInPlace lua/jupynvim/notebook/cellmode.lua \
-          --replace-fail 'if virtnum < 0 or not in_src or not boxed then' \
-          'if not in_src and r.out_sep then
-            return "%#JupynvimOutputBackground#" .. bar
-              .. "%#JupynvimOutputBackground#" .. string.rep(" ", M.GUTTER - 1) .. "%*"
-          end
-          if virtnum < 0 or not in_src or not boxed then'
-      '';
+      patches = [ ./render.patch ];
 
       postInstall = ''
         mkdir -p $out/bin
