@@ -9,9 +9,11 @@
     { config, ... }:
     {
       nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system ({ pkgs, ... }: pkgs);
+      sops.secrets.netrc = { };
       nix = {
         channel.enable = false;
         settings = {
+          netrc-file = config.sops.secrets.netrc.path;
           auto-optimise-store = true;
           warn-dirty = false;
           allowed-users = [ "@wheel" ];
