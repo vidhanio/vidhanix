@@ -1412,6 +1412,23 @@
         "type": "github"
       }
     },
+    "rex": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793129062,
+        "narHash": "sha256-ppR6mqKW1IWxX7y6/P7LS5MHp5rQLQz4CybQyGme834=",
+        "type": "tarball",
+        "url": "https://pkgs.superlogical.com/rex/nix/snapshot/0.0.1793129062-g2c6573.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz"
+      }
+    },
     "root": {
       "inputs": {
         "beautiful-rust": "beautiful-rust",
@@ -1437,6 +1454,7 @@
         "nixos-apple-silicon": "nixos-apple-silicon",
         "nixpkgs": "nixpkgs_6",
         "nixvim": "nixvim",
+        "rex": "rex",
         "sops-nix": "sops-nix",
         "steam-config-nix": "steam-config-nix",
         "stylix": "stylix",

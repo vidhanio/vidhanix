@@ -136,6 +136,10 @@
     };
 
     # programs
+    rex = {
+      url = "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ghostty = {
       url = "github:ghostty-org/ghostty";
       inputs = {
