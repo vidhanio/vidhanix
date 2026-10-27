@@ -49,7 +49,10 @@ let
           end
           local ltxt = vim.api.nvim_buf_get_lines(buf, out_last, out_last + 1, false)[1] or ""' \
           --replace-fail 'virt_lines = { { { " ", "Normal" } } },' \
-          'virt_lines = { { { string.rep(" ", total_w), "JupynvimOutputBackground" } } },'
+          'virt_lines = { {
+            { string.rep(" ", gut), "Normal" },
+            { string.rep(" ", width), "JupynvimOutputBackground" },
+          } },'
       '';
 
       postInstall = ''
