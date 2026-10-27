@@ -22,10 +22,23 @@
               exit 1
             fi
 
-            profile=$(mktemp -d -t meowser.XXXXXXXXXX)
+            main="''${XDG_CONFIG_HOME:-$HOME/.config}/net.imput.helium"
+            cache="''${XDG_CACHE_HOME:-$HOME/.cache}/meowser"
+
+            mkdir -p -- "$cache"
+
+            profile=$(mktemp -d "$cache/profile.XXXXXXXXXX")
             trap 'rm -rf -- "$profile"' EXIT
             trap 'exit 130' INT
             trap 'exit 143' TERM
+
+            if [[ -d "$main" ]]; then
+              cp -a --reflink=auto -- "$main/." "$profile/"
+              rm -f -- \
+                "$profile/SingletonLock" \
+                "$profile/SingletonSocket" \
+                "$profile/SingletonCookie"
+            fi
 
             ${lib.getExe config.programs.meowland.package} run \
               ${lib.getExe config.programs.helium.finalPackage} \
