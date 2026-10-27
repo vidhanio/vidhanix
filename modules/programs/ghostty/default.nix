@@ -9,6 +9,7 @@
       systemd.enable = true;
 
       settings = {
+        clipboard-read = "allow";
         confirm-close-surface = false;
         custom-shader = "${inputs.cursor-shaders}/ghostty/cursor_warp.glsl";
         gtk-single-instance = true;
