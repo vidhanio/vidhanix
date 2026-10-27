@@ -41,13 +41,15 @@ let
       postPatch = ''
         substituteInPlace lua/jupynvim/notebook/render.lua \
           --replace-fail 'local ltxt = vim.api.nvim_buf_get_lines(buf, out_last, out_last + 1, false)[1] or ""' \
-          'for row = range.out_sep + 1, out_last do
+          'for row = range.out_sep, out_last do
             vim.api.nvim_buf_set_extmark(buf, nb.border_ns, row, 0, {
               line_hl_group = "JupynvimOutputBackground",
               priority = 4999,
             })
           end
-          local ltxt = vim.api.nvim_buf_get_lines(buf, out_last, out_last + 1, false)[1] or ""'
+          local ltxt = vim.api.nvim_buf_get_lines(buf, out_last, out_last + 1, false)[1] or ""' \
+          --replace-fail 'virt_lines = { { { " ", "Normal" } } },' \
+          'virt_lines = { { { string.rep(" ", total_w), "JupynvimOutputBackground" } } },'
       '';
 
       postInstall = ''
