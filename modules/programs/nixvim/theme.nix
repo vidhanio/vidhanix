@@ -47,6 +47,9 @@
           bg = base00;
         };
 
+        JupynvimOutputBackground = {
+          bg = base01;
+        };
         JupynvimOutputText = {
           fg = base05;
           bg = base01;
