@@ -206,6 +206,13 @@
       url = "github:morganlinton/BeautifulRust";
       flake = false;
     };
+    llama-cpp = {
+      url = "github:ggml-org/llama.cpp";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs = {
