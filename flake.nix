@@ -8,6 +8,7 @@
     extra-substituters = [
       "https://install.determinate.systems"
       "https://hyprland.cachix.org"
+      "https://ghostty.cachix.org"
       "https://cache.numtide.com"
       "https://cache.lantian.pub/lantian"
       "https://nix-community.cachix.org"
@@ -16,6 +17,7 @@
     extra-trusted-public-keys = [
       "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -134,6 +136,14 @@
     };
 
     # programs
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+      inputs = {
+        home-manager.follows = "home-manager";
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
+    };
     helium = {
       url = "github:schembriaiden/helium-browser-nix-flake";
       inputs = {
