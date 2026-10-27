@@ -47,6 +47,16 @@
           bg = base00;
         };
 
+        JupynvimOutputText = {
+          fg = base05;
+          bg = base01;
+        };
+
+        CursorLineNr = {
+          fg = base0A;
+          bg = "NONE";
+        };
+
         MiniPickBorderText = {
           fg = base01;
           bg = base01;

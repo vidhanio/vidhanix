@@ -38,6 +38,11 @@ let
       pname = "jupynvim";
       inherit version src;
 
+      postPatch = ''
+        substituteInPlace lua/jupynvim/notebook/render.lua \
+          --replace-fail 'hl_group = "JupynvimOutputText",' 'hl_group = "JupynvimOutputText", hl_eol = true,'
+      '';
+
       postInstall = ''
         mkdir -p $out/bin
         install -m755 ${lib.getExe core} $out/bin/jupynvim-core
