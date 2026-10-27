@@ -57,6 +57,13 @@ let
           --replace-fail $'virt_lines = { { { " ", "Normal" } } },\n        virt_lines_leftcol = true,' \
           'virt_lines = { { { string.rep(" ", width), "JupynvimOutputBackground" } } },
         virt_lines_leftcol = false,'
+        substituteInPlace lua/jupynvim/notebook/cellmode.lua \
+          --replace-fail 'if virtnum < 0 or not in_src or not boxed then' \
+          'if not in_src and r.out_sep then
+            return "%#JupynvimOutputBackground#" .. bar
+              .. "%#JupynvimOutputBackground#" .. string.rep(" ", M.GUTTER - 1) .. "%*"
+          end
+          if virtnum < 0 or not in_src or not boxed then'
       '';
 
       postInstall = ''
