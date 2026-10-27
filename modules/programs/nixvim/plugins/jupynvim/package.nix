@@ -41,6 +41,11 @@ let
       postPatch = ''
         substituteInPlace lua/jupynvim/notebook/render.lua \
           --replace-fail 'tl = "╭", tr = "╮", bl = "╰", br = "╯"' 'tl = "┌", tr = "┐", bl = "└", br = "┘"' \
+          --replace-fail 'table.insert(lines_below, footer_chunks(total_w, gut, bc, label, cell, st, border_hl))' \
+          'table.insert(lines_below, footer_chunks(total_w, gut, bc, label, cell, st, border_hl))
+          if range.out_sep and range.out_stop then
+            table.insert(lines_below, { { string.rep(" ", total_w), "Normal" } })
+          end' \
           --replace-fail 'local ltxt = vim.api.nvim_buf_get_lines(buf, out_last, out_last + 1, false)[1] or ""' \
           'for row = range.out_sep, out_last do
             vim.api.nvim_buf_set_extmark(buf, nb.border_ns, row, 0, {
