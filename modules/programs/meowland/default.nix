@@ -4,13 +4,21 @@
     {
       config,
       lib,
+      osConfig,
       pkgs,
       ...
     }:
+    let
+      inherit (osConfig.hardware.monitors.main) mode;
+    in
     {
       imports = [ inputs.meowland.homeModules.default ];
 
       programs.meowland.enable = true;
+      services.meowland = {
+        enable = true;
+        settings.output.refresh_rate = mode.refreshRateInt;
+      };
 
       home.packages = [
         (pkgs.writeShellApplication {
