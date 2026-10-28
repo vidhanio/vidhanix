@@ -5,6 +5,10 @@ inputs:
   ssh-private-key:
     description: SSH key for private flake inputs
     required: true
+  netrc:
+    description: Netrc contents for authenticated fetches
+    required: false
+    default: ""
   cachix-auth-token:
     description: Token for pushing build outputs to Cachix
     required: false
@@ -23,6 +27,22 @@ runs:
       uses: wimpysworld/nothing-but-nix@v10
       with:
         hatchet-protocol: carve
+    - name: Set Up Netrc
+      if: inputs.netrc != ''
+      shell: bash
+      env:
+        NETRC: ${{ inputs.netrc }}
+      run: |
+        umask 077
+        printf '%s\n' "$NETRC" > "$RUNNER_TEMP/netrc"
+        sudo mkdir -p /etc/determinate
+        sudo tee /etc/determinate/config.json >/dev/null <<EOF
+        {
+          "authentication": {
+            "additionalNetrcSources": ["$RUNNER_TEMP/netrc"]
+          }
+        }
+        EOF
     - name: Install Nix
       uses: DeterminateSystems/determinate-nix-action@v3
       with:
@@ -37,4 +57,4 @@ runs:
         name: vidhanio
         authToken: ${{ inputs.cachix-auth-token }}
         skipPush: ${{ inputs.cachix-auth-token == '' }}
-        pushFilter: ((\.(tar\.gz|tar\.xz|tgz|deb)|-source(-patched)?)$|berkeley-mono|pragmata-pro-variable)
+        pushFilter: ((\.(tar\.gz|tar\.xz|tgz|deb)|-source(-patched)?)$|berkeley-mono|pragmata-pro|rex)

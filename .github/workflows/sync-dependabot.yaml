@@ -44,6 +44,7 @@ jobs:
         uses: ./.github/actions/setup-nix
         with:
           ssh-private-key: ${{ secrets.FONTS_SSH_KEY }}
+          netrc: ${{ secrets.NETRC }}
           cachix-auth-token: >-
             ${{ (
               (github.ref == 'refs/heads/main' &&
