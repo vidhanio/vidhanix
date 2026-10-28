@@ -54,8 +54,8 @@ Run available `passthru.updateScript` hooks with `just update-packages`; pass pa
 | [`google-hyprcursor`](modules/desktop/cursor/packages/ful1e5-cursors.nix)  | Google Cursor theme adapted for hyprcursor                                                                                         |           |
 | [`google-sans-flex`](modules/desktop/fonts/vidhan-fonts.nix)               | The next generation of Google's brand typeface                                                                                     |           |
 | [`jupynvim`](modules/programs/nixvim/plugins/jupynvim/package.nix)         | VSCode-style Jupyter notebook editing in Neovim                                                                                    |     ✓     |
-| [`linux-asahi-fairydust`](modules/profiles/apple-silicon/kernel.nix)       | Experimental Asahi Linux kernel with DisplayPort Alt Mode support                                                                  |     ✓     |
 | [`muvm-steam`](modules/programs/steam/packages/muvm-steam.nix)             | ARM64 Steam beta client with codecs and runtime in muvm for Apple Silicon                                                          |           |
+| [`pi-direnv`](modules/programs/pi-coding-agent/extensions/pi-direnv.nix)   | Automatically load direnv environments at Pi session start                                                                         |     ✓     |
 | [`pragmata-pro-variable`](modules/desktop/fonts/vidhan-fonts.nix)          | Condensed monospaced font optimized for screen, designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering |           |
 | [`update-packages`](modules/flake/packages/update-packages/default.nix)    | Update all packages in this flake that have an update script                                                                       |           |
 

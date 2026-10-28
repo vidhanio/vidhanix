@@ -27,7 +27,6 @@
         package = pkgs.symlinkJoin {
           inherit (herdr) meta;
           inherit (herdr) name pname;
-          passthru.src = herdr.src;
           paths = [
             herdr
             desktopItem
