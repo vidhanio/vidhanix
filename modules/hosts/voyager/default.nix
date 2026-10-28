@@ -13,6 +13,11 @@
       disko.devices.disk.main.device = "/dev/disk/by-id/nvme-APPLE_SSD_AP0256Q_0ba0148a012cb231";
       hardware.monitors.main = {
         name = "eDP-1";
+        mode = {
+          width = 2560;
+          height = 1600;
+          refreshRate = 60.0;
+        };
         position = {
           x = 0;
           y = 0;
