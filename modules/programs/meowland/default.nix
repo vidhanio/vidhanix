@@ -9,7 +9,7 @@
       ...
     }:
     let
-      inherit (osConfig.hardware.monitors.main) mode;
+      inherit (osConfig.hardware.monitors.main) mode scale;
     in
     {
       imports = [ inputs.meowland.homeModules.default ];
@@ -17,7 +17,11 @@
       programs.meowland.enable = true;
       services.meowland = {
         enable = true;
-        settings.output.refresh_rate = mode.refreshRateInt;
+        settings.output = {
+          inherit (mode) width height;
+          inherit scale;
+          refresh_rate = mode.refreshRateInt;
+        };
       };
 
       home.packages = [

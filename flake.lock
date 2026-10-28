@@ -1029,11 +1029,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793131419,
-        "narHash": "sha256-0hp/8WEcYbG2GpXDoJBeKsKXfKnxxZnp6f88nKPo7aE=",
+        "lastModified": 1793148345,
+        "narHash": "sha256-nHe6+Lk+XNwwK98JMkMALl3xC6qBcEivnrBKVaQPSUg=",
         "owner": "vidhanio",
         "repo": "meowland",
-        "rev": "5e4a8bafb663d42397daefe1d9471b3b92b39320",
+        "rev": "b358e034f3309844e9ef4a9c913d073360c68d63",
         "type": "github"
       },
       "original": {
