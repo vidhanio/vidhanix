@@ -1,65 +1,63 @@
 { inputs, ... }:
+let
+  wrapRex =
+    pkgs: rex:
+    pkgs.symlinkJoin {
+      inherit (rex)
+        name
+        pname
+        version
+        meta
+        ;
+      paths = [ rex ];
+      nativeBuildInputs = [
+        pkgs.installAgentSkills
+        pkgs.installShellFiles
+      ];
+      postBuild = ''
+        export HOME="$TMPDIR/rex-home"
+        mkdir -p "$HOME"
+        $out/bin/rex skill setup --agent pi
+        installSkill "$HOME/.agents/skills/rex"
+
+        installShellCompletion --cmd rex \
+          --bash <($out/bin/rex completion bash) \
+          --zsh <($out/bin/rex completion zsh) \
+          --fish <($out/bin/rex completion fish) \
+          --nushell <($out/bin/rex completion nu)
+      '';
+    };
+in
 {
   profiles.base = {
     module =
-      { config, ... }:
-      {
-        users.users.${config.users.primaryUser}.linger = true;
-      };
-
-    homeModule =
       {
         config,
-        osConfig,
         pkgs,
         inputs',
         ...
       }:
       let
-        rex = inputs'.rex.packages.rex;
-        package = pkgs.symlinkJoin {
-          inherit (rex)
-            name
-            pname
-            version
-            meta
-            ;
-          paths = [ rex ];
-          nativeBuildInputs = [
-            pkgs.installAgentSkills
-            pkgs.installShellFiles
-          ];
-          postBuild = ''
-            export HOME="$TMPDIR/rex-home"
-            mkdir -p "$HOME"
-            $out/bin/rex skill setup --agent pi
-            installSkill "$HOME/.agents/skills/rex"
-
-            installShellCompletion --cmd rex \
-              --bash <($out/bin/rex completion bash) \
-              --zsh <($out/bin/rex completion zsh) \
-              --fish <($out/bin/rex completion fish) \
-              --nushell <($out/bin/rex completion nu)
-          '';
-        };
+        tailscaleLogin = "tailscale:vidhanio@github";
       in
       {
-        imports = [ inputs.rex.homeManagerModules.default ];
+        imports = [ inputs.rex.nixosModules.default ];
 
-        programs.ssh.enable = true;
-        programs.rex = {
-          enable = true;
-          inherit package;
-        };
-        agents.skills.packages = [ config.programs.rex.package ];
         services.rex = {
-          enable = true;
-          tailscale = {
+          package = wrapRex pkgs inputs'.rex.packages.rex;
+          loginServer = {
             enable = true;
-            hostname = "rex-${osConfig.networking.hostName}";
+            accounts.${config.users.primaryUser}.principals = [ tailscaleLogin ];
+            defaults.${tailscaleLogin} = config.users.primaryUser;
+            tailscaleServe.enable = true;
           };
         };
+      };
 
+    homeModule =
+      { osConfig, ... }:
+      {
+        agents.skills.packages = [ osConfig.services.rex.package ];
         persist.directories = [ ".local/state/rex" ];
       };
   };
