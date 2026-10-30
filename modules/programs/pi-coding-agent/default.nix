@@ -5,6 +5,7 @@
         inputs',
         config,
         lib,
+        self',
         ...
       }:
       let
@@ -28,8 +29,10 @@
             defaultThinkingLevel = presets.default.thinking;
             enabledModels = map (preset: "${preset.provider}/${preset.model}:${preset.thinking}") [
               presets.default
-              presets.reviewer
               presets.small
+            ];
+            packages = [
+              "${self'.packages.pi-anthropic-auth}/lib/node_modules/pi-anthropic-auth"
             ];
           };
         };
