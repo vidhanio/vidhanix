@@ -9,7 +9,7 @@
           presets = {
             default = {
               provider = "anthropic";
-              model = "claude-opus-5.5";
+              model = "claude-opus-5-5";
               thinking = "medium";
             };
             reviewer = {
