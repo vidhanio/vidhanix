@@ -40,9 +40,9 @@ in
           description = "Model used for simple tasks.";
         };
 
-        large = lib.mkOption {
+        reviewer = lib.mkOption {
           type = modelType;
-          description = "Model used for complex tasks.";
+          description = "Model used for code review.";
         };
       };
 

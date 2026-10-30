@@ -8,19 +8,19 @@
         models = {
           presets = {
             default = {
-              provider = "openai";
-              model = "gpt-6.1-sol";
+              provider = "anthropic";
+              model = "claude-opus-5.5";
               thinking = "medium";
+            };
+            reviewer = {
+              provider = "openai";
+              model = "gpt-6.1-terra";
+              thinking = "xhigh";
             };
             small = {
               provider = "opencode-go";
               model = "deepseek-v4.1-flash";
-              thinking = "high";
-            };
-            large = {
-              provider = "openai";
-              model = "gpt-6.1-sol";
-              thinking = "high";
+              thinking = "max";
             };
           };
 

@@ -28,7 +28,7 @@
             defaultThinkingLevel = presets.default.thinking;
             enabledModels = map (preset: "${preset.provider}/${preset.model}:${preset.thinking}") [
               presets.default
-              presets.large
+              presets.reviewer
               presets.small
             ];
           };
