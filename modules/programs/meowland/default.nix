@@ -52,7 +52,7 @@
                 "$profile/SingletonCookie"
             fi
 
-            ${lib.getExe config.programs.meowland.package} run \
+            ${lib.getExe config.programs.meowland.package} launch --no-follow \
               ${lib.getExe config.programs.helium.finalPackage} \
               "--user-data-dir=$profile" "--app=$1"
           '';

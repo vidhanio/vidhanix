@@ -20,7 +20,7 @@
             profile=$(mktemp -d)
             pane=$(herdr pane split --current --direction right --cwd "$PWD" --no-focus | jq -er '.result.pane.pane_id')
             printf -v command '%q ' \
-              ${lib.getExe config.programs.meowland.package} run \
+              ${lib.getExe config.programs.meowland.package} launch --no-follow \
               ${lib.getExe config.programs.helium.package} \
               "--user-data-dir=$profile" "--app=$1"
             herdr pane run "$pane" "$command"
