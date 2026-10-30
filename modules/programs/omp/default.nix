@@ -20,7 +20,11 @@
         ...
       }:
       let
-        presets = config.agents.models.presets;
+        normalizeProvider = provider: if provider == "openai" then "openai-codex" else provider;
+
+        presets = lib.mapAttrs (
+          _: preset: preset // { provider = normalizeProvider preset.provider; }
+        ) config.agents.models.presets;
         searxngCfg = osConfig.services.searx.settings.server;
       in
       {
@@ -30,9 +34,12 @@
           package = inputs'.llm-agents.packages.omp;
 
           models = lib.mkIf (config.agents.models.override != { }) {
-            providers = lib.mapAttrs (_: models: {
-              modelOverrides = lib.mapAttrs (_: model: { contextWindow = model.context; }) models;
-            }) config.agents.models.override;
+            providers = lib.mapAttrs' (
+              provider: models:
+              lib.nameValuePair (normalizeProvider provider) {
+                modelOverrides = lib.mapAttrs (_: model: { contextWindow = model.context; }) models;
+              }
+            ) config.agents.models.override;
           };
 
           themes.stylix.symbols.overrides = {
@@ -64,6 +71,10 @@
               advisor = "${presets.reviewer.provider}/${presets.reviewer.model}:${presets.reviewer.thinking}";
               web = "web/searxng";
             };
+            cycleOrder = [
+              "default"
+              "smol"
+            ];
 
             searxng.endpoint = "http://${searxngCfg.bindAddress}:${toString searxngCfg.port}";
           };
