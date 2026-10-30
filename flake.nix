@@ -221,17 +221,6 @@
         treefmt-nix.follows = "treefmt-nix";
       };
     };
-    vane = {
-      url = "github:vidhanio/vane";
-      inputs = {
-        flake-parts.follows = "flake-parts";
-        nixpkgs.follows = "nixpkgs";
-        systems.follows = "systems";
-        treefmt-nix.follows = "treefmt-nix";
-        bun2nix.inputs.flake-parts.follows = "flake-parts";
-        bun2nix.inputs.treefmt-nix.follows = "treefmt-nix";
-      };
-    };
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
