@@ -34,7 +34,6 @@
       };
 
       boot.initrd.systemd = {
-        enable = true;
         services.wipe-root = {
           description = "Wipe Btrfs tmproot subvolume";
           wantedBy = [ "initrd.target" ];
