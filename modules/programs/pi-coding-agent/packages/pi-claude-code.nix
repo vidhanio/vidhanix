@@ -9,7 +9,7 @@ let
     }:
     stdenvNoCC.mkDerivation {
       pname = "pi-claude-code";
-      version = "0.1.0";
+      version = "0-unstable-2026-10-12";
 
       src = fetchFromGitHub {
         owner = "earendil-works";
@@ -36,7 +36,7 @@ let
       passthru.updateScript = nix-update-script {
         extraArgs = [
           "--flake"
-          "--version=unstable"
+          "--version=branch"
         ];
       };
 
