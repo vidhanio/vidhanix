@@ -22,7 +22,10 @@ in
         wayland.windowManager.hyprland.settings = {
           monitor = renderMonitors osConfig.hardware.monitors;
 
-          config.misc.vrr = 1;
+          config = {
+            misc.vrr = 1;
+            render.cm_auto_hdr = 0;
+          };
         };
       };
   };
