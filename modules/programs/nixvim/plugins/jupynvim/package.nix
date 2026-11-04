@@ -8,13 +8,13 @@ let
       nix-update-script,
     }:
     let
-      version = "0.4.6-beta.1";
+      version = "0.5.0-beta.1";
 
       src = fetchFromGitHub {
         owner = "sheng-tse";
         repo = "jupynvim";
         tag = "v${version}";
-        hash = "sha256-ZPUIUFRmuSC73H2pCf/H89XNSKC9MN2E6zUWhePjSIg=";
+        hash = "sha256-Rn/qoIwp4CfYAIzRwKspemOyEEslYC3CUSGlebRaPx8=";
       };
 
       core = rustPlatform.buildRustPackage {
@@ -23,7 +23,7 @@ let
 
         cargoRoot = "core";
         buildAndTestSubdir = "core";
-        cargoHash = "sha256-X2ukj5vVrQBBa96xg/tW3w8QyJyZCUoj8lHIS3idhNg=";
+        cargoHash = "sha256-/hIY/JWart/5raM8wMCXtdcIlwX7y2iJoZRv3vZAvlg=";
 
         meta = {
           description = "Native backend for jupynvim";
