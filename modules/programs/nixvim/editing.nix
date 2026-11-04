@@ -7,7 +7,9 @@
           jupynvim = {
             enable = true;
 
-            package = self'.packages.jupynvim;
+            package = self'.packages.jupynvim.overrideAttrs (prev: {
+              patches = prev.patches or [ ] ++ [ ./jupynvim-render.patch ];
+            });
 
             settings.core_path = lib.getExe self'.packages.jupynvim;
           };

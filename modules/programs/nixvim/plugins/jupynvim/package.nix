@@ -38,8 +38,6 @@ let
       pname = "jupynvim";
       inherit version src;
 
-      patches = [ ./render.patch ];
-
       postInstall = ''
         mkdir -p $out/bin
         install -m755 ${lib.getExe core} $out/bin/jupynvim-core
