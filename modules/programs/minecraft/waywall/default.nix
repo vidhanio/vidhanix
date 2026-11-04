@@ -124,7 +124,12 @@
             enable = true;
             package = pkgs.waywall;
             config = {
-              programs = [ pkgs.ninjabrain-bot ];
+              programs = [
+                # https://github.com/NixOS/nixpkgs/pull/581568
+                (pkgs.ninjabrain-bot.override {
+                  maven = pkgs.maven.override { jdk_headless = pkgs.jdk; };
+                })
+              ];
               files = {
                 eye_overlay = ./eye_overlay.png;
               };
