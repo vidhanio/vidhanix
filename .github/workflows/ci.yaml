@@ -43,7 +43,7 @@ jobs:
         null
       ) }}
     concurrency:
-      group: ${{ format('nix-{0}-{1}-{2}', matrix.type, matrix.system, matrix.name) }}
+      group: ${{ format('nix-{0}', matrix.drv) }}
       cancel-in-progress: false
       queue: max
     strategy:

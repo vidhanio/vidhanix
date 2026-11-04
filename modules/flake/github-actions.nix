@@ -5,10 +5,13 @@ let
     "x86_64-linux"
   ];
 
+  entry =
+    attrs: drv: attrs // { drv = baseNameOf (builtins.unsafeDiscardStringContext drv.drvPath); };
+
   entries =
     type: outputs:
     lib.concatMap (
-      system: lib.mapAttrsToList (name: _: { inherit system name type; }) (outputs.${system} or { })
+      system: lib.mapAttrsToList (name: entry { inherit system name type; }) (outputs.${system} or { })
     ) systems;
 
   packages = lib.genAttrs systems (
@@ -21,11 +24,14 @@ in
 {
   flake.githubActionsMatrix.include =
     entries "package" packages
-    ++ lib.mapAttrsToList (name: host: {
-      inherit name;
-      system = host.config.nixpkgs.hostPlatform.system;
-      type = "system";
-    }) config.flake.nixosConfigurations
+    ++ lib.mapAttrsToList (
+      name: host:
+      entry {
+        inherit name;
+        system = host.config.nixpkgs.hostPlatform.system;
+        type = "system";
+      } host.config.system.build.toplevel
+    ) config.flake.nixosConfigurations
     ++ entries "devshell" config.flake.devShells
     ++ entries "check" config.flake.checks;
 }
