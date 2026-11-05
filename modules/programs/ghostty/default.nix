@@ -1,11 +1,10 @@
 { inputs, ... }:
 {
-  profiles.pc.homeModule = { config, inputs', ... }: {
+  profiles.pc.homeModule = { config, ... }: {
     home.sessionVariables.TERMINAL = "ghostty";
 
     programs.ghostty = {
       enable = true;
-      package = inputs'.ghostty.packages.default;
       systemd.enable = true;
 
       settings = {
