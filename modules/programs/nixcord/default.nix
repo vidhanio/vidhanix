@@ -20,7 +20,6 @@
               minimizeToTray = true;
               arRPC = true;
               hardwareAcceleration = true;
-              hardwareVideoAcceleration = true;
             };
             state = {
               firstLaunch = false;
