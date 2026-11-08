@@ -5,6 +5,7 @@
         lib,
         pkgs,
         inputs',
+        self',
         ...
       }:
       {
@@ -105,6 +106,24 @@
                   cache-type-v = "q4_0";
                   spec-type = "draft-mtp";
                   spec-draft-n-max = 3;
+                  reasoning-format = "deepseek";
+                  reasoning-preserve = true;
+                  temp = 1.0;
+                  top-k = 20;
+                  min-p = 0.0;
+                };
+                "arete-27b" = {
+                  model = "${self'.packages.arete-27b-mtp-gguf}";
+                  split-mode = "none";
+                  fit = "off";
+                  ctx-size = 65536;
+                  batch-size = 512;
+                  parallel = 1;
+                  flash-attn = "on";
+                  cache-type-k = "q4_0";
+                  cache-type-v = "q4_0";
+                  spec-type = "draft-mtp";
+                  spec-draft-n-max = 2;
                   reasoning-format = "deepseek";
                   reasoning-preserve = true;
                   temp = 1.0;
