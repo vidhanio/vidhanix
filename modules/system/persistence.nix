@@ -47,6 +47,7 @@
           directories = [
             "Downloads"
             "Projects"
+            "Videos"
             ".cache/nix"
           ];
         };
