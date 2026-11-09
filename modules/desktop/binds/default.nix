@@ -1,19 +1,7 @@
 { lib, ... }:
 {
   profiles.pc.homeModule =
-    { pkgs, ... }:
     let
-      screenshot = pkgs.writeShellApplication {
-        name = "screenshot-region";
-        runtimeInputs = with pkgs; [
-          slurp
-          grim
-          wl-clipboard
-        ];
-        text = ''
-          grim -g "$(slurp)" - | wl-copy --type image/png
-        '';
-      };
       msg = command: "noctalia msg ${command}";
       mediaBind = flags: command: {
         cmd = msg command;
@@ -76,11 +64,6 @@
           };
 
           "SUPER + space".cmd = msg "panel-toggle launcher";
-
-          "Print".cmd = lib.getExe screenshot;
-          "SUPER + p".cmd = lib.getExe screenshot;
-
-          "SUPER + i".cmd = "${lib.getExe pkgs.hyprpicker} -a";
 
           "SUPER + e".app = "nautilus";
           "XF86AudioRaiseVolume" = repeating "volume-up";

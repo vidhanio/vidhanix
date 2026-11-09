@@ -49,7 +49,16 @@
         }
       );
       default = { };
-      description = "Keybinds shared across supported window managers.";
+      description = ''
+        Keybinds shared across supported window managers.
+
+        Print or Super+P freezes the displays and copies a screenshot.
+        Shift+Print or Super+Shift+P starts a recording; repeat it to stop
+        and save to {file}`~/Videos`. Both selectors support dragging a
+        region, clicking a window, or clicking background/bar space for
+        a monitor. Recording selections must fit within one monitor.
+        Super+I copies a color picked with the eyedropper.
+      '';
     };
   };
 }
