@@ -4,13 +4,12 @@
       {
         lib,
         pkgs,
-        inputs',
         ...
       }:
       {
         services.llama-cpp = {
           enable = true;
-          package = inputs'.llama-cpp.packages.vulkan;
+          package = pkgs.llama-cpp-vulkan;
           settings = {
             sleep-idle-seconds = 30;
             models-max = 1;

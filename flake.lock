@@ -865,29 +865,6 @@
         "type": "github"
       }
     },
-    "llama-cpp": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1794149346,
-        "narHash": "sha256-J+NOeQYs1ojNjgogf54BSiBJLhKQj5i8SamBblV5jVg=",
-        "owner": "ggml-org",
-        "repo": "llama.cpp",
-        "rev": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ggml-org",
-        "repo": "llama.cpp",
-        "type": "github"
-      }
-    },
     "llm-agents": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -1389,7 +1366,6 @@
         "hyprland": "hyprland",
         "impermanence": "impermanence",
         "import-tree": "import-tree",
-        "llama-cpp": "llama-cpp",
         "llm-agents": "llm-agents",
         "mcsr": "mcsr",
         "meowland": "meowland",
