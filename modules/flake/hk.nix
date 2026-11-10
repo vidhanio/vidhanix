@@ -6,27 +6,26 @@
   perSystem =
     { config, pkgs, ... }:
     {
+      # Builtins read the source during evaluation; avoid import-from-derivation.
+      hk-nix.hkSrc = builtins.fetchTarball {
+        inherit (config.hk-nix.package.src) url;
+        sha256 = config.hk-nix.package.src.outputHash;
+      };
+
       hk-nix.settings.hooks."pre-commit" = {
         fix = true;
         stage = false;
         fail_on_fix = true;
         stash = "git";
         steps = {
-          deadnix = {
-            glob = "**/*.nix";
-            check = "${lib.getExe pkgs.deadnix} --fail {{files}}";
-          };
-          ruff = {
-            types = [ "python" ];
-            check = "${lib.getExe pkgs.ruff} check {{files}}";
-            fix = "${lib.getExe pkgs.ruff} check --fix {{files}}";
-          };
+          deadnix.builtin = config.hk-nix.builtins.deadnix;
+          ruff.builtin = config.hk-nix.builtins.ruff;
           shellcheck = {
+            builtin = config.hk-nix.builtins.shellcheck;
             match_any = [
               { __pkl = ''new FileSelector { types = List("shell") }''; }
               { __pkl = ''new FileSelector { glob = ".envrc" }''; }
             ];
-            check = "${lib.getExe pkgs.shellcheck} {{files}}";
           };
           statix = {
             glob = "**/*.nix";
@@ -37,7 +36,8 @@
             fix = "${lib.getExe config.treefmt.build.wrapper} --no-cache {{files}}";
           };
           ty = {
-            types = [ "python" ];
+            builtin = config.hk-nix.builtins.ty;
+            # Resolve third-party imports against the project's Python environment.
             check = "${lib.getExe pkgs.ty} check --python ${
               lib.getExe (pkgs.python3.withPackages (ps: [ ps.rich ]))
             } {{files}}";
