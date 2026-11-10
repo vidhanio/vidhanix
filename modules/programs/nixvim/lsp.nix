@@ -7,7 +7,6 @@
       lsp.servers = {
         # keep-sorted start block=yes
         bashls.enable = true;
-        codebook.enable = true;
         jsonls.enable = true;
         lua_ls.enable = true;
         nil_ls.enable = true;
