@@ -31,6 +31,7 @@ Personal NixOS and Home Manager configurations, composed with flake-parts and im
 - Check the working tree before running recipes that stage files with `git add -A`.
 - Stage new files before flake evaluation.
 - Edit the Nix definitions for generated files and regenerate with `just generate`.
+- Do not add to or update the README unless explicitly requested.
 - Format with `nix fmt` and validate affected configurations through evaluation or builds.
 - Activate configurations only when explicitly requested.
 - Commit completed work with a lowercase `<scope>: <description>` title, such as `kitty: disable close confirmation`.
