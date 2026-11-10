@@ -13,10 +13,9 @@ let
       nativeBuildInputs = [
         pkgs.installAgentSkills
         pkgs.installShellFiles
+        pkgs.writableTmpDirAsHomeHook
       ];
       postBuild = ''
-        export HOME="$TMPDIR/rex-home"
-        mkdir -p "$HOME"
         $out/bin/rex skill setup --agent pi
         installSkill "$HOME/.agents/skills/rex"
 
