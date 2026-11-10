@@ -1,13 +1,14 @@
 {
-  hosts.vortex.module = {
+  profiles.pc.module = {
     programs.gpu-screen-recorder = {
       enable = true;
       ui.enable = true;
     };
   };
-  hosts.vortex.homeModule =
+  profiles.pc.homeModule =
     {
       config,
+      lib,
       osConfig,
       ...
     }:
@@ -22,18 +23,25 @@
         enable = true;
         package = null;
         mutableSettings = false;
-        settings = {
-          screenshot = {
-            take_screenshot_hotkey = disabledHotkey;
-            take_screenshot_region_hotkey = disabledHotkey;
-            take_screenshot_window_hotkey = disabledHotkey;
-          };
-          replay = {
-            time = 120;
-            turn_on_replay_automatically_mode = "turn_on_at_system_startup";
-            save_directory = "${config.home.homeDirectory}/Videos";
-          };
-        };
+        settings = lib.mkMerge [
+          {
+            screenshot = {
+              take_screenshot_hotkey = disabledHotkey;
+              take_screenshot_region_hotkey = disabledHotkey;
+              take_screenshot_window_hotkey = disabledHotkey;
+            };
+            replay = {
+              time = 120;
+              turn_on_replay_automatically_mode = "turn_on_at_system_startup";
+              save_directory = "${config.home.homeDirectory}/Videos";
+            };
+          }
+          (lib.mkIf (osConfig.hardware.asahi.enable or false) {
+            record.record_options.codec = "h264_software";
+            replay.record_options.codec = "h264_software";
+            streaming.record_options.codec = "h264_software";
+          })
+        ];
       };
 
       xdg.autostart.entries = [

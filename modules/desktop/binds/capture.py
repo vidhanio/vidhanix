@@ -145,7 +145,7 @@ def screenshot(compositor: str, outputs: list[Box], windows: list[Box]) -> None:
 
 
 def record(outputs: list[Box], windows: list[Box]) -> None:
-    x, y, width, height = region = select(windows)
+    x, y, width, height = select(windows)
     if not any(
         ox <= x and oy <= y and x + width <= ox + ow and y + height <= oy + oh
         for ox, oy, ow, oh in outputs
@@ -154,12 +154,16 @@ def record(outputs: list[Box], windows: list[Box]) -> None:
     directory = Path(os.environ["CAPTURE_DIRECTORY"])
     directory.mkdir(parents=True, exist_ok=True)
     output = str(directory / f"Recording-{datetime.now():%Y-%m-%d_%H-%M-%S-%f}.mp4")
-    if os.environ["CAPTURE_BACKEND"] == "gsr":
-        args = ["-w", "region", "-region", f"{width}x{height}+{x}+{y}", "-o", output]
-    else:
-        args = ["-g", geometry(region), "-f", output]
-        if os.environ["CAPTURE_SOFTWARE"] == "true":
-            args.append("--no-hw")
+    args = [
+        "-w",
+        "region",
+        "-region",
+        f"{width}x{height}+{x}+{y}",
+        "-encoder",
+        os.environ["GSR_ENCODER"],
+        "-o",
+        output,
+    ]
     environment = [
         f"--setenv=WAYLAND_DISPLAY={os.environ['WAYLAND_DISPLAY']}",
         "--setenv=XDG_SESSION_TYPE=wayland",
@@ -176,7 +180,7 @@ def record(outputs: list[Box], windows: list[Box]) -> None:
             "--property=PartOf=graphical-session.target",
             *environment,
             "--",
-            os.environ["CAPTURE_RECORDER"],
+            "gpu-screen-recorder",
             *args,
         ],
         check=True,
