@@ -77,6 +77,13 @@
     };
 
     # system
+    bootvine = {
+      url = "git+https://codeberg.org/wvhulle/bootvine";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+      };
+    };
     determinate = {
       url = "github:DeterminateSystems/determinate";
       inputs.nix.inputs.flake-parts.follows = "flake-parts";
