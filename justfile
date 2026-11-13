@@ -21,13 +21,20 @@ systemPackage := nixosConfig + ".system.build.toplevel"
 @generate: add
     nix run .#write-files
 
+[private]
+@run-deploy target *flags: add
+    if [ -t 1 ]; then \
+        set -o pipefail; \
+        deploy --no-progress {{ target }} {{ flags }} -- --log-format internal-json -v 2>&1 | nom --json; \
+    else \
+        deploy {{ target }} {{ flags }}; \
+    fi
+
 # Deploy `host` with deploy-rs, e.g. `just host=voyager deploy --dry-activate`
-@deploy *flags: add
-    deploy .#{{ host }} {{ flags }}
+@deploy *flags: (run-deploy (".#" + host) flags)
 
 # Deploy every host, passing extra flags to `deploy`
-@deploy-all *flags: add
-    deploy . {{ flags }}
+@deploy-all *flags: (run-deploy "." flags)
 
 # Activate the configuration now, passing extra flags to `deploy`
 @switch *flags: (deploy flags)
@@ -40,7 +47,11 @@ systemPackage := nixosConfig + ".system.build.toplevel"
 
 # Build the configuration, passing extra flags to `nix build`
 @build *flags: add
-    nix build {{ systemPackage }} {{ flags }}
+    if [ -t 1 ]; then \
+        nom build {{ systemPackage }} {{ flags }}; \
+    else \
+        nix build {{ systemPackage }} {{ flags }}; \
+    fi
 
 # Format the tree with treefmt, e.g. `just fmt --ci`
 @fmt *flags: add

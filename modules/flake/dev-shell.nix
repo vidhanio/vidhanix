@@ -28,6 +28,7 @@
             deploy-rs
             git
             just
+            nix-output-monitor
             sops
 
             config.hk-nix.hk
