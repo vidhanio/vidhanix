@@ -1,0 +1,113 @@
+diff --git a/Makefile b/Makefile
+--- a/Makefile
++++ b/Makefile
+@@ -39,5 +39,5 @@
+ install-bootstrap:
+ 	install -d -m 755 $(DESTDIR)$(PREFIX)/lib/$(PACKAGE)/
+-	install -p -m 644 bootstraplinux_ubuntu12_32.tar.xz $(DESTDIR)$(PREFIX)/lib/$(PACKAGE)/
++	install -p -m 644 bootstraplinux_linuxarm64.tar.xz $(DESTDIR)$(PREFIX)/lib/$(PACKAGE)/
+ 
+ install-desktop:
+diff --git a/bin_steam.sh b/bin_steam.sh
+--- a/bin_steam.sh
++++ b/bin_steam.sh
+@@ -103,7 +103,7 @@
+ 	fi
+ 
+-	if source "${srt}/usr/libexec/steam-runtime-tools-0/logger-0.bash" \
++	if source "${srt}/bin/srt-logger-0.bash" \
+ 		--log-directory="$log_dir" \
+ 		--filename=console-linux.txt \
+ 		--parse-level-prefix \
+ 		-t steam \
+@@ -119,7 +119,7 @@
+ 	# Maybe be smarter someday
+ 	# Right now this is the only platform we have a bootstrap for, so hard-code it.
+-	echo ubuntu12_32
++	echo linuxarm64
+ }
+ 
+ function setup_variables()
+ {
+@@ -133,7 +133,7 @@
+ 	STEAMCONFIG=~/.steam
+ 	# ~/.steam/steam or ~/.steam/steambeta
+ 	STEAMDATALINK="$STEAMCONFIG/$STEAMPACKAGE"
+-	STEAMBOOTSTRAP=steam.sh
++	STEAMBOOTSTRAP=steamrtarm64/steam
+ 	# User-controlled, often ~/.local/share/Steam or ~/Steam
+ 	LAUNCHSTEAMDIR="$(readlink -e -q "$STEAMDATALINK" || true)"
+ 	# Normally 'ubuntu12_32'
+@@ -229,14 +229,20 @@
+ 	# this script we assume that ~/.steam/steam and ~/.steam/root
+ 	# are the same: they only differ in developer use-cases which
+ 	# also bypass this script
+-	local srt="${STEAM_RUNTIME_SCOUT:-"$data/ubuntu12_32/steam-runtime"}"
++	local srt="${STEAM_RUNTIME_SCOUT:-"$data/steam-runtime-arm64/steam-runtime-steamrt-arm64"}"
+ 	local argv="$2"
+ 
+ 	if [[ -n "$data" && -x "$data/$STEAMBOOTSTRAP" ]]; then
+ 		# Looks good...
++		mkdir -p "$data/steam-runtime-arm64"
++		ln -sfn \
++			"$bootstrapdir/steam-runtime-arm64/"* \
++			"$data/steam-runtime-arm64/"
++		/bin/bash @armRuntimeInstaller@ \
++			--unpack-dir="$data/steam-runtime-arm64" >/dev/null || return
+ 		maybe_open_log "$srt" "$data" "$argv"
+ 		return 0
+ 	else
+ 		return 1
+ 	fi
+ }
+@@ -247,9 +253,9 @@
+ 		return 1
+ 	fi
+ 
+-	local runtime="$STEAMCONFIG/root/ubuntu12_32/steam-runtime"
+-	local remote="$runtime/amd64/usr/bin/steam-runtime-steam-remote"
++	local runtime="$STEAMCONFIG/steam/steam-runtime-arm64/steam-runtime-steamrt-arm64"
++	local remote="$runtime/bin/steam-runtime-steam-remote"
+ 
+ 	if [ -x "$remote" ] && "$remote" "$@" 2>/dev/null; then
+ 		return 0
+ 	else
+@@ -310,4 +316,4 @@
+ # go to the install directory and run the client
+ cd "$LAUNCHSTEAMDIR"
+ 
+-exec "$LAUNCHSTEAMDIR/$STEAMBOOTSTRAP" ${log_opened+-srt-logger-opened} "$@"
++exec "$bootstrapdir/steam-arm64.sh" ${log_opened+-srt-logger-opened} "$@"
+diff --git a/steam-arm64.sh b/steam-arm64.sh
+--- a/steam-arm64.sh
++++ b/steam-arm64.sh
+@@ -26,14 +26,15 @@
+ log_opened=
+ 
+-STEAMROOT="$(cd "$(dirname "$0")" && echo $PWD)"
++STEAMROOT="$PWD"
+ if [ -z "${STEAMROOT}" ]; then
+ 	log $"Couldn't find Steam root directory from "$0", aborting!"
+ 	exit 1
+ fi
+ STEAMDATA="$STEAMROOT"
++export STEAM_RUNTIME_STEAMRT="$STEAMROOT/steam-runtime-arm64/steam-runtime-steamrt-arm64"
+ if [ -z ${STEAMEXE-} ]; then
+-  STEAMEXE=`basename "$0" .sh`
++  STEAMEXE=steam
+ fi
+ 
+ MAGIC_RESTART_EXITCODE=42
+ 
+@@ -61,8 +62,9 @@
+ if has_beta_optin; then
+ 	if [ -e "$STEAMROOT/.steam-enable-steamrt64-client" ]; then
+-		if [ -x "$STEAMROOT/steamrt64/steam" ]; then
++		if [ -x "$STEAMROOT/steamrtarm64/steam" ]; then
+ 			log "Starting SteamRT3 Steam"
+-			"$STEAMROOT/steamrt64/steam" "$@"
++			"$STEAM_RUNTIME_STEAMRT/pressure-vessel/libexec/steam-runtime-tools-0/srt-client-container" \
++				-- "$STEAMROOT/steamrtarm64/steam" "$@"
+ 			STATUS=$?
+ 
+ 			# If steam requested to restart, then restart
