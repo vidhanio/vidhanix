@@ -8,7 +8,7 @@ let
     }:
     stdenvNoCC.mkDerivation (finalAttrs: {
       pname = "pi-anthropic-auth";
-      version = "3.4.4";
+      version = "3.5.0";
 
       src = fetchzip {
         url = "https://registry.npmjs.org/@gotgenes/pi-anthropic-auth/-/pi-anthropic-auth-${finalAttrs.version}.tgz";
