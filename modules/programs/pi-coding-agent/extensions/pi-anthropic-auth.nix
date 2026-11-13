@@ -12,7 +12,7 @@ let
 
       src = fetchzip {
         url = "https://registry.npmjs.org/@gotgenes/pi-anthropic-auth/-/pi-anthropic-auth-${finalAttrs.version}.tgz";
-        hash = "sha256-QR3JGwkiLOxLICmIaibbvUoXeypNvVFz1ZuKnG/cKXQ=";
+        hash = "sha256-24cHF/GcZNDy9Xub9Z4QPPphZ/qXHzatoZKWEaTeElQ=";
       };
 
       dontBuild = true;
