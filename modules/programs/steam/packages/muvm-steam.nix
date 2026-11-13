@@ -18,8 +18,6 @@ let
       extraLibraries ? _pkgs: [ ],
       extraEnv ? { },
       extraPkgs ? _pkgs: [ ],
-      # MiB; `null` uses muvm's default of 80% of host RAM.
-      memoryMiB ? null,
       ...
     }@args:
     let
@@ -46,7 +44,6 @@ let
           "writeShellScript"
           "writeText"
           "symlinkJoin"
-          "memoryMiB"
           "extraLibraries"
           "extraEnv"
           "extraPkgs"
@@ -205,8 +202,7 @@ let
         "-X ${guestBusScript}"
         "-e PULSE_CLIENTCONFIG=${pulse-conf}"
         "-e DBUS_SESSION_BUS_ADDRESS=unix:path=${guestBus}"
-      ]
-      ++ lib.optional (memoryMiB != null) "--mem=${toString memoryMiB}";
+      ];
 
       wrapMuvm =
         pkg: extraAttrs:
