@@ -28,20 +28,39 @@ let
       mesa32 = pkgs-x86_64.pkgsi686Linux.mesa;
       steamX86 = pkgs-x86_64.steam;
 
-      armClient = fetchurl {
-        url = "https://client-update.steamstatic.com/bins_linuxarm64_linuxarm64.zip.7e5608630efa476c001328dc0c8543d9fa26f7f1";
-        hash = "sha256-I/96wg0SLXxBOhh1HPgI1SrCeP5l2EYI7FYEvzPx3hg=";
+      sourcePackage =
+        args:
+        pkgs.runCommand "${args.pname}-${args.version}" args ''
+          ln -s "$src" "$out"
+        '';
+
+      armClient = sourcePackage rec {
+        pname = "steam-client-arm64";
+        version = "5448e08ec5f3a4f30d900208b18598c736b3d730";
+        src = fetchurl {
+          url = "https://client-update.steamstatic.com/bins_linuxarm64_linuxarm64.zip.${version}";
+          hash = "sha256-hAc0fcR2Xs+Rki3BxhIfM1YjOu3ERh5GPgjpt6s/rhA=";
+        };
       };
 
-      armRuntime = fetchurl {
-        url = "https://repo.steampowered.com/steamrt3c/images/3c.0.20261103.268067/steam-runtime-steamrt-arm64.tar.xz";
-        hash = "sha256-vEwTGdJO29Io5i+nzTUecw/PHJ1WjEl90jYJhg6WWWA=";
+      armRuntime = sourcePackage rec {
+        pname = "steam-runtime-arm64";
+        version = "3c.0.20261103.268067";
+        src = fetchurl {
+          url = "https://repo.steampowered.com/steamrt3c/images/${version}/steam-runtime-steamrt-arm64.tar.xz";
+          hash = "sha256-vEwTGdJO29Io5i+nzTUecw/PHJ1WjEl90jYJhg6WWWA=";
+        };
+        passthru.installer = sourcePackage {
+          pname = "steam-runtime-arm64-installer";
+          inherit version;
+          src = fetchurl {
+            url = "https://repo.steampowered.com/steamrt3c/images/${version}/steam-runtime-steamrt-arm64.sh";
+            hash = "sha256-gD1aX0rBmAAkULV+9Th98jQ1P4PKASBJwvazqaE8y7k=";
+          };
+        };
       };
 
-      armRuntimeInstaller = fetchurl {
-        url = "https://repo.steampowered.com/steamrt3c/images/3c.0.20261103.268067/steam-runtime-steamrt-arm64.sh";
-        hash = "sha256-gD1aX0rBmAAkULV+9Th98jQ1P4PKASBJwvazqaE8y7k=";
-      };
+      armRuntimeInstaller = armRuntime.installer;
 
       steamUnwrapped = pkgs.steam-unwrapped.overrideAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.unzip ];
@@ -140,7 +159,21 @@ let
     in
     wrapMuvm steam {
       name = "muvm-${steam.name}";
-      passthru.run = wrapMuvm steamX86.run { };
+      passthru = {
+        run = wrapMuvm steamX86.run { };
+        inherit armClient armRuntime;
+        updateScript = lib.getExe (
+          pkgs.writeShellApplication {
+            name = "update-muvm-steam";
+            runtimeInputs = with pkgs; [
+              curl
+              gawk
+              nix-update
+            ];
+            text = builtins.readFile ./update.sh;
+          }
+        );
+      };
       meta = steam.meta // {
         description = "ARM64 Steam beta client with codecs and runtime in muvm for Apple Silicon";
         platforms = [ "aarch64-linux" ];
