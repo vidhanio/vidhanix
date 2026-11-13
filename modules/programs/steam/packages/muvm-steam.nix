@@ -189,34 +189,15 @@ let
         ln -snf ${mesa32} /run/opengl-driver-32
       '';
 
-      # Steam's tray clients only accept `EXTERNAL` auth on UNIX sockets.
-      # Front the host session bus (see `hostBusScript`) with a guest-local socket
-      # over this vsock port. The muvm process maps each port to a host socket under
-      # `$XDG_RUNTIME_DIR/krun/socket`.
-      vsockPort = 50001;
+      # Steam's tray clients only accept `EXTERNAL` auth on UNIX sockets, so proxy
+      # the host session bus into the guest the same way muvm proxies PulseAudio.
+      # muvm maps each dynamic vsock port to `$XDG_RUNTIME_DIR/krun/socket/port-N`
+      # on the host and connects to it on demand. Its own launches claim ports from
+      # the bottom of the range, so take the top one.
+      vsockPort = toString 50199;
+      guestBus = "/run/user/1000/bus";
       guestBusScript = writeShellScript "muvm-steam-guest-bus.sh" ''
-        nohup ${lib.getExe socat} UNIX-LISTEN:/run/user/1000/muvm-bus,fork,reuseaddr VSOCK-CONNECT:2:${toString vsockPort} >/dev/null 2>&1 &
-      '';
-
-      # Host half of the D-Bus bridge, owned by the wrapper: forward the krun
-      # vsock socket to the session bus, then run the launcher (muvm + guest
-      # flags) passed as `$1`. Concurrent instances share the first listener.
-      hostBusScript = writeShellScript "muvm-steam-host-bus.sh" ''
-        set -e
-        launcher=$1
-        shift
-        host_bus="$XDG_RUNTIME_DIR/krun/socket/port-${toString vsockPort}"
-        rm -f "$host_bus"
-        ${lib.getExe socat} UNIX-LISTEN:"$host_bus",fork,reuseaddr UNIX-CONNECT:"$XDG_RUNTIME_DIR/bus" &
-        bridge_pid=$!
-        cleanup() {
-          if kill -0 "$bridge_pid" 2>/dev/null; then
-            kill "$bridge_pid" 2>/dev/null || true
-            rm -f "$host_bus"
-          fi
-        }
-        trap cleanup EXIT
-        "$launcher" "$@"
+        nohup ${lib.getExe socat} UNIX-LISTEN:${guestBus},fork VSOCK-CONNECT:2:${vsockPort} >/dev/null 2>&1 &
       '';
 
       pulse-conf = writeText "pulse.conf" ''
@@ -227,7 +208,7 @@ let
         "-x ${initScript}"
         "-X ${guestBusScript}"
         "-e PULSE_CLIENTCONFIG=${pulse-conf}"
-        "-e DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/muvm-bus"
+        "-e DBUS_SESSION_BUS_ADDRESS=unix:path=${guestBus}"
       ]
       ++ lib.optional (memoryMiB != null) "--mem=${toString memoryMiB}";
 
@@ -247,11 +228,10 @@ let
             postBuild = ''
               mv $out/bin/${program} $out/bin/.${program}-wrapped
 
-              makeWrapper ${lib.getExe muvm} $out/bin/.${program}-launcher \
+              makeWrapper ${lib.getExe muvm} $out/bin/${program} \
+                --run 'mkdir -p "$XDG_RUNTIME_DIR/krun/socket"' \
+                --run 'ln -sfn "$XDG_RUNTIME_DIR/bus" "$XDG_RUNTIME_DIR/krun/socket/port-${vsockPort}"' \
                 --add-flags "${lib.concatStringsSep " " muvmFlags} $out/bin/.${program}-wrapped"
-
-              makeWrapper ${hostBusScript} $out/bin/${program} \
-                --add-flags "$out/bin/.${program}-launcher"
             '';
             inherit (pkg) meta;
           }
