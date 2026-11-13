@@ -44,6 +44,13 @@
     };
 
     # tooling
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        utils.inputs.systems.follows = "systems";
+      };
+    };
     files = {
       url = "github:mightyiam/files";
       flake = false;

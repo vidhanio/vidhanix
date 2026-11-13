@@ -25,9 +25,9 @@
               nix = inputs'.determinate.inputs.nix.packages.${system}.default;
             }
           )); [
+            deploy-rs
             git
             just
-            nh
             sops
 
             config.hk-nix.hk

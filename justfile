@@ -21,25 +21,26 @@ systemPackage := nixosConfig + ".system.build.toplevel"
 @generate: add
     nix run .#write-files
 
-# Run `nh os` with the given action and flags
-@os action *flags: add
-    if [ -t 1 ]; \
-        then nh os {{ action }} {{ flags }} .; \
-    else \
-        nh os {{ action }} --no-nom {{ flags }} .; \
-    fi
+# Deploy `host` with deploy-rs, e.g. `just host=voyager deploy --dry-activate`
+@deploy *flags: add
+    deploy .#{{ host }} {{ flags }}
 
-# Activate the configuration now, passing extra flags to `nh os`
-@switch *flags: (os "switch" flags)
+# Deploy every host, passing extra flags to `deploy`
+@deploy-all *flags: add
+    deploy . {{ flags }}
 
-# Activate the configuration at the next boot, passing extra flags to `nh os`
-@boot *flags: (os "boot" flags)
+# Activate the configuration now, passing extra flags to `deploy`
+@switch *flags: (deploy flags)
 
-# Test the configuration, passing extra flags to `nh os`
-@test *flags: (os "test" flags)
+# Activate the configuration at the next boot, passing extra flags to `deploy`
+@boot *flags: (deploy "--boot" flags)
 
-# Build the configuration, passing extra flags to `nh os`
-@build *flags: (os "build" flags)
+# Activate the configuration without adding a boot entry, passing extra flags to `deploy`
+@test *flags: (deploy "--test" flags)
+
+# Build the configuration, passing extra flags to `nix build`
+@build *flags: add
+    nix build {{ systemPackage }} {{ flags }}
 
 # Format the tree with treefmt, e.g. `just fmt --ci`
 @fmt *flags: add
@@ -54,7 +55,7 @@ update: add
     nix flake update
     just update-packages
 
-# Evaluate a path under the current host's NixOS config, e.g. `just eval-nixos services.tailscale`
+# Evaluate a path under `host`'s NixOS config, e.g. `just eval-nixos services.tailscale`
 @eval-nixos option *flags: add
     nix eval {{ flags }} {{ nixosConfig }}.{{ option }}
 
