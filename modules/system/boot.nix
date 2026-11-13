@@ -10,6 +10,7 @@
           systemd-boot = {
             enable = true;
             consoleMode = "max";
+            configurationLimit = 5;
           };
         };
         binfmt.emulatedSystems = lib.filter (system: system != pkgs.stdenv.hostPlatform.system) [
