@@ -14,9 +14,7 @@
               # https://github.com/Mic92/nix-update/issues/687
               patches = old.patches or [ ] ++ [ ./nix-update-flake-prefetch.patch ];
               passthru = old.passthru or { } // {
-                nix-update-script =
-                  final.callPackage "${prev.path}/pkgs/by-name/ni/nix-update/nix-update-script.nix"
-                    { };
+                nix-update-script = prev.nix-update.nix-update-script.override { inherit (final) nix-update; };
               };
               meta = old.meta or { } // {
                 mainProgram = "nix-update";
