@@ -17,9 +17,12 @@ def main [
     exit 1
   }
 
+  if not $json { print $"(ansi grey)Updating ($packages | length) package\(s\)…(ansi reset)\n" }
+
+  let width = $packages | each { str length } | math max
   let results = $packages | par-each {|package|
     let result = update-package $package
-    if not $json { print (summary $result) }
+    if not $json { print (summary $result $width) }
     $result
   }
 
@@ -75,26 +78,47 @@ def outcome [
   }
 }
 
-def summary [result: record]: nothing -> string {
-  if $result.failed {
-    $"(ansi red)✗(ansi reset) ($result.package)"
-  } else if $result.changed {
-    $"(ansi green)✓(ansi reset) ($result.package) (ansi grey)($result.before) → ($result.after)(ansi reset)"
+def summary [result: record width: int]: nothing -> string {
+  let padding = '' | fill --width ($width - ($result.package | str length))
+  let name = if ($result.homepage | is-empty) {
+    $result.package
   } else {
-    $"(ansi green)✓(ansi reset) ($result.package) (ansi grey)Up to date(ansi reset)"
+    $result.homepage | ansi link --text $result.package
   }
+
+  let detail = if $result.failed {
+    $"(ansi red)($result.log | reason)(ansi reset)"
+  } else if $result.changed {
+    $"(ansi grey)($result.before) → (ansi reset)(ansi green_bold)($result.after)(ansi reset)"
+  } else {
+    $"(ansi grey)($result.after)(ansi reset)"
+  }
+
+  let mark = if $result.failed {
+    $"(ansi red)✗"
+  } else if $result.changed {
+    $"(ansi green_bold)↑"
+  } else {
+    $"(ansi grey)✓"
+  }
+
+  $"  ($mark)(ansi reset) ($name)($padding)  ($detail)"
+}
+
+# The last non-empty line of a log, which is usually the error.
+def reason []: string -> string {
+  let line = $in | lines | str trim | where { is-not-empty } | last | default "failed"
+  if ($line | str length) > 80 { $"($line | str substring 0..<79)…" } else { $line }
 }
 
 def report [failures: list<record>]: nothing -> nothing {
   let log_dir = mktemp --directory --tmpdir update-packages-XXXXXX
-  print --stderr $"($failures | length) package\(s\) failed:"
 
   for failure in $failures {
     let log = $log_dir | path join $"($failure.package).log"
     $failure.log | save $log
 
-    print --stderr $"(ansi attr_bold)── ($failure.package) ──(ansi reset)"
-    print --stderr $failure.log
-    print --stderr $"(ansi grey)log: ($log)(ansi reset)"
+    print --stderr $"\n(ansi red_bold)✗ ($failure.package)(ansi reset) (ansi grey)($log)(ansi reset)"
+    $failure.log | lines | last 15 | each { print --stderr $"(ansi grey)│(ansi reset) ($in)" }
   }
 }
