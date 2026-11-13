@@ -8,11 +8,7 @@
       ...
     }:
     let
-      capture = pkgs.writers.writePython3Bin "desktop-capture" {
-        flakeIgnore = [
-          "E501"
-          "W503"
-        ];
+      capture = pkgs.writers.writeNuBin "desktop-capture" {
         makeWrapperArgs = [
           "--prefix"
           "PATH"
@@ -22,6 +18,7 @@
             pkgs.hyprpicker
             pkgs.slurp
             pkgs.systemd
+            pkgs.util-linux
             pkgs.wl-clipboard
             osConfig.programs.gpu-screen-recorder.package
             osConfig.programs.hyprland.package
@@ -34,7 +31,7 @@
           "GSR_ENCODER"
           (if osConfig.hardware.asahi.enable or false then "cpu" else "gpu")
         ];
-      } ./capture.py;
+      } ./capture.nu;
     in
     {
       desktop.binds = {
