@@ -18,8 +18,7 @@ let
       extraLibraries ? _pkgs: [ ],
       extraEnv ? { },
       extraPkgs ? _pkgs: [ ],
-      # RAM ceiling for the microVM in MiB (balloon-backed, not reserved).
-      # Use `null` for muvm's 80% default, which leaves no host headroom on 8 GB.
+      # MiB; `null` uses muvm's default of 80% of host RAM.
       memoryMiB ? null,
       ...
     }@args:
@@ -75,7 +74,7 @@ let
           hash = "sha256-Bcd/4pXzhcD2qHdYCXb7pRCT0uqfseQmjRTkTPX/oe4=";
         };
         nativeBuildInputs = [ python3 ];
-        # Keep SteamRT's container-internal interpreters unchanged.
+        # Keep SteamRT's interpreters intact.
         dontFixup = true;
         installPhase = ''
           python3 ${./unpack-client.py} $out $client $codecs $sdl $runtime
@@ -189,11 +188,8 @@ let
         ln -snf ${mesa32} /run/opengl-driver-32
       '';
 
-      # Steam's tray clients only accept `EXTERNAL` auth on UNIX sockets, so proxy
-      # the host session bus into the guest the same way muvm proxies PulseAudio.
-      # muvm maps each dynamic vsock port to `$XDG_RUNTIME_DIR/krun/socket/port-N`
-      # on the host and connects to it on demand. Its own launches claim ports from
-      # the bottom of the range, so take the top one.
+      # muvm maps vsock ports 50000-50199 to `$XDG_RUNTIME_DIR/krun/socket/port-N`
+      # and allocates its own from the bottom.
       vsockPort = toString 50199;
       guestBus = "/run/user/1000/bus";
       guestBusScript = writeShellScript "muvm-steam-guest-bus.sh" ''
