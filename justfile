@@ -36,9 +36,6 @@ systemPackage := nixosConfig + ".system.build.toplevel"
 # Deploy every host, passing extra flags to `deploy`
 @deploy-all *flags: (run-deploy "." flags)
 
-# Activate the configuration now, passing extra flags to `deploy`
-@switch *flags: (deploy flags)
-
 # Activate the configuration at the next boot, passing extra flags to `deploy`
 @boot *flags: (deploy "--boot" flags)
 
