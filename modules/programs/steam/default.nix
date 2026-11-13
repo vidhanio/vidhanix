@@ -62,7 +62,13 @@ in
   profiles.apple-silicon.module =
     { self', ... }:
     {
-      programs.steam.package = self'.packages.muvm-steam.override { inherit extraEnv; };
+      programs.steam.package = self'.packages.muvm-steam.override {
+        # muvm forwards X11, not the host Wayland socket.
+        extraEnv = extraEnv // {
+          SDL_VIDEODRIVER = "x11";
+          SDL_VIDEO_DRIVER = "x11";
+        };
+      };
       # Steam asserts 32-bit graphics on x86; the guest gets them from `muvm-steam`.
       hardware.graphics.enable32Bit = lib.mkForce false;
     };

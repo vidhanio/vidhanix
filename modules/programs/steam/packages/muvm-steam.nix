@@ -92,14 +92,13 @@ let
           cp -an ${armClient}/steamrtarm64/. "$steamroot/steamrtarm64/"
           chmod -R u+rwX "$steamroot/steamrtarm64"
         fi
-        if [ -d "$steamroot/steamrt64" ] && [ ! -L "$steamroot/steamrt64" ]; then
-          if [ -e "$steamroot/steamrt64-x86" ]; then
-            echo "Cannot migrate steamrt64: steamrt64-x86 already exists" >&2
-            exit 1
-          fi
-          mv "$steamroot/steamrt64" "$steamroot/steamrt64-x86"
+        # Current manifests install distinct x86 and ARM64 runtime trees.
+        if [ -L "$steamroot/steamrt64" ]; then
+          rm "$steamroot/steamrt64"
         fi
-        ln -sfn steamrtarm64 "$steamroot/steamrt64"
+        if [ ! -e "$steamroot/steamrt64" ] && [ -d "$steamroot/steamrt64-x86" ]; then
+          mv "$steamroot/steamrt64-x86" "$steamroot/steamrt64"
+        fi
         ln -sfn "$steamroot" "$HOME/.steam/steam"
         ln -sfn "$steamroot" "$HOME/.steam/root"
         ln -sfn "$steamroot/linuxarm64" "$HOME/.steam/sdkarm64"
@@ -108,7 +107,7 @@ let
         export LD_LIBRARY_PATH="$steamroot/steamrtarm64''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
         restarts=0
         while true; do
-          if "$steamroot/steamrtarm64/steam" -noverifyfiles "$@"; then
+          if "$steamroot/steamrtarm64/steam" "$@"; then
             exit 0
           else
             status=$?
@@ -137,8 +136,13 @@ let
             coreutils
             file
             glibc.bin
+            gtk2 # Required by the ARM64 client's steamui.so.
+            ibus # Required by steamwebhelper.
+            nss
+            nspr
             libx11
             lsb-release
+            lsof
             pciutils
             usbutils
             xdg-utils

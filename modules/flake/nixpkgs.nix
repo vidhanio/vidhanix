@@ -6,6 +6,8 @@
       _module.args.pkgs = import inputs.nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        # Steam's ARM64 client still links against GTK 2, pending upstream migration.
+        config.problems.handlers."gtk+".broken = "warn";
         overlays = [
           (final: prev: {
             nix-update = inputs.nix-update.packages.${system}.nix-update.overridePythonAttrs (old: {
