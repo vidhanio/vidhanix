@@ -26,9 +26,7 @@ let
         runHook postInstall
       '';
 
-      passthru.updateScript = nix-update-script {
-        extraArgs = [ "--flake" ];
-      };
+      passthru.updateScript = nix-update-script { };
 
       meta = {
         description = "Pi extension package for Anthropic OAuth compatibility";

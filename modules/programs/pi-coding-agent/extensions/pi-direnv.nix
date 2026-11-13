@@ -26,9 +26,7 @@ let
         runHook postInstall
       '';
 
-      passthru.updateScript = nix-update-script {
-        extraArgs = [ "--flake" ];
-      };
+      passthru.updateScript = nix-update-script { };
 
       meta = {
         description = "Automatically load direnv environments at Pi session start";

@@ -71,10 +71,7 @@ let
         inherit (core) cargoDeps;
 
         updateScript = nix-update-script {
-          extraArgs = [
-            "--flake"
-            "--version=unstable"
-          ];
+          extraArgs = [ "--version=unstable" ];
         };
       };
 

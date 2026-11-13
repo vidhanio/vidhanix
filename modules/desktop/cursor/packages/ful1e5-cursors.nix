@@ -42,9 +42,7 @@ let
         runHook postBuild
       '';
 
-      passthru.updateScript = nix-update-script {
-        extraArgs = [ "--flake" ];
-      };
+      passthru.updateScript = nix-update-script { };
 
       meta = {
         description = "Extended KDE cursor";
@@ -202,9 +200,7 @@ let
 
       passthru = {
         inherit resolvedPalette extraReplacements;
-        updateScript = nix-update-script {
-          extraArgs = [ "--flake" ];
-        };
+        updateScript = nix-update-script { };
       };
 
       meta = {
@@ -349,9 +345,7 @@ let
         runHook postBuild
       '';
 
-      passthru.updateScript = nix-update-script {
-        extraArgs = [ "--flake" ];
-      };
+      passthru.updateScript = nix-update-script { };
 
       meta = {
         description = "Opensource cursor theme inspired by Google";

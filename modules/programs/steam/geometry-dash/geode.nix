@@ -32,9 +32,7 @@ let
         runHook postInstall
       '';
 
-      passthru.updateScript = nix-update-script {
-        extraArgs = [ "--flake" ];
-      };
+      passthru.updateScript = nix-update-script { };
 
       meta = {
         description = "Geometry Dash mod loader for Windows and Proton";
