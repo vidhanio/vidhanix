@@ -71,6 +71,8 @@
           };
         };
 
+        systemd.services.NetworkManager.stopIfChanged = false;
+
         services.resolved.enable = true;
       };
   };
