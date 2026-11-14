@@ -25,7 +25,7 @@ systemPackage := nixosConfig + ".system.build.toplevel"
 @run-deploy target *flags: add
     if [ -t 1 ]; then \
         set -o pipefail; \
-        deploy --no-progress {{ target }} {{ flags }} -- --log-format internal-json -v 2>&1 | nom --json; \
+        deploy {{ target }} {{ flags }} -- --log-format internal-json -v 2>&1 | nom --json; \
     else \
         deploy {{ target }} {{ flags }}; \
     fi
