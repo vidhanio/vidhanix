@@ -1,0 +1,21 @@
+--- a/lua/jupynvim/init.lua
++++ b/lua/jupynvim/init.lua
+@@ -21,6 +21,8 @@
+ M.config = {
+   core_path = nil,
++  -- Optional synchronous callback(buf); errors abort the save.
++  before_save = nil,
+   -- When jupynvim-core is missing, or older than the plugin because an update
+   -- skipped the install hook, download the matching release prebuilt the
+   -- first time a notebook opens. false only reports it; :JupynvimInstall
+   -- installs by hand.
+@@ -2214,6 +2216,9 @@
+ function M._save(nb)
++  if M.config.before_save then
++    M.config.before_save(nb.buf)
++  end
+   M._sync_model(nb)
+   local cl = M._nb_client(nb)
+   -- a remote round trip can take far longer than a local one
+   local timeout = nb.alias and 30000 or 5000
+   local Embedded = require("jupynvim.notebook.embedded")

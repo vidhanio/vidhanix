@@ -1,17 +1,29 @@
 {
   profiles.pc.homeModule = _: {
-    programs.nixvim.plugins.conform-nvim = {
-      enable = true;
-      autoInstall = {
+    programs.nixvim = {
+      extraFiles."lua/notebook-format.lua".source = ./lua/notebook-format.lua;
+      extraConfigLua = "require('notebook-format').setup()";
+
+      plugins.conform-nvim = {
         enable = true;
-        overrides.treefmt = null;
-      };
-      settings = {
-        formatters_by_ft."*" = [ "treefmt" ];
-        formatters.treefmt.require_cwd = false;
-        format_on_save = {
-          timeout_ms = 500;
-          lsp_fallback = true;
+        autoInstall.enable = false;
+        settings = {
+          formatters_by_ft."*".__raw = ''
+            function(buf)
+              if require("notebook-format").is_notebook(buf) then
+                return { "notebook_treefmt" }
+              end
+              return { "treefmt" }
+            end
+          '';
+          formatters = {
+            treefmt.require_cwd = false;
+            notebook_treefmt.format.__raw = "require('notebook-format').format";
+          };
+          format_on_save = {
+            timeout_ms = 500;
+            lsp_fallback = true;
+          };
         };
       };
     };
