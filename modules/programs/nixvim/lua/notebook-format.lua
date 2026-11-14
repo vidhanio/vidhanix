@@ -109,9 +109,10 @@ function M.format(_, ctx, lines, callback)
 		end
 	end
 
+	-- Unfinished code may have lint errors; saving only requires formatting.
 	local ok, err = pcall(
 		vim.system,
-		{ "treefmt", "--no-cache", temp },
+		{ "treefmt", "--no-cache", "--formatters", "ruff-format", temp },
 		{ cwd = dirname, text = true, timeout = 5000 },
 		vim.schedule_wrap(finish)
 	)
