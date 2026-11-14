@@ -4,7 +4,7 @@
     inputs.treefmt-nix.flakeModule
   ];
 
-  perSystem = {
+  perSystem = { pkgs, ... }: {
     treefmt = {
       programs = {
         flake-edit = {
@@ -39,6 +39,11 @@
           "--no-lock"
           "follow"
         ];
+        formatter.nufmt = {
+          command = lib.getExe pkgs.nufmt;
+          includes = [ "*.nu" ];
+          stdin-options = [ "--stdin" ];
+        };
         excludes = [ "*.patch" ];
         on-unmatched = "fatal";
       };

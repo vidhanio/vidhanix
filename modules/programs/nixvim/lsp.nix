@@ -11,6 +11,7 @@
         lua_ls.enable = true;
         nil_ls.enable = true;
         nixd.enable = true;
+        nushell.enable = true;
         oxlint.enable = true;
         ruff.enable = true;
         rust_analyzer.enable = true;
