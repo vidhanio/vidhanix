@@ -8,17 +8,18 @@
         enable = true;
         autoInstall.enable = false;
         settings = {
-          formatters_by_ft."*".__raw = ''
+          formatters_by_ft.ipynb = [ "treefmt" ];
+          formatters_by_ft."_".__raw = ''
             function(buf)
               if require("notebook-format").is_notebook(buf) then
-                return { "notebook_treefmt" }
+                return { "notebook_cells" }
               end
               return { "treefmt" }
             end
           '';
           formatters = {
             treefmt.require_cwd = false;
-            notebook_treefmt.format.__raw = "require('notebook-format').format";
+            notebook_cells.format.__raw = "require('notebook-format').format";
           };
           format_on_save = {
             timeout_ms = 500;

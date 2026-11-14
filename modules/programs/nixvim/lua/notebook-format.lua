@@ -33,92 +33,85 @@ function M.format(_, ctx, lines, callback)
 		cells = snapshot.cells,
 	}
 
-	local filename = vim.api.nvim_buf_get_name(ctx.buf)
-	local dirname = vim.fs.dirname(filename)
-	local temp = dirname .. "/.conform." .. vim.fs.basename(vim.fn.tempname()) .. "." .. vim.fs.basename(filename)
-	local fd, open_err = vim.uv.fs_open(temp, "wx", 384)
-	if not fd then
-		callback(open_err)
-		return
-	end
-	local json = vim.json.encode(document)
-	local written, write_err = vim.uv.fs_write(fd, json, 0)
-	vim.uv.fs_close(fd)
-	if written ~= #json then
-		vim.uv.fs_unlink(temp)
-		callback(write_err or "Could not write temporary notebook")
-		return
-	end
-
-	local function finish(result)
-		local ok, output = pcall(function()
-			if result.code ~= 0 then
-				error(result.stderr ~= "" and result.stderr or "treefmt failed")
-			end
-			local formatted = vim.json.decode(table.concat(vim.fn.readfile(temp), "\n"))
-			assert(#formatted.cells == #snapshot.cells, "Formatter changed notebook cell count")
-			for i, cell in ipairs(formatted.cells) do
-				local original = snapshot.cells[i]
-				assert(
-					cell.id == original.id and cell.cell_type == original.cell_type,
-					"Formatter changed notebook cell identity"
-				)
-				if type(cell.source) == "table" then
-					cell.source = table.concat(cell.source)
-				end
-				assert(type(cell.source) == "string", "Formatter returned invalid cell source")
-			end
-			assert(
-				vim.api.nvim_buf_is_valid(ctx.buf) and vim.api.nvim_buf_get_changedtick(ctx.buf) == tick,
-				"Notebook changed while formatting; discarded result"
-			)
-
-			-- Keep markdown, rendered outputs, and separators byte-for-byte intact.
-			local regions = { { start = 1 } }
-			for i, line in ipairs(lines) do
-				local region = regions[#regions]
-				if line == notebook.OUT_SEP then
-					region.stop = region.stop or i
-				elseif line == notebook.CELL_SEP then
-					region.stop = region.stop or i
-					regions[#regions + 1] = { start = i + 1 }
-				end
-			end
-			regions[#regions].stop = regions[#regions].stop or (#lines + 1)
-			local out, cursor = {}, 1
-			for i, region in ipairs(regions) do
-				vim.list_extend(out, vim.list_slice(lines, cursor, region.start - 1))
-				if snapshot.cells[i].cell_type == "code" then
-					local source = formatted.cells[i].source:gsub("\n$", "")
-					for _, line in ipairs(vim.split(source, "\n", { plain = true })) do
-						out[#out + 1] = notebook._marker_ish(line) and (line .. " ") or line
-					end
-				else
-					vim.list_extend(out, vim.list_slice(lines, region.start, region.stop - 1))
-				end
-				cursor = region.stop
-			end
-			vim.list_extend(out, vim.list_slice(lines, cursor))
-			return out
-		end)
-		vim.uv.fs_unlink(temp)
-		if ok then
-			callback(nil, output)
-		else
-			callback(tostring(output))
+	local scratch = vim.api.nvim_create_buf(false, false)
+	local ok, output = pcall(function()
+		local filename = vim.api.nvim_buf_get_name(ctx.buf)
+		vim.api.nvim_buf_set_name(
+			scratch,
+			vim.fs.dirname(filename)
+				.. "/.conform."
+				.. vim.fs.basename(vim.fn.tempname())
+				.. "."
+				.. vim.fs.basename(filename)
+		)
+		vim.bo[scratch].filetype = "ipynb"
+		local json = vim.json.encode(document)
+		vim.api.nvim_buf_set_lines(scratch, 0, -1, false, { json })
+		-- Format ordinary notebook JSON using the configured ipynb pipeline.
+		local conform = require("conform")
+		local formatters = conform.list_formatters_to_run(scratch)
+		assert(#formatters > 0, "No Conform formatters available for ipynb")
+		local err, formatted_lines = conform.format_lines(
+			vim.tbl_map(function(formatter)
+				return formatter.name
+			end, formatters),
+			{ json },
+			{ bufnr = scratch, async = false, timeout_ms = 5000 }
+		)
+		if err then
+			error(err.message)
 		end
-	end
+		local formatted = vim.json.decode(table.concat(formatted_lines, "\n"))
+		assert(#formatted.cells == #snapshot.cells, "Formatter changed notebook cell count")
+		for i, cell in ipairs(formatted.cells) do
+			local original = snapshot.cells[i]
+			assert(
+				cell.id == original.id and cell.cell_type == original.cell_type,
+				"Formatter changed notebook cell identity"
+			)
+			if type(cell.source) == "table" then
+				cell.source = table.concat(cell.source)
+			end
+			assert(type(cell.source) == "string", "Formatter returned invalid cell source")
+		end
+		assert(
+			vim.api.nvim_buf_is_valid(ctx.buf) and vim.api.nvim_buf_get_changedtick(ctx.buf) == tick,
+			"Notebook changed while formatting; discarded result"
+		)
 
-	-- Unfinished code may have lint errors; saving only requires formatting.
-	local ok, err = pcall(
-		vim.system,
-		{ "treefmt", "--no-cache", "--formatters", "ruff-format", temp },
-		{ cwd = dirname, text = true, timeout = 5000 },
-		vim.schedule_wrap(finish)
-	)
-	if not ok then
-		vim.uv.fs_unlink(temp)
-		callback(tostring(err))
+		-- Replace only changed sources; keep outputs and separators intact.
+		local regions = { { start = 1 } }
+		for i, line in ipairs(lines) do
+			local region = regions[#regions]
+			if line == notebook.OUT_SEP then
+				region.stop = region.stop or i
+			elseif line == notebook.CELL_SEP then
+				region.stop = region.stop or i
+				regions[#regions + 1] = { start = i + 1 }
+			end
+		end
+		regions[#regions].stop = regions[#regions].stop or (#lines + 1)
+		local out, cursor = {}, 1
+		for i, region in ipairs(regions) do
+			vim.list_extend(out, vim.list_slice(lines, cursor, region.start - 1))
+			if formatted.cells[i].source ~= snapshot.cells[i].source then
+				local source = formatted.cells[i].source:gsub("\n$", "")
+				for _, line in ipairs(vim.split(source, "\n", { plain = true })) do
+					out[#out + 1] = notebook._marker_ish(line) and (line .. " ") or line
+				end
+			else
+				vim.list_extend(out, vim.list_slice(lines, region.start, region.stop - 1))
+			end
+			cursor = region.stop
+		end
+		vim.list_extend(out, vim.list_slice(lines, cursor))
+		return out
+	end)
+	vim.api.nvim_buf_delete(scratch, { force = true })
+	if ok then
+		callback(nil, output)
+	else
+		callback(tostring(output))
 	end
 end
 
@@ -133,7 +126,7 @@ function M.format_buffer(buf)
 			bufnr = buf,
 			async = false,
 			timeout_ms = 5000,
-			formatters = { "notebook_treefmt" },
+			formatters = { "notebook_cells" },
 			lsp_format = "never",
 		}, function(result)
 			format_err = result
@@ -150,7 +143,7 @@ end
 function M.setup()
 	vim.api.nvim_create_user_command("JupynvimFormat", function()
 		M.format_buffer(vim.api.nvim_get_current_buf())
-	end, { desc = "Format notebook code cells with project treefmt" })
+	end, { desc = "Format notebook cells with Conform's ipynb formatters" })
 end
 
 return M
