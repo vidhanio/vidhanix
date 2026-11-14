@@ -19,19 +19,20 @@
             src = font;
 
             nativeBuildInputs = [
+              pkgs.installFonts
               pkgs.nerd-font-patcher
               pkgs.parallel
             ];
 
             enableParallelBuilding = true;
 
+            dontUnpack = true;
+
             buildPhase = ''
               runHook preBuild
 
-              find . -type f -name \*.ttf -print0 |
-                parallel --null --will-cite --jobs="$NIX_BUILD_CORES" nerd-font-patcher -c -out "$out/share/fonts/truetype"
-              find . -type f -name \*.otf -print0 |
-                parallel --null --will-cite --jobs="$NIX_BUILD_CORES" nerd-font-patcher -c -out "$out/share/fonts/opentype"
+              find "$src" -type f \( -name \*.ttf -o -name \*.otf \) -print0 |
+                parallel --null --will-cite --jobs="$NIX_BUILD_CORES" nerd-font-patcher -c -out .
 
               runHook postBuild
             '';

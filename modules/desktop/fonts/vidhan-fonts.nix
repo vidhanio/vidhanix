@@ -11,27 +11,16 @@
         }:
         pkgs.callPackage (
           {
-            lib,
             stdenvNoCC,
+            installFonts,
             vidhan-fonts,
           }:
           stdenvNoCC.mkDerivation {
             inherit pname version;
 
-            src = vidhan-fonts;
+            src = "${vidhan-fonts}/${pname}";
 
-            installPhase = ''
-              runHook preInstall
-
-              for f in ${pname}/*; do
-                case "$f" in
-                  *.ttf) install -Dm644 "$f" -t $out/share/fonts/truetype ;;
-                  *.otf) install -Dm644 "$f" -t $out/share/fonts/opentype ;;
-                esac
-              done
-
-              runHook postInstall
-            '';
+            nativeBuildInputs = [ installFonts ];
 
             meta = meta // {
               platforms = lib.platforms.all;
