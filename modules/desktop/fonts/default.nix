@@ -50,6 +50,10 @@
               package = pkgs.inter-nerdfont;
               name = "Inter Nerd Font";
             };
+            emoji = {
+              package = pkgs.noto-fonts-monochrome-emoji;
+              name = "Noto Emoji";
+            };
           };
         };
       };
