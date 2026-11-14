@@ -82,6 +82,18 @@
          end_row = out_last,
 --- a/lua/jupynvim/notebook/cellmode.lua
 +++ b/lua/jupynvim/notebook/cellmode.lua
+@@ -152,8 +152,8 @@
+   local cbusy = cell and nb.cell_state and nb.cell_state[cell.id]
+     and nb.cell_state[cell.id].exec_state == "busy"
+   local edge = "%#" .. (cbusy and "JupynvimBusy" or "JupynvimBorder") .. "#│%* "
+-  if virtnum > 0 then
+-    return bar .. "    " .. edge  -- wrap continuation rows carry no number
++  if virtnum > 0 or not editing then
++    return bar .. "    " .. edge  -- preserve the frame and gutter width
+   end
+-  -- RELATIVE numbering in EVERY cell, anchored on the cell's "current line",
++  -- RELATIVE numbering only while editing, anchored on the cell's "current line",
+   -- which is ALWAYS highlighted ORANGE. The current line is, in order: the live
 @@ -301,11 +301,7 @@
    local r = ranges[idx]
    local win = vim.fn.bufwinid(buf)
