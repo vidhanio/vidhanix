@@ -15,6 +15,8 @@
         package = inputs'.helium.packages.default;
       };
 
+      home.sessionVariables.BROWSER = "helium";
+
       xdg.autostart.entries = lib.mkIf (cfg.finalPackage != null) [
         "${cfg.finalPackage}/share/applications/helium.desktop"
       ];
