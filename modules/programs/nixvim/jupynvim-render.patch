@@ -9,7 +9,36 @@
  end
  
  -- VSCode layout: the top edge carries only the cell number badge; the
-@@ -489,6 +489,9 @@
+@@ -471,24 +471,35 @@
+   end
+ 
+   -- ── boxed editor: code cells always; markdown while being edited ──
++  -- Full-width virtual rows bypass the statuscolumn, so draw their bar here.
++  local function focus_lines(lines)
++    if selected then
++      for _, line in ipairs(lines) do
++        line[1][1] = line[1][1]:sub(2)
++        table.insert(line, 1, { "▌", "JupynvimBarSel" })
++      end
++    end
++    return lines
++  end
+   local bc = box_chars(selected)
+   local border_hl = busy and HL_BUSY or HL_BORDER   -- whole frame runs the busy color while executing
+   local label = cell.cell_type == "code" and "Python" or "Markdown"
+   local hdr = header_line(total_w, gut, cellno, busy, bc)
+   vim.api.nvim_buf_set_extmark(buf, nb.border_ns, range.start, 0, {
+-    virt_lines = { { { hdr, border_hl } } },
++    virt_lines = focus_lines({ { { hdr, border_hl } } }),
+     virt_lines_above = true,
+     virt_lines_leftcol = true,
+   })
+ 
+   -- one leftcol extmark for everything under the source: row order inside
+   -- a single extmark is guaranteed (footer, exec bar, images, spacer).
+-  -- No selection bars here: bars are statuscolumn-only (live), so these
+-  -- rows are selection-independent and never re-render on j/k.
+   local lines_below = {}
    -- Bottom border carries the exec status inline (see footer_chunks); no
    -- separate "[n] ✓ 0.1s" line below the box anymore.
    table.insert(lines_below, footer_chunks(total_w, gut, bc, label, cell, st, border_hl))
@@ -19,7 +48,14 @@
    local sub_lead = repeat_char(" ", gut)
    local img_spans, img_base = {}, #lines_below
    if cell.cell_type == "code" then
-@@ -504,8 +507,8 @@
+@@ -498,14 +509,15 @@
+       end
+     end
+   end
++  focus_lines(lines_below)
+   -- spacer so the next cell's top border doesn't glue to our outputs;
+   -- when the cell has a real output region it goes after THOSE lines
+   if range.out_sep and range.out_stop then
      local last_out = math.min(range.out_stop, total) - 1
      if last_out >= 0 then
        pcall(vim.api.nvim_buf_set_extmark, buf, nb.border_ns, last_out, 0, {
@@ -30,7 +66,7 @@
        })
      end
    else
-@@ -545,6 +548,13 @@
+@@ -545,6 +557,13 @@
    if range.out_sep and range.out_stop then
      local out_last = math.min(range.out_stop, total) - 1
      if out_last > range.out_sep then
@@ -44,3 +80,41 @@
        local ltxt = vim.api.nvim_buf_get_lines(buf, out_last, out_last + 1, false)[1] or ""
        pcall(vim.api.nvim_buf_set_extmark, buf, nb.border_ns, range.out_sep, 0, {
          end_row = out_last,
+--- a/lua/jupynvim/notebook/cellmode.lua
++++ b/lua/jupynvim/notebook/cellmode.lua
+@@ -301,11 +301,7 @@
+   local r = ranges[idx]
+   local win = vim.fn.bufwinid(buf)
+   if win == -1 or not r then return end
+-  -- Just move the cursor. NO extmark re-render (bars are statuscolumn-only,
+-  -- redrawn live with the cursor) and NO reveal-scroll: forcing a layout
+-  -- pass via line("w$") + normal! <C-e> on every j/k thrashed redraws
+-  -- (badly, against the gif's continuous frame writes) and made cell
+-  -- navigation laggy. nvim's own scrolloff keeps the cell in view.
++  -- nvim's own scrolloff keeps the cell in view.
+   pcall(vim.api.nvim_win_set_cursor, win, { r.start + 1, 0 })
+ end
+ 
+@@ -858,14 +854,19 @@
+     end
+   end, "jupynvim: cell command mode")
+ 
++  local selected = M.selected_idx(buf)
+   vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+     buffer = buf,
+     callback = function()
+       if not M.is_command(buf) then
+         clamp_to_cell(buf)
+       end
+-      -- command-mode selection needs no re-render: extmarks are
+-      -- selection-independent and the statuscolumn bar follows the
+-      -- cursor on the same redraw
++      local idx = M.selected_idx(buf)
++      if idx ~= selected then
++        selected = idx
++        -- Refresh virtual-row bars only when changing cells, without
++        -- reasserting image placements or forcing a reveal-scroll.
++        refresh_render(buf, { no_image = true })
++      end
+     end,
+   })
