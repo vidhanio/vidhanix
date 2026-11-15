@@ -2,6 +2,9 @@
   profiles.pc = {
     module =
       { config, ... }:
+      let
+        inherit (config.users.users.${config.users.primaryUser}) home;
+      in
       {
         services.uxplay = {
           enable = true;
@@ -12,11 +15,11 @@
             p = 7100;
             vs = "waylandsink";
             scrsv = 1;
-            key = true;
+            key = "${home}/.local/state/uxplay/key.pem";
           };
         };
       };
 
-    homeModule.persist.files = [ ".uxplay.pem" ];
+    homeModule.persist.directories = [ ".local/state/uxplay" ];
   };
 }
