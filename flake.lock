@@ -1266,6 +1266,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-xtool": {
+      "locked": {
+        "lastModified": 1794806700,
+        "narHash": "sha256-uQw1chMP3vee4Y7frj4pRGE8pdeuHhYiZ8/aPn7gVxM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "619cca8e8e8840df58cdf155f7ce7efc0c4afa05",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "pull/548520/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1792773339,
@@ -1459,6 +1475,7 @@
         "nixcord": "nixcord",
         "nixos-apple-silicon": "nixos-apple-silicon",
         "nixpkgs": "nixpkgs_6",
+        "nixpkgs-xtool": "nixpkgs-xtool",
         "nixvim": "nixvim",
         "rex": "rex",
         "sops-nix": "sops-nix",
