@@ -34,4 +34,17 @@ in
     ) config.flake.nixosConfigurations
     ++ entries "devshell" config.flake.devShells
     ++ entries "check" config.flake.checks;
+
+  flake.githubActionsUpdateMatrix.include =
+    lib.mapAttrsToList (name: system: { inherit name system; })
+      (
+        lib.mergeAttrsList (
+          map (
+            system:
+            lib.mapAttrs (_: _: system) (
+              lib.filterAttrs (_: package: package ? passthru.updateScript) packages.${system}
+            )
+          ) systems
+        )
+      );
 }

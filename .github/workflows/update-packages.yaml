@@ -21,7 +21,7 @@ jobs:
     name: Generate Update Matrix
     runs-on: ubuntu-latest
     outputs:
-      packages: ${{ steps.matrix.outputs.packages }}
+      updates: ${{ steps.matrix.outputs.updates }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -32,23 +32,20 @@ jobs:
           netrc: ${{ secrets.NETRC }}
       - name: Generate Update Matrix
         id: matrix
-        run: |
-          # shellcheck disable=SC2016
-          packages=$(nix eval --json .#packages.x86_64-linux --apply '
-            packages: builtins.filter (name:
-              name != "update-packages" && packages.${name} ? passthru.updateScript
-            ) (builtins.attrNames packages)
-          ')
-          echo "packages=$packages" >> "$GITHUB_OUTPUT"
+        run: echo "updates=$(nix eval --json .#githubActionsUpdateMatrix)" >> "$GITHUB_OUTPUT"
 
   update:
-    name: "Update Package: ${{ matrix.pkg }}"
+    name: "Update Package (${{ matrix.system }}): ${{ matrix.name }}"
     needs: generate-matrix
-    runs-on: ubuntu-latest
+    runs-on: >-
+      ${{ case(
+        matrix.system == 'aarch64-linux', 'ubuntu-26.04-arm',
+        matrix.system == 'x86_64-linux', 'ubuntu-latest',
+        null
+      ) }}
     strategy:
       fail-fast: false
-      matrix:
-        pkg: ${{ fromJSON(needs.generate-matrix.outputs.packages) }}
+      matrix: ${{ fromJSON(needs.generate-matrix.outputs.updates) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -69,7 +66,7 @@ jobs:
       - name: Update Package
         id: update
         env:
-          PACKAGE: ${{ matrix.pkg }}
+          PACKAGE: ${{ matrix.name }}
         run: bash .github/scripts/update-package.sh "$PACKAGE"
       - name: Create GitHub App Token
         id: app-token
@@ -81,11 +78,11 @@ jobs:
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ steps.app-token.outputs.token }}
-          branch: packages/${{ matrix.pkg }}
+          branch: packages/${{ matrix.name }}
           delete-branch: true
           sign-commits: true
           commit-message: >-
-            packages: bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before }} to ${{ steps.update.outputs.after }}
+            packages: bump ${{ matrix.name }} from ${{ steps.update.outputs.before }} to ${{ steps.update.outputs.after }}
           title: >-
-            packages: bump ${{ matrix.pkg }} from ${{ steps.update.outputs.before }} to ${{ steps.update.outputs.after }}
+            packages: bump ${{ matrix.name }} from ${{ steps.update.outputs.before }} to ${{ steps.update.outputs.after }}
           body: ${{ steps.update.outputs.body }}

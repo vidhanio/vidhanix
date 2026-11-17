@@ -3,9 +3,9 @@ def main [
   --json # Print structured JSON instead of progress lines
   ...packages: string # The packages to update (default: every updatable package)
 ]: nothing -> nothing {
-    let updatable = nix eval --json --impure --expr 'builtins.mapAttrs (_: package: package ? passthru.updateScript) (builtins.getFlake (toString ./.)).packages.${builtins.currentSystem}' | from json
+    let updatable = nix eval --json --impure --expr 'builtins.mapAttrs (_: package: if !(package ? passthru.updateScript) then "missing" else if package.meta.available or true then "ok" else "unavailable") (builtins.getFlake (toString ./.)).packages.${builtins.currentSystem}' | from json
     let packages = if ($packages | is-empty) {
-        $updatable | columns | where {|package| $updatable | get $package }
+        $updatable | columns | where {|package| ($updatable | get $package) == "ok" }
     } else {
         $packages
     }
@@ -13,7 +13,8 @@ def main [
     let problems = $packages | each {|package|
     match ($updatable | get --optional $package) {
       null => $"package ($package) is not a package in this flake"
-      false => $"package ($package) has no update script"
+      "missing" => $"package ($package) has no update script"
+      "unavailable" => $"package ($package) is not available on this system"
     }
   }
     if ($problems | is-not-empty) {
