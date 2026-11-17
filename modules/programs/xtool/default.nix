@@ -14,9 +14,9 @@
       };
 
     homeModule =
-      { inputs', ... }:
+      { pkgs, ... }:
       {
-        home.packages = with inputs'.nixpkgs-xtool.legacyPackages; [
+        home.packages = with pkgs; [
           swift
           swiftpm
         ];
