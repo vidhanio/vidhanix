@@ -15,6 +15,7 @@
         oxlint.enable = true;
         ruff.enable = true;
         rust_analyzer.enable = true;
+        sourcekit.enable = true;
         statix.enable = true;
         tailwindcss.enable = true;
         tinymist.enable = true;

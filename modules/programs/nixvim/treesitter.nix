@@ -28,6 +28,7 @@
           query
           regex
           rust
+          swift
           toml
           tsx
           typescript
