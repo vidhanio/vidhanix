@@ -8,11 +8,11 @@ let
     }:
     stdenvNoCC.mkDerivation (finalAttrs: {
       pname = "pi-anthropic-auth";
-      version = "3.5.0";
+      version = "3.6.0";
 
       src = fetchzip {
         url = "https://registry.npmjs.org/@gotgenes/pi-anthropic-auth/-/pi-anthropic-auth-${finalAttrs.version}.tgz";
-        hash = "sha256-24cHF/GcZNDy9Xub9Z4QPPphZ/qXHzatoZKWEaTeElQ=";
+        hash = "sha256-qww+guEay2rVWhENXcxIObZSPeGo6XIURg1R88iiJE4=";
       };
 
       dontBuild = true;
