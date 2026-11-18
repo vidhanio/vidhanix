@@ -40,6 +40,7 @@ Run available `passthru.updateScript` hooks with `just update-packages`; pass pa
 
 | Package                                                                                  | Description                                                                                                                        | Updatable |
 | :--------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :-------: |
+| [`allo`](modules/desktop/fonts/allo.nix)                                                 | Friendly variable font family with weight, roundness, and optical size axes                                                        |     ✓     |
 | [`berkeley-mono`](modules/desktop/fonts/vidhan-fonts.nix)                                | A love letter to the golden era of computing                                                                                       |           |
 | [`berkeley-mono-variable`](modules/desktop/fonts/vidhan-fonts.nix)                       | A love letter to the golden era of computing                                                                                       |           |
 | [`bibata-combined`](modules/desktop/cursor/packages/ful1e5-cursors.nix)                  | Bibata Cursor theme combining both Xcursor and hyprcursor versions                                                                 |           |
