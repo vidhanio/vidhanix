@@ -29,13 +29,13 @@ after="$(jq -r '.[0].after' "$result_file")"
 homepage="$(jq -r '.[0].homepage' "$result_file")"
 
 if [ -n "$homepage" ]; then
-  package_link="[$package]($homepage)"
+	package_link="[$package]($homepage)"
 else
-  package_link="$package"
+	package_link="$package"
 fi
 
 {
-  printf 'before=%s\n' "$before"
-  printf 'after=%s\n' "$after"
-  printf 'body=%s\n' "Bumps $package_link from $before to $after"
+	printf 'before=%s\n' "$before"
+	printf 'after=%s\n' "$after"
+	printf 'body=%s\n' "Bumps $package_link from $before to $after"
 } >>"$GITHUB_OUTPUT"
