@@ -47,8 +47,8 @@
             };
             serif = cfg.fonts.monospace;
             sansSerif = {
-              package = pkgs.inter-nerdfont;
-              name = "Inter Nerd Font";
+              package = self'.packages.allo;
+              name = "Allo";
             };
           };
         };
