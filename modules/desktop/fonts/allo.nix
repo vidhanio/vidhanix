@@ -6,7 +6,8 @@
         {
           lib,
           stdenvNoCC,
-          fetchzip,
+          fetchFromGitHub,
+          python3,
           installFonts,
           nix-update-script,
         }:
@@ -14,9 +15,11 @@
           pname = "allo";
           version = "1.0.3";
 
-          src = fetchzip {
-            url = "https://github.com/joshpuckett/allo/releases/download/v${finalAttrs.version}/Allo-${finalAttrs.version}.zip";
-            hash = "sha256-wKyKi7vS95W32sUq7ws0bZa0MwJIPUdo0dAykMGdL/g=";
+          src = fetchFromGitHub {
+            owner = "joshpuckett";
+            repo = "allo";
+            tag = "v${finalAttrs.version}";
+            hash = "sha256-hD+l8uUKW2CoLuNuUdJFzMCHy6UAs3Lri+74C/LZdl4=";
           };
 
           outputs = [
@@ -24,14 +27,42 @@
             "webfont"
           ];
 
-          nativeBuildInputs = [ installFonts ];
+          nativeBuildInputs = [
+            (python3.withPackages (
+              ps: with ps; [
+                afdko
+                brotli
+                cffsubr
+                fonttools
+                ufo2ft
+                ufolib2
+              ]
+            ))
+            installFonts
+          ];
+
+          postPatch = ''
+            rm -r fonts
+          '';
+
+          buildPhase = ''
+            runHook preBuild
+
+            python3 build.py
+
+            runHook postBuild
+          '';
+
+          preInstall = ''
+            cd fonts
+          '';
 
           passthru.updateScript = nix-update-script { };
 
           meta = {
             description = "Friendly variable font family with weight, roundness, and optical size axes";
             homepage = "https://allo.joshpuckett.me/";
-            changelog = "https://github.com/joshpuckett/allo/releases/tag/v${finalAttrs.version}";
+            changelog = "https://github.com/joshpuckett/allo/releases/tag/${finalAttrs.src.tag}";
             license = lib.licenses.ofl;
             platforms = lib.platforms.all;
           };
