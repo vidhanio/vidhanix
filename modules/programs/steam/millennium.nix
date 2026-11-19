@@ -1,4 +1,16 @@
 {
+  profiles.pc.module =
+    { config, lib, ... }:
+    {
+      systemd.services = lib.mapAttrs' (
+        name: user:
+        lib.nameValuePair "home-manager-${name}" {
+          # Merge settings into the persisted directory, not the mountpoint underneath.
+          unitConfig.RequiresMountsFor = [ "${user.xdg.configHome}/millennium" ];
+        }
+      ) config.home-manager.users;
+    };
+
   profiles.pc.homeModule =
     { pkgs, ... }:
     {
