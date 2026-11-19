@@ -82,6 +82,8 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        import-tree.follows = "import-tree";
       };
     };
     determinate = {
