@@ -136,8 +136,12 @@
     "bootvine": {
       "inputs": {
         "crane": "crane",
-        "flake-parts": "flake-parts",
-        "import-tree": "import-tree",
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "import-tree": [
+          "import-tree"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -450,27 +454,6 @@
       }
     },
     "flake-parts": {
-      "inputs": {
-        "nixpkgs-lib": [
-          "bootvine",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1793576659,
-        "narHash": "sha256-V1h85lUaJBQoHFrB2vpXZOE0Ju1MYSnIpsehoVZYlDo=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "ea2630b7470978622c7689a1ff75d2b389175399",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
-      }
-    },
-    "flake-parts_2": {
       "inputs": {
         "nixpkgs-lib": [
           "nixpkgs"
@@ -948,21 +931,6 @@
       }
     },
     "import-tree": {
-      "locked": {
-        "lastModified": 1788467110,
-        "narHash": "sha256-ljEMTXP/rH0tOvDzc9gzwww6KcHRPRnEHzd9lK48V7s=",
-        "owner": "vic",
-        "repo": "import-tree",
-        "rev": "eb1b52eaecc57f7c136d07ae8a93e724dfecac46",
-        "type": "github"
-      },
-      "original": {
-        "owner": "vic",
-        "repo": "import-tree",
-        "type": "github"
-      }
-    },
-    "import-tree_2": {
       "locked": {
         "lastModified": 1788467110,
         "narHash": "sha256-ljEMTXP/rH0tOvDzc9gzwww6KcHRPRnEHzd9lK48V7s=",
@@ -1496,13 +1464,13 @@
         "determinate": "determinate",
         "disko": "disko",
         "files": "files",
-        "flake-parts": "flake-parts_2",
+        "flake-parts": "flake-parts",
         "helium": "helium",
         "hk-nix": "hk-nix",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "impermanence": "impermanence",
-        "import-tree": "import-tree_2",
+        "import-tree": "import-tree",
         "llm-agents": "llm-agents",
         "mcsr": "mcsr",
         "meowland": "meowland",
