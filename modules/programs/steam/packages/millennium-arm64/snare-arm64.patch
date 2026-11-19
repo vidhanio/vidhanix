@@ -1,0 +1,57 @@
+diff --git a/thirdparty/libsnare.h b/thirdparty/libsnare.h
+--- a/thirdparty/libsnare.h
++++ b/thirdparty/libsnare.h
+@@ -864,7 +864,6 @@
+   orig_size = JMP_INSN_LEN;
+   if (hook) {
+     hook->orig_size = orig_size;
+-    hook->n_ips = 0;
+   }
+   return orig_size +
+          snare_make_rel_jmp(trampoline, src + JMP_INSN_LEN, orig_size);
+@@ -977,8 +976,13 @@
+ #if defined SNARE_ARM64 && defined SNARE_MACOS
+   if (hook->trampoline) {
+     sys_icache_invalidate(hook->trampoline, MAX_TRAMPOLINE_LEN);
+   }
++#elif defined SNARE_ARM64 && defined SNARE_LINUX
++  if (hook->trampoline) {
++    char *start = (char *)hook->trampoline;
++    __builtin___clear_cache(start, start + MAX_TRAMPOLINE_LEN);
++  }
+ #endif
+   return hook;
+ }
+ SNARE_EXPORT void SNARE_API snare_inline_free(snare_inline_t hook) {
+@@ -1138,6 +1142,10 @@
+ #else
+   snare_make_rel_jmp((uint8_t *)hook->src, (uint8_t *)hook->dst, 0);
+ #endif
++#if defined SNARE_ARM64 && defined SNARE_LINUX
++  char *start = (char *)hook->src;
++  __builtin___clear_cache(start, start + JMP_INSN_LEN);
++#endif
+ }
+ 
+ SNARE_EXPORT int SNARE_API snare_inline_install(snare_inline_t hook) {
+@@ -1189,6 +1197,9 @@
+ #ifdef SNARE_WINDOWS
+   FlushInstructionCache(GetCurrentProcess(), hook->src, JMP_INSN_LEN);
+   snare_thaw_threads(&ft);
++#elif defined SNARE_ARM64 && defined SNARE_LINUX
++  char *start = (char *)hook->src;
++  __builtin___clear_cache(start, start + JMP_INSN_LEN);
+ #endif
+   return 0;
+ }
+@@ -1251,6 +1262,10 @@
+     if (!hooks[i] || !hooks[i]->installed)
+       continue;
+     memcpy(hooks[i]->src, hooks[i]->code, JMP_INSN_LEN);
++#if defined SNARE_ARM64 && defined SNARE_LINUX
++    char *start = (char *)hooks[i]->src;
++    __builtin___clear_cache(start, start + JMP_INSN_LEN);
++#endif
+     hooks[i]->installed = 0;
+     removed++;
+   }

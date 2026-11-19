@@ -99,13 +99,16 @@ diff --git a/steam-arm64.sh b/steam-arm64.sh
  
  MAGIC_RESTART_EXITCODE=42
  
-@@ -61,8 +62,9 @@
+@@ -61,8 +62,12 @@
  if has_beta_optin; then
  	if [ -e "$STEAMROOT/.steam-enable-steamrt64-client" ]; then
 -		if [ -x "$STEAMROOT/steamrt64/steam" ]; then
 +		if [ -x "$STEAMROOT/steamrtarm64/steam" ]; then
  			log "Starting SteamRT3 Steam"
 -			"$STEAMROOT/steamrt64/steam" "$@"
++			if [ -n "${MILLENNIUM_ARM64_BOOTSTRAP:-}" ]; then
++				ln -sfn "$MILLENNIUM_ARM64_BOOTSTRAP" "$STEAMROOT/steamrtarm64/libXtst.so.6" || exit 1
++			fi
 +			"$STEAM_RUNTIME_STEAMRT/pressure-vessel/libexec/steam-runtime-tools-0/srt-client-container" \
 +				-- "$STEAMROOT/steamrtarm64/steam" "$@"
  			STATUS=$?

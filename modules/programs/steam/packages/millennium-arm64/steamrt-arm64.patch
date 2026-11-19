@@ -1,0 +1,133 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -87,7 +87,12 @@
+ option(MILLENNIUM_BUILD_TO_STEAM_PATH "Build Millennium to Steam path" ${_build_to_steam_default})
+ 
+ if(MILLENNIUM_LINUX_X64)
+-    add_compile_definitions(MILLENNIUM_LINUX_X64)
++    if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64|arm64)$")
++        set(_steamrt_dir steamrtarm64)
++    else()
++        set(_steamrt_dir steamrt64)
++    endif()
++    add_compile_definitions(MILLENNIUM_LINUX_X64 MILLENNIUM_STEAMRT_DIR="${_steamrt_dir}")
+ endif()
+ 
+ if(MILLENNIUM_BUILD_MAIN)
+diff --git a/src/bootstrap/linux/CMakeLists.txt b/src/bootstrap/linux/CMakeLists.txt
+--- a/src/bootstrap/linux/CMakeLists.txt
++++ b/src/bootstrap/linux/CMakeLists.txt
+@@ -26,8 +26,12 @@
+ 
+     add_library(bootstrap64 SHARED libmillennium_hhx64.c)
+ 
+-    target_compile_options(bootstrap64 PRIVATE -fvisibility=hidden -m64)
+-    target_link_options(bootstrap64 PRIVATE -m64 -Wl,--no-undefined -ldl)
++    target_compile_options(bootstrap64 PRIVATE -fvisibility=hidden)
++    target_link_options(bootstrap64 PRIVATE -Wl,--no-undefined -ldl)
++    if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(x86_64|amd64|AMD64|x86|i[3-6]86)$")
++        target_compile_options(bootstrap64 PRIVATE -m64)
++        target_link_options(bootstrap64 PRIVATE -m64)
++    endif()
+     millennium_configure_linux_host_rpath(bootstrap64)
+ 
+     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+@@ -44,8 +48,11 @@
+ 
+     add_executable(libmillennium_pvs64 millennium_pvs64.cc)
+ 
+-    target_compile_options(libmillennium_pvs64 PRIVATE -m64 -Wall -Wextra)
+-    target_link_options(libmillennium_pvs64 PRIVATE -m64)
++    target_compile_options(libmillennium_pvs64 PRIVATE -Wall -Wextra)
++    if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(x86_64|amd64|AMD64|x86|i[3-6]86)$")
++        target_compile_options(libmillennium_pvs64 PRIVATE -m64)
++        target_link_options(libmillennium_pvs64 PRIVATE -m64)
++    endif()
+     millennium_configure_linux_host_rpath(libmillennium_pvs64)
+ 
+     set_target_properties(libmillennium_pvs64 PROPERTIES
+diff --git a/src/bootstrap/linux/libmillennium_bootstrap_x64.c b/src/bootstrap/linux/libmillennium_bootstrap_x64.c
+--- a/src/bootstrap/linux/libmillennium_bootstrap_x64.c
++++ b/src/bootstrap/linux/libmillennium_bootstrap_x64.c
+@@ -31,12 +31,12 @@
+ /**
+  * libmillennium_bootstrap_x64 — the SteamRT3 (64-bit Steam client) XTest proxy.
+  *
+- * Installed as <steam>/steamrt64/libXtst.so.6, so it is loaded into every 64-bit process
++ * Installed as <steam>/<SteamRT3 client directory>/libXtst.so.6, so it is loaded into every 64-bit process
+  * that links libXtst: the client (via steamui.so / steamclient.so), the webhelper,
+  * streaming_client and vgui2_s.so. It forwards XTest to the runtime's real libXtst and
+  * dispatches Millennium injection by process:
+  *
+- *   steamrt64/steam            -> libmillennium_x64.so (StartMillennium)
++ *   SteamRT3 client            -> libmillennium_x64.so (StartMillennium)
+  *   steamwebhelper[.sh] chain  -> libmillennium_hhx64.so
+  *   anything else              -> XTest forwarding only
+  *
+@@ -146,7 +146,7 @@
+     return 0;
+ }
+ 
+-/** "steam" inside a steamrt64 directory, and not the -child-update-ui helper that reuses the same binary. */
++/** The SteamRT3 client, not the -child-update-ui helper that reuses the same binary. */
+ static int is_steam_client_process(void)
+ {
+     char exe[PATH_MAX];
+@@ -167,7 +167,7 @@
+ 
+     char dir_copy[PATH_MAX];
+     snprintf(dir_copy, sizeof(dir_copy), "%s", dir);
+-    return strcmp(basename(dir_copy), "steamrt64") == 0;
++    return strcmp(basename(dir_copy), MILLENNIUM_STEAMRT_DIR) == 0;
+ }
+ 
+ static int is_webhelper_process(void)
+@@ -184,7 +184,11 @@
+ static void resolve_real_xtst(void)
+ {
+     static const char* candidates[] = {
++#if defined(__aarch64__)
++        "/usr/lib/aarch64-linux-gnu/libXtst.so.6",
++#else
+         "/usr/lib/x86_64-linux-gnu/libXtst.so.6",
++#endif
+         "/usr/lib64/libXtst.so.6",
+         "/usr/lib/libXtst.so.6",
+     };
+diff --git a/src/instrumentation/loopback/CMakeLists.txt b/src/instrumentation/loopback/CMakeLists.txt
+--- a/src/instrumentation/loopback/CMakeLists.txt
++++ b/src/instrumentation/loopback/CMakeLists.txt
+@@ -25,7 +25,7 @@
+ set(CMAKE_CXX_STANDARD 17)
+ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+ 
+-if(UNIX AND NOT WIN32)
++if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_SYSTEM_PROCESSOR MATCHES "^(x86_64|amd64|AMD64|x86|i[3-6]86)$")
+     # The parent project targets i686 (-m32), but hhx64 must be a native 64-bit
+     # shared library because Steam's CEF renderer process is 64-bit.
+     string(REPLACE "-m32" "" CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}")
+diff --git a/src/platform/linux.cc b/src/platform/linux.cc
+--- a/src/platform/linux.cc
++++ b/src/platform/linux.cc
+@@ -67,7 +67,7 @@
+     path[len] = '\0';
+ 
+ #if defined(MILLENNIUM_LINUX_X64)
+-    std::string steam_path = std::format("{}/.steam/steam/steamrt64/steam", std::getenv("HOME"));
++    std::string steam_path = std::format("{}/.steam/steam/" MILLENNIUM_STEAMRT_DIR "/steam", std::getenv("HOME"));
+ #else
+     std::string steam_path = std::format("{}/.steam/steam/ubuntu12_32/steam", std::getenv("HOME"));
+ #endif
+diff --git a/src/system/environment.cc b/src/system/environment.cc
+--- a/src/system/environment.cc
++++ b/src/system/environment.cc
+@@ -165,7 +165,7 @@
+     {
+         { "OPENSSL_CONF",               "/dev/null" },
+         { "MILLENNIUM_RUNTIME_PATH_X64", environment::get("MILLENNIUM_RUNTIME_PATH_X64", "/usr/lib/millennium/libmillennium_x64.so") },
+-        { "MILLENNIUM__STEAM_EXE_PATH", std::format("{}/.steam/steam/steamrt64/steam", homeDir) },
++        { "MILLENNIUM__STEAM_EXE_PATH", std::format("{}/.steam/steam/" MILLENNIUM_STEAMRT_DIR "/steam", homeDir) },
+         { "MILLENNIUM__PLUGINS_PATH",   std::format("{}/millennium/plugins",             dataDir) },
+         { "MILLENNIUM__CONFIG_PATH",    std::format("{}/millennium",                   configDir) },
+         { "MILLENNIUM__LOGS_PATH",      std::format("{}/millennium/logs",               stateDir) },

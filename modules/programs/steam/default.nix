@@ -13,7 +13,11 @@ in
       {
         programs.steam = {
           enable = true;
-          package = lib.mkDefault (pkgs.steam.override { inherit extraEnv; });
+          package = lib.mkDefault (
+            (if pkgs.stdenv.hostPlatform.isx86_64 then pkgs.steamWithMillennium else pkgs.steam).override {
+              inherit extraEnv;
+            }
+          );
           extraCompatPackages = [ pkgs.proton-ge-bin ];
         };
         hardware.steam-hardware.enable = true;
@@ -63,6 +67,7 @@ in
     { self', ... }:
     {
       programs.steam.package = self'.packages.muvm-steam.override {
+        millenniumPackage = self'.packages.millennium-arm64;
         # muvm forwards X11, not the host Wayland socket.
         extraEnv = extraEnv // {
           SDL_VIDEODRIVER = "x11";

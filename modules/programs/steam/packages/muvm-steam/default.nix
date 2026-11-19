@@ -17,6 +17,7 @@ let
       extraLibraries ? _pkgs: [ ],
       extraEnv ? { },
       extraPkgs ? _pkgs: [ ],
+      millenniumPackage ? null,
     }:
     let
       pkgs-x86_64 = import path {
@@ -102,9 +103,13 @@ let
               targetPkgs = p: args.targetPkgs (p // { glibc_multi = p.glibc; });
             }
           );
-        inherit extraLibraries;
+        extraLibraries = p: lib.optional (millenniumPackage != null) millenniumPackage ++ extraLibraries p;
         extraPkgs = p: [ p.lsof ] ++ extraPkgs p;
-        inherit extraEnv;
+        extraEnv =
+          extraEnv
+          // lib.optionalAttrs (millenniumPackage != null) {
+            MILLENNIUM_ARM64_BOOTSTRAP = "${millenniumPackage}/lib/libmillennium_bootstrap_x64.so";
+          };
       };
 
       initScript = writeShellScript "muvm-steam-init.sh" ''
