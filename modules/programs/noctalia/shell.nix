@@ -6,7 +6,8 @@
         customPalettes.stylix.dark.mSurface = lib.mkForce config.lib.stylix.colors.withHashtag.base00;
 
         settings.shell = {
-          corner_radius_scale = config.stylix.cornerRadius;
+          # Noctalia's scale multiplies its 12px base radius; it is not pixels.
+          corner_radius_scale = config.stylix.cornerRadius / 12.0;
           polkit_agent = true;
           popup_shadows = false;
           panel = {
