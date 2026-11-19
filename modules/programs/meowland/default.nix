@@ -24,6 +24,36 @@
         };
       };
 
+      programs.nushell.extraConfig = lib.mkAfter ''
+        let __meowland_previous_completer = ($env.config.completions.external.completer? | default null)
+
+        let __meowland_completer = {|place|
+            let spans = $place.command
+            let head = ((($spans | first) | default "") | path basename)
+            if $head == "meowland" {
+                let words = if ($spans | length) <= 1 { [""] } else { $spans | skip 1 }
+                let result = (with-env { COMPLETE: "fish" } { ^${lib.getExe config.programs.meowland.package} -- meowland ...$words } | complete)
+                if $result.exit_code == 0 {
+                    $result.stdout
+                    | lines
+                    | where {|line| $line != "" }
+                    | each {|line|
+                        let fields = ($line | split row "\t")
+                        { value: ($fields | first), description: ($fields | get -o 1 | default "") }
+                    }
+                } else {
+                    []
+                }
+            } else if $__meowland_previous_completer != null {
+                do $__meowland_previous_completer $place
+            } else {
+                null
+            }
+        }
+
+        $env.config.completions.external.completer = $__meowland_completer
+      '';
+
       home.packages = [
         (pkgs.writeShellApplication {
           name = "meowser";
