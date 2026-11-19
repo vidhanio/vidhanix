@@ -45,7 +45,7 @@
         };
       };
       config.stylix = {
-        cornerRadius = 4;
+        cornerRadius = 8;
         borderThickness = 2;
         padding = 8;
       };
