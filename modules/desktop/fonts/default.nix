@@ -48,7 +48,7 @@
             serif = cfg.fonts.monospace;
             sansSerif = {
               package = self'.packages.allo;
-              name = "Allo Variable";
+              name = "Allo";
             };
           };
         };
