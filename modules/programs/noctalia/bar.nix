@@ -14,6 +14,8 @@
         padding = config.stylix.padding;
         widget_spacing = 10;
         radius = config.stylix.cornerRadius;
+        radius_top_left = 0; # round only the bottom, away from the screen edge
+        radius_top_right = 0;
         capsule_radius = config.stylix.cornerRadius;
 
         start = [
