@@ -25,6 +25,11 @@
               $env.PROMPT_INDICATOR_VI_INSERT = ""
               $env.PROMPT_INDICATOR_VI_NORMAL = ""
               $env.PROMPT_MULTILINE_INDICATOR = ""
+              $env.PROMPT_COMMAND_RIGHT = {|| "" }
+
+              $env.config.cursor_shape.vi_insert = "line"
+              $env.config.cursor_shape.vi_normal = "block"
+              $env.config.cursor_shape.vi_visual = "block"
 
               $env.PROMPT_COMMAND = {||
                   let exit_code = ($env.LAST_EXIT_CODE? | default 0)
