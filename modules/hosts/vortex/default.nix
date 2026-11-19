@@ -52,6 +52,7 @@
     };
     homeModule = {
       imports = [ config.profiles.pc.homeModule ];
+      home.shellAliases.reboot-windows = "systemctl reboot --boot-loader-entry windows_11.conf";
       desktop.workspaces = {
         work = {
           output = "DP-1";

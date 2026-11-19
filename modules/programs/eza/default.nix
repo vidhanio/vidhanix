@@ -3,6 +3,7 @@
     homeModule = {
       programs.eza = {
         enable = true;
+        enableNushellIntegration = true;
         git = true;
         extraOptions = [
           "--all"
