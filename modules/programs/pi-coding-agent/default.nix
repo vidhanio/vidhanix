@@ -37,6 +37,10 @@
           };
         };
 
+        home.packages = [
+          (inputs'.llm-agents.packages.pi-acp.override { pi = config.programs.pi-coding-agent.package; })
+        ];
+
         persist.directories = [ ".pi/agent" ];
       };
   };
