@@ -1,23 +1,7 @@
 { inputs, ... }:
 {
   profiles.pc = {
-    homeModule = { inputs', ... }: {
-      home.packages = with inputs'.llm-agents.packages; [
-        codex-acp
-        claude-agent-acp
-      ];
-
-      persist.directories = [
-        {
-          directory = ".codex";
-          mode = "0700";
-        }
-        {
-          directory = ".claude";
-          mode = "0700";
-        }
-      ];
-
+    homeModule = {
       agents = {
         skills.bundles = [ "${inputs.beautiful-rust}/skills" ];
 
