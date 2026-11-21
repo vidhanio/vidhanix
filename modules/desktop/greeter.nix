@@ -56,7 +56,7 @@
         };
 
         services.greetd.settings.initial_session = {
-          command = "uwsm start hyprland.desktop";
+          command = "${config.programs.hyprland.package}/bin/start-hyprland";
           user = config.users.primaryUser;
         };
       };

@@ -12,7 +12,6 @@
         runtimeInputs = [
           pkgs.hyprland
           pkgs.jq
-          pkgs.uwsm
         ];
         text = ''
           appid=$1
@@ -22,7 +21,7 @@
           if [[ -n "$address" ]]; then
             hyprctl eval "hl.dispatch(hl.dsp.focus({ window = \"address:$address\" }))"
           else
-            uwsm app -- "$@"
+            "$@"
           fi
         '';
       };
@@ -95,7 +94,7 @@
                   lib.mkDerivedConfig options.app (
                     app:
                     if app.focusAppId == null then
-                      "uwsm app -- ${app.cmd}"
+                      "${app.cmd}"
                     else
                       "${lib.getExe focusOrLaunch} ${lib.escapeShellArg app.focusAppId} ${app.cmd}"
                   )

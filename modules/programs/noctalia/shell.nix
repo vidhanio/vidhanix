@@ -21,8 +21,8 @@
               else
                 "glass";
           };
+          launch_apps_as_systemd_services = true;
           screenshot.save_to_file = false;
-          launch_apps_custom_command = "uwsm app -- $CMD";
           setup_wizard_enabled = false;
           external_ip_enabled = true;
         };

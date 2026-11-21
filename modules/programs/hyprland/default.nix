@@ -5,18 +5,20 @@
       {
         programs.hyprland = {
           enable = true;
-
           package = inputs'.hyprland.packages.hyprland;
           portalPackage = inputs'.hyprland.packages.xdg-desktop-portal-hyprland;
-
-          withUWSM = true;
         };
       };
+
     homeModule =
-      { config, inputs', ... }:
       {
-        # https://wiki.hypr.land/Nix/Hyprland-on-Home-Manager/#nixos-uwsm
-        xdg.configFile."uwsm/env".source =
+        config,
+        inputs',
+        ...
+      }:
+      {
+        # greetd sources ~/.profile for every session; the login shell is nu.
+        home.file.".profile".source =
           "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
 
         wayland.windowManager.hyprland = {
@@ -25,8 +27,12 @@
           package = inputs'.hyprland.packages.hyprland;
           portalPackage = inputs'.hyprland.packages.xdg-desktop-portal-hyprland;
 
-          # Conflicts with `uwsm`.
-          systemd.enable = false;
+          systemd = {
+            enableXdgAutostart = true;
+
+            # Import the login environment before starting the target.
+            variables = [ "--all" ];
+          };
 
           xdph.settings.screencopy.allow_token_by_default = true;
           settings.config = {
@@ -38,14 +44,9 @@
             xwayland.force_zero_scaling = true;
           };
 
-          # Hyprland skips exporting WAYLAND_DISPLAY etc. to the systemd
-          # activation environment when run as a systemd unit (hyprwm/Hyprland
-          # 9927f2e), so uwsm must be told explicitly that startup finished.
-          extraConfig = ''
-            hl.on("hyprland.start", function()
-              hl.exec_cmd("uwsm finalize")
-            end)
-          '';
+          # Home Manager's hook owns the target; don't let Hyprland start it
+          # before the full login environment is imported.
+          extraConfig = ''hl.env("HYPRLAND_NO_SD_TARGET", "1")'';
         };
       };
   };
