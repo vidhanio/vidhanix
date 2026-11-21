@@ -197,10 +197,6 @@
         treefmt-nix.follows = "treefmt-nix";
       };
     };
-    # TODO: https://github.com/NixOS/nixpkgs/pull/548520
-    nixpkgs-xtool = {
-      url = "github:NixOS/nixpkgs/pull/548520/head";
-    };
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {

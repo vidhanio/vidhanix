@@ -1,17 +1,8 @@
-{ inputs, ... }:
 {
   profiles.pc = {
-    module =
-      { inputs', ... }:
-      {
-        # TODO: https://github.com/NixOS/nixpkgs/pull/548520
-        imports = [ "${inputs.nixpkgs-xtool}/nixos/modules/programs/xtool.nix" ];
-
-        programs.xtool = {
-          enable = true;
-          package = inputs'.nixpkgs-xtool.legacyPackages.xtool;
-        };
-      };
+    module = {
+      programs.xtool.enable = true;
+    };
 
     homeModule =
       { pkgs, ... }:

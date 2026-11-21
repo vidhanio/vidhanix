@@ -37,6 +37,15 @@
             misc.disable_splash_rendering = true;
             xwayland.force_zero_scaling = true;
           };
+
+          # Hyprland skips exporting WAYLAND_DISPLAY etc. to the systemd
+          # activation environment when run as a systemd unit (hyprwm/Hyprland
+          # 9927f2e), so uwsm must be told explicitly that startup finished.
+          extraConfig = ''
+            hl.on("hyprland.start", function()
+              hl.exec_cmd("uwsm finalize")
+            end)
+          '';
         };
       };
   };
