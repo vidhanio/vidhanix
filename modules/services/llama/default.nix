@@ -4,12 +4,23 @@
       {
         lib,
         pkgs,
+        inputs',
         ...
       }:
       {
         services.llama-cpp = {
           enable = true;
-          package = pkgs.llama-cpp-vulkan;
+          package = inputs'.llama-cpp.packages.vulkan.overrideAttrs (
+            _: prev: {
+              webui = prev.webui.overrideAttrs (wprev: {
+                postPatch = (wprev.postPatch or "") + ''
+                  substituteInPlace scripts/brand-favicons.ts \
+                    --replace-fail "copyFileSync, mkdirSync" "mkdirSync, readFileSync, writeFileSync" \
+                    --replace-fail "copyFileSync(require.resolve(specifier), resolve(outDir, fileName));" "writeFileSync(resolve(outDir, fileName), readFileSync(require.resolve(specifier)));"
+                '';
+              });
+            }
+          );
           settings = {
             sleep-idle-seconds = 30;
             models-max = 1;
@@ -108,6 +119,26 @@
                   reasoning-preserve = true;
                   temp = 1.0;
                   top-k = 20;
+                  min-p = 0.0;
+                };
+                "inkling-2-mini" = {
+                  hf = "bartowski/thinkingmachines_Inkling-2-Mini-GGUF:IQ3_XS";
+                  device = "Vulkan0";
+                  split-mode = "none";
+                  fit = "off";
+                  no-mmproj-offload = true;
+                  image-max-tokens = 1024;
+                  ctx-size = 65536;
+                  batch-size = 512;
+                  ubatch-size = 64;
+                  parallel = 1;
+                  flash-attn = "on";
+                  cache-type-k = "q4_0";
+                  cache-type-v = "q4_0";
+                  jinja = true;
+                  temp = 1.0;
+                  top-p = 1.0;
+                  top-k = 0;
                   min-p = 0.0;
                 };
               }
