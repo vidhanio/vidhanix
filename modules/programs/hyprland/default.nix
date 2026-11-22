@@ -17,7 +17,6 @@
         ...
       }:
       {
-        # greetd sources this at session start via general.source_profile.
         home.file.".profile".source =
           "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
 
