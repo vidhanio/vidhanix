@@ -34,6 +34,15 @@
             size = 24;
           };
         };
+
+        # Graphical sessions launched by greetd do not source the Home Manager
+        # session variables, so export the cursor settings system-wide.
+        environment.variables = {
+          XCURSOR_THEME = config.stylix.cursor.name;
+          XCURSOR_SIZE = toString config.stylix.cursor.size;
+          HYPRCURSOR_THEME = config.stylix.cursor.name;
+          HYPRCURSOR_SIZE = toString config.stylix.cursor.size;
+        };
       };
     homeModule =
       {

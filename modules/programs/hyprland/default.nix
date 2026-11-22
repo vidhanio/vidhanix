@@ -17,7 +17,7 @@
         ...
       }:
       {
-        # greetd sources ~/.profile for every session; the login shell is nu.
+        # Login shells source the Home Manager environment from here.
         home.file.".profile".source =
           "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
 
