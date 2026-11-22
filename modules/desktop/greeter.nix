@@ -55,13 +55,9 @@
           package = mkRegreetWrapper (renderCommands config.hardware.monitors);
         };
 
-        services.greetd.settings = {
-          general.source_profile = true;
-
-          initial_session = {
-            command = "${config.programs.hyprland.package}/bin/start-hyprland";
-            user = config.users.primaryUser;
-          };
+        services.greetd.settings.initial_session = {
+          command = "${config.programs.hyprland.package}/bin/start-hyprland";
+          user = config.users.primaryUser;
         };
       };
   };

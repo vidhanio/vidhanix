@@ -43,10 +43,7 @@
         ...
       }:
       {
-        home.pointerCursor = {
-          hyprcursor.enable = true;
-          x11.enable = true;
-        };
+        home.pointerCursor.hyprcursor.enable = true;
 
         xdg.dataFile."icons/${config.home.pointerCursor.name}".onChange = ''
           for i in $(${lib.getExe' pkgs.hyprland "hyprctl"} instances | sed -n 's/^instance \([^:]*\):/\1/p'); do
