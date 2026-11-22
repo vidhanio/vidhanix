@@ -34,14 +34,6 @@
             size = 24;
           };
         };
-
-        # PAM applies these before greetd execs the compositor.
-        environment.sessionVariables = {
-          XCURSOR_THEME = config.stylix.cursor.name;
-          XCURSOR_SIZE = toString config.stylix.cursor.size;
-          HYPRCURSOR_THEME = config.stylix.cursor.name;
-          HYPRCURSOR_SIZE = toString config.stylix.cursor.size;
-        };
       };
     homeModule =
       {
