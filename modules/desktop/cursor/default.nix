@@ -35,9 +35,8 @@
           };
         };
 
-        # Graphical sessions launched by greetd do not source the Home Manager
-        # session variables, so export the cursor settings system-wide.
-        environment.variables = {
+        # PAM applies these before greetd execs the compositor.
+        environment.sessionVariables = {
           XCURSOR_THEME = config.stylix.cursor.name;
           XCURSOR_SIZE = toString config.stylix.cursor.size;
           HYPRCURSOR_THEME = config.stylix.cursor.name;
