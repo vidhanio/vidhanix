@@ -67,6 +67,7 @@ mkTarget {
             thinkingMax = base08;
             bashMode = base0A;
             pythonMode = base0E;
+            btwMode = base0D;
             statusLineBg = base00;
             statusLineSep = base03;
             statusLineModel = base0D;
