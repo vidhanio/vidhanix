@@ -16,6 +16,8 @@ in
     { lib, ... }@args:
     {
       _class = "homeManager";
+      # https://github.com/nix-community/stylix/pull/2557
+      disabledModules = [ "${inputs.stylix}/modules/wayprompt/hm.nix" ];
       imports = [
         (inputs.import-tree ./_modules/home-manager)
         (stylixTargets "hm")
