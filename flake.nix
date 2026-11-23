@@ -66,10 +66,7 @@
     };
     nix-update = {
       url = "github:Mic92/nix-update";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        treefmt-nix.follows = "treefmt-nix";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";

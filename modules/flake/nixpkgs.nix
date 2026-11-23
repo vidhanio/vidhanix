@@ -9,8 +9,6 @@
         overlays = [
           (final: prev: {
             nix-update = inputs.nix-update.packages.${system}.nix-update.overridePythonAttrs (old: {
-              # https://github.com/Mic92/nix-update/issues/687
-              patches = old.patches or [ ] ++ [ ./nix-update-flake-prefetch.patch ];
               passthru = old.passthru or { } // {
                 nix-update-script = prev.nix-update.nix-update-script.override { inherit (final) nix-update; };
               };
