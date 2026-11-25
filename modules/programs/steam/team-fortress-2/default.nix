@@ -52,7 +52,12 @@
 
           files.game = {
             place = {
-              "tf/custom/7hud".source = "${self'.packages._7hud}";
+              "tf/custom/7hud".source = self'.packages._7hud.overrideAttrs (old: {
+                postInstall = (old.postInstall or "") + ''
+                  substituteInPlace $out/resource/clientscheme.res \
+                    --replace-fail "Clear Sans Bold" "Allo"
+                '';
+              });
               "tf/custom/loadouts.vpk".source = ./assets/loadouts.vpk;
               "tf/custom/mastercomfig-base.vpk".source =
                 "${self'.packages.mastercomfig}/presets/mastercomfig-base.vpk";
