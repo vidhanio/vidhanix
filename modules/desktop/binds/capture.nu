@@ -84,6 +84,33 @@ def pick [windows: list<record>]: nothing -> record {
     $windows | each {|box| geometry $box } | str join (char nl) | ^setpriv --pdeathsig KILL slurp -o | complete
 }
 
+def freeze []: nothing -> record {
+    for dir in (glob ($env.XDG_RUNTIME_DIR | path join ".desktop-capture.*")) {
+        rm --recursive --force $dir
+    }
+    let runtime = (
+        mktemp --directory --tmpdir-path $env.XDG_RUNTIME_DIR ".desktop-capture.XXXXXX"
+    )
+    let display = $env.WAYLAND_DISPLAY? | default "wayland-0"
+    let socket = if ($display | str starts-with "/") {
+        $display
+    } else {
+        $env.XDG_RUNTIME_DIR | path join $display
+    }
+    ^ln -s $socket ($runtime | path join ($socket | path basename))
+    let id = job spawn {
+        with-env { XDG_RUNTIME_DIR: $runtime, WAYLAND_DISPLAY: ($socket | path basename) } {
+            ^setpriv --pdeathsig KILL hyprpicker -r -z -d -q out> /dev/null
+        }
+    }
+    {id: $id, runtime: $runtime}
+}
+
+def unfreeze [frozen: record]: nothing -> nothing {
+    if $frozen.id in (job list | get id) { job kill $frozen.id }
+    rm --recursive --force $frozen.runtime
+}
+
 def wait-freeze [freezer: int, data: record]: nothing -> any {
     let deadline = (date now) + 3sec
     while (date now) < $deadline {
@@ -103,10 +130,11 @@ def wait-freeze [freezer: int, data: record]: nothing -> any {
 
 def screenshot [data: record]: nothing -> int {
 
-    # Parent-death signals also clean up overlays if Nu receives SIGTERM.
-    let freezer = job spawn { ^setpriv --pdeathsig KILL hyprpicker -r -z -d -q out> /dev/null }
+    # The private runtime keeps hyprpicker's freeze buffers out of the session tmpfs;
+    # a SIGKILL would otherwise leak them until the session runs out of space.
+    let frozen = freeze
     try {
-        wait-freeze $freezer $data
+        wait-freeze $frozen.id $data
         let selected = pick $data.windows
         if $selected.exit_code != 0 {
             print --stderr ($selected.stderr | str trim)
@@ -115,7 +143,7 @@ def screenshot [data: record]: nothing -> int {
         do --capture-errors { ^grim -g ($selected.stdout | str trim) - } | ^wl-copy --type image/png
         $env.LAST_EXIT_CODE
     } finally {
-        if $freezer in (job list | get id) { job kill $freezer }
+        unfreeze $frozen
     }
 }
 

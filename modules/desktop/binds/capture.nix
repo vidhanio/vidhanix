@@ -14,6 +14,7 @@
           "PATH"
           ":"
           (lib.makeBinPath [
+            pkgs.coreutils
             pkgs.grim
             pkgs.hyprpicker
             pkgs.slurp
