@@ -44,7 +44,10 @@
           includes = [ "*.nu" ];
           stdin-options = [ "--stdin" ];
         };
-        excludes = [ "*.patch" ];
+        excludes = [
+          "*.patch"
+          "modules/programs/steam/team-fortress-2/assets/**"
+        ];
         on-unmatched = "fatal";
       };
     };

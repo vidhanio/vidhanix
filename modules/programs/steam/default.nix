@@ -41,17 +41,6 @@ in
                 "1440"
               ];
             };
-            "440" = {
-              name = "Team Fortress 2";
-              args = [
-                "-novid"
-                "-nohltv"
-                "-particles"
-                "1"
-                "-nostartupsound"
-                "-fullscreen"
-              ];
-            };
           };
         };
 
