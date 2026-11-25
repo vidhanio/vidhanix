@@ -14,12 +14,12 @@
           "PATH"
           ":"
           (lib.makeBinPath [
-            pkgs.coreutils
+            pkgs.bash
             pkgs.grim
-            pkgs.hyprpicker
             pkgs.slurp
             pkgs.systemd
             pkgs.util-linux
+            pkgs.wayfreeze
             pkgs.wl-clipboard
             osConfig.programs.gpu-screen-recorder.package
             osConfig.programs.hyprland.package

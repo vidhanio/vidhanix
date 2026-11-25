@@ -84,57 +84,37 @@ def pick [windows: list<record>]: nothing -> record {
     $windows | each {|box| geometry $box } | str join (char nl) | ^setpriv --pdeathsig KILL slurp -o | complete
 }
 
+# wayfreeze writes freeze buffers to anonymous files, so SIGKILL cannot leak them.
 def freeze []: nothing -> record {
-    for dir in (glob ($env.XDG_RUNTIME_DIR | path join ".desktop-capture.*")) {
-        rm --recursive --force $dir
-    }
-    let runtime = (
-        mktemp --directory --tmpdir-path $env.XDG_RUNTIME_DIR ".desktop-capture.XXXXXX"
-    )
-    let display = $env.WAYLAND_DISPLAY? | default "wayland-0"
-    let socket = if ($display | str starts-with "/") {
-        $display
-    } else {
-        $env.XDG_RUNTIME_DIR | path join $display
-    }
-    ^ln -s $socket ($runtime | path join ($socket | path basename))
+    let ready = $env.XDG_RUNTIME_DIR | path join ".desktop-capture-ready"
+    rm --force $ready
     let id = job spawn {
-        with-env { XDG_RUNTIME_DIR: $runtime, WAYLAND_DISPLAY: ($socket | path basename) } {
-            ^setpriv --pdeathsig KILL hyprpicker -r -z -d -q out> /dev/null
-        }
+        ^setpriv --pdeathsig KILL wayfreeze --after-freeze-cmd $": > ($ready)"
     }
-    {id: $id, runtime: $runtime}
+    {id: $id, ready: $ready}
 }
 
 def unfreeze [frozen: record]: nothing -> nothing {
     if $frozen.id in (job list | get id) { job kill $frozen.id }
-    rm --recursive --force $frozen.runtime
+    rm --force $frozen.ready
 }
 
-def wait-freeze [freezer: int, data: record]: nothing -> any {
+def wait-freeze [frozen: record]: nothing -> any {
     let deadline = (date now) + 3sec
     while (date now) < $deadline {
-        let running = job list | where id == $freezer
-        if ($running | is-empty) { error make {msg: "Screen freeze exited before becoming ready."} }
-        let pids = $running | get pids | flatten
-        let layers = if $data.compositor == hyprland {
-            query hyprctl -j layers | values | get levels | each { values | flatten } | flatten | where {|layer| $layer.pid in $pids and $layer.alpha == 1 }
-        } else {
-            query niri msg --json layers | where namespace == hyprpicker
+        if not ($frozen.id in (job list | get id)) {
+            error make {msg: "Screen freeze exited before becoming ready."}
         }
-        if ($layers | length) == ($data.outputs | length) { return }
+        if ($frozen.ready | path exists) { return }
         sleep 20ms
     }
     error make {msg: "Could not freeze the displays."}
 }
 
 def screenshot [data: record]: nothing -> int {
-
-    # The private runtime keeps hyprpicker's freeze buffers out of the session tmpfs;
-    # a SIGKILL would otherwise leak them until the session runs out of space.
     let frozen = freeze
     try {
-        wait-freeze $frozen.id $data
+        wait-freeze $frozen
         let selected = pick $data.windows
         if $selected.exit_code != 0 {
             print --stderr ($selected.stderr | str trim)
