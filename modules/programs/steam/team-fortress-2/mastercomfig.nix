@@ -14,8 +14,8 @@ let
       src = fetchFromGitHub {
         owner = "mastercomfig";
         repo = "mastercomfig";
-        rev = "d947673e721d686a64a3e7055f38197556a3405b";
-        hash = "sha256-Z7U34ylprzTJrSYxpZH0thW1VNOll8EZkGQp5CxuD0s=";
+        rev = "b38ae17b2e1dc61d84ac02f1123f5ee000b1fc15";
+        hash = "sha256-RsP/8pDX1/fI91Dt5PpQy8uEU/lELEl8Q54rfBoXE3A=";
       };
       vpk = writeShellScriptBin "vpk" ''
         exec ${python}/bin/python3 ${src}/dev/vpk_cli.py "$@"
@@ -23,7 +23,7 @@ let
     in
     stdenvNoCC.mkDerivation {
       pname = "mastercomfig";
-      version = "unstable-2026-07-05";
+      version = "dev-unstable-2026-11-22";
 
       inherit src;
 
