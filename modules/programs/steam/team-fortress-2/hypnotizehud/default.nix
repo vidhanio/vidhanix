@@ -225,7 +225,7 @@ let
     in
     stdenvNoCC.mkDerivation {
       pname = "hypnotizehud";
-      version = "unstable-2025-10-10";
+      version = "1.7-unstable-2025-10-10";
 
       src = fetchFromGitHub {
         owner = "Hypnootize";
