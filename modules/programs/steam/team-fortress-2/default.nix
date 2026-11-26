@@ -1,8 +1,111 @@
 { lib, ... }:
 {
   profiles.pc.homeModule =
-    { pkgs, self', ... }:
+    {
+      config,
+      pkgs,
+      self',
+      ...
+    }:
     let
+      stylixColors = config.lib.stylix.colors;
+      rgb =
+        name: alpha:
+        "${stylixColors."${name}-rgb-r"} ${stylixColors."${name}-rgb-g"} ${stylixColors."${name}-rgb-b"} ${toString alpha}";
+      opaque = name: rgb name 255;
+
+      qualityColors = {
+        Normal = opaque "base03";
+        Genuine = opaque "base0B";
+        Unusual = opaque "base0E";
+        Vintage = opaque "base0D";
+        Unique = opaque "base0A";
+        Community = opaque "base0B";
+        Developer = opaque "base0E";
+        SelfMade = opaque "base0B";
+        Customized = opaque "base0D";
+        Strange = opaque "base09";
+        Completed = opaque "base0C";
+        Haunted = opaque "base0C";
+        Collectors = opaque "base08";
+        PaintkitWeapon = opaque "base06";
+        GradedWeaponDefault = opaque "base04";
+        CivilianGrade = opaque "base06";
+        FreelanceGrade = opaque "base0C";
+        MercenaryGrade = opaque "base0D";
+        CommandoGrade = opaque "base0E";
+        AssassinGrade = opaque "base09";
+        EliteGrade = opaque "base08";
+      };
+
+      themeColors = {
+        Crosshair = opaque "base05";
+        Crosshair_Shadow = opaque "base00";
+        Crosshair_Pulse = opaque "base08";
+
+        HitMarker = opaque "base08";
+
+        Health_Numbers = opaque "base05";
+
+        Shadow = rgb "base00" 175;
+
+        Buffed_Health = opaque "base0D";
+        Buffed_Health_Pulse = opaque "base0C";
+
+        Low_Health = opaque "base08";
+        Low_Health_Pulse = opaque "base08";
+
+        Ammo_In_Clip = opaque "base05";
+        Ammo_In_Reserve = opaque "base05";
+        Ammo_No_Clip = opaque "base05";
+
+        Low_Ammo_In_Clip = opaque "base08";
+        Low_Ammo_In_Clip_Pulse = opaque "base08";
+        Low_Ammo_In_Reserve = opaque "base08";
+        Low_Ammo_In_Reserve_Pulse = opaque "base08";
+        Low_Ammo_No_Clip = opaque "base08";
+        Low_Ammo_No_Clip_Pulse = opaque "base08";
+
+        Full_Ubercharge = opaque "base0D";
+        Full_Ubercharge_Pulse = opaque "base0C";
+
+        Heal_Numbers = opaque "base0B";
+        Last_Damage_Done = opaque "base05";
+
+        Health_Gained = opaque "base0B";
+        Health_Lost = opaque "base08";
+
+        Red = opaque "base08";
+        Blue = opaque "base0D";
+        Green = opaque "base0B";
+
+        Main_Theme = opaque "base0D";
+        White = opaque "base05";
+        White_Dark = opaque "base04";
+        White_Gray = opaque "base03";
+        Gray_Light = opaque "base03";
+        Gray_Medium = opaque "base01";
+        Gray_Dark = opaque "base01";
+        Gray_Darker = opaque "base00";
+        Gray_Darkest = opaque "base00";
+        Black_Light = opaque "base00";
+        Black_Dark = opaque "base00";
+        Black = opaque "base00";
+        TransparentBlack = rgb "base00" 150;
+        TransparentLightBlack = rgb "base00" 100;
+      }
+      // qualityColors
+      // lib.mapAttrs' (name: value: lib.nameValuePair "${name}_Hover" value) qualityColors;
+
+      hypnotizehud = self'.packages.hypnotizehud.override {
+        colors = themeColors;
+        fontFamily = "${config.stylix.fonts.sansSerif.name} ExtraBold";
+        chat = {
+          background = rgb "base00" 200;
+        };
+        pauseMenuBackground = "transparent";
+      };
+
       fetchGameBananaFile =
         {
           id,
@@ -52,15 +155,16 @@
 
           files.game = {
             place = {
-              "tf/custom/7hud".source = self'.packages._7hud.overrideAttrs (old: {
-                postInstall = (old.postInstall or "") + ''
-                  substituteInPlace $out/resource/clientscheme.res \
-                    --replace-fail "Clear Sans Bold" "Allo"
-                '';
-              });
+              "tf/custom/hypnotizehud".source = hypnotizehud;
               "tf/custom/loadouts.vpk".source = ./assets/loadouts.vpk;
               "tf/custom/mastercomfig-base.vpk".source =
                 "${self'.packages.mastercomfig}/presets/mastercomfig-base.vpk";
+              "tf/custom/tf/cfg/app/damagenumbers.cfg".text = ''
+                hud_combattext 1
+                hud_combattext_red ${toString (lib.toInt stylixColors."base05-rgb-r")}
+                hud_combattext_green ${toString (lib.toInt stylixColors."base05-rgb-g")}
+                hud_combattext_blue ${toString (lib.toInt stylixColors."base05-rgb-b")}
+              '';
               "tf/custom/tf/cfg/app/setup_hook.cfg".source = ./assets/tf/cfg/app/setup_hook.cfg;
               "tf/custom/tf/cfg/jump.cfg".source = ./assets/tf/cfg/jump.cfg;
               "tf/custom/tf/cfg/overrides".source = ./assets/tf/cfg/overrides;
