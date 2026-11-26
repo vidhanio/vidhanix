@@ -37,10 +37,10 @@ let
 
       armClient = sourcePackage rec {
         pname = "steam-client-arm64";
-        version = "5448e08ec5f3a4f30d900208b18598c736b3d730";
+        version = "b81657ff647b92439cfb5d5034513349acbcdbe4";
         src = fetchurl {
           url = "https://client-update.steamstatic.com/bins_linuxarm64_linuxarm64.zip.${version}";
-          hash = "sha256-hAc0fcR2Xs+Rki3BxhIfM1YjOu3ERh5GPgjpt6s/rhA=";
+          hash = "sha256-WcTb0e0NlT1iuT8eKYSjXw4W0C794HJJ0de0plC2+uM=";
         };
       };
 
