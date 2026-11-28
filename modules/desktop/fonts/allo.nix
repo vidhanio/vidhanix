@@ -13,13 +13,13 @@
         }:
         stdenvNoCC.mkDerivation (finalAttrs: {
           pname = "allo";
-          version = "1.0.3";
+          version = "1.1.1";
 
           src = fetchFromGitHub {
             owner = "joshpuckett";
             repo = "allo";
             tag = "v${finalAttrs.version}";
-            hash = "sha256-hD+l8uUKW2CoLuNuUdJFzMCHy6UAs3Lri+74C/LZdl4=";
+            hash = "sha256-NsQsnbz3Vtles3eityzGkSww71ZhNQPBNk3AxXTtU0U=";
           };
 
           outputs = [
